@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="GameServer"
+  id="myeclipse.1466069631038"
+  context-root="/GameServer"
+  j2ee-spec="6.0"
+  archive="GameServer.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="gameserver">
+    <output-path>$PROJECT_DIR$/classes/artifacts/gameserver</output-path>
+    <root id="root" />
+  </artifact>
+</component>
