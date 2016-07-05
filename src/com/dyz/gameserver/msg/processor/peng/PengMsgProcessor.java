@@ -10,6 +10,8 @@ import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.chi.ChiResponse;
+import com.dyz.gameserver.pojo.CardVO;
+import com.dyz.persist.util.JsonUtilTool;
 
 /**
  * 
@@ -22,8 +24,8 @@ public class PengMsgProcessor extends MsgProcessor implements
     public void process(GameSession gameSession, ClientRequest request) throws Exception {
         RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).roomVO.getRoomId());
         if(roomLogic != null){
-           int cardIndex =request.getInt();
-           boolean isPeng =  roomLogic.pengCard(roomLogic.getPlayerList().indexOf(gameSession.getRole(Avatar.class)),cardIndex);
+            CardVO cardVO = JsonUtilTool.fromJson(request.getString(),CardVO.class);
+           boolean isPeng =  roomLogic.pengCard(gameSession.getRole(Avatar.class),cardVO.getCardPoint());
            if(isPeng){
         	   gameSession.sendMsg(new ChiResponse(1, "1"));
            }

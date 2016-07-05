@@ -1,9 +1,5 @@
 package com.dyz.gameserver.logic;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.msg.response.ErrorResponse;
@@ -11,6 +7,10 @@ import com.dyz.gameserver.msg.response.joinroom.JoinRoomResponse;
 import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.RoomVO;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -137,6 +137,14 @@ public class RoomLogic {
     	
     	
     }
+    /**
+     * 玩家选择放弃操作
+     * @param avatar
+     * @param type 1-胡，2-杠，3-碰，4-吃
+     */
+    public void gaveUpAction(Avatar avatar,int type){
+        playCardsLogic.gaveUpAction(avatar,type);
+    }
 
     /**
      * 出牌
@@ -157,32 +165,32 @@ public class RoomLogic {
      * @param avatar
      * @return
      */
-    public boolean chiCard(int avatarIndex,int cardIndex){
-    	return playCardsLogic.chiCard(avatarIndex,cardIndex);
+    public boolean chiCard(Avatar avatar,int cardIndex){
+    	return playCardsLogic.chiCard(avatar,cardIndex);
     }
     /**
      * 碰牌
      * @param avatar
      * @return
      */
-    public boolean pengCard(int avatarIndex,int cardIndex){
-    	return playCardsLogic.pengCard( avatarIndex, cardIndex);
+    public boolean pengCard(Avatar avatar,int cardIndex){
+    	return playCardsLogic.pengCard( avatar, cardIndex);
     }
     /**
      * 杠牌
      * @param avatar
      * @return
      */
-    public boolean gangCard(int avatarIndex,int cardIndex){
-    	return playCardsLogic.gangCard( avatarIndex, cardIndex);
+    public boolean gangCard(Avatar avatar,int cardPoint){
+    	return playCardsLogic.gangCard( avatar, cardPoint);
     }
     /**
      * 胡牌
      * @param avatar
      * @return
      */
-    public boolean huPai(int avatarIndex,int cardIndex){
-    	return playCardsLogic.huPai( avatarIndex, cardIndex);
+    public boolean huPai(Avatar avatar,int cardIndex){
+    	return playCardsLogic.huPai( avatar, cardIndex);
     	
     }
     

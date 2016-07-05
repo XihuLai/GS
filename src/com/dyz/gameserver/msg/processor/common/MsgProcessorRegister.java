@@ -8,6 +8,7 @@ import com.dyz.gameserver.msg.processor.login.LoginMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.OpenAppMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.SignUpMsgProcessor;
 import com.dyz.gameserver.msg.processor.outroom.OutRoomMsgProcessor;
+import com.dyz.gameserver.msg.processor.pass.GaveUpMsgProcessor;
 import com.dyz.gameserver.msg.processor.peng.PengMsgProcessor;
 import com.dyz.gameserver.msg.processor.pickcard.PickCardMsgProcessor;
 
@@ -37,9 +38,10 @@ public enum MsgProcessorRegister {
 	/**吃牌*/
 	chiPai(ConnectAPI.CHIPAI_REQUEST,new ChiMsgProcessor()),
 	/**吃牌*/
-	pengPai(ConnectAPI.PENGPAI_REQUEST,new PengMsgProcessor());
-	
-	
+	pengPai(ConnectAPI.PENGPAI_REQUEST,new PengMsgProcessor()),
+	/**放弃操作*/
+	gaveUp(ConnectAPI.GAVEUP_REQUEST,new GaveUpMsgProcessor());
+
 	private int msgCode;
 	private MsgProcessor processor;
 

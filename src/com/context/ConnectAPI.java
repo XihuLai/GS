@@ -45,7 +45,11 @@ public class ConnectAPI {
 	//吃
 	public static int CHIPAI_REQUEST = 0x100011;
 	public static int CHIPAI_RESPONSE = 0x100012;
+	//其它人摸牌了
+	public static  int OTHER_PICKCARD_RESPONSE = 0x100014;
 
+	//放弃请求
+	public static int GAVEUP_REQUEST = 0x100015;
 
 	//游戏错误码返回
 	public static int ERROR_RESPONSE = 0xffff09;

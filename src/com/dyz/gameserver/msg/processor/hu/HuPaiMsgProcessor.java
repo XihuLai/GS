@@ -10,6 +10,8 @@ import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.hu.HuPaiResponse;
+import com.dyz.gameserver.pojo.CardVO;
+import com.dyz.persist.util.JsonUtilTool;
 
 /**
  * 
@@ -22,9 +24,8 @@ public class HuPaiMsgProcessor extends MsgProcessor implements
     public void process(GameSession gameSession, ClientRequest request) throws Exception {
         RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).roomVO.getRoomId());
         if(roomLogic != null){
-           int cardIndex = request.getInt();
-           int avatarIndex  = roomLogic.getPlayerList().indexOf(gameSession.getRole(Avatar.class));
-           boolean isHu =  roomLogic.huPai(avatarIndex,cardIndex);
+            CardVO cardVO = JsonUtilTool.fromJson(request.getString(),CardVO.class);
+           boolean isHu =  roomLogic.huPai(gameSession.getRole(Avatar.class),cardVO.getCardPoint());
            if(isHu){
         	   gameSession.sendMsg(new HuPaiResponse(1, "1"));
            }

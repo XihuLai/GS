@@ -9,7 +9,8 @@ import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.ErrorResponse;
-import com.dyz.gameserver.msg.response.gang.gangResponse;
+import com.dyz.gameserver.pojo.CardVO;
+import com.dyz.persist.util.JsonUtilTool;
 
 /**
  * 
@@ -22,11 +23,10 @@ public class GangMsgProcessor extends MsgProcessor implements
     public void process(GameSession gameSession, ClientRequest request) throws Exception {
         RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).roomVO.getRoomId());
         if(roomLogic != null){
-        	int avatarIndex = roomLogic.getPlayerList().indexOf(gameSession.getRole(Avatar.class));
-        	int cardIndex = request.getInt();
-           boolean isGang =  roomLogic.gangCard(cardIndex,avatarIndex);
+            CardVO cardVO = JsonUtilTool.fromJson(request.getString(),CardVO.class);
+           boolean isGang =  roomLogic.gangCard(gameSession.getRole(Avatar.class),cardVO.getCardPoint());
            if(isGang){
-        	   gameSession.sendMsg(new gangResponse(1, "1"));
+        	   //gameSession.sendMsg(new GangResponse(1, "1"));
            }
            else{
         	   System.out.println("碰不起");

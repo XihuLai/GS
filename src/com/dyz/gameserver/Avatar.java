@@ -1,12 +1,5 @@
 package com.dyz.gameserver;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.context.ErrorCode;
 import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.msg.response.ErrorResponse;
@@ -16,13 +9,26 @@ import com.dyz.gameserver.sprite.Character;
 import com.dyz.gameserver.sprite.base.GameObj;
 import com.dyz.gameserver.sprite.tool.AsyncTaskQueue;
 import com.dyz.myBatis.services.AccountService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by kevin on 2016/6/18.
  */
 public class Avatar implements GameObj {
     public AvatarVO avatarVO;
-
+    //请求吃
+    public boolean chiQuest = false;
+    //请求碰
+    public boolean pengQuest = false;
+    //请求杠
+    public boolean gangQuest = false;
+    //请求胡
+    public boolean huQuest = false;
     public RoomVO roomVO;
     /**
      * session
@@ -82,6 +88,13 @@ public class Avatar implements GameObj {
 	public Avatar(){
     }
 
+
+    public void setQuestToFalse(){
+        huQuest = false;
+        gangQuest = false;
+        pengQuest = false;
+        chiQuest = false;
+    }
     /**
      * 更新用户数据表信息
      * @param value

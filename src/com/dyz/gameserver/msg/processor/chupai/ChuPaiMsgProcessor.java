@@ -9,6 +9,8 @@ import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.ErrorResponse;
+import com.dyz.gameserver.pojo.CardVO;
+import com.dyz.persist.util.JsonUtilTool;
 
 /**
  * Created by kevin on 2016/6/23.
@@ -19,14 +21,13 @@ public class ChuPaiMsgProcessor extends MsgProcessor implements
     public void process(GameSession gameSession, ClientRequest request) throws Exception {
         RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).roomVO.getRoomId());
         //*****
-        int cardPoint = request.getInt();
+        CardVO cardVO = JsonUtilTool.fromJson(request.getString(),CardVO.class);
         if(roomLogic != null){
-            roomLogic.chuCard(gameSession.getRole(Avatar.class),cardPoint);
-            if(cardPoint == -1){
+            if(cardVO.getCardPoint() == -1){
                 gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000009));
             }else{
             	//出牌，发送消息在方法里面
-            	roomLogic.chuCard(gameSession.getRole(Avatar.class), cardPoint);
+            	roomLogic.chuCard(gameSession.getRole(Avatar.class), cardVO.getCardPoint());
             }
         }else{
             gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000005));
