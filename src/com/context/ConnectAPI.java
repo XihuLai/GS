@@ -39,6 +39,7 @@ public class ConnectAPI {
 	//杠牌
 	public static int GANGPAI_REQUEST = 0x100007;
 	public static int GANGPAI_RESPONSE = 0x100008;
+	public static int OTHER_GANGPAI_NOICE = 0x10a008;
 	//胡牌
 	public static int HUPAI_REQUEST = 0x100009;
 	public static int HUPAI_RESPONSE = 0x100010;

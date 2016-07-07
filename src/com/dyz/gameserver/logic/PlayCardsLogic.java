@@ -5,9 +5,9 @@ import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.response.chupai.ChuPaiResponse;
 import com.dyz.gameserver.msg.response.gang.GangResponse;
+import com.dyz.gameserver.msg.response.gang.OtherGangResponse;
 import com.dyz.gameserver.msg.response.pickcard.OtherPickCardResponse;
 import com.dyz.gameserver.msg.response.pickcard.PickCardResponse;
-import com.dyz.gameserver.msg.response.startgame.PrepareGameResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.persist.util.HuPaiType;
 import com.dyz.persist.util.Naizi;
@@ -67,9 +67,10 @@ public class PlayCardsLogic {
      * 判断是否可以同时几个人胡牌
      */
     private int huCount=0;
-    
-    
-    
+    /**
+     * 庄家
+     */
+    public Avatar bankerAvatar = null;
     /**
      * 是否添加字牌
      */
@@ -448,6 +449,12 @@ public class PlayCardsLogic {
                          avatar.getSession().sendMsg(new GangResponse(1, tempPoint,nextPoint));
                      }
                  }
+
+                 for (int i=0;i<playerList.size();i++){
+                     if(avatar.getUuId() != playerList.get(i).getUuId()){
+                            playerList.get(i).getSession().sendMsg(new OtherGangResponse(1,cardPoint,avatar.getUuId()));
+                     }
+                 }
     		 }
     	 }else{
              if(gangAvatar.size() > 0) {
@@ -566,19 +573,19 @@ public class PlayCardsLogic {
      */
     private void dealingTheCards() {
         cardindex = 0;
-        Avatar mainAvatar = null;
+        bankerAvatar = null;
         for (int i = 0; i < 13; i++) {
             for (int k = 0; k < playerList.size(); k++) {
-                if (mainAvatar == null) {
+                if (bankerAvatar == null) {
                     if (playerList.get(k).avatarVO.isMain()) {
-                        mainAvatar = playerList.get(k);
+                        bankerAvatar = playerList.get(k);
                     }
                 }
                 playerList.get(k).putCardInList(listCard.get(cardindex));
                 cardindex++;
             }
         }
-        mainAvatar.putCardInList(listCard.get(cardindex));
+        bankerAvatar.putCardInList(listCard.get(cardindex));
         cardindex++;
         
         // TODO kevinTest
@@ -588,17 +595,13 @@ public class PlayCardsLogic {
 //           // playerList.get(m).getSession().sendMsg(new StartGameResponse(1,getAvatarVoList()));
 //        }
        //检测一下庄家有没有天胡
-       if(checkHu(mainAvatar)){
+       if(checkHu(bankerAvatar)){
     	   //检查有没有天胡/有则把相关联的信息放入缓存中
-    	   huAvatar.add(mainAvatar);
+    	   huAvatar.add(bankerAvatar);
        }
-        if(roomType == 3){
-        	//判读有没有起手胡
-        	checkQiShouFu();
-        }
-        
-        for(int m = 0;m<playerList.size();m++){
-        	playerList.get(m).getSession().sendMsg(new PrepareGameResponse(1,getAvatarVoList()));
+        if(roomType == 3) {
+            //判读有没有起手胡
+            checkQiShouFu();
         }
     }
 

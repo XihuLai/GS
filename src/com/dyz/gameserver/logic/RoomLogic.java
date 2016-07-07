@@ -5,6 +5,7 @@ import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.joinroom.JoinRoomResponse;
 import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
+import com.dyz.gameserver.msg.response.startgame.PrepareGameResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.RoomVO;
 
@@ -46,6 +47,7 @@ public class RoomLogic {
      */
     public void CreateRoom(Avatar avatar){
         createAvator = avatar;
+        roomVO.setPlayerList(new ArrayList<AvatarVO>());
         avatar.avatarVO.setRoomId(roomVO.getRoomId());
         avatar.avatarVO.setIsReady(true);
         playerList = new ArrayList<Avatar>();
@@ -66,6 +68,7 @@ public class RoomLogic {
             avatar.avatarVO.setRoomId(roomVO.getRoomId());
             avatar.avatarVO.setIsReady(true);
             playerList.add(avatar);
+            roomVO.getPlayerList().add(avatar.avatarVO);
             if(playerList.size() == 4){
             	//当人数4个时自动开始游戏
                 //checkCanBeStartGame();当最后一个人加入时，不需要检测其他玩家是否准备(一句结束后开始才需要检测玩家是否准备)
@@ -123,6 +126,7 @@ public class RoomLogic {
     public void exitRoom(Avatar avatar){
         avatar.avatarVO.setRoomId(0);
         playerList.remove(avatar);
+        roomVO.getPlayerList().remove(avatar.avatarVO);
         for (Avatar ava : playerList) {
 			//通知房间里面的其他玩家
         	ava.getSession().sendMsg(new OutRoomResponse(1, roomVO));
@@ -235,6 +239,10 @@ public class RoomLogic {
         playCardsLogic = new PlayCardsLogic();
         playCardsLogic.setPlayerList(playerList);
         playCardsLogic.initCard(roomVO.getRoomType(),roomVO.getHong());
+
+        for(int i=0;i<playerList.size();i++){
+            playerList.get(i).getSession().sendMsg(new PrepareGameResponse(1,playerList.get(i).avatarVO.getPaiArray(),playCardsLogic.bankerAvatar.getUuId()));
+        }
         
     }
 

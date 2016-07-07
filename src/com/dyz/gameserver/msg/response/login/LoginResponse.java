@@ -14,6 +14,7 @@ public class LoginResponse extends ServerResponse{
 		try {
 			//output.writeBoolean(isSuccess);
 			if(status > 0) {
+				System.out.println("avatarVO   =  "+JsonUtilTool.toJson(avatarVO));
 				output.writeUTF(JsonUtilTool.toJson(avatarVO));
 			}
 			entireMsg();

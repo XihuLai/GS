@@ -9,9 +9,8 @@ import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.joinroom.JoinRoomResponse;
-import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.persist.util.GlobalUtil;
-import com.dyz.persist.util.JsonUtilTool;
+import net.sf.json.JSONObject;
 
 public class JoinRoomMsgProcessor extends MsgProcessor implements
 		INotAuthProcessor {
@@ -23,11 +22,11 @@ public class JoinRoomMsgProcessor extends MsgProcessor implements
 	public void process(GameSession gameSession, ClientRequest request)
 			throws Exception {
 		if(GlobalUtil.checkIsLogin(gameSession)) {
-			RoomVO roomVO = JsonUtilTool.fromJson(request.getString(),RoomVO.class);
-			System.out.println(roomVO.getRoomId());
+			JSONObject json = JSONObject.fromObject(request.getString());
+			int roomId = (int)json.get("roomId");
 			Avatar avatar = gameSession.getRole(Avatar.class);
 			if (avatar != null) {
-				RoomLogic roomLogic = RoomManager.getInstance().getRoom(roomVO.getRoomId());
+				RoomLogic roomLogic = RoomManager.getInstance().getRoom(roomId);
 				if (roomLogic != null) {
 					boolean joinResult = roomLogic.intoRoom(avatar);
 					if(joinResult) {
@@ -50,7 +49,7 @@ public class JoinRoomMsgProcessor extends MsgProcessor implements
 				System.out.println("账户未登录或已经掉线!");
 				gameSession.sendMsg(new JoinRoomResponse(0,ErrorCode.Error_000002));
 			}
-			System.out.println("roomId --> " + roomVO.getRoomId());
+			System.out.println("roomId --> " + roomId);
 			System.out.println("gameSession.isLogin() --> " + gameSession.isLogin());
 			System.out.println("gameSession.isLogin() --> " + gameSession.getRole(Avatar.class).getUuId());
 		}

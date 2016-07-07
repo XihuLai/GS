@@ -6,13 +6,13 @@ import java.util.List;
  * Created by kevin on 2016/7/5.
  */
 public class GangBackVO {
-    private List<CardVO> cardList;
+    private List<Integer> cardList;
 
-    public List<CardVO> getCardList() {
+    public List<Integer> getCardList() {
         return cardList;
     }
 
-    public void setCardList(List<CardVO> cardList) {
+    public void setCardList(List<Integer> cardList) {
         this.cardList = cardList;
     }
 }

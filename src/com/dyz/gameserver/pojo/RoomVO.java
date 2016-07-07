@@ -1,7 +1,5 @@
 package com.dyz.gameserver.pojo;
 
-import com.dyz.gameserver.Avatar;
-
 import java.util.List;
 
 /**
@@ -36,8 +34,12 @@ public class RoomVO {
      *是否自摸胡，还是可以抢杠胡
      */
     private int ziMo;
+    /**
+     * 下鱼
+     */
+    private int xiaYu;
 
-    private List<Avatar> playerList;
+    private List<AvatarVO> playerList;
 
 
     public int getRoomId() {
@@ -104,5 +106,21 @@ public class RoomVO {
 
     public void setSevenDouble(boolean sevenDouble) {
         this.sevenDouble = sevenDouble;
+    }
+
+    public int getXiaYu() {
+        return xiaYu;
+    }
+
+    public void setXiaYu(int xiaYu) {
+        this.xiaYu = xiaYu;
+    }
+
+    public List<AvatarVO> getPlayerList() {
+        return playerList;
+    }
+
+    public void setPlayerList(List<AvatarVO> playerList) {
+        this.playerList = playerList;
     }
 }

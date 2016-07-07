@@ -10,6 +10,14 @@ public class LoginVO {
 
     private String headIcon;
 
+    private String unionid;
+
+    private String province;
+
+    private String city;
+
+    private int sex;
+
 
     public String getOpenId() {
         return openId;
@@ -33,5 +41,37 @@ public class LoginVO {
 
     public void setHeadIcon(String headIcon) {
         this.headIcon = headIcon;
+    }
+
+    public String getUnionid() {
+        return unionid;
+    }
+
+    public void setUnionid(String unionid) {
+        this.unionid = unionid;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
     }
 }

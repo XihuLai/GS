@@ -2,129 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c946d1d-c105-482d-9059-d221659dcd3d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/pass/GaveUpMsgProcessor.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/pickcard/OtherPickCardResponse.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/CardVO.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/GangBackVO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/context/ConnectAPI.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/context/ConnectAPI.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/context/ErrorCode.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/context/ErrorCode.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/context/Rule.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/context/Rule.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/Avatar.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/Avatar.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/bootstrap/GameServer.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/bootstrap/GameServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/bootstrap/GamserServerStartupAndStop.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/bootstrap/GamserServerStartupAndStop.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/message/ClientRequest.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/message/ClientRequest.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/message/MsgBodyWrap.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/message/MsgBodyWrap.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/message/MsgDispatcher.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/message/MsgDispatcher.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/message/ResponseMsg.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/message/ResponseMsg.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/message/ServerResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/message/ServerResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/session/GameSession.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/session/GameSession.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/tool/ServerThreadFactory.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/commons/tool/ServerThreadFactory.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/context/ExecutorServiceManager.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/context/ExecutorServiceManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/context/GameServerContext.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/context/GameServerContext.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/logic/AvatarLogic.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/logic/AvatarLogic.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/logic/PlayCardsLogic.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/logic/PlayCardsLogic.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/logic/RoomLogic.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/logic/RoomLogic.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/manager/GameSessionManager.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/manager/GameSessionManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/manager/RoomManager.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/manager/RoomManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/chi/ChiMsgProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/chi/ChiMsgProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/chupai/ChuPaiMsgProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/chupai/ChuPaiMsgProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/common/CharacterMsgProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/common/CharacterMsgProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/common/INotAuthProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/common/INotAuthProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/common/MsgProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/common/MsgProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/common/MsgProcessorRegister.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/common/MsgProcessorRegister.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/createroom/CreateRoomMsgProcssor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/createroom/CreateRoomMsgProcssor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/gang/GangMsgProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/gang/GangMsgProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/hu/HuPaiMsgProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/hu/HuPaiMsgProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/joinroom/JoinRoomMsgProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/joinroom/JoinRoomMsgProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/login/LoginMsgProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/login/LoginMsgProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/login/OpenAppMsgProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/login/OpenAppMsgProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/login/SignUpMsgProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/login/SignUpMsgProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/outroom/OutRoomMsgProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/outroom/OutRoomMsgProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/peng/PengMsgProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/peng/PengMsgProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/pickcard/PickCardMsgProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/pickcard/PickCardMsgProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/startgame/PrepareGameProcessor.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/processor/startgame/PrepareGameProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/ErrorResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/ErrorResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/chi/ChiResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/chi/ChiResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/chupai/ChuPaiResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/chupai/ChuPaiResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/createroom/CreateRoomResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/createroom/CreateRoomResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/gang/gangResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/gang/gangResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/hu/HuPaiResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/hu/HuPaiResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/joinroom/JoinRoomResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/joinroom/JoinRoomResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/login/LoginResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/login/LoginResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/login/OpenAppResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/login/OpenAppResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/login/SignUpResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/login/SignUpResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/outroom/OutRoomResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/outroom/OutRoomResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/peng/PengResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/peng/PengResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/pickcard/PickCardResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/pickcard/PickCardResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/startgame/PrepareGameResponse.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/msg/response/startgame/PrepareGameResponse.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/net/MinaMsgHandler.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/net/MinaMsgHandler.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/net/NetManager.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/net/NetManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/net/codec/GameMsgDecoder.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/net/codec/GameMsgDecoder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/net/codec/GameMsgEncoder.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/net/codec/GameMsgEncoder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/net/codec/GameProtocolcodecFactory.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/net/codec/GameProtocolcodecFactory.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/net/codec/MsgProtocol.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/net/codec/MsgProtocol.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/pojo/AvatarVO.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/pojo/AvatarVO.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/pojo/Card.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/pojo/Card.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/pojo/LoginVO.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/pojo/LoginVO.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/pojo/RoomVO.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/pojo/RoomVO.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/sprite/Character.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/sprite/Character.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/sprite/base/GameObj.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/sprite/base/GameObj.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/sprite/tool/AsyncTaskQueue$1.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/sprite/tool/AsyncTaskQueue$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/sprite/tool/AsyncTaskQueue.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/gameserver/sprite/tool/AsyncTaskQueue.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/dao/AccountMapper.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/dao/AccountMapper.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/dao/UserMapper.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/dao/UserMapper.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/daoImp/AccountDaoImp.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/daoImp/AccountDaoImp.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/daoImp/UserDaoImp.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/daoImp/UserDaoImp.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/Account.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/Account.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/AccountExample$Criteria.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/AccountExample$Criteria.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/AccountExample$Criterion.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/AccountExample$Criterion.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/AccountExample$GeneratedCriteria.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/AccountExample$GeneratedCriteria.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/AccountExample.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/AccountExample.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/User.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/User.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/UserExample$Criteria.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/UserExample$Criteria.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/UserExample$Criterion.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/UserExample$Criterion.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/UserExample$GeneratedCriteria.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/UserExample$GeneratedCriteria.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/UserExample.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/model/UserExample.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/services/AccountService.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/services/AccountService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/services/InitServers.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/services/InitServers.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/services/UserService.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/myBatis/services/UserService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/gamedata/common/IGameDataCach.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/gamedata/common/IGameDataCach.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/User.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/User.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/UserDAO.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/UserDAO.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/UserDAOImpl$UpdateByExampleParms.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/UserDAOImpl$UpdateByExampleParms.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/UserDAOImpl.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/UserDAOImpl.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/UserExample$Criteria.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/UserExample$Criteria.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/UserExample.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/UserExample.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/UserService.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/roledata/user/UserService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/DBUtil.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/DBUtil.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/GlobalData.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/GlobalData.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/GlobalUtil.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/GlobalUtil.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/HuPaiType.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/HuPaiType.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/JsonUtilTool.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/JsonUtilTool.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/Naizi.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/Naizi.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/Tesxt.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/Tesxt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/TimeUitl$1.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/TimeUitl$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/TimeUitl.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/com/dyz/persist/util/TimeUitl.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/test/java/Client.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/test/java/Client.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/test/java/Client2.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/test/java/Client2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/test/java/ClientSendRequest.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/test/java/ClientSendRequest.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/test/java/Test.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/test/java/Test.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/test/java/testData.class" afterPath="$PROJECT_DIR$/WebRoot/WEB-INF/classes/test/java/testData.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/gang/OtherGangResponse.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ibatis-generator-config/mybatis-generator-config.xml" afterPath="$PROJECT_DIR$/ibatis-generator-config/mybatis-generator-config.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/myBatisConfig.xml" afterPath="$PROJECT_DIR$/resources/myBatisConfig.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/context/ConnectAPI.java" afterPath="$PROJECT_DIR$/src/com/context/ConnectAPI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/Avatar.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/Avatar.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/logic/PlayCardsLogic.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/logic/PlayCardsLogic.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/logic/RoomLogic.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/logic/RoomLogic.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/chi/ChiMsgProcessor.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/chi/ChiMsgProcessor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/chupai/ChuPaiMsgProcessor.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/chupai/ChuPaiMsgProcessor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/common/MsgProcessorRegister.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/common/MsgProcessorRegister.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/gang/GangMsgProcessor.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/gang/GangMsgProcessor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/hu/HuPaiMsgProcessor.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/hu/HuPaiMsgProcessor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/peng/PengMsgProcessor.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/peng/PengMsgProcessor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/chupai/ChuPaiResponse.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/chupai/ChuPaiResponse.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/hu/HuPaiResponse.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/hu/HuPaiResponse.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/pickcard/PickCardResponse.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/pickcard/PickCardResponse.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/joinroom/JoinRoomMsgProcessor.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/joinroom/JoinRoomMsgProcessor.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/login/LoginMsgProcessor.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/login/LoginMsgProcessor.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/gang/gangResponse.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/gang/gangResponse.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/login/LoginResponse.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/login/LoginResponse.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/peng/PengResponse.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/peng/PengResponse.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/startgame/PrepareGameResponse.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/startgame/PrepareGameResponse.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/GangBackVO.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/GangBackVO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/LoginVO.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/LoginVO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/RoomVO.java" afterPath="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/RoomVO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/myBatis/model/Account.java" afterPath="$PROJECT_DIR$/src/com/dyz/myBatis/model/Account.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/myBatis/model/AccountExample.java" afterPath="$PROJECT_DIR$/src/com/dyz/myBatis/model/AccountExample.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dyz/myBatis/sqlMapper/AccountMapper.xml" afterPath="$PROJECT_DIR$/src/com/dyz/myBatis/sqlMapper/AccountMapper.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/Test.java" afterPath="$PROJECT_DIR$/src/test/java/Test.java" />
     </list>
     <ignored path="GameServer.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -470,6 +368,85 @@
         <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/ibatis-2.3.4.726.jar!/release.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
       </favorite_root>
       <favorite_root url="file://$PROJECT_DIR$/WebRoot/WEB-INF/lib/mybatis-3.2.3.jar" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+      <favorite_root url="file://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode">
+        <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+          <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/jsp" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/Cookie.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpUtils.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpServlet.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpSession.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/NoBodyResponse.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpSessionEvent.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/LocalStrings.properties" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpServletRequest.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpSessionContext.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/NoBodyOutputStream.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpServletResponse.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpSessionListener.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpSessionBindingEvent.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpServletRequestWrapper.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpServletResponseWrapper.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpSessionBindingListener.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpSessionAttributeListener.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/http/HttpSessionActivationListener.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            </favorite_root>
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/xml.xsd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/jsp_2_0.xsd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/jsp_2_1.xsd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/j2ee_1_4.xsd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/javaee_5.xsd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/XMLSchema.dtd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/datatypes.dtd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/web-app_2_2.dtd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/web-app_2_3.dtd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/web-app_2_4.xsd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/web-app_2_5.xsd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/j2ee_web_services_1_1.xsd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/web-jsptaglibrary_1_1.dtd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/web-jsptaglibrary_1_2.dtd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/web-jsptaglibrary_2_0.xsd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/web-jsptaglibrary_2_1.xsd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/javaee_web_services_1_2.xsd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/j2ee_web_services_client_1_1.xsd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/resources/javaee_web_services_client_1_2.xsd" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            </favorite_root>
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/Filter.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/Servlet.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/FilterChain.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/FilterConfig.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletConfig.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/GenericServlet.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletContext.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletRequest.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletResponse.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletException.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/LocalStrings.properties" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/RequestDispatcher.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/SingleThreadModel.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletInputStream.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletContextEvent.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletOutputStream.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletRequestEvent.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/UnavailableException.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletRequestWrapper.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletContextListener.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletRequestListener.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletResponseWrapper.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletContextAttributeEvent.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletRequestAttributeEvent.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletContextAttributeListener.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/javax/servlet/ServletRequestAttributeListener.class" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          </favorite_root>
+        </favorite_root>
+        <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/META-INF" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+          <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/META-INF/NOTICE" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/META-INF/LICENSE" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="jar://$PROJECT_DIR$/WebRoot/WEB-INF/lib/servlet-api.jar!/META-INF/MANIFEST.MF" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        </favorite_root>
+      </favorite_root>
     </favorites_list>
   </component>
   <component name="FileEditorManager">
@@ -477,8 +454,18 @@
       <file leaf-file-name="PlayCardsLogic.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/logic/PlayCardsLogic.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-350">
-              <caret line="405" column="19" selection-start-line="405" selection-start-column="19" selection-end-line="405" selection-end-column="19" />
+            <state relative-caret-position="287">
+              <caret line="455" column="22" selection-start-line="455" selection-start-column="22" selection-end-line="455" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OtherGangResponse.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/gang/OtherGangResponse.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="50">
+              <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -486,87 +473,34 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PickCardResponse.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/pickcard/PickCardResponse.java">
+      <file leaf-file-name="ConnectAPI.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/context/ConnectAPI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="26" column="58" selection-start-line="26" selection-start-column="58" selection-end-line="26" selection-end-column="58" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ChuPaiMsgProcessor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/chupai/ChuPaiMsgProcessor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="23" column="17" selection-start-line="23" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+            <state relative-caret-position="75">
+              <caret line="36" column="15" selection-start-line="36" selection-start-column="15" selection-end-line="36" selection-end-column="15" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RoomLogic.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/logic/RoomLogic.java">
+      <file leaf-file-name="LoginMsgProcessor.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/login/LoginMsgProcessor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="184" column="35" selection-start-line="184" selection-start-column="35" selection-end-line="184" selection-end-column="35" />
-              <folding>
-                <element signature="e#4463#4464#0" expanded="true" />
-                <element signature="e#4526#4527#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ChiMsgProcessor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/chi/ChiMsgProcessor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="26" column="84" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="84" />
+            <state relative-caret-position="425">
+              <caret line="31" column="51" selection-start-line="31" selection-start-column="51" selection-end-line="31" selection-end-column="51" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HuPaiMsgProcessor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/hu/HuPaiMsgProcessor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="27" column="98" selection-start-line="27" selection-start-column="98" selection-end-line="27" selection-end-column="98" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PengMsgProcessor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/peng/PengMsgProcessor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="27" column="103" selection-start-line="27" selection-start-column="103" selection-end-line="27" selection-end-column="103" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PickCardMsgProcessor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/pickcard/PickCardMsgProcessor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="21" column="8" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GangMsgProcessor.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GangMsgProcessor.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/gang/GangMsgProcessor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="20" column="27" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
-              <folding />
+            <state relative-caret-position="246">
+              <caret line="27" column="91" selection-start-line="27" selection-start-column="91" selection-end-line="27" selection-end-column="91" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -574,11 +508,53 @@
       <file leaf-file-name="GangResponse.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/gang/GangResponse.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+            <state relative-caret-position="34">
+              <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
               <folding>
-                <element signature="e#749#757#0" expanded="true" />
+                <element signature="e#736#745#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Test.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/Test.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="229">
+              <caret line="12" column="29" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="29" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GangBackVO.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/pojo/GangBackVO.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="14" column="40" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LoginResponse.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/login/LoginResponse.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="20" column="11" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServerResponse.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/commons/message/ServerResponse.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="118">
+              <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -605,16 +581,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/test/java/ClientDataPack.java" />
-        <option value="$PROJECT_DIR$/src/test/java/testData.java" />
-        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/commons/message/ServerResponse.java" />
-        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/CreateRoomResponse.java" />
-        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/login/OpenAppResponse1002.java" />
-        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/login/SignUpResponse1006.java" />
-        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/login/OpenAppMsgProcessor1001.java" />
-        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/login/SignUpMsgProcessor1005.java" />
-        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/manager/RoomManager.java" />
-        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/RoomVO.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/persist/util/JsonUtil.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/persist/util/JsonUtilTool.java" />
         <option value="$PROJECT_DIR$/src/test/java/ClientSendRequest.java" />
@@ -629,7 +595,6 @@
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/manager/GameSessionManager.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/net/MinaMsgHandler.java" />
         <option value="$PROJECT_DIR$/src/test/java/Client.java" />
-        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/LoginVO.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/persist/util/GlobalUtil.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/login/LoginMsgProcessor1003.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/JoinRoomMsgProcessor1007.java" />
@@ -641,21 +606,32 @@
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/chupai/ChuPaiResponse.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/pickcard/OtherPickCardResponse.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/hu/HuPaiResponse.java" />
-        <option value="$PROJECT_DIR$/src/com/context/ConnectAPI.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/common/MsgProcessorRegister.java" />
-        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/logic/RoomLogic.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/pass/GaveUpMsgProcessor.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/Avatar.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/CardVO.java" />
-        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/GangBackVO.java" />
-        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/gang/GangResponse.java" />
-        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/logic/PlayCardsLogic.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/pickcard/PickCardResponse.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/chupai/ChuPaiMsgProcessor.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/hu/HuPaiMsgProcessor.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/peng/PengMsgProcessor.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/chi/ChiMsgProcessor.java" />
+        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/LoginVO.java" />
+        <option value="$PROJECT_DIR$/ibatis-generator-config/mybatis-generator-config.xml" />
+        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/RoomVO.java" />
+        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/joinroom/JoinRoomMsgProcessor.java" />
+        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/logic/RoomLogic.java" />
+        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/startgame/PrepareGameResponse.java" />
+        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/peng/PengResponse.java" />
+        <option value="$PROJECT_DIR$/resources/myBatisConfig.xml" />
+        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/login/LoginResponse.java" />
+        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/login/LoginMsgProcessor.java" />
         <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/gang/GangMsgProcessor.java" />
+        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/pojo/GangBackVO.java" />
+        <option value="$PROJECT_DIR$/src/test/java/Test.java" />
+        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/gang/GangResponse.java" />
+        <option value="$PROJECT_DIR$/src/com/context/ConnectAPI.java" />
+        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/gang/OtherGangResponse.java" />
+        <option value="$PROJECT_DIR$/src/com/dyz/gameserver/logic/PlayCardsLogic.java" />
       </list>
     </option>
   </component>
@@ -713,8 +689,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -743,6 +719,56 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="WebRoot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WEB-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GameServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GameServer-MJ" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WebRoot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GameServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GameServer-MJ" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GameServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GameServer-MJ" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -766,6 +792,32 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="dyz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GameServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GameServer-MJ" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dyz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="myBatis" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -792,36 +844,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="gameserver" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="GameServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="GameServer-MJ" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dyz" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gameserver" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pojo" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -852,6 +874,86 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="msg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="response" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GameServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GameServer-MJ" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dyz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gameserver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="msg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="response" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gang" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GameServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GameServer-MJ" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dyz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gameserver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="msg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="response" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="chi" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -944,24 +1046,18 @@
               <option name="myItemId" value="com" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="dyz" />
+              <option name="myItemId" value="GameServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GameServer-MJ" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="gameserver" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="msg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="processor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chi" />
+              <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -975,11 +1071,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
+              <option name="myItemId" value="ibatis-generator-config" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1008,7 +1100,7 @@
       <recent name="D:\workspace\GameServer-master\WebRoot\WEB-INF\lib" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.PlayCardsLogic">
+  <component name="RunManager" selected="Application.Test">
     <configuration default="false" name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -1057,6 +1149,26 @@
         </pattern>
       </extension>
       <option name="MAIN_CLASS_NAME" value="com.dyz.persist.util.GlobalUtil" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="GameServer" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="test.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="test.java.Test" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -1606,19 +1718,24 @@
       </ConfigurationWrapper>
       <method>
         <option name="Make" enabled="false" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="gameserver" />
+        </option>
       </method>
     </configuration>
-    <list size="4">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Tomcat Server.gameServer" />
       <item index="1" class="java.lang.String" itemvalue="Application.Client" />
       <item index="2" class="java.lang.String" itemvalue="Application.PlayCardsLogic" />
       <item index="3" class="java.lang.String" itemvalue="Application.GlobalUtil" />
+      <item index="4" class="java.lang.String" itemvalue="Application.Test" />
     </list>
     <recent_temporary>
-      <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Application.PlayCardsLogic" />
-        <item index="1" class="java.lang.String" itemvalue="Application.GlobalUtil" />
-        <item index="2" class="java.lang.String" itemvalue="Application.Client" />
+      <list size="4">
+        <item index="0" class="java.lang.String" itemvalue="Application.Test" />
+        <item index="1" class="java.lang.String" itemvalue="Application.PlayCardsLogic" />
+        <item index="2" class="java.lang.String" itemvalue="Application.GlobalUtil" />
+        <item index="3" class="java.lang.String" itemvalue="Application.Client" />
       </list>
     </recent_temporary>
   </component>
@@ -1648,11 +1765,14 @@
       <workItem from="1466645081511" duration="20962000" />
       <workItem from="1466730595648" duration="2452000" />
       <workItem from="1467685435514" duration="14202000" />
+      <workItem from="1467773343711" duration="4942000" />
+      <workItem from="1467860769016" duration="9256000" />
+      <workItem from="1467876801397" duration="7112000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="138941000" />
+    <option name="totallyTimeSpent" value="160251000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1664,30 +1784,30 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
-    <editor active="false" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="7" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295711" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295711" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295711" sideWeight="0.49785638" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29006773" sideWeight="0.5096463" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3295711" sideWeight="0.5085745" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295711" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329582" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25395033" sideWeight="0.49785638" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25959367" sideWeight="0.7513398" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29046088" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28778136" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329582" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295711" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3295711" sideWeight="0.4914255" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23258306" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973205" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29006773" sideWeight="0.4903537" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38939053" sideWeight="0.68274385" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1708,15 +1828,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/dyz/persist/util/TimeUitl.java</url>
-          <line>31</line>
-          <properties />
-          <option name="timeStamp" value="34" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="99" />
+      <option name="time" value="103" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory">
@@ -1738,151 +1850,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/persist/util/GlobalUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/JoinRoomMsgProcessor1007.java" />
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/StartGameResponse.java" />
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/PickCardResponse.java" />
-    <entry file="file://$PROJECT_DIR$/resources/myBatisConfig.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="25" column="52" selection-start-line="25" selection-start-column="52" selection-end-line="25" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/context/ExecutorServiceManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/bootstrap/GamserServerStartupAndStop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/commons/message/ClientRequest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-696">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/net/MinaMsgHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="33" column="40" selection-start-line="33" selection-start-column="40" selection-end-line="33" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/common/MsgProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/commons/message/MsgDispatcher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="509">
-          <caret line="53" column="17" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/net/codec/GameMsgEncoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/net/codec/GameMsgDecoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="16" column="63" selection-start-line="16" selection-start-column="63" selection-end-line="16" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/login/LoginMsgProcessor1003.java" />
-    <entry file="file://$PROJECT_DIR$/src/com/context/ErrorCode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/ChuPaiMsgProcessor.java" />
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/net/NetManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="800">
-          <caret line="32" column="16" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/bootstrap/GameServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="700">
-          <caret line="38" column="28" selection-start-line="38" selection-start-column="28" selection-end-line="38" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#663#664#0" expanded="false" />
-            <element signature="e#699#700#0" expanded="false" />
-            <element signature="e#742#743#0" expanded="false" />
-            <element signature="e#764#765#0" expanded="false" />
-            <element signature="e#1604#1605#0" expanded="false" />
-            <element signature="e#1637#1638#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/PickCardMsgProcessor.java" />
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/commons/message/ServerResponse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="31" column="29" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/pojo/RoomVO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-621">
-          <caret line="23" column="32" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/pojo/LoginVO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="21" column="33" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
-          <folding>
-            <element signature="e#393#394#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/CreateRoomResponse.java" />
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/pojo/AvatarVO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/Client.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="212">
@@ -1901,19 +1868,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/mopai/MoPaiResponse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="15" column="40" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/mopai/MoPaiResponse.java" />
     <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/outroom/OutRoomResponse.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="400">
           <caret line="21" column="5" selection-start-line="11" selection-start-column="4" selection-end-line="21" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1921,9 +1880,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="429">
           <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1931,17 +1887,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
           <caret line="16" column="20" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/pickcard/OtherPickCardResponse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1950,8 +1895,8 @@
         <state relative-caret-position="304">
           <caret line="99" column="17" selection-start-line="99" selection-start-column="17" selection-end-line="99" selection-end-column="17" />
           <folding>
-            <element signature="e#1955#1956#0" expanded="true" />
-            <element signature="e#1981#1982#0" expanded="true" />
+            <element signature="e#1955#1956#0" expanded="false" />
+            <element signature="e#1981#1982#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1960,17 +1905,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="400">
           <caret line="25" column="5" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/Avatar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1990,84 +1924,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/context/ConnectAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="579">
-          <caret line="51" column="36" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/pojo/Card.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="25" />
-          <folding>
-            <element signature="e#426#427#0" expanded="true" />
-            <element signature="e#460#461#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/pojo/CardVO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/pojo/GangBackVO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding>
-            <element signature="e#199#200#0" expanded="true" />
-            <element signature="e#230#231#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/pass/GaveUpMsgProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="22" column="32" selection-start-line="22" selection-start-column="32" selection-end-line="22" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/gang/GangResponse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-          <folding>
-            <element signature="e#749#757#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/chupai/ChuPaiMsgProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
+        <state relative-caret-position="325">
           <caret line="23" column="17" selection-start-line="23" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/hu/HuPaiMsgProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
+        <state relative-caret-position="400">
           <caret line="27" column="98" selection-start-line="27" selection-start-column="98" selection-end-line="27" selection-end-column="98" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/peng/PengMsgProcessor.java">
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/chi/ChiMsgProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="27" column="103" selection-start-line="27" selection-start-column="103" selection-end-line="27" selection-end-column="103" />
+        <state relative-caret-position="375">
+          <caret line="26" column="84" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="84" />
           <folding />
         </state>
       </provider>
@@ -2080,21 +1955,298 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/logic/RoomLogic.java">
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/persist/util/GlobalUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="184" column="35" selection-start-line="184" selection-start-column="35" selection-end-line="184" selection-end-column="35" />
+        <state relative-caret-position="225">
+          <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/Avatar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="37" column="23" selection-start-line="37" selection-start-column="23" selection-end-line="37" selection-end-column="23" />
           <folding>
-            <element signature="e#4463#4464#0" expanded="true" />
-            <element signature="e#4526#4527#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/pojo/CardVO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="6" column="25" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/common/MsgProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/pojo/Card.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="397">
+          <caret line="17" column="30" selection-start-line="17" selection-start-column="30" selection-end-line="17" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/pojo/RoomVO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="455">
+          <caret line="118" column="43" selection-start-line="118" selection-start-column="43" selection-end-line="118" selection-end-column="43" />
+          <folding>
+            <element signature="e#1794#1795#0" expanded="true" />
+            <element signature="e#1822#1823#0" expanded="true" />
+            <element signature="e#1861#1862#0" expanded="true" />
+            <element signature="e#1895#1896#0" expanded="true" />
+            <element signature="e#1973#1974#0" expanded="true" />
+            <element signature="e#2033#2034#0" expanded="true" />
+            <element signature="e#2077#2078#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/createroom/CreateRoomMsgProcssor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="37" column="83" selection-start-line="37" selection-start-column="83" selection-end-line="37" selection-end-column="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/createroom/CreateRoomResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/joinroom/JoinRoomResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="40" selection-start-line="10" selection-start-column="40" selection-end-line="10" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/joinroom/JoinRoomMsgProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="30" column="53" selection-start-line="30" selection-start-column="53" selection-end-line="30" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/pojo/AvatarVO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="31" column="12" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/myBatis/model/Account.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="17" column="24" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="24" />
+          <folding>
+            <element signature="e#2516#2517#0" expanded="false" />
+            <element signature="e#2544#2545#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/pickcard/PickCardResponse.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="26" column="58" selection-start-line="26" selection-start-column="58" selection-end-line="26" selection-end-column="58" />
+        <state relative-caret-position="125">
+          <caret line="13" column="7" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/startgame/PrepareGameResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="24" column="30" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/logic/RoomLogic.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="240" column="41" selection-start-line="240" selection-start-column="41" selection-end-line="240" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/pickcard/OtherPickCardResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="15" column="20" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/peng/PengMsgProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="24" column="37" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/peng/PengResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="27" column="49" selection-start-line="27" selection-start-column="49" selection-end-line="27" selection-end-column="49" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/pass/GaveUpMsgProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/net/NetManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="25" column="24" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebRoot/web.xml" />
+    <entry file="file://$PROJECT_DIR$/WebRoot/WEB-INF/web.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="8" column="23" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/bootstrap/GameServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="18" column="23" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/myBatisConfig.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="29" column="22" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ibatis-generator-config/mybatis-generator-config.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/persist/util/TimeUitl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="31" column="28" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/commons/message/ServerResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/login/LoginResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="20" column="11" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/pojo/LoginVO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/login/LoginMsgProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="31" column="51" selection-start-line="31" selection-start-column="51" selection-end-line="31" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/gang/GangMsgProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="27" column="91" selection-start-line="27" selection-start-column="91" selection-end-line="27" selection-end-column="91" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/pojo/GangBackVO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="14" column="40" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="12" column="29" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/gang/GangResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
+          <folding>
+            <element signature="e#736#745#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/response/gang/OtherGangResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -2103,26 +2255,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/logic/PlayCardsLogic.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-350">
-          <caret line="405" column="19" selection-start-line="405" selection-start-column="19" selection-end-line="405" selection-end-column="19" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/chi/ChiMsgProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="26" column="84" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="84" />
+        <state relative-caret-position="287">
+          <caret line="455" column="22" selection-start-line="455" selection-start-column="22" selection-end-line="455" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dyz/gameserver/msg/processor/gang/GangMsgProcessor.java">
+    <entry file="file://$PROJECT_DIR$/src/com/context/ConnectAPI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="20" column="27" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
+        <state relative-caret-position="75">
+          <caret line="36" column="15" selection-start-line="36" selection-start-column="15" selection-end-line="36" selection-end-column="15" />
           <folding />
         </state>
       </provider>

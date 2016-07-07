@@ -34,6 +34,10 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			account.setRoomcard(3);
 			account.setHeadicon(loginVO.getHeadIcon());
 			account.setNickname(loginVO.getNickName());
+			account.setCity(loginVO.getCity());
+			account.setProvince(loginVO.getProvince());
+			account.setSex(loginVO.getSex());
+			account.setUnionid(loginVO.getUnionid());
 
 			if(AccountService.getInstance().createAccount(account) == 0){
 				gameSession.sendMsg(new LoginResponse(0,null));
