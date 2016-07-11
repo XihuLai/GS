@@ -38,6 +38,10 @@ public class RoomVO {
      * 下鱼
      */
     private int xiaYu;
+    /**
+     * 是否要字牌
+     */
+    private boolean addWordCard;
 
     private List<AvatarVO> playerList;
 
@@ -122,5 +126,13 @@ public class RoomVO {
 
     public void setPlayerList(List<AvatarVO> playerList) {
         this.playerList = playerList;
+    }
+
+    public boolean isAddWordCard() {
+        return addWordCard;
+    }
+
+    public void setAddWordCard(boolean addWordCard) {
+        this.addWordCard = addWordCard;
     }
 }

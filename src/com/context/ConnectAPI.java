@@ -12,6 +12,7 @@ public class ConnectAPI {
 
 	public static int JOIN_ROOM_REQUEST  = 0x000003;
 	public static int JOIN_ROOM_RESPONSE  = 0x000004;
+	public static int JOIN_ROOM_NOICE = 0x10a004;
 	
 
 	public static int SIGNUP_REQUEST = 0x000005;

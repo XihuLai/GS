@@ -30,23 +30,11 @@ public class AvatarVO {
      * 牌数组
      */
     private int[][] paiArray;
-    /**
-     * 出的牌
-     */
-    private int cardIndex;
     
     
     public Account getAccount() {
         return account;
     }
-
-    public int getCardIndex() {
-		return cardIndex;
-	}
-
-	public void setCardIndex(int cardIndex) {
-		this.cardIndex = cardIndex;
-	}
 
 	public void setAccount(Account account) {
         this.account = account;

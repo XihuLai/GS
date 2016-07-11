@@ -2,8 +2,6 @@ package com.dyz.gameserver.msg.response.chi;
 
 import com.context.ConnectAPI;
 import com.dyz.gameserver.commons.message.ServerResponse;
-import com.dyz.gameserver.pojo.Card;
-import com.dyz.persist.util.JsonUtilTool;
 
 import java.io.IOException;
 

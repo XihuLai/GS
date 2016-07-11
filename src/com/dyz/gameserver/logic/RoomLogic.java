@@ -3,6 +3,7 @@ package com.dyz.gameserver.logic;
 import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.msg.response.ErrorResponse;
+import com.dyz.gameserver.msg.response.joinroom.JoinRoomNoice;
 import com.dyz.gameserver.msg.response.joinroom.JoinRoomResponse;
 import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
 import com.dyz.gameserver.msg.response.startgame.PrepareGameResponse;
@@ -67,6 +68,7 @@ public class RoomLogic {
             avatar.avatarVO.setMain(false);
             avatar.avatarVO.setRoomId(roomVO.getRoomId());
             avatar.avatarVO.setIsReady(true);
+            noticJoinMess(avatar);
             playerList.add(avatar);
             roomVO.getPlayerList().add(avatar.avatarVO);
             if(playerList.size() == 4){
@@ -75,8 +77,7 @@ public class RoomLogic {
             	startGameRound();
             }
             else{
-            	//当有人加入房间时，当人数不够4个时，对其他玩家进行通知
-            	sendJoinMess();
+            	avatar.getSession().sendMsg(new JoinRoomResponse(1, roomVO));
             }
             return true;
         }
@@ -84,9 +85,9 @@ public class RoomLogic {
     /**
      * 当有人加入房间且总人数不够4个时，对其他玩家进行通知
      */
-    private void sendJoinMess(){
+    private void noticJoinMess(Avatar avatar){
     	for (int i = 0; i < playerList.size(); i++) {
-    		playerList.get(i).getSession().sendMsg(new JoinRoomResponse(1, roomVO));;
+            playerList.get(i).getSession().sendMsg(new JoinRoomNoice(1,avatar.avatarVO));
 		}
     }
     
@@ -238,7 +239,7 @@ public class RoomLogic {
         count--;
         playCardsLogic = new PlayCardsLogic();
         playCardsLogic.setPlayerList(playerList);
-        playCardsLogic.initCard(roomVO.getRoomType(),roomVO.getHong());
+        playCardsLogic.initCard(roomVO);
 
         for(int i=0;i<playerList.size();i++){
             playerList.get(i).getSession().sendMsg(new PrepareGameResponse(1,playerList.get(i).avatarVO.getPaiArray(),playCardsLogic.bankerAvatar.getUuId()));
