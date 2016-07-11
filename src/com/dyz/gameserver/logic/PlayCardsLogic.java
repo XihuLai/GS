@@ -184,48 +184,63 @@ public class PlayCardsLogic {
      * 1-胡，2-杠，3-碰，4-吃
      */
     public void gaveUpAction(Avatar avatar,int passType){
-            if(passType == 1){
-                huAvatar.remove(avatar);
-            }else if(passType == 2){
-                gangAvatar.remove(avatar);
-            }else if(passType == 3){
+        if(passType == 1){
+            huAvatar.remove(avatar);
+            if(gangAvatar.contains(avatar)){
+                gangAvatar.contains(avatar);
+            }
+            if(penAvatar.contains(avatar)){
                 penAvatar.remove(avatar);
-            }else if(passType == 4) {
-                chiAvatar.remove(avatar);
             }
-
-            if(huAvatar.size() == 0) {
-                if (gangAvatar.size() > 0) {
-                    for(Avatar item : gangAvatar){
-                        if (item.gangQuest) {
-                            //进行这个玩家的杠操作，并且把后面的碰，吃数组置为0;
-                            pengCard(item,putOffCardPoint);
-                            clearArrayAndSetQuest();
-                            return;
-                        }
-                    }
-                }
-                if (penAvatar.size() > 0) {
-                    for(Avatar item : penAvatar){
-                        if (item.pengQuest) {
-                            //进行这个玩家的碰操作，并且把后面的吃数组置为0;
-                            pengCard(item,putOffCardPoint);
-                            clearArrayAndSetQuest();
-                            return;
-                        }
-                    }
-                }
-                if (chiAvatar.size() > 0) {
-                    for(Avatar item : chiAvatar){
-                        if (item.chiQuest) {
-                            //进行这个玩家的吃操作
-                            chiCard(item,putOffCardPoint);
-                            clearArrayAndSetQuest();
-                            return;
-                        }
-                    }
+            if(chiAvatar.contains(avatar)){
+                chiAvatar.contains(avatar);
+            }
+        }else if(passType == 2){
+            gangAvatar.remove(avatar);
+            if(penAvatar.contains(avatar)){
+                penAvatar.remove(avatar);
+            }
+            if(chiAvatar.contains(avatar)){
+                chiAvatar.contains(avatar);
+            }
+        }else if(passType == 3){
+            penAvatar.remove(avatar);
+            if(chiAvatar.contains(avatar)){
+                chiAvatar.contains(avatar);
+            }
+        }else if(passType == 4) {
+            chiAvatar.remove(avatar);
+        }
+        if(huAvatar.size() == 0) {
+            for(Avatar item : gangAvatar){
+                if (item.gangQuest) {
+                    //进行这个玩家的杠操作，并且把后面的碰，吃数组置为0;
+                    pengCard(item,putOffCardPoint);
+                    clearArrayAndSetQuest();
+                    return;
                 }
             }
+            for(Avatar item : penAvatar) {
+                if (item.pengQuest) {
+                    //进行这个玩家的碰操作，并且把后面的吃数组置为0;
+                    pengCard(item, putOffCardPoint);
+                    clearArrayAndSetQuest();
+                    return;
+                }
+            }
+            for(Avatar item : chiAvatar){
+                if (item.chiQuest) {
+                    //进行这个玩家的吃操作
+                    chiCard(item,putOffCardPoint);
+                    clearArrayAndSetQuest();
+                    return;
+                }
+            }
+        }
+        //如果都没有人胡，没有人杠，没有人碰，没有人吃的情况下。则下一玩家摸牌
+        if(huAvatar.size() == 0 && gangAvatar.size() == 0 && penAvatar.size() == 0 && chiAvatar.size() == 0){
+            pickCard();
+        }
     }
 
     /**
