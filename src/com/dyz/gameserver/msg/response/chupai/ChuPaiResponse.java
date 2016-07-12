@@ -16,11 +16,11 @@ public class ChuPaiResponse extends ServerResponse {
      * @param status
      * @param
      */
-    public ChuPaiResponse(int status, int cardIndex,int nextIndex) {
+    public ChuPaiResponse(int status, int cardIndex,int curAvatarIndex) {
         super(status, ConnectAPI.CHUPAI_RESPONSE);
         JSONObject json = new JSONObject();
         json.put("cardIndex", cardIndex);
-        json.put("nextIndex", nextIndex);
+        json.put("curAvatarIndex", curAvatarIndex);
         if(status >0){
             try {
                 output.writeUTF(json.toString());
