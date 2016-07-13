@@ -20,6 +20,8 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 	public void sessionCreated(IoSession session) throws Exception {
 		new GameSession(session);
 		logger.info("a session create from ip {}",session.getRemoteAddress());
+		System.out.println(session.getId());
+		
 	}
 	
 	@Override

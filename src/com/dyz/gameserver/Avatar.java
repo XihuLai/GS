@@ -288,6 +288,7 @@ public class Avatar implements GameObj {
 
     @Override
     public void destroy() {
+    	//统计在线用户****
         logger.info("用户{}断开服务器链接",avatarVO.getAccount().getNickname());
         avatarVO.setPaiArray(null);
         if(session != null){

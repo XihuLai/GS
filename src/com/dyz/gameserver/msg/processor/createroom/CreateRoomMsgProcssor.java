@@ -38,7 +38,7 @@ public class CreateRoomMsgProcssor extends MsgProcessor implements
                         gameSession.sendMsg(new CreateRoomResponse(1,roomVO.getRoomId()+""));
                     }else{
                         System.out.println("你已经在房间里了，不能再创建房间");
-                        gameSession.sendMsg(new CreateRoomResponse(0,ErrorCode.Error_000013));
+                        gameSession.sendMsg(new CreateRoomResponse(1,avatar.avatarVO.getRoomId()+""));
                     }
                 }else{
                     System.out.println("房间卡没有了");

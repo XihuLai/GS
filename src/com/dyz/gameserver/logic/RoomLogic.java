@@ -1,5 +1,9 @@
 package com.dyz.gameserver.logic;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.msg.response.ErrorResponse;
@@ -9,10 +13,6 @@ import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
 import com.dyz.gameserver.msg.response.startgame.PrepareGameResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.RoomVO;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -68,7 +68,7 @@ public class RoomLogic {
             avatar.avatarVO.setMain(false);
             avatar.avatarVO.setRoomId(roomVO.getRoomId());
             avatar.avatarVO.setIsReady(true);
-            noticJoinMess(avatar);
+            noticJoinMess(avatar);//通知房间里面的其他几个玩家
             playerList.add(avatar);
             roomVO.getPlayerList().add(avatar.avatarVO);
             if(playerList.size() == 4){
@@ -162,8 +162,8 @@ public class RoomLogic {
     /**
      * 摸牌
      */
-    public int pickCard(Avatar avatar){
-        return playCardsLogic.pickCard(avatar);
+    public void pickCard( ){
+        playCardsLogic.pickCard();
     }
     /**
      * 吃牌
@@ -186,8 +186,8 @@ public class RoomLogic {
      * @param avatar
      * @return
      */
-    public boolean gangCard(Avatar avatar,int cardPoint){
-    	return playCardsLogic.gangCard( avatar, cardPoint);
+    public boolean gangCard(Avatar avatar,int cardPoint,int gangType){
+    	return playCardsLogic.gangCard( avatar, cardPoint,gangType);
     }
     /**
      * 胡牌

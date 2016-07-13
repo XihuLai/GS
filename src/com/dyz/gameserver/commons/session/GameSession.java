@@ -37,6 +37,8 @@ public class GameSession implements GameObj {
 		SocketAddress socketaddress = session.getRemoteAddress();
 		InetSocketAddress s = (InetSocketAddress) socketaddress;
 		address = s.getAddress().getHostAddress();
+		//存当前用户相关的服务器地址
+		
 	}
 
 	/**

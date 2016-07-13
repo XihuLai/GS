@@ -1,5 +1,9 @@
 package com.dyz.gameserver.logic;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.context.Rule;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.manager.RoomManager;
@@ -12,10 +16,6 @@ import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.persist.util.HuPaiType;
 import com.dyz.persist.util.Naizi;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -152,12 +152,11 @@ public class PlayCardsLogic {
     public void pickCard(){
         //下一个人摸牌
         int nextIndex = getNextAvatarIndex();
-        int tempPoint = getNextCardPoint();
+        int tempPoint = getNextCardPoint();//下一张牌的点数，及本次摸的牌点数
         if(tempPoint != -1) {
             playerList.get(nextIndex).putCardInList(tempPoint);
             playerList.get(nextIndex).getSession().sendMsg(new PickCardResponse(1, tempPoint));
-            for(int i=0;i<playerList.size();i++)
-            {
+            for(int i=0;i<playerList.size();i++){
                 if(i != nextIndex){
                     playerList.get(i).getSession().sendMsg(new OtherPickCardResponse(1,nextIndex));
                 }
@@ -185,7 +184,8 @@ public class PlayCardsLogic {
      */
     public void gaveUpAction(Avatar avatar,int passType){
         if(passType == 1){
-            huAvatar.remove(avatar);
+        	//放弃胡，则检测有没人杠
+        	huAvatar.remove(avatar);
             if(gangAvatar.contains(avatar)){
                 gangAvatar.contains(avatar);
             }
@@ -196,6 +196,7 @@ public class PlayCardsLogic {
                 chiAvatar.contains(avatar);
             }
         }else if(passType == 2){
+        	//放弃杠。则检测有没人杠
             gangAvatar.remove(avatar);
             if(penAvatar.contains(avatar)){
                 penAvatar.remove(avatar);
@@ -204,11 +205,13 @@ public class PlayCardsLogic {
                 chiAvatar.contains(avatar);
             }
         }else if(passType == 3){
+        	//放弃杠，则检测有么人吃
             penAvatar.remove(avatar);
             if(chiAvatar.contains(avatar)){
                 chiAvatar.contains(avatar);
             }
         }else if(passType == 4) {
+        	//放弃吃
             chiAvatar.remove(avatar);
         }
         if(huAvatar.size() == 0) {
@@ -339,7 +342,7 @@ public class PlayCardsLogic {
      * @param avatar
      * @return
      */
-    public boolean gangCard(Avatar avatar , int cardPoint){
+    public boolean gangCard(Avatar avatar , int cardPoint,int gangType){
     	boolean flag = false;
     	 if(huAvatar.size() == 0 && gangAvatar.size() > 0 && qishouHuAvatar.size() == 0 && penAvatar.size() == 0 ) {
     		 if(gangAvatar.contains(avatar)){
@@ -368,14 +371,14 @@ public class PlayCardsLogic {
                  avatar.putResultRelation(2,str);
     			 clearArrayAndSetQuest();
                  //杠了以后要摸一张牌
-                 if(true) {
+                 if(gangType == 0) {
                      //可以换牌的情况只补一张牌
                      int tempPoint = getNextCardPoint();
                      if (tempPoint != -1) {
                          avatar.putCardInList(tempPoint);
                          avatar.getSession().sendMsg(new GangResponse(1, tempPoint,0));
                      }
-                 }else{
+                 }else if(gangType == 1){
                      //摸两张
                      int tempPoint = getNextCardPoint();
                      int nextPoint = getNextCardPoint();

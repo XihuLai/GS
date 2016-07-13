@@ -75,6 +75,7 @@ public class GameSessionManager {
      * @return
      */
     private boolean checkSessionIsHava(int uuid){
+    	//可以用来判断是否在线****等功能
         GameSession gameSession = sessionMap.get("uuid_"+uuid);
         if(gameSession != null){
             return true;

@@ -9,7 +9,6 @@ import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.ErrorResponse;
-import com.dyz.gameserver.msg.response.pickcard.PickCardResponse;
 
 /**
  * Created by kevin on 2016/6/23.
@@ -23,12 +22,7 @@ public class PickCardMsgProcessor extends MsgProcessor implements
     	
     	RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).roomVO.getRoomId());
         if(roomLogic != null){
-            int cardPoint = roomLogic.pickCard(gameSession.getRole(Avatar.class));
-            if(cardPoint == -1){
-                gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000009));
-            }else{
-                gameSession.sendMsg(new PickCardResponse(1,cardPoint));
-            }
+            roomLogic.pickCard();
         }else{
             gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000005));
         }

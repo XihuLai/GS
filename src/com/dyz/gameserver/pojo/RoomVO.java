@@ -43,6 +43,9 @@ public class RoomVO {
      */
     private boolean addWordCard;
 
+
+    public String name;
+    
     private List<AvatarVO> playerList;
 
 
@@ -85,8 +88,6 @@ public class RoomVO {
     public void setZiMo(int ziMo) {
         this.ziMo = ziMo;
     }
-
-    public String name;
 
     public String getName() {
         return name;

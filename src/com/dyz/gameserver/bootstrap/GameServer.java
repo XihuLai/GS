@@ -36,7 +36,7 @@ public class GameServer {
 			//DBUtil.initAllSqlMapClient();
 			InitServers.getInstance().initServersFun();
 			logger.info("数据库连接初始化完成");
-			netManager.startListner(new MinaMsgHandler(), port);
+			netManager.startListner(new MinaMsgHandler(), port);//后台数据链接的时候再开一个listner
 			logger.info("服务器监听端口:{}完成",port);
 			logger.info("game server started...");
 		} catch (Exception e) {

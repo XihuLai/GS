@@ -9,6 +9,9 @@ public class ConnectAPI {
 	
 	public static int LOGIN_REQUEST = 0x000001;
 	public static int LOGIN_RESPONSE = 0x000002;
+	
+	public static int BACK_LOGIN_REQUEST = 0x001001;//掉线重新登录后再通过房间id请求原来房间的信息
+	public static int BACK_LOGIN_RESPONSE = 0x001002;
 
 	public static int JOIN_ROOM_REQUEST  = 0x000003;
 	public static int JOIN_ROOM_RESPONSE  = 0x000004;

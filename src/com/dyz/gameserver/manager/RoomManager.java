@@ -38,6 +38,7 @@ public class RoomManager {
         roomVO.setRoomId(roomId);
         RoomLogic roomLogic = new RoomLogic(roomVO);
         roomLogic.CreateRoom(avatar);
+        //这里需要统计创建房间个数****
         roomList.put(roomId,roomLogic);
     }
     /**
