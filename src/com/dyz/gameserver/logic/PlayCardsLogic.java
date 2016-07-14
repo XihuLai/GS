@@ -1,9 +1,5 @@
 package com.dyz.gameserver.logic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.context.Rule;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.manager.RoomManager;
@@ -16,6 +12,10 @@ import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.persist.util.HuPaiType;
 import com.dyz.persist.util.Naizi;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -113,6 +113,9 @@ public class PlayCardsLogic {
             for (int k = 0; k < 4; k++) {
                 listCard.add(i);
             }
+        }
+        for(int i=0;i<playerList.size();i++){
+            playerList.get(i).avatarVO.setPaiArray(new int[2][paiCount]);
         }
         //洗牌
         shuffleTheCards();
@@ -660,7 +663,7 @@ public class PlayCardsLogic {
                 return true;
             }
         }
-        if(roomVO.getRoomType() == 1 && avatar.roomVO.getHong()){
+        if(roomVO.getRoomType() == 1 && roomVO.getHong()){
         	//转转麻将，可以选择红中
             //红中当癞子
              return  Naizi.testHuiPai(paiList);

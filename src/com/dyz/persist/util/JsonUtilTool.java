@@ -2,7 +2,10 @@ package com.dyz.persist.util;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
+import net.sf.json.util.CycleDetectionStrategy;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -21,8 +24,16 @@ public class JsonUtilTool {
      * @return 对象的string字符
      */
     public static String toJson(Object obj) {
-        JSONObject jSONObject = JSONObject.fromObject(obj);
-        return jSONObject.toString();
+        if(obj instanceof Array){
+            JsonConfig jsonConfig = new JsonConfig();
+            jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
+            JSONArray json = JSONArray.fromObject(obj, jsonConfig);
+            return json.toString();
+
+        }else {
+            JSONObject jSONObject = JSONObject.fromObject(obj);
+            return jSONObject.toString();
+        }
     }
 
     /**

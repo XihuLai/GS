@@ -2,7 +2,6 @@ package com.dyz.gameserver.msg.response.startgame;
 
 import com.context.ConnectAPI;
 import com.dyz.gameserver.commons.message.ServerResponse;
-import com.dyz.persist.util.JsonUtilTool;
 import net.sf.json.JSONObject;
 
 import java.io.IOException;
@@ -20,9 +19,9 @@ public class PrepareGameResponse extends ServerResponse {
 	public PrepareGameResponse(int status, int[][] paiArray,int bankerId) {
 		super(status, ConnectAPI.STARTGAME_RESPONSE);
 		try {
-			String str = JsonUtilTool.toJson(paiArray);
+			//String str = JsonUtilTool.toJson(paiArray);
 			JSONObject json = new JSONObject();
-			json.put("paiArray",str);
+			json.put("paiArray",paiArray);
 			json.put("bankerId",bankerId);
 			output.writeUTF(json.toString());
 		} catch (IOException e) {
