@@ -9,7 +9,6 @@ import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.ErrorResponse;
-import com.dyz.gameserver.msg.response.chi.ChiResponse;
 import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.persist.util.JsonUtilTool;
 
@@ -27,7 +26,7 @@ public class PengMsgProcessor extends MsgProcessor implements
             CardVO cardVO = JsonUtilTool.fromJson(request.getString(),CardVO.class);
            boolean isPeng =  roomLogic.pengCard(gameSession.getRole(Avatar.class),cardVO.getCardPoint());
            if(isPeng){
-        	   gameSession.sendMsg(new ChiResponse(1, "1"));
+        	   //gameSession.sendMsg(new ChiResponse(1, "1"));
            }
            else{
         	   System.out.println("碰不起");

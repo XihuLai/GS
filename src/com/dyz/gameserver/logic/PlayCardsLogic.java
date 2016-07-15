@@ -6,6 +6,7 @@ import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.response.chupai.ChuPaiResponse;
 import com.dyz.gameserver.msg.response.gang.GangResponse;
 import com.dyz.gameserver.msg.response.gang.OtherGangResponse;
+import com.dyz.gameserver.msg.response.peng.PengResponse;
 import com.dyz.gameserver.msg.response.pickcard.OtherPickCardResponse;
 import com.dyz.gameserver.msg.response.pickcard.PickCardResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
@@ -332,6 +333,11 @@ public class PlayCardsLogic {
     			 //把各个玩家碰的牌记录到缓存中去****
     			 avatar.putResultRelation(1,cardIndex+"");
     			 clearArrayAndSetQuest();
+                 for (int i=0;i<playerList.size();i++){
+                     if(avatar.getUuId() != playerList.get(i).getUuId()){
+                         playerList.get(i).getSession().sendMsg(new PengResponse(1,cardIndex,playerList.indexOf(avatar)));
+                     }
+                 }
     		 }
     	 }else{
              if(penAvatar.size() > 0) {
@@ -393,7 +399,7 @@ public class PlayCardsLogic {
 
                  for (int i=0;i<playerList.size();i++){
                      if(avatar.getUuId() != playerList.get(i).getUuId()){
-                            playerList.get(i).getSession().sendMsg(new OtherGangResponse(1,cardPoint,avatar.getUuId()));
+                            playerList.get(i).getSession().sendMsg(new OtherGangResponse(1,cardPoint,i));
                      }
                  }
     		 }
