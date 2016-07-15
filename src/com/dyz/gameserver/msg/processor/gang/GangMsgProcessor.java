@@ -22,7 +22,7 @@ public class GangMsgProcessor extends MsgProcessor implements
         INotAuthProcessor {
     @Override
     public void process(GameSession gameSession, ClientRequest request) throws Exception {
-        RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).roomVO.getRoomId());
+        RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
         if(roomLogic != null){
             JSONObject json = JSONObject.fromObject(request.getString());
             int cardPoint = (int)json.get("cardPoint");

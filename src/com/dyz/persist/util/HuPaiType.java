@@ -92,7 +92,7 @@ public class HuPaiType {
 					//清一色
 					str = "0:"+Rule.Hu_zi_qingyise;
 				}
-				if(avatar.roomVO.getSevenDouble() && checkQiDui(paiList)){
+				if(avatar.getRoomVO().getSevenDouble() && checkQiDui(paiList)){
 					if(str != null){
 						//七小队对
 						str = str +"-"+0+Rule.Hu_zi_qixiaodui;
@@ -112,7 +112,7 @@ public class HuPaiType {
 					//清一色
 					str = uuid+":"+Rule.Hu_zi_qingyise;
 				}
-				if(avatar.roomVO.getSevenDouble() && checkQiDui(paiList)){
+				if(avatar.getRoomVO().getSevenDouble() && checkQiDui(paiList)){
 					if(str != null){
 						//七小队对
 						str = str +"-"+uuid+":"+Rule.Hu_zi_qixiaodui;

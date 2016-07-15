@@ -49,10 +49,10 @@ public class RoomLogic {
     public void CreateRoom(Avatar avatar){
         createAvator = avatar;
         roomVO.setPlayerList(new ArrayList<AvatarVO>());
-        avatar.avatarVO.setRoomId(roomVO.getRoomId());
         avatar.avatarVO.setIsReady(true);
         playerList = new ArrayList<Avatar>();
         avatar.avatarVO.setMain(true);
+        avatar.setRoomVO(roomVO);
         playerList.add(avatar);
     }
 
@@ -66,8 +66,8 @@ public class RoomLogic {
             return false;
         }else {
             avatar.avatarVO.setMain(false);
-            avatar.avatarVO.setRoomId(roomVO.getRoomId());
             avatar.avatarVO.setIsReady(true);
+            avatar.setRoomVO(roomVO);
             noticJoinMess(avatar);//通知房间里面的其他几个玩家
             playerList.add(avatar);
             roomVO.getPlayerList().add(avatar.avatarVO);

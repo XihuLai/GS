@@ -452,7 +452,7 @@ public class PlayCardsLogic {
     			}
         	 }
     		 //更新roomlogic的PlayerList信息
-    		 RoomManager.getInstance().getRoom(playerList.get(0).roomVO.getRoomId()).setPlayerList(playerList);
+    		 RoomManager.getInstance().getRoom(playerList.get(0).getRoomVO().getRoomId()).setPlayerList(playerList);
     		 //返回这一句的所有数据 杠，胡等，胡牌返回什么的数据
     		 
     	 }

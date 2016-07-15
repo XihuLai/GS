@@ -29,7 +29,19 @@ public class Avatar implements GameObj {
     public boolean gangQuest = false;
     //请求胡
     public boolean huQuest = false;
-    public RoomVO roomVO;
+
+    public RoomVO getRoomVO() {
+        return roomVO;
+    }
+
+    public void setRoomVO(RoomVO roomVO) {
+        this.roomVO = roomVO;
+        if(avatarVO != null){
+            avatarVO.setRoomId(roomVO.getRoomId());
+        }
+    }
+
+    private RoomVO roomVO;
     /**
      * session
      */

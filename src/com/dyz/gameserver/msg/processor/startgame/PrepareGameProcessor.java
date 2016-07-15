@@ -24,7 +24,7 @@ public class PrepareGameProcessor extends MsgProcessor implements
 	@Override
 	public void process(GameSession gameSession, ClientRequest request)
 			throws Exception {
-    	RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).roomVO.getRoomId());
+    	RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
     	if(roomLogic != null){
     		Avatar avatar = gameSession.getRole(Avatar.class);
     		if(avatar != null){

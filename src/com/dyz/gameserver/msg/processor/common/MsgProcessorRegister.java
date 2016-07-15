@@ -2,6 +2,7 @@ package com.dyz.gameserver.msg.processor.common;
 
 import com.context.ConnectAPI;
 import com.dyz.gameserver.msg.processor.chi.ChiMsgProcessor;
+import com.dyz.gameserver.msg.processor.chupai.ChuPaiMsgProcessor;
 import com.dyz.gameserver.msg.processor.createroom.CreateRoomMsgProcssor;
 import com.dyz.gameserver.msg.processor.joinroom.JoinRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.LoginMsgProcessor;
@@ -32,7 +33,7 @@ public enum MsgProcessorRegister {
 	/**摸牌*/
 	pickPai(ConnectAPI.PICKCARD_REQUEST,new PickCardMsgProcessor()),
 	/**出牌*/
-	chuPai(ConnectAPI.CHUPAI_REQUEST,new ChiMsgProcessor()),
+	chuPai(ConnectAPI.CHUPAI_REQUEST,new ChuPaiMsgProcessor()),
 	/**退出房间*/
 	outRoom(ConnectAPI.OUT_ROOM_REQUEST,new OutRoomMsgProcessor()),
 	/**吃牌*/

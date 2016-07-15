@@ -19,9 +19,9 @@ public class ChuPaiMsgProcessor extends MsgProcessor implements
         INotAuthProcessor {
     @Override
     public void process(GameSession gameSession, ClientRequest request) throws Exception {
-        RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).roomVO.getRoomId());
         //*****
         CardVO cardVO = JsonUtilTool.fromJson(request.getString(),CardVO.class);
+        RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
         if(roomLogic != null){
             if(cardVO.getCardPoint() == -1){
                 gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000009));
