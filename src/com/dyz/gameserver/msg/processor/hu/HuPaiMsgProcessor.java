@@ -27,7 +27,8 @@ public class HuPaiMsgProcessor extends MsgProcessor implements
             CardVO cardVO = JsonUtilTool.fromJson(request.getString(),CardVO.class);
            boolean isHu =  roomLogic.huPai(gameSession.getRole(Avatar.class),cardVO.getCardPoint());
            if(isHu){
-        	   gameSession.sendMsg(new HuPaiResponse(1, "1"));
+        	   //gameSession.sendMsg(new HuPaiResponse(1, "1"));
+        	   //在hupai方法里面就发送结算数据
            }
            else{
         	   System.out.println("胡不起");

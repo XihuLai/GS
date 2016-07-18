@@ -24,20 +24,20 @@ public class HuPaiType {
      * 自摸：介绍(胡的类型)
      * Map：key-->1：表示信息    2:表示次数
      */
-	public static String getHuType(int uuid , Avatar avatar , int roomType){
+	public static String getHuType(int uuid , Avatar avatar , int roomType ,int cardIndex){
 		String str = null;
 		 //区分转转麻将，划水麻将，长沙麻将
 		 if(roomType == 1){
 			 //转转麻将没有大小胡之分
-			 str = zhuanZhuan(uuid , avatar , str);
+			 str = zhuanZhuan(uuid , avatar , str, cardIndex);
 		 }
 		 else if(roomType == 2){
 			 //划水麻将
-			 str = huaShui(uuid , avatar , str);
+			 str = huaShui(uuid , avatar , str , cardIndex);
 		 }
 		 else{
 			 //长沙麻将
-			 str = changSha(uuid,  avatar, str);
+			 str = changSha(uuid,  avatar, str ,cardIndex);
 		 }
 		
 		return str;
@@ -49,12 +49,13 @@ public class HuPaiType {
 	 * @param str
 	 * @return
 	 */
-	private static String huaShui(int uuid , Avatar avatar , String str){
+	private static String huaShui(int uuid , Avatar avatar , String str , int cardIndex){
 		int [] paiList = avatar.getPaiArray();
 		 if(uuid == avatar.getUuId() ){
-			 //自摸类型
+			 //自摸类型---然后判断牌组是什么类型(清一色？七对？龙对？等等)
 		 }
 		 else{
+			 
 		 }
 		 return str;
 	}
@@ -65,14 +66,13 @@ public class HuPaiType {
 	 * @param str
 	 * @return
 	 */
-	private static String zhuanZhuan(int uuid , Avatar avatar , String str){
-		int [] paiList = avatar.getPaiArray();
+	private static String zhuanZhuan(int uuid , Avatar avatar , String str , int cardIndex){
 		 if(uuid == avatar.getUuId() ){
 			 //自摸
-			 str ="0:"+Rule.Hu_zi_common;  
+			 str ="0:"+cardIndex+":"+Rule.Hu_zi_common;  
 		 }
 		 else{
-			 str =uuid+":"+Rule.Hu_zi_common;  
+			 str =uuid+":"+cardIndex+":"+Rule.Hu_d_common;  
 		 }
 		 return str;
 	}
@@ -83,7 +83,7 @@ public class HuPaiType {
 	 * @param str
 	 * @return
 	 */
-	private static String changSha(int uuid , Avatar avatar , String str){
+	private static String changSha(int uuid , Avatar avatar , String str , int cardIndex){
 		int [] paiList = avatar.getPaiArray();
 		 //长沙麻将
 		 if(uuid == avatar.getUuId() ){
