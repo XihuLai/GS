@@ -13,6 +13,8 @@ import com.dyz.gameserver.pojo.RoomVO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -54,6 +56,7 @@ public class RoomLogic {
         avatar.avatarVO.setMain(true);
         avatar.setRoomVO(roomVO);
         playerList.add(avatar);
+        roomVO.getPlayerList().add(avatar.avatarVO);
     }
 
     /**
@@ -62,7 +65,7 @@ public class RoomLogic {
      */
     public boolean intoRoom(Avatar avatar){
         if(playerList.size() == 4){
-            avatar.getSession().sendMsg(new JoinRoomResponse(0,ErrorCode.Error_000011));
+            //avatar.getSession().sendMsg(new JoinRoomResponse(0,ErrorCode.Error_000011));
             return false;
         }else {
             avatar.avatarVO.setMain(false);
@@ -71,13 +74,19 @@ public class RoomLogic {
             noticJoinMess(avatar);//通知房间里面的其他几个玩家
             playerList.add(avatar);
             roomVO.getPlayerList().add(avatar.avatarVO);
+            avatar.getSession().sendMsg(new JoinRoomResponse(1, roomVO));
+
             if(playerList.size() == 4){
             	//当人数4个时自动开始游戏
                 //checkCanBeStartGame();当最后一个人加入时，不需要检测其他玩家是否准备(一句结束后开始才需要检测玩家是否准备)
-            	startGameRound();
-            }
-            else{
-            	avatar.getSession().sendMsg(new JoinRoomResponse(1, roomVO));
+                Timer timer = new Timer();
+                TimerTask tt=new TimerTask() {
+                    @Override
+                    public void run() {
+                        startGameRound();
+                    }
+                };
+                timer.schedule(tt, 1000);
             }
             return true;
         }
