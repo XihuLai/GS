@@ -1,11 +1,16 @@
 package com.dyz.gameserver.logic;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.context.Rule;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.response.chupai.ChuPaiResponse;
 import com.dyz.gameserver.msg.response.gang.GangResponse;
 import com.dyz.gameserver.msg.response.gang.OtherGangResponse;
+import com.dyz.gameserver.msg.response.hu.HuPaiResponse;
 import com.dyz.gameserver.msg.response.peng.PengResponse;
 import com.dyz.gameserver.msg.response.pickcard.OtherPickCardResponse;
 import com.dyz.gameserver.msg.response.pickcard.PickCardResponse;
@@ -14,9 +19,7 @@ import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.persist.util.HuPaiType;
 import com.dyz.persist.util.Naizi;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import net.sf.json.JSONArray;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -61,7 +64,6 @@ public class PlayCardsLogic {
     private List<Avatar> playerList;
     private int JIANG = 0; //   将牌标志，即牌型“三三三三二”中的“二”
 
-    private  Avatar ava ;//最近的摸牌人或出牌人
     /**
      * 判断是否可以同时几个人胡牌
      */
@@ -74,11 +76,23 @@ public class PlayCardsLogic {
      * 是否添加字牌
      */
     //private boolean addWordCard = false;
+    /**
+     * 当前圈数
+     */
+    private int currentCircle =0;
 
-    public Avatar getAva() {
-    	return ava;
-    }
     
+    
+    public int getCurrentCircle() {
+		return currentCircle;
+	}
+    /**
+     * 获取下一圈数
+     * @param currentCircle
+     */
+	public void addCircle(int currentCircle) {
+		this.currentCircle = currentCircle +1;
+	}
     public List<Avatar> getPlayerList() {
         return playerList;
     }
@@ -101,12 +115,14 @@ public class PlayCardsLogic {
                 paiCount = 28;
             }
         }else if(roomVO.getRoomType() == 2){
+        	//划水麻将
             if(roomVO.isAddWordCard()) {
                 paiCount = 34;
             }else{
                 paiCount = 27;
             }
         }else if(roomVO.getRoomType() == 3){
+        	//长沙麻将
             paiCount = 27;
         }
         listCard = new ArrayList<Integer>();
@@ -155,6 +171,7 @@ public class PlayCardsLogic {
      */
     public void pickCard(){
         //下一个人摸牌
+    	
         int nextIndex = getNextAvatarIndex();
         int tempPoint = getNextCardPoint();//下一张牌的点数，及本次摸的牌点数
         if(tempPoint != -1) {
@@ -191,38 +208,38 @@ public class PlayCardsLogic {
         	//放弃胡，则检测有没人杠
         	huAvatar.remove(avatar);
             if(gangAvatar.contains(avatar)){
-                gangAvatar.contains(avatar);
+                gangAvatar.remove(avatar);
             }
             if(penAvatar.contains(avatar)){
                 penAvatar.remove(avatar);
             }
             if(chiAvatar.contains(avatar)){
-                chiAvatar.contains(avatar);
+                chiAvatar.remove(avatar);
             }
         }else if(passType == 2){
-        	//放弃杠。则检测有没人杠
+        	//放弃杠。则检测有没人碰
             gangAvatar.remove(avatar);
             if(penAvatar.contains(avatar)){
                 penAvatar.remove(avatar);
             }
             if(chiAvatar.contains(avatar)){
-                chiAvatar.contains(avatar);
+                chiAvatar.remove(avatar);
             }
         }else if(passType == 3){
-        	//放弃杠，则检测有么人吃
+        	//放弃碰，则检测有么人吃
             penAvatar.remove(avatar);
-            if(chiAvatar.contains(avatar)){
-                chiAvatar.contains(avatar);
+           if(chiAvatar.contains(avatar)){
+                chiAvatar.remove(avatar);
             }
         }else if(passType == 4) {
         	//放弃吃
-            chiAvatar.remove(avatar);
+           chiAvatar.remove(avatar);
         }
         if(huAvatar.size() == 0) {
             for(Avatar item : gangAvatar){
                 if (item.gangQuest) {
                     //进行这个玩家的杠操作，并且把后面的碰，吃数组置为0;
-                    pengCard(item,putOffCardPoint);
+                    gangCard(item,putOffCardPoint,1);
                     clearArrayAndSetQuest();
                     return;
                 }
@@ -272,29 +289,29 @@ public class PlayCardsLogic {
      */
     public void putOffCard(Avatar avatar,int cardPoint){
         putOffCardPoint = cardPoint;
-        avatar.pullCardFormList(cardPoint);
+        avatar.pullCardFormList(putOffCardPoint);
         curAvatarIndex = playerList.indexOf(avatar);
         int nextIndex = getNextAvatarIndex();
         for(int i=0;i<playerList.size();i++){
         	//判断那些玩家有吃，碰，杠,胡的情况
             if(playerList.get(i).getUuId() != avatar.getUuId()) {
-                if (playerList.get(i).checkPeng(cardPoint)) {
+                if (playerList.get(i).checkPeng(putOffCardPoint)) {
                     penAvatar.add(playerList.get(i));
                 }
-                if (playerList.get(i).checkGang(cardPoint)) {
+                if (playerList.get(i).checkGang(putOffCardPoint)) {
                     gangAvatar.add(playerList.get(i));
                 }
-                if (nextIndex == i && playerList.get(i).checkChi(cardPoint) &&  roomVO.getRoomType() == 3){
+                if (nextIndex == i && playerList.get(i).checkChi(putOffCardPoint) &&  roomVO.getRoomType() == 3){
                 	//(长沙麻将)只有下一家才能吃
                     chiAvatar.add(playerList.get(i));
                 }
-                if(checkAvatarIsHuPai(playerList.get(i),cardPoint)){
+                if(checkAvatarIsHuPai(playerList.get(i),putOffCardPoint)){
                     huAvatar.add(playerList.get(i));
                 }
             }
         }
-        ava  = avatar;//把每次最后出牌的玩家信息放入缓存中
-        chuPaiCallBack(cardPoint);
+        //如果没有吃，碰，杠，胡的情况，则下家自动摸牌
+        chuPaiCallBack(putOffCardPoint);
     }
     
     /**
@@ -306,15 +323,18 @@ public class PlayCardsLogic {
     public boolean chiCard(Avatar avatar , int cardIndex){
     	//碰，杠都比吃优先
     	boolean flag = false;
-    	 if(huAvatar.size() == 0 && penAvatar.size() == 0 && gangAvatar.size() == 0 && chiAvatar.size() !=0  && qishouHuAvatar.size() == 0) {
+    	 if(huAvatar.size() == 0 && penAvatar.size() == 0 && gangAvatar.size() == 0 && chiAvatar.size() > 0) {
     		 if(chiAvatar.contains(avatar)){
-    			 flag = true;
     			 //更新牌组
                  avatar.putCardInList(cardIndex);
+                 clearArrayAndSetQuest();
+                 flag = true;
     		 }
     	 }else{
              if(chiAvatar.size() > 0){
-                 avatar.chiQuest = true;
+            	 for (Avatar ava : chiAvatar) {
+            		 ava.chiQuest = true;
+				}
              }
          }
 		return flag;
@@ -326,12 +346,13 @@ public class PlayCardsLogic {
      */
     public boolean pengCard(Avatar avatar , int cardIndex){
     	boolean flag = false;
-    	 if(huAvatar.size() == 0 && penAvatar.size() > 0 && qishouHuAvatar.size() == 0 && gangAvatar.size() == 0) {
+    	 if(huAvatar.size() == 0 && penAvatar.size() > 0) {
     		 if(penAvatar.contains(avatar)){
     			 //更新牌组
     			 flag = avatar.putCardInList(cardIndex);
-    			 //把各个玩家碰的牌记录到缓存中去****
-    			 avatar.putResultRelation(1,cardIndex+"");
+    			 //把各个玩家碰的牌记录到缓存中去,出牌人uuid+所出牌的index
+    			 String  str = playerList.get(curAvatarIndex).getUuId()+":"+cardIndex;
+    			 avatar.putResultRelation(1,str);
     			 clearArrayAndSetQuest();
                  for (int i=0;i<playerList.size();i++){
                      if(avatar.getUuId() != playerList.get(i).getUuId()){
@@ -341,7 +362,9 @@ public class PlayCardsLogic {
     		 }
     	 }else{
              if(penAvatar.size() > 0) {
-                 avatar.pengQuest = true;
+            	 for (Avatar ava : penAvatar) {
+            		 ava.pengQuest = true;
+				}
              }
          }
 		return flag;
@@ -353,30 +376,29 @@ public class PlayCardsLogic {
      */
     public boolean gangCard(Avatar avatar , int cardPoint,int gangType){
     	boolean flag = false;
-    	 if(huAvatar.size() == 0 && gangAvatar.size() > 0 && qishouHuAvatar.size() == 0 && penAvatar.size() == 0 ) {
+    	 if(huAvatar.size() == 0 && gangAvatar.size() > 0) {
     		 if(gangAvatar.contains(avatar)){
-    			 flag = true;
     			 //更新牌组
-                 avatar.putCardInList(cardPoint);
+    			 flag = avatar.putCardInList(cardPoint);
     			 //判断杠的类型，自杠，还是点杠
     			 String str;
-    			 if(avatar.getUuId() == ava.getUuId()){
+    			 if(avatar.getUuId() == playerList.get(curAvatarIndex).getUuId()){
     				 //自杠(明杠或暗杠)
     				 String strs = avatar.getResultRelation().get(1);
     				 if(strs != null && strs.contains(cardPoint+"")){
     					 //明杠
-    					 str = "0:"+Rule.Gang_ming; 
+    					 str = "0:"+cardPoint+":"+Rule.Gang_ming; 
     				 }
     				 else{
     					 //暗杠
-    					 str = "0:"+Rule.Gang_an;
+    					 str = "0:"+cardPoint+":"+Rule.Gang_an;
     				 }
     			 }
     			 else{
     				 //点杠
-    				 str = ava.getUuId()+":"+Rule.Gang_dian;
+    				 str = playerList.get(curAvatarIndex).getUuId()+":"+cardPoint+":"+Rule.Gang_dian;
     			 }
-    			 //****两个人之间建立关联，游戏结束算账用
+    			 //两个人之间建立关联，游戏结束算账用
                  avatar.putResultRelation(2,str);
     			 clearArrayAndSetQuest();
                  //杠了以后要摸一张牌
@@ -405,9 +427,12 @@ public class PlayCardsLogic {
     		 }
     	 }else{
              if(gangAvatar.size() > 0) {
-                 avatar.gangQuest = true;
+            	 for (Avatar ava : gangAvatar) {
+            		 ava.gangQuest = true;
+				}
              }
          }
+    	 
 		return flag;
     }
     /**
@@ -417,15 +442,15 @@ public class PlayCardsLogic {
      */
     public boolean huPai(Avatar avatar , int cardIndex){
     	boolean flag = false;
-    	 if(huAvatar.size() > 0 && qishouHuAvatar.size() == 0 ) {
+    	 while(huAvatar.size() > 0) {
     		 if(huAvatar.contains(avatar)){
     			 flag = true;
     			 if(checkAvatarIsHuPai(avatar,cardIndex)){
     				 //胡牌数组中移除掉胡了的人
     				 huAvatar.remove(avatar);
     				 huCount++;
-    				//****两个人之间建立关联，游戏结束算账用 
-    				 String str = HuPaiType.getHuType(ava.getUuId(), avatar,roomVO.getRoomType() );
+    				//两个人之间建立关联，游戏结束算账用 
+    				 String str = HuPaiType.getHuType(playerList.get(curAvatarIndex).getUuId(), avatar,roomVO.getRoomType(),cardIndex );
     				 avatar.putResultRelation(3,str);
     			 }
     			 else{
@@ -436,9 +461,9 @@ public class PlayCardsLogic {
     	 if(huAvatar.size()==0){
     		 //所有人胡完
     		 if(huCount >= 2){
-        		 //重新分配庄家，下一局点家坐庄
+        		 //重新分配庄家，下一局点两家的玩家坐庄
     			 for (Avatar itemAva : playerList) {
-    				 if(ava.getUuId() == itemAva.getUuId() ){
+    				 if(playerList.get(curAvatarIndex).getUuId() == itemAva.getUuId() ){
                          itemAva.avatarVO.setMain(true);
     				 }
     				 else{
@@ -460,11 +485,28 @@ public class PlayCardsLogic {
     		 //更新roomlogic的PlayerList信息
     		 RoomManager.getInstance().getRoom(playerList.get(0).getRoomVO().getRoomId()).setPlayerList(playerList);
     		 //返回这一句的所有数据 杠，胡等，胡牌返回什么的数据
-    		 
+    		 settlementData();
     	 }
     	 
 		return flag;
     }
+    
+    /**
+     * 胡牌后返回结算数据信息
+     */
+    public void settlementData(){
+    	//只需要传入缓存中杠2和胡3的信息
+    	JSONArray array = new JSONArray();
+    	for (Avatar avatar : playerList) {
+    		array.add(avatar.getResultRelation().get(2));
+    		array.add(avatar.getResultRelation().get(3));
+		}
+    	for (Avatar avatar : playerList) {
+    		avatar.getSession().sendMsg(new HuPaiResponse(1,array.toString()));
+		}
+    	
+    }
+    
     /**
      * 出牌返回出牌点数和下一家玩家信息
      * @param cardPoint
@@ -480,6 +522,7 @@ public class PlayCardsLogic {
             }
     	}
         if(checkMsgAndSend()){
+        	//如果没有吃，碰，杠，胡的情况，则下家自动摸牌
             pickCard();
         }
     }
@@ -499,6 +542,7 @@ public class PlayCardsLogic {
             return false;
         }
         if(chiAvatar.size()>0){
+        	return false;
         }
         return true;
     }
@@ -527,10 +571,6 @@ public class PlayCardsLogic {
     	   //检查有没有天胡/有则把相关联的信息放入缓存中
     	   huAvatar.add(bankerAvatar);
        }
-        if(roomVO.getRoomType() == 3) {
-            //判读有没有起手胡
-            checkQiShouFu();
-        }
     }
     /**
      * 获取下一张牌的点数,如果返回为-1 ，则没有牌了
@@ -579,7 +619,7 @@ public class PlayCardsLogic {
 			if(pai[i] == 4){
 				//大四喜
 				dasixi = true;
-				//胡牌信息放入缓存中
+				//胡牌信息放入缓存中****
 			}
 			if(pai[i] == 3){
 				//六六顺
@@ -646,9 +686,21 @@ public class PlayCardsLogic {
      */
     private boolean checkHu(Avatar avatar){
         JIANG = 0;
-        int [] paiList =  avatar.getPaiArray();
-
-        if(roomVO.getSevenDouble()) {
+        //根据不同的游戏类型进行不用的判断
+        if(roomVO.getRoomType() == 1){
+        	return checkHuHuaS(avatar);
+        }
+        else if(roomVO.getRoomType() == 2){
+        	return checkHuZhuanZ(avatar);
+        }
+        else{
+        	return checkHuChangsha(avatar);
+        }
+        
+        
+        
+       /* if(roomVO.getSevenDouble() && !roomVO.getHong()) {
+        	//有癞子时，直接进行癞子的胡牌判断，不需要进行单独的判断
             int isSeven = checkSevenDouble(paiList);
             if(isSeven == 0){
                 System.out.println("没有七小对");
@@ -676,9 +728,131 @@ public class PlayCardsLogic {
         }
         else{
         	 return isHuPai(paiList);
-        }
+        }*/
     }
 
+    /**
+     * 判断划水麻将是否胡牌
+     * @param avatar
+     * @return
+      3，是否红中赖子
+      4，是否可胡七小对  
+              不同情况不同判断
+     */
+    public boolean checkHuHuaS(Avatar avatar){
+    	int [] paiList =  avatar.getPaiArray();
+    	//移除掉碰，杠了的牌组
+    	paiList  = cleanGangAndPeng(paiList,avatar);
+    	boolean flag =  false;
+    	if(roomVO.getSevenDouble()){
+    		if(roomVO.getHong()){
+    			flag =   Naizi.testHuiPai(paiList);
+    		}
+    		else{
+       		 	int isSeven = checkSevenDouble(paiList);
+                if(isSeven == 0){
+                    System.out.println("没有七小对");
+                    if(isHuPai(paiList)){
+                      System.out.print("胡牌");
+                    //cleanPlayListCardData();
+                      flag = true;
+                    }else{
+                        System.out.println("checkHu 没有胡牌");
+                        flag = false;
+                    }
+                    
+                }else{
+                    if(isSeven == 1){
+                        System.out.println("七对");
+                    }else{
+                        System.out.println("龙七对");
+                    }
+                    //cleanPlayListCardData();
+                    flag = true;
+                }
+    		}
+    	}
+    	else{
+    		if(roomVO.getHong()){
+    			flag =   Naizi.testHuiPai(paiList);
+    		}
+    		else{
+    			flag = isHuPai(paiList);
+    		}
+    	}
+		return flag;
+    }
+    /**
+     * 判断转转麻将是否胡牌
+     * @param avatar
+     * @return
+     */
+    public boolean checkHuZhuanZ(Avatar avatar){
+		return false;
+    	
+    }
+    /**
+     * 判断长沙麻将是否胡牌
+     * @param avatar
+     * @return
+     */
+    public boolean checkHuChangsha(Avatar avatar){
+    	if(roomVO.getRoomType() == 3) {
+            //判读有没有起手胡
+            checkQiShouFu();
+        }
+		return false;
+    	
+    }
+    
+    /**
+     * 最后胡牌的检测胡牌的时候在牌组中提出条碰，杠的牌组再进行验证
+     * @param paiList
+     * @return
+     */
+    public int[] cleanGangAndPeng(int [] paiList ,Avatar avatar){
+    	
+    	String str;
+    	String strs[];
+    	int cardIndex;
+    	if((str =avatar.getResultRelation().get(1)) != null){
+    		//踢出碰的牌组
+    		strs = str.split(",");
+    		for (String string : strs) {
+				cardIndex = Integer.parseInt(string.split(":")[1]);
+				if(paiList[cardIndex] >=3){
+					paiList[cardIndex] = paiList[cardIndex] -3;
+				}
+				else{
+					System.out.println("出现碰了的牌不在手牌中的错误情况!");
+				}
+			}
+    	}
+    	
+    	if(avatar.getResultRelation().get(2) != null){
+    		//踢出杠的牌组
+    		//踢出碰的牌组
+    		strs = str.split(",");
+    		for (String string : strs) {
+				cardIndex = Integer.parseInt(string.split(":")[1]);
+				if(paiList[cardIndex] ==4){
+					paiList[cardIndex] = 0;
+				}
+				else{
+					System.out.println("出现碰了的牌不在手牌中的错误情况!");
+				}
+			}
+    	}
+		return paiList;
+    }
+    
+    
+    
+    /**
+     * 
+     * @param paiList
+     * @return
+     */
     String getString(int[] paiList){
         String result = "int string = ";
         for(int i=0;i<paiList.length;i++){

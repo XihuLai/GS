@@ -21,6 +21,7 @@ public class HuPaiResponse extends ServerResponse {
         super(status, ConnectAPI.HUPAI_RESPONSE);
         if(status >0){
             try {
+            	//格式
                 output.writeUTF(str);
             } catch (IOException e) {
                 e.printStackTrace();

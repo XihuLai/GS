@@ -27,6 +27,7 @@ public class PengMsgProcessor extends MsgProcessor implements
            boolean isPeng =  roomLogic.pengCard(gameSession.getRole(Avatar.class),cardVO.getCardPoint());
            if(isPeng){
         	   //gameSession.sendMsg(new ChiResponse(1, "1"));
+        	   System.out.println("碰起");
            }
            else{
         	   System.out.println("碰不起");
