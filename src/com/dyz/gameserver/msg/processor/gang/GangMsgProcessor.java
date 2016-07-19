@@ -29,7 +29,7 @@ public class GangMsgProcessor extends MsgProcessor implements
             int gangType = (int)json.get("gangType");//判断是杠几张的情况
            boolean isGang =  roomLogic.gangCard(gameSession.getRole(Avatar.class),cardPoint,gangType);
            if(isGang){
-        	   gameSession.sendMsg(new GangResponse(1, cardPoint,gangType));
+        	   //gameSession.sendMsg(new GangResponse(1, cardPoint,gangType));//gangCard方法里面已经发送信息
            }
            else{
         	   System.out.println("杠不起");

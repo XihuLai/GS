@@ -1,12 +1,15 @@
 package com.dyz.gameserver.logic;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.context.ErrorCode;
 import com.context.Rule;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.manager.RoomManager;
+import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.chupai.ChuPaiResponse;
 import com.dyz.gameserver.msg.response.gang.GangResponse;
 import com.dyz.gameserver.msg.response.gang.OtherGangResponse;
@@ -382,21 +385,25 @@ public class PlayCardsLogic {
     			 flag = avatar.putCardInList(cardPoint);
     			 //判断杠的类型，自杠，还是点杠
     			 String str;
+    			 int type;
     			 if(avatar.getUuId() == playerList.get(curAvatarIndex).getUuId()){
     				 //自杠(明杠或暗杠)
     				 String strs = avatar.getResultRelation().get(1);
     				 if(strs != null && strs.contains(cardPoint+"")){
     					 //明杠
     					 str = "0:"+cardPoint+":"+Rule.Gang_ming; 
+    					 type = 0;
     				 }
     				 else{
     					 //暗杠
     					 str = "0:"+cardPoint+":"+Rule.Gang_an;
+    					 type = 1;
     				 }
     			 }
     			 else{
     				 //点杠
     				 str = playerList.get(curAvatarIndex).getUuId()+":"+cardPoint+":"+Rule.Gang_dian;
+    				 type = 1;
     			 }
     			 //两个人之间建立关联，游戏结束算账用
                  avatar.putResultRelation(2,str);
@@ -407,7 +414,7 @@ public class PlayCardsLogic {
                      int tempPoint = getNextCardPoint();
                      if (tempPoint != -1) {
                          avatar.putCardInList(tempPoint);
-                         avatar.getSession().sendMsg(new GangResponse(1, tempPoint,0));
+                         avatar.getSession().sendMsg(new GangResponse(1, tempPoint,0,type));
                      }
                  }else if(gangType == 1){
                      //摸两张
@@ -415,7 +422,7 @@ public class PlayCardsLogic {
                      int nextPoint = getNextCardPoint();
                      if (tempPoint != -1) {
                          avatar.putCardInList(tempPoint);
-                         avatar.getSession().sendMsg(new GangResponse(1, tempPoint,nextPoint));
+                         avatar.getSession().sendMsg(new GangResponse(1, tempPoint, nextPoint,type));
                      }
                  }
 
@@ -431,6 +438,11 @@ public class PlayCardsLogic {
             		 ava.gangQuest = true;
 				}
              }
+             try {
+				avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000005));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
          }
     	 
 		return flag;
