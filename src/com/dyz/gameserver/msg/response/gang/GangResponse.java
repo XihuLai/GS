@@ -28,11 +28,11 @@ public class GangResponse extends ServerResponse {
             GangBackVO gangBackVO = new GangBackVO();
             List<Integer> cardVOList = new ArrayList<Integer>();
             //=========================================
-            if(fristPoint > 0) {
+            if(fristPoint != 100) {
                 cardVOList.add(fristPoint);
             }
             //=========================================
-            if(nextPoint > 0) {
+            if(nextPoint != 100) {
                 cardVOList.add(nextPoint);
             }
             //=========================================

@@ -4,6 +4,7 @@ import com.context.ErrorCode;
 import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
+import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.gameserver.sprite.Character;
 import com.dyz.gameserver.sprite.base.GameObj;
@@ -23,14 +24,25 @@ public class Avatar implements GameObj {
     public AvatarVO avatarVO;
     //请求吃
     public boolean chiQuest = false;
+    //存储吃牌的信息
+    public CardVO cardVO = new CardVO();
     //请求碰
     public boolean pengQuest = false;
     //请求杠
     public boolean gangQuest = false;
     //请求胡
     public boolean huQuest = false;
+    
+    
+    public CardVO getCardVO() {
+		return cardVO;
+	}
 
-    public RoomVO getRoomVO() {
+	public void setCardVO(CardVO cardVO) {
+		this.cardVO = cardVO;
+	}
+
+	public RoomVO getRoomVO() {
         return roomVO;
     }
 

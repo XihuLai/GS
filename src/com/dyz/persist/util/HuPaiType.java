@@ -1,5 +1,7 @@
 package com.dyz.persist.util;
 
+import java.util.List;
+
 import com.context.Rule;
 import com.dyz.gameserver.Avatar;
 
@@ -24,12 +26,12 @@ public class HuPaiType {
      * 自摸：介绍(胡的类型)
      * Map：key-->1：表示信息    2:表示次数
      */
-	public static String getHuType(int uuid , Avatar avatar , int roomType ,int cardIndex){
+	public static String getHuType(int uuid , Avatar avatar , int roomType ,int cardIndex,List<Avatar> playerList){
 		String str = null;
 		 //区分转转麻将，划水麻将，长沙麻将
 		 if(roomType == 1){
 			 //转转麻将没有大小胡之分
-			 str = zhuanZhuan(uuid , avatar , str, cardIndex);
+			 str = zhuanZhuan(uuid , avatar , str, cardIndex,playerList);
 		 }
 		 else if(roomType == 2){
 			 //划水麻将
@@ -66,13 +68,27 @@ public class HuPaiType {
 	 * @param str
 	 * @return
 	 */
-	private static String zhuanZhuan(int uuid , Avatar avatar , String str , int cardIndex){
+	private static String zhuanZhuan(int uuid , Avatar avatar , String str , int cardIndex, List<Avatar> playerList){
 		 if(uuid == avatar.getUuId() ){
 			 //自摸
 			 str ="0:"+cardIndex+":"+Rule.Hu_zi_common;  
+			 for (Avatar ava :  playerList) {
+				if(ava.getUuId() == avatar.getUuId()){
+					 avatar.avatarVO.updateScoreRecord(1, 2*3);//记录分数
+				}
+				else{
+					ava.avatarVO.updateScoreRecord(1, -1*2);//记录分数（负分表示别人自摸扣的分）
+				}
+			}
 		 }
 		 else{
 			 str =uuid+":"+cardIndex+":"+Rule.Hu_d_common;  
+			 avatar.avatarVO.updateScoreRecord(2, 1);//记录分数
+			 for (Avatar ava : playerList) {
+				if(ava.getUuId() == uuid){
+					ava.avatarVO.updateScoreRecord(3, -1);//记录分数
+				}
+			}
 		 }
 		 return str;
 	}

@@ -21,6 +21,7 @@ public class ErrorCode {
     public static String Error_000013 = "0x0000013 --> 你已经在房间，不能重复创建";
     public static String Error_000014 = "0x0000014 --> 房卡已经用完";
     public static String Error_000015 = "0x0000015 --> 只有庄家才能开始";
+    public static String Error_000016 = "0x0000016 --> 杠牌出错";
 
 
 }

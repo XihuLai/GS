@@ -8,6 +8,7 @@ import com.dyz.gameserver.msg.response.joinroom.JoinRoomResponse;
 import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
 import com.dyz.gameserver.msg.response.startgame.PrepareGameResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
+import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.RoomVO;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class RoomLogic {
         }else {
             avatar.avatarVO.setMain(false);
             avatar.avatarVO.setIsReady(true);
-            avatar.avatarVO.setRoomId(avatar.getRoomVO().getRoomId());//房间号也放入avatarvo中
+            avatar.avatarVO.setRoomId(roomVO.getRoomId());//房间号也放入avatarvo中
             avatar.setRoomVO(roomVO);
             noticJoinMess(avatar);//通知房间里面的其他几个玩家
             playerList.add(avatar);
@@ -179,8 +180,8 @@ public class RoomLogic {
      * @param avatar
      * @return
      */
-    public boolean chiCard(Avatar avatar,int cardIndex){
-    	return playCardsLogic.chiCard(avatar,cardIndex);
+    public boolean chiCard(Avatar avatar,CardVO cardVo){
+    	return playCardsLogic.chiCard(avatar,cardVo);
     }
     /**
      * 碰牌

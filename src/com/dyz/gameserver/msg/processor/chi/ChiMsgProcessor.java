@@ -25,7 +25,7 @@ public class ChiMsgProcessor extends MsgProcessor implements
         RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
         if(roomLogic != null){
             CardVO cardVO = JsonUtilTool.fromJson(request.getString(),CardVO.class);
-           boolean isChi =  roomLogic.chiCard(gameSession.getRole(Avatar.class),cardVO.getCardPoint());
+           boolean isChi =  roomLogic.chiCard(gameSession.getRole(Avatar.class),cardVO);
            if(isChi){
         	   gameSession.sendMsg(new ChiResponse(1, "1"));
            }
