@@ -257,6 +257,7 @@ public class Avatar implements GameObj {
     public boolean checkChi(int cardIndex){
     	boolean flag = false;
     	//只有长沙麻将有吃的打法
+    	System.out.println("判断吃否可以吃牌-----cardIndex:"+cardIndex);
     	if(cardIndex>=0  && cardIndex <=8){
     		if(cardIndex == 0 && avatarVO.getPaiArray()[0][1] >=1 && avatarVO.getPaiArray()[0][2] >=1 ){
     			flag = true;
@@ -272,10 +273,12 @@ public class Avatar implements GameObj {
     				|| (avatarVO.getPaiArray()[0][5] >=1 && avatarVO.getPaiArray()[0][6] >=1))){
     			flag = true;
     		}
-    		else if((avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex+1] >=1)
+    		else if(cardIndex >=11 && cardIndex <= 15){
+    		  if((avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex+1] >=1)
     				|| (avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex-2] >=1) 
     				|| (avatarVO.getPaiArray()[0][cardIndex+1] >=1 && avatarVO.getPaiArray()[0][cardIndex+2] >=1)){
-    			flag = true;
+    			    flag = true;
+    		  }
     		}
     	}
     	else if((cardIndex>=9 && cardIndex <=17)){
@@ -293,10 +296,12 @@ public class Avatar implements GameObj {
     				|| (avatarVO.getPaiArray()[0][14] >=1 && avatarVO.getPaiArray()[0][15] >=1))){
     			flag = true;
     		}
-    		else if((avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex+1] >=1)
+    		else if(cardIndex >=11 && cardIndex <= 15){
+    		  if((avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex+1] >=1)
     				|| (avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex-2] >=1) 
     				|| (avatarVO.getPaiArray()[0][cardIndex+1] >=1 && avatarVO.getPaiArray()[0][cardIndex+2] >=1)){
     			flag = true;
+    		  }
     		}
     	}
     	else if(cardIndex>=18 && cardIndex <=27){
@@ -314,10 +319,12 @@ public class Avatar implements GameObj {
     				|| (avatarVO.getPaiArray()[0][24] >=1 && avatarVO.getPaiArray()[0][25] >=1))){
     			flag = true;
     		}
-    		else if((avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex+1] >=1)
-    				|| (avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex-2] >=1) 
-    				|| (avatarVO.getPaiArray()[0][cardIndex+1] >=1 && avatarVO.getPaiArray()[0][cardIndex+2] >=1)){
-    			flag = true;
+    		else if(cardIndex >=20 && cardIndex <= 25){
+	    		 if((avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex+1] >=1)
+	    			|| (avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex-2] >=1) 
+	    			|| (avatarVO.getPaiArray()[0][cardIndex+1] >=1 && avatarVO.getPaiArray()[0][cardIndex+2] >=1)){
+	    			 flag = true;
+    		  } 
     		}
     	}
         return flag;

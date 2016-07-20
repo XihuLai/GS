@@ -17,10 +17,10 @@ public class GaveUpMsgProcessor extends MsgProcessor implements
     @Override
     public void process(GameSession gameSession, ClientRequest request) throws Exception {
         RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
-        JSONObject json = JSONObject.fromObject(request.getString());
-        int passType =  Integer.parseInt(json.get("passType").toString());//pass的类型(1-胡，2-杠，3-碰，4-吃)
+        //JSONObject json = JSONObject.fromObject(request.getString());
+        //int passType =  Integer.parseInt(json.get("passType").toString());//pass的类型(1-胡，2-杠，3-碰，4-吃)
         if(roomLogic != null){
-            roomLogic.gaveUpAction(gameSession.getRole(Avatar.class),passType);
+            roomLogic.gaveUpAction(gameSession.getRole(Avatar.class));
         }
     }
 }

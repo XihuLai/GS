@@ -26,23 +26,20 @@ public class HuPaiType {
      * 自摸：介绍(胡的类型)
      * Map：key-->1：表示信息    2:表示次数
      */
-	public static String getHuType(int uuid , Avatar avatar , int roomType ,int cardIndex,List<Avatar> playerList){
-		String str = null;
+	public static void getHuType(int uuid , Avatar avatar , int roomType ,int cardIndex,List<Avatar> playerList){
 		 //区分转转麻将，划水麻将，长沙麻将
 		 if(roomType == 1){
 			 //转转麻将没有大小胡之分
-			 str = zhuanZhuan(uuid , avatar , str, cardIndex,playerList);
+			 zhuanZhuan(uuid , avatar , cardIndex,playerList);
 		 }
 		 else if(roomType == 2){
 			 //划水麻将
-			 str = huaShui(uuid , avatar , str , cardIndex);
+			  huaShui(uuid , avatar, cardIndex);
 		 }
 		 else{
 			 //长沙麻将
-			 str = changSha(uuid,  avatar, str ,cardIndex);
+			 changSha(uuid,  avatar ,cardIndex);
 		 }
-		
-		return str;
 	}
 	/**
 	 * 划水麻将
@@ -51,7 +48,8 @@ public class HuPaiType {
 	 * @param str
 	 * @return
 	 */
-	private static String huaShui(int uuid , Avatar avatar , String str , int cardIndex){
+	private static void huaShui(int uuid , Avatar avatar,  int cardIndex){
+		String str;
 		int [] paiList = avatar.getPaiArray();
 		 if(uuid == avatar.getUuId() ){
 			 //自摸类型---然后判断牌组是什么类型(清一色？七对？龙对？等等)
@@ -59,7 +57,6 @@ public class HuPaiType {
 		 else{
 			 
 		 }
-		 return str;
 	}
 	/**
 	 * 转转麻将
@@ -68,29 +65,44 @@ public class HuPaiType {
 	 * @param str
 	 * @return
 	 */
-	private static String zhuanZhuan(int uuid , Avatar avatar , String str , int cardIndex, List<Avatar> playerList){
-		 if(uuid == avatar.getUuId() ){
+	private static void zhuanZhuan(int uuid , Avatar avatar , int cardIndex, List<Avatar> playerList){
+		String str; 
+		if(uuid == avatar.getUuId() ){
 			 //自摸
 			 str ="0:"+cardIndex+":"+Rule.Hu_zi_common;  
 			 for (Avatar ava :  playerList) {
 				if(ava.getUuId() == avatar.getUuId()){
-					 avatar.avatarVO.updateScoreRecord(1, 2*3);//记录分数
+					// avatar.avatarVO.updateScoreRecord(1, 2*3);//记录分数
+					//:游戏自摸1，接炮2，点炮3，暗杠4，明杠5 ，胡6记录(key),
+					//修改自己的分数
+					avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(1, 2*3);
 				}
 				else{
-					ava.avatarVO.updateScoreRecord(1, -1*2);//记录分数（负分表示别人自摸扣的分）
+					//修改其他三家分数
+					//ava.avatarVO.updateScoreRecord(1, -1*2);//记录分数（负分表示别人自摸扣的分）
+					ava.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(1, -1*2);
 				}
 			}
 		 }
 		 else{
-			 str =uuid+":"+cardIndex+":"+Rule.Hu_d_common;  
-			 avatar.avatarVO.updateScoreRecord(2, 1);//记录分数
+			 //点炮  
+			 str =uuid+":"+cardIndex+":"+Rule.Hu_d_self;  
+			 //修改胡家自己的分数
+			 //avatar.avatarVO.updateScoreRecord(2, 1);//记录分数
+			 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(2,1);
 			 for (Avatar ava : playerList) {
 				if(ava.getUuId() == uuid){
-					ava.avatarVO.updateScoreRecord(3, -1);//记录分数
+					//修改点炮玩家的分数
+					//ava.avatarVO.updateScoreRecord(3, -1);//记录分数
+					 ava.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(3,-1);
+					//存储hu的关系信息 胡玩家uuid：胡牌id：胡牌类型
+					 String string = avatar.getUuId()+":"+cardIndex+":"+Rule.Hu_d_other;  
+					 ava.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", string);
 				}
 			}
 		 }
-		 return str;
+		//存储hu的关系信息
+		 avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
 	}
 	/**
 	 * 长沙麻将
@@ -99,7 +111,8 @@ public class HuPaiType {
 	 * @param str
 	 * @return
 	 */
-	private static String changSha(int uuid , Avatar avatar , String str , int cardIndex){
+	private static void changSha(int uuid , Avatar avatar , int cardIndex){
+		String str = null;
 		int [] paiList = avatar.getPaiArray();
 		 //长沙麻将
 		 if(uuid == avatar.getUuId() ){
@@ -142,8 +155,6 @@ public class HuPaiType {
 				}
 			}
 		 
-	 
-		 return str;
 	}
 	
 	

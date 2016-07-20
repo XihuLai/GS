@@ -157,8 +157,8 @@ public class RoomLogic {
      * @param avatar
      * @param type 1-胡，2-杠，3-碰，4-吃
      */
-    public void gaveUpAction(Avatar avatar,int type){
-        playCardsLogic.gaveUpAction(avatar,type);
+    public void gaveUpAction(Avatar avatar){
+        playCardsLogic.gaveUpAction(avatar);
     }
 
     /**

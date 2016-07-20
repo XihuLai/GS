@@ -25,7 +25,8 @@ public class Rule {
     
     //公用
 	public static String Hu_zi_common = "zi_common";//自摸普通胡
-	public static String Hu_d_common = "d_common";//点炮普通胡
+	public static String Hu_d_self = "d_self";//别人点自己胡
+	public static String Hu_d_other = "d_other";//自己点别人胡
     public static String Hu_d_qingyise = "qingyise";//点炮清一色
     public static String Hu_zi_qingyise = "zi_qingyise";//自摸清一色
     public static String Hu_haidilao = "haidilao";

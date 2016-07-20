@@ -22,6 +22,7 @@ public class OtherPickCardResponse extends ServerResponse {
         json.put("avatarIndex",avatarIndex);
         if(status >0){
             try {
+            	System.out.println("发送摸牌信息"+avatarIndex);
                 output.writeUTF(json.toString());
             } catch (IOException e) {
                 e.printStackTrace();

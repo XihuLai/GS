@@ -1,9 +1,5 @@
 package com.dyz.gameserver.pojo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.dyz.myBatis.model.Account;
 
 /**
@@ -42,21 +38,37 @@ public class AvatarVO {
      * 那么在这一圈内 其他玩家打的也不能胡）
      */
     private boolean canHu = true;
+    
     /**
+     * 存储整局牌的 杠，胡以及得分情况的对象，游戏结束时直接返回对象
+     */
+    private HuReturnObjectVO  huReturnObjectVO;
+    
+    
+   public HuReturnObjectVO getHuReturnObjectVO() {
+		return huReturnObjectVO;
+	}
+
+	public void setHuReturnObjectVO(HuReturnObjectVO huReturnObjectVO) {
+		this.huReturnObjectVO = huReturnObjectVO;
+	}
+
+	/* 
+	 * 
      * key:type:游戏自摸1，接炮2，点炮3，暗杠4，明杠5 ，胡6记录(key),
      * value:list里面，第一个为点炮/杠/胡次数，第二个元素为点炮/杠/胡分数总和
-     */
-    private Map<Integer , ArrayList<Integer>> scoreRecord;
+     *
+	 * private Map<Integer , ArrayList<Integer>> scoreRecord;
     
     
     public Map<Integer, ArrayList<Integer>> getScoreRecord() {
 		return scoreRecord;
 	}
-    /**
+    *//**
      *  游戏碰1，杠2，吃3，胡4记录(key),
      * @param type 类型 
      * @param score 分数
-     */
+     *//*
 	public synchronized void updateScoreRecord(int type , int score) {
 		if(scoreRecord == null){
 			scoreRecord = new HashMap<Integer, ArrayList<Integer>>();
@@ -74,7 +86,7 @@ public class AvatarVO {
 			list.add(list.get(1)+score);
 		}
 		scoreRecord.put(type, list);
-	}
+	}*/
 
 	public boolean isCanHu() {
 		return canHu;
