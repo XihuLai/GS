@@ -75,12 +75,12 @@ public class HuPaiType {
 					// avatar.avatarVO.updateScoreRecord(1, 2*3);//记录分数
 					//:游戏自摸1，接炮2，点炮3，暗杠4，明杠5 ，胡6记录(key),
 					//修改自己的分数
-					avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(1, 2*3);
+					avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("1", 2*3);
 				}
 				else{
 					//修改其他三家分数
 					//ava.avatarVO.updateScoreRecord(1, -1*2);//记录分数（负分表示别人自摸扣的分）
-					ava.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(1, -1*2);
+					ava.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("1", -1*2);
 				}
 			}
 		 }
@@ -89,19 +89,20 @@ public class HuPaiType {
 			 str =uuid+":"+cardIndex+":"+Rule.Hu_d_self;  
 			 //修改胡家自己的分数
 			 //avatar.avatarVO.updateScoreRecord(2, 1);//记录分数
-			 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(2,1);
+			 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("2",1);
 			 for (Avatar ava : playerList) {
 				if(ava.getUuId() == uuid){
 					//修改点炮玩家的分数
 					//ava.avatarVO.updateScoreRecord(3, -1);//记录分数
-					 ava.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(3,-1);
+					 ava.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("3",-1);
 					//存储hu的关系信息 胡玩家uuid：胡牌id：胡牌类型
-					 String string = avatar.getUuId()+":"+cardIndex+":"+Rule.Hu_d_other;  
+					 String string = avatar.getUuId()+":"+cardIndex+":"+Rule.Hu_d_other; 
+					 //点炮信息放入放炮玩家信息中
 					 ava.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", string);
 				}
 			}
 		 }
-		//存储hu的关系信息
+		//存储hu的关系信息，胡牌信息放入胡牌玩家存储信息中
 		 avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
 	}
 	/**

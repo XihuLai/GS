@@ -3,7 +3,9 @@ package com.dyz.gameserver.logic;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.context.ErrorCode;
 import com.context.Rule;
@@ -298,7 +300,6 @@ public class PlayCardsLogic {
         curAvatarIndex = playerList.indexOf(avatar);
         int nextIndex = getNextAvatarIndex();
         for(int i=0;i<playerList.size();i++){
-        	//判断那些玩家有吃，碰，杠,胡的情况
             if(playerList.get(i).getUuId() != avatar.getUuId()) {
                 if (playerList.get(i).checkPeng(putOffCardPoint)) {
                     penAvatar.add(playerList.get(i));
@@ -412,7 +413,8 @@ public class PlayCardsLogic {
     			 String str;
     			 int type;
     			 int score; //杠牌分数
-    			 int recordType;//暗杠 4 ， 明杠 5
+    			 String recordType;//暗杠 4 ， 明杠 5(用于统计不同type下的次数和得分)
+    			 String endStatisticstype;
     			 if(avatar.getUuId() == playerList.get(curAvatarIndex).getUuId()){
     				 //自杠(明杠或暗杠)
     				 String strs = avatar.getResultRelation().get(1);
@@ -421,41 +423,51 @@ public class PlayCardsLogic {
     					 str = "0:"+cardPoint+":"+Rule.Gang_ming; 
     					 type = 0;
     					 score = 1;
-    					 recordType =5;
+    					 recordType ="5";
+    					 endStatisticstype = "minggang";
     				 }
     				 else{
     					 //暗杠
     					 score = 2; 
     					 str = "0:"+cardPoint+":"+Rule.Gang_an;
     					 type = 1;
-    					 recordType =4;
+    					 recordType ="4";
+    					 endStatisticstype = "angang";
     				 }
     				 for (Avatar ava : playerList) {
 						if(ava.getUuId() == avatar.getUuId()){
 							//修改玩家整个游戏总分和杠的总分
 							//avatar.avatarVO.updateScoreRecord(recordType, score*2);
 							 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType,score*2);
+							 //整个房间统计每一局游戏 杠，胡的总次数
+							 roomVO.updateEndStatistics(ava.getUuId(), endStatisticstype, 1);
 						}
 						else{
 							//修改其他三家的分数
 							//ava.avatarVO.updateScoreRecord(recordType, -1*score);
 							ava.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType,-1*score);
+//							//整个房间统计每一局游戏 杠，胡的总次数(放杠的玩家不需要统计 放杠次数)
+//							roomVO.updateEndStatistics(ava.getUuId(), endStatisticstype, score*-1);
 						}
 					}
     			 }
     			 else{
     				 //点杠(分在暗杠里面)
     				 score = 3;
-    				 recordType = 4;
+    				 recordType = "4";
     				 str = playerList.get(curAvatarIndex).getUuId()+":"+cardPoint+":"+Rule.Gang_dian;
     				 type = 1;
+    				 endStatisticstype = "angang";
     				 //减点杠玩家的分数
     				 playerList.get(curAvatarIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*score);
-    				 //增加杠加的分数
+    				 //增加杠家的分数
     				 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, score);
+    				//整个房间统计每一局游戏 杠，胡的总次数
+					 roomVO.updateEndStatistics(avatar.getUuId(), endStatisticstype, 1);
     			 }
     			 //存储杠牌的信息，
                  //avatar.putResultRelation(2,str);
+    			 System.out.println(str);
     			 avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("gang", str);
     			 
     			 clearArrayAndSetQuest();
@@ -525,7 +537,9 @@ public class PlayCardsLogic {
         					 HuPaiType.getHuType(playerList.get(curAvatarIndex).getUuId(), avatar,roomVO.getRoomType(),cardIndex ,playerList );
         					// avatar.putResultRelation(3,str);
         					 //avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
-        					 
+        					//整个房间统计每一局游戏 杠，胡的总次数
+        					roomVO.updateEndStatistics(avatar.getUuId(), "jiepao", 1);
+        					roomVO.updateEndStatistics(playerList.get(curAvatarIndex).getUuId(), "dianpao", 1);
         					 flag = true;
         					 //给胡了的牌打上标记
 //        					 for (int i = 0; i < playerList.size(); i++) {
@@ -549,9 +563,10 @@ public class PlayCardsLogic {
     					 huAvatar.remove(avatar);
     					 huCount++;
     					 //两个人之间建立关联，游戏结束算账用 
-    					  HuPaiType.getHuType(playerList.get(curAvatarIndex).getUuId(), avatar,roomVO.getRoomType(),cardIndex,playerList );
+    					 HuPaiType.getHuType(playerList.get(curAvatarIndex).getUuId(), avatar,roomVO.getRoomType(),cardIndex,playerList );
     					 //avatar.putResultRelation(3,str);
-    					 
+    					//整个房间统计每一局游戏 杠("minggang","angang")，胡("zimo","dianpao","jiepao")的总次数
+    					 roomVO.updateEndStatistics(avatar.getUuId(), "zimo", 1);
     					 flag = true;
     					//给胡了的牌打上标记
                     	// playerList.get(curAvatarIndex).avatarVO.getPaiArray()[1][cardIndex] = 4;
@@ -588,7 +603,7 @@ public class PlayCardsLogic {
         	 }
     		 //更新roomlogic的PlayerList信息
     		 RoomManager.getInstance().getRoom(playerList.get(0).getRoomVO().getRoomId()).setPlayerList(playerList);
-    		 //返回这一句的所有数据 杠，胡等，胡牌返回什么的数据
+    		 //一局牌胡了，返回这一局的所有数据吃，碰， 杠，胡等信息
     		 settlementData();
     	 }
     	 
@@ -615,12 +630,29 @@ public class PlayCardsLogic {
     		huReturnObjectVO.setPaiArray(avatar.getPaiArray());
     		huReturnObjectVO.setUuid(avatar.getUuId());
     		array.add(huReturnObjectVO);
+    		//在整个房间信息中修改总分数(房间次数用完之后的总分数)
+    		roomVO.updateEndStatistics(avatar.getUuId(), "scores", huReturnObjectVO.getTotalScore());
 		}
     	json.put("avatarList", array);
+    	int count = 10;
+    	Map<Integer, Map<String, Integer>> endStatistics = new HashMap<Integer,Map<String,Integer>>();
     	for (Avatar avatar : playerList) {
-    		avatar.getSession().sendMsg(new HuPaiResponse(1,array.toString()));
+    		avatar.getSession().sendMsg(new HuPaiResponse(1,json.toString()));
+    		count = RoomManager.getInstance().getRoom(avatar.getRoomVO().getRoomId()).getCount();
 		}
-    	
+		if(count == 0){
+			//房间次数用完，返回本局胡牌信息的同时返回整个房间这几局的胡，杠等统计信息
+			JSONObject js = new JSONObject();
+			for (Avatar avatar : playerList) {
+				if(endStatistics == null){
+					endStatistics = avatar.getRoomVO().getEndStatistics();
+				}
+				if(js.get("totalInfo") == null){
+					js.put("totalInfo", endStatistics);
+				}
+	    		avatar.getSession().sendMsg(new HuPaiResponse(1,js.toString()));
+			}
+		}
     }
     
     /**
@@ -852,15 +884,26 @@ public class PlayCardsLogic {
      * 判断划水麻将是否胡牌
      * @param avatar
      * @return
-      3，是否红中赖子
-      4，是否可胡七小对  
-              不同情况不同判断
+     * 1:是否自摸胡  /1- 自摸胡，2- 可以抢杠胡
+		2:是否抢杠胡  /1- 自摸胡，2- 可以抢杠胡
+		3:是否红中赖子
+		4:是否抓码
+       	5:是否可胡七小对  
      */
     public boolean checkHuHuaS(Avatar avatar){
     	int [] paiList =  avatar.getPaiArray();
     	//不需要移除掉碰，杠了的牌组，在判断是否胡的时候就应判断了
     	//paiList  = cleanGangAndPeng(paiList,avatar);
     	boolean flag =  false;
+    	if(roomVO.getZiMo() == 1){
+    		//自摸胡
+    		
+    	}
+    	else if(roomVO.getZiMo() == 2){
+    		//可以抢杠胡
+    		
+    		
+    	}
     	if(roomVO.getSevenDouble()){
     		if(roomVO.getHong()){
     			flag =   Naizi.testHuiPai(paiList);

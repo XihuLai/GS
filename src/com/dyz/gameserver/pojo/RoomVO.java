@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.print.attribute.HashAttributeSet;
-
 /**
  * Created by kevin on 2016/6/22.
  */
@@ -47,14 +45,51 @@ public class RoomVO {
      */
     private boolean addWordCard;
 
-
+    /**
+     * 房间名
+     */
     public String name;
     
+    /**
+     * 整个房间对应的所有人的牌组
+     */
     private List<AvatarVO> playerList;
-
     /**
      * 开一个房间几局游戏完后，统计所有玩家的杠，胡次数
-     *type: 1:自摸次数
+     * 第一个key：用户uuid
+     * 第二个key：1:自摸(zimo) value次数，2:接炮(jiepao) value次数,3:点炮(dianpao)value次数,
+     * 4:明杠(minggang)value次数，5:暗杠(angang) value次数 , 6: 总成绩(scores)  value分数
+     */
+    private Map<Integer , Map<String,Integer>> endStatistics;
+    
+	public Map<Integer, Map<String, Integer>> updateEndStatistics(Integer uuid , String type ,int roundScore) {
+    	if(endStatistics == null){
+    		this.endStatistics = new HashMap<Integer, Map<String,Integer>>();
+    		Map<String,Integer > map = new HashMap<String , Integer>();
+    		map.put(type,roundScore);
+    		this.endStatistics.put(uuid, map);
+    	}
+    	else{
+    		Map<String,Integer > map = new HashMap<String , Integer>();
+    		if(endStatistics.get(uuid) == null){
+        		map.put(type,roundScore);
+        		endStatistics.put(uuid, map);
+    		}
+    		else{
+    			endStatistics.get(uuid).put(type, endStatistics.get(uuid).get(type)+1);
+    		}
+    	}
+		return endStatistics;
+	}
+
+	  
+    public Map<Integer, Map<String, Integer>> getEndStatistics() {
+		return endStatistics;
+	}
+    /**
+     * 开一个房间几局游戏完后，统计所有玩家的杠，胡次数
+     *type: 
+     * 1:自摸次数
      * 2:接炮次数
      * 3:点炮次数
      * 4：明杠次数
@@ -62,7 +97,7 @@ public class RoomVO {
      * 6: 总成绩
      * 
      */
-    public Map<Integer , Integer> map;
+    /*public Map<Integer , Integer> map;
     
     public Map<Integer, Integer> getMap() {
 		return map;
@@ -78,13 +113,17 @@ public class RoomVO {
 		else{
 			map.put(type, 1+map.get(type));
 		}
-	}
-
+	}*/
+    
 	public int getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(int roomId) {
+	public void setEndStatistics(Map<Integer, Map<String, Integer>> endStatistics) {
+		this.endStatistics = endStatistics;
+	}
+
+	public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
 

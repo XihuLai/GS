@@ -4,6 +4,7 @@ import com.context.ConnectAPI;
 import com.dyz.gameserver.msg.processor.chi.ChiMsgProcessor;
 import com.dyz.gameserver.msg.processor.chupai.ChuPaiMsgProcessor;
 import com.dyz.gameserver.msg.processor.createroom.CreateRoomMsgProcssor;
+import com.dyz.gameserver.msg.processor.gang.GangMsgProcessor;
 import com.dyz.gameserver.msg.processor.joinroom.JoinRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.LoginMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.OpenAppMsgProcessor;
@@ -38,8 +39,10 @@ public enum MsgProcessorRegister {
 	outRoom(ConnectAPI.OUT_ROOM_REQUEST,new OutRoomMsgProcessor()),
 	/**吃牌*/
 	chiPai(ConnectAPI.CHIPAI_REQUEST,new ChiMsgProcessor()),
-	/**吃牌*/
+	/**碰牌*/
 	pengPai(ConnectAPI.PENGPAI_REQUEST,new PengMsgProcessor()),
+	/**碰牌*/
+	gangPai(ConnectAPI.GANGPAI_REQUEST,new GangMsgProcessor()),
 	/**放弃操作*/
 	gaveUp(ConnectAPI.GAVEUP_REQUEST,new GaveUpMsgProcessor());
 

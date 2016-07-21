@@ -27,6 +27,7 @@ public class GangMsgProcessor extends MsgProcessor implements
             JSONObject json = JSONObject.fromObject(request.getString());
             int cardPoint = (int)json.get("cardPoint");
             int gangType = (int)json.get("gangType");//判断是杠几张的情况
+            System.out.println("进入杠"+cardPoint);
            boolean isGang =  roomLogic.gangCard(gameSession.getRole(Avatar.class),cardPoint,gangType);
            if(isGang){
         	   //gameSession.sendMsg(new GangResponse(1, cardPoint,gangType));//gangCard方法里面已经发送信息

@@ -1,0 +1,428 @@
+diff a/src/com/dyz/gameserver/logic/PlayCardsLogic.java b/src/com/dyz/gameserver/logic/PlayCardsLogic.java	(rejected hunks)
+@@ -1,216 +1,219 @@
+ package com.dyz.gameserver.logic;
+ 
+-import java.util.ArrayList;
+-import java.util.Collections;
+-import java.util.List;
+-
+ import com.context.Rule;
+ import com.dyz.gameserver.Avatar;
+ import com.dyz.gameserver.manager.RoomManager;
+ import com.dyz.gameserver.msg.response.chupai.ChuPaiResponse;
+ import com.dyz.gameserver.msg.response.gang.GangResponse;
+ import com.dyz.gameserver.msg.response.gang.OtherGangResponse;
+ import com.dyz.gameserver.msg.response.pickcard.OtherPickCardResponse;
+ import com.dyz.gameserver.msg.response.pickcard.PickCardResponse;
+ import com.dyz.gameserver.pojo.AvatarVO;
+ import com.dyz.gameserver.pojo.RoomVO;
+ import com.dyz.persist.util.HuPaiType;
+ import com.dyz.persist.util.Naizi;
+ 
++import java.util.ArrayList;
++import java.util.Collections;
++import java.util.List;
++
+ /**
+  * Created by kevin on 2016/6/18.
+  * 玩牌逻辑
+  */
+ public class PlayCardsLogic {
+ 
+     private int paiCount;
+     /**
+      * 当前出牌人的索引
+      */
+     private int curAvatarIndex;
+     /**
+      * 整张桌子上所有牌的数组
+      */
+     private List<Integer> listCard=null;
+     /**
+      * 有人要胡的數組
+      */
+     private List<Avatar> huAvatar = new ArrayList<>();
+     /**
+      *有人要碰的數組
+      */
+     private List<Avatar> penAvatar = new ArrayList<>();
+     /**
+      *有人要杠的數組
+      */
+     private List<Avatar> gangAvatar = new ArrayList<>();
+     /**
+      *有人要咋吃的數組
+      */
+     private List<Avatar> chiAvatar = new ArrayList<>();
+     /**
+      * 起手胡
+      */
+     private List<Avatar> qishouHuAvatar = new ArrayList<>();
+     
+     private int cardindex = 0;
+     //上一家出的牌的点数
+     private int putOffCardPoint;
+     
+     private List<Avatar> playerList;
+     private int JIANG = 0; //   将牌标志，即牌型“三三三三二”中的“二”
+ 
+     private  Avatar ava ;//最近的摸牌人或出牌人
+     /**
+      * 判断是否可以同时几个人胡牌
+      */
+     private int huCount=0;
+     /**
+      * 庄家
+      */
+     public Avatar bankerAvatar = null;
+     /**
+      * 是否添加字牌
+      */
+     //private boolean addWordCard = false;
+ 
+     public Avatar getAva() {
+     	return ava;
+     }
+     
+     public List<Avatar> getPlayerList() {
+         return playerList;
+     }
+ 
+ 
+ 	public void setPlayerList(List<Avatar> playerList) {
+         this.playerList = playerList;
+     }
+ 
+     private RoomVO roomVO;
+     /**
+      * 初始化牌
+      */
+     public void initCard(RoomVO value) {
+         roomVO = value;
+         if(roomVO.getRoomType() == 1){
+         	//转转麻将
+             paiCount = 27;
+             if(roomVO.getHong()){
+                 paiCount = 28;
+             }
+         }else if(roomVO.getRoomType() == 2){
+             if(roomVO.isAddWordCard()) {
+                 paiCount = 34;
+             }else{
+                 paiCount = 27;
+             }
+         }else if(roomVO.getRoomType() == 3){
+             paiCount = 27;
+         }
+         listCard = new ArrayList<Integer>();
+         for (int i = 0; i < paiCount; i++) {
+             for (int k = 0; k < 4; k++) {
+                 listCard.add(i);
+             }
+         }
++        for(int i=0;i<playerList.size();i++){
++            playerList.get(i).avatarVO.setPaiArray(new int[2][paiCount]);
++        }
+         //洗牌
+         shuffleTheCards();
+         //发牌
+         dealingTheCards();
+     }
+ 
+     /**
+      * 随机洗牌
+      */
+     public void shuffleTheCards() {
+         Collections.shuffle(listCard);
+         System.out.print("listCard --> "+listCard.toString());
+     }
+     /**
+      * 检测玩家是否胡牌了
+      * @param avatar
+      * @param cardIndex
+      */
+     public boolean checkAvatarIsHuPai(Avatar avatar,int cardIndex){
+         avatar.putCardInList(cardIndex);
+         if(checkHu(avatar)){
+             System.out.println("确实胡牌了");
+             avatar.pullCardFormList(cardIndex);
+             return true;
+         }else{
+             avatar.pullCardFormList(cardIndex);
+             System.out.println("没有胡牌");
+             return false;
+         }
+     }
+     /**
+      * 摸牌
+      *
+      *
+      */
+     public void pickCard(){
+         //下一个人摸牌
+         int nextIndex = getNextAvatarIndex();
+         int tempPoint = getNextCardPoint();//下一张牌的点数，及本次摸的牌点数
+         if(tempPoint != -1) {
+             playerList.get(nextIndex).putCardInList(tempPoint);
+             playerList.get(nextIndex).getSession().sendMsg(new PickCardResponse(1, tempPoint));
+             for(int i=0;i<playerList.size();i++){
+                 if(i != nextIndex){
+                     playerList.get(i).getSession().sendMsg(new OtherPickCardResponse(1,nextIndex));
+                 }
+             }
+         }
+     }
+ 
+     /**
+      * 获取下一位摸牌人的索引
+      * @return
+      */
+     public int getNextAvatarIndex(){
+         int nextIndex = curAvatarIndex + 1;
+         if(nextIndex >= 4){
+             nextIndex = 0;
+         }
+         return nextIndex;
+     }
+ 
+     /**
+      * 玩家选择放弃操作
+      * @param avatar
+      * @param passType
+      * 1-胡，2-杠，3-碰，4-吃
+      */
+     public void gaveUpAction(Avatar avatar,int passType){
+         if(passType == 1){
+         	//放弃胡，则检测有没人杠
+         	huAvatar.remove(avatar);
+             if(gangAvatar.contains(avatar)){
+                 gangAvatar.contains(avatar);
+             }
+             if(penAvatar.contains(avatar)){
+                 penAvatar.remove(avatar);
+             }
+             if(chiAvatar.contains(avatar)){
+                 chiAvatar.contains(avatar);
+             }
+         }else if(passType == 2){
+         	//放弃杠。则检测有没人杠
+             gangAvatar.remove(avatar);
+             if(penAvatar.contains(avatar)){
+                 penAvatar.remove(avatar);
+             }
+             if(chiAvatar.contains(avatar)){
+                 chiAvatar.contains(avatar);
+             }
+         }else if(passType == 3){
+         	//放弃杠，则检测有么人吃
+             penAvatar.remove(avatar);
+             if(chiAvatar.contains(avatar)){
+                 chiAvatar.contains(avatar);
+             }
+         }else if(passType == 4) {
+         	//放弃吃
+             chiAvatar.remove(avatar);
+         }
+@@ -563,201 +566,201 @@
+     	boolean flagTong = true;
+     	int threeNum = 0;
+     	boolean dasixi = false;
+     	boolean banbanhu = false;
+     	boolean quyise = false;
+     	boolean liuliushun = false;
+ 		for (int i =0 ; i< pai.length ; i++) {
+ 			if(pai[i] == 4){
+ 				//大四喜
+ 				dasixi = true;
+ 				//胡牌信息放入缓存中
+ 			}
+ 			if(pai[i] == 3){
+ 				//六六顺
+ 				threeNum++;
+ 				if(threeNum == 2){
+ 					liuliushun = true;
+ 				}
+ 			}
+ 			if(i>=0 && i <=8){
+ 				//缺一色
+ 				if(pai[i] > 0){
+ 					//只要存在一条万子
+ 					flagWan = false;
+ 				}
+ 			}
+ 			else if(i>9 && i<=18){
+ 				//缺一色
+ 				if(pai[i] > 0){
+ 					//只要存在一条条子
+ 					flagTiao = false;
+ 				}
+ 			}
+ 			else{
+ 				//缺一色
+ 				if(pai[i] > 0){
+ 					//只要存在一条筒子
+ 					flagTong = false;
+ 				}
+ 			}
+ 		}
+ 		if(pai[1] ==0 && pai[4] ==0 && pai[7] ==0 && 
+ 				pai[10] ==0 && pai[13] ==0 && pai[16] ==0 && 
+ 				pai[19] ==0 && pai[22] ==0 && pai[25] ==0){
+ 			//板板胡
+ 			banbanhu = true;
+ 		}
+     	if((flagWan || flagTiao || flagTong)){
+     		//缺一色
+     		quyise = true;
+     		
+     	}
+ 		return flag;
+     }
+     
+     private List<AvatarVO> getAvatarVoList(){
+         List<AvatarVO> result = new ArrayList<>();
+         for (int m = 0; m < playerList.size(); m++) {
+             result.add(playerList.get(m).avatarVO);
+         }
+         return result;
+     }
+     /**
+      * 清理玩家身上的牌数据
+      */
+     private void cleanPlayListCardData(){
+         for(int i=0;i<playerList.size();i++){
+             playerList.get(i).cleanPaiData();
+         }
+     }
+     /**
+      * 检测胡牌算法，其中包含七小对，普通胡牌
+      * @param avatar
+      * @return
+      */
+     private boolean checkHu(Avatar avatar){
+         JIANG = 0;
+         int [] paiList =  avatar.getPaiArray();
+ 
+         if(roomVO.getSevenDouble()) {
+             int isSeven = checkSevenDouble(paiList);
+             if(isSeven == 0){
+                 System.out.println("没有七小对");
+                 if(isHuPai(paiList)){
+                   System.out.print("胡牌");
+                 //cleanPlayListCardData();
+                 }else{
+                     System.out.println("checkHu 没有胡牌");
+                 }
+             }else{
+ 
+                 if(isSeven == 1){
+                     System.out.println("七对");
+                 }else{
+                     System.out.println("龙七对");
+                 }
+                 //cleanPlayListCardData();
+                 return true;
+             }
+         }
+-        if(roomVO.getRoomType() == 1 && avatar.roomVO.getHong()){
++        if(roomVO.getRoomType() == 1 && roomVO.getHong()){
+         	//转转麻将，可以选择红中
+             //红中当癞子
+              return  Naizi.testHuiPai(paiList);
+         }
+         else{
+         	 return isHuPai(paiList);
+         }
+     }
+ 
+     String getString(int[] paiList){
+         String result = "int string = ";
+         for(int i=0;i<paiList.length;i++){
+             result += paiList[i];
+         }
+         return result;
+     }
+     /**
+      * 普通胡牌算法
+      * @param paiList
+      * @return
+      */
+     public boolean isHuPai(int[] paiList) {
+ 
+         if (Remain(paiList) == 0) {
+             return true;           //   递归退出条件：如果没有剩牌，则胡牌返回。
+         }
+         for (int i = 0;  i < paiList.length; i++) {//   找到有牌的地方，i就是当前牌,   PAI[i]是个数
+             //   跟踪信息
+             //   4张组合(杠子)
+             if(paiList[i] != 0){
+                 if (paiList[i] == 4)                               //   如果当前牌数等于4张
+                 {
+                     paiList[i] = 0;                                     //   除开全部4张牌
+                     if (isHuPai(paiList)) {
+                         return true;             //   如果剩余的牌组合成功，和牌
+                     }
+                     paiList[i] = 4;                                     //   否则，取消4张组合
+                 }
+                 //   3张组合(大对)
+                 if (paiList[i] >= 3)                               //   如果当前牌不少于3张
+                 {
+                     paiList[i] -= 3;                                   //   减去3张牌
+                     if (isHuPai(paiList)) {
+                         return true;             //   如果剩余的牌组合成功，胡牌
+                     }
+                     paiList[i] += 3;                                   //   取消3张组合
+                 }
+                 //   2张组合(将牌)
+                 if (JIANG ==0 && paiList[i] >= 2)           //   如果之前没有将牌，且当前牌不少于2张
+                 {
+                     JIANG = 1;                                       //   设置将牌标志
+                     paiList[i] -= 2;                                   //   减去2张牌
+                     if (isHuPai(paiList)) return true;             //   如果剩余的牌组合成功，胡牌
+                     paiList[i] += 2;                                   //   取消2张组合
+                     JIANG = 0;                                       //   清除将牌标志
+                 }
+                 if   ( i> 27){
+                     return   false;               //   “东南西北中发白”没有顺牌组合，不胡
+                 }
+                 //   顺牌组合，注意是从前往后组合！
+                 //   排除数值为8和9的牌
+                 if (i %9!=7 && i%9 != 8 && paiList[i+1]!=0 && paiList[i+2]!=0)             //   如果后面有连续两张牌
+                 {
+                     paiList[i]--;
+                     paiList[i + 1]--;
+                     paiList[i + 2]--;                                     //   各牌数减1
+                     if (isHuPai(paiList)) {
+                         return true;             //   如果剩余的牌组合成功，胡牌
+                     }
+                     paiList[i]++;
+                     paiList[i + 1]++;
+                     paiList[i + 2]++;                                     //   恢复各牌数
+                 }
+             }
+ 
+         }
+         //   无法全部组合，不胡！
+         return false;
+     }
+ 
+     /**
+      * 检查是否七小对胡牌
+      * @param paiList
+      * @return 0-没有胡牌。1-普通七小对，2-龙七对
+      */
+     public int checkSevenDouble(int[] paiList){
+         int result = 1;
+         for(int i=0;i<paiList.length;i++){
+             if(paiList[i] != 0){
+                 if(paiList[i] != 2 && paiList[i] != 4){
+                     return 0;
+                 }else{
+                     if(paiList[i] == 4){
+                         result = 2;
+                     }
+                 }
+             }
+         }
+         return result;
+     }

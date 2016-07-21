@@ -276,4 +276,10 @@ public class RoomLogic {
 	public void setPlayerList(List<Avatar> playerList) {
 		this.playerList = playerList;
 	}
+
+	public int getCount() {
+		return count;
+	}
+	
+	
 }
