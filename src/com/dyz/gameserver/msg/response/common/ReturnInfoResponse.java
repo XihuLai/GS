@@ -27,6 +27,6 @@ public class ReturnInfoResponse extends ServerResponse {
                 e.printStackTrace();
             }
         }
-        entireMsg();
+        //entireMsg();
     }
 }

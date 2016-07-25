@@ -26,6 +26,6 @@ public class JoinRoomNoice extends ServerResponse {
                 e.printStackTrace();
             }
         }
-        entireMsg();
+       // entireMsg();
     }
 }

@@ -28,6 +28,6 @@ public class ChuPaiResponse extends ServerResponse {
                 e.printStackTrace();
             }
         }
-        entireMsg();
+       // entireMsg();
     }
 }

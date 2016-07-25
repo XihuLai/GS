@@ -26,6 +26,6 @@ public class ChiResponse extends ServerResponse {
                 e.printStackTrace();
             }
         }
-        entireMsg();
+        //entireMsg();
     }
 }

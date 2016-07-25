@@ -17,7 +17,7 @@ public class LoginResponse extends ServerResponse{
 				System.out.println("avatarVO   =  "+JsonUtilTool.toJson(avatarVO));
 				output.writeUTF(JsonUtilTool.toJson(avatarVO));
 			}
-			entireMsg();
+			//entireMsg();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

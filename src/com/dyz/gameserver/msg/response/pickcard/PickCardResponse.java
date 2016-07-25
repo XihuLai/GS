@@ -29,6 +29,6 @@ public class PickCardResponse extends ServerResponse {
                 e.printStackTrace();
             }
         }
-        entireMsg();
+        //entireMsg();
     }
 }

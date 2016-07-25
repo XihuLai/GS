@@ -28,6 +28,6 @@ public class OtherPickCardResponse extends ServerResponse {
                 e.printStackTrace();
             }
         }
-        entireMsg();
+       // entireMsg();
     }
 }

@@ -21,7 +21,7 @@ public class JoinRoomResponse extends ServerResponse {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		entireMsg();
+		//entireMsg();
 	}
 
 }

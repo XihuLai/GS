@@ -188,7 +188,7 @@ public class PlayCardsLogic {
     	}
         if(checkHu(avatar)){
             System.out.println("确实胡牌了");
-            avatar.pullCardFormList(cardIndex);
+            //avatar.pullCardFormList(cardIndex);
             return true;
         }else{
             avatar.pullCardFormList(cardIndex);

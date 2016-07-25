@@ -27,6 +27,6 @@ public class PrepareGameResponse extends ServerResponse {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		entireMsg();
+		//entireMsg();
 	}
 }

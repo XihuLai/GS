@@ -18,6 +18,6 @@ public class CreateRoomResponse extends ServerResponse {
         super(status,ConnectAPI.CREATEROOM_RESPONSE);
         output.writeUTF(obj);
         System.out.println("roomId:"+obj);
-        entireMsg();
+        //entireMsg();
     }
 }

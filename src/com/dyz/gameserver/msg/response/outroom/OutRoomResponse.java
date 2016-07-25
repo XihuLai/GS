@@ -18,7 +18,7 @@ public class OutRoomResponse extends ServerResponse {
 				e.printStackTrace();
 			}
 		}
-		entireMsg();
+		//entireMsg();
 	}
 
 }

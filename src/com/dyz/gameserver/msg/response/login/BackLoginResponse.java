@@ -20,7 +20,7 @@ public class BackLoginResponse extends ServerResponse{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		entireMsg();
+		//entireMsg();
 	}
 
 }

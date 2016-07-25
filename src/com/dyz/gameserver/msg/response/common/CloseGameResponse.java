@@ -27,6 +27,6 @@ public class CloseGameResponse extends ServerResponse {
                 e.printStackTrace();
             }
         }
-        entireMsg();
+       // entireMsg();
     }
 }

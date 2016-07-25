@@ -44,6 +44,6 @@ public class GangResponse extends ServerResponse {
                 e.printStackTrace();
             }
         }
-        entireMsg();
+       // entireMsg();
     }
 }

@@ -30,6 +30,6 @@ public class PengResponse extends ServerResponse {
                 e.printStackTrace();
             }
         }
-        entireMsg();
+        //entireMsg();
     }
 }

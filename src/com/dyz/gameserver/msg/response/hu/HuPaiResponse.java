@@ -27,6 +27,6 @@ public class HuPaiResponse extends ServerResponse {
                 e.printStackTrace();
             }
         }
-        entireMsg();
+        //entireMsg();
     }
 }
