@@ -1,12 +1,19 @@
 package com.dyz.gameserver.bootstrap;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dyz.gameserver.commons.message.MsgDispatcher;
+import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.context.ExecutorServiceManager;
+import com.dyz.gameserver.manager.GameSessionManager;
+import com.dyz.gameserver.msg.response.common.CloseGameResponse;
 import com.dyz.gameserver.net.MinaMsgHandler;
 import com.dyz.gameserver.net.NetManager;
 import com.dyz.myBatis.services.InitServers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class GameServer {
 	
@@ -48,6 +55,11 @@ public class GameServer {
 	
 	public void stop() {
 		try {
+			//关闭服务器前，向所有线程玩家发送关闭消息
+			Collection<GameSession> list = GameSessionManager.getInstance().sessionMap.values();
+			for (GameSession gameSession : list) {
+				gameSession.sendMsg(new CloseGameResponse(1, "closeGame"));
+			}
 			logger.info("准备关闭服务器...");
 			netManager.stop();
 			logger.info("服务器停止网络监听");

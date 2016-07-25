@@ -23,6 +23,7 @@ public class GangMsgProcessor extends MsgProcessor implements
     @Override
     public void process(GameSession gameSession, ClientRequest request) throws Exception {
         RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
+        System.out.println("前段发送杠牌消息");
         if(roomLogic != null){
             JSONObject json = JSONObject.fromObject(request.getString());
             int cardPoint = (int)json.get("cardPoint");

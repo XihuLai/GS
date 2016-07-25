@@ -2,9 +2,8 @@ package com.dyz.gameserver.pojo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import org.apache.mina.proxy.utils.StringUtilities;
 
 import com.dyz.persist.util.StringUtil;
 
@@ -15,10 +14,8 @@ import com.dyz.persist.util.StringUtil;
  *
  */
 public class HuReturnObjectVO {
-
 	/**
      * 牌数组
-     * 
      */
     private int[]paiArray;
     /**
@@ -44,12 +41,23 @@ public class HuReturnObjectVO {
     private int totalScore;
     /**
      * 存放吃，碰，杠，胡的信息
-     * 
      */
     private Map<String , String> totalInfo;
+    /**
+     * 抓码信息
+     */
+    private List<String> allMas;
     
     
     
+    
+	public List<String> getAllMas() {
+		return allMas;
+	}
+	public void setAllMas(List<String> allMas) {
+		this.allMas = allMas;
+	}
+	
 	public Map<String, String> getTotalInfo() {
 		return totalInfo;
 	}
@@ -81,7 +89,7 @@ public class HuReturnObjectVO {
 	
 	/**
 	 * 统计 不同type的次数和(胡才有)得分
-	 *  游戏自摸1，接炮2，点炮3，暗杠4，明杠5 ，胡6记录(type),
+	 *  游戏自摸1，接炮2，点炮3，暗杠4，明杠5 ，胡6记录(type),加码7
 	 * @param type 类型 
 	 * @param score 分数
 	 */

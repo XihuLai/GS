@@ -27,23 +27,50 @@ public class AvatarVO {
      */
     private boolean isOnLine = false;
     /**
+     * 当前牌组，踢出掉了每次的吃，碰，杠，胡
+     */
+    public int [][] currentCardList;
+    /**
      * 牌数组
      * 
      */
     private int[][] paiArray;
-    /**
+/*    *//**
      * 有一个规则（很重要：在一圈内（这里的一圈标识一人抓了一次牌）如若A玩家听牌胡 二 五条 ，
      * B玩家打出 二五条此时A玩家没有选择胡牌，那么在这一圈内，C D玩家如果也打得出二五条，
      * A玩家不能胡牌，直到A玩家下一次摸牌后（自摸可以）， 此时有人打了就可以胡了，如若又没胡，
      * 那么在这一圈内 其他玩家打的也不能胡）
-     */
+     *//*
     private boolean canHu = true;
-    
+*/    
     /**
      * 存储整局牌的 杠，胡以及得分情况的对象，游戏结束时直接返回对象
      */
     private HuReturnObjectVO  huReturnObjectVO;
     
+    
+
+	public int[][] getCurrentCardList() {
+		return currentCardList;
+	}
+	
+	public void setCurrentCardList(int[][] currentCardList) {
+		this.currentCardList =getPaiArray();
+	}
+
+	/**
+	 * 从牌的数组中踢出传入的拍的index
+	 * @param cardIndex
+	 */
+	public void updateCurrentCardList(int ...cardIndex) {
+		if(currentCardList  == null){
+			this.currentCardList = getPaiArray();
+		}
+		for (int i = 0; i < cardIndex.length; i++) {
+			this.currentCardList[0][cardIndex[i]] = this.currentCardList[0][cardIndex[i]]-1;
+		}
+	}
+
     
    public HuReturnObjectVO getHuReturnObjectVO() {
 		return huReturnObjectVO;
@@ -88,14 +115,14 @@ public class AvatarVO {
 		scoreRecord.put(type, list);
 	}*/
 
-	public boolean isCanHu() {
+	/*public boolean isCanHu() {
 		return canHu;
 	}
 
 	public void setCanHu(boolean canHu) {
 		this.canHu = canHu;
 	}
-
+*/
 	public Account getAccount() {
         return account;
     }

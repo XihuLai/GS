@@ -9,6 +9,7 @@ import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
 import com.dyz.gameserver.msg.response.startgame.PrepareGameResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.CardVO;
+import com.dyz.gameserver.pojo.HuReturnObjectVO;
 import com.dyz.gameserver.pojo.RoomVO;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -233,9 +234,8 @@ public class RoomLogic {
      * 开始一回合新的游戏
      */
     private void startGameRound(){
-      /* 
-       * 上面已经验证过了
-       *  if(count <= 0){
+       
+         if(count <= 0){
             //房间次数用完了,通知所有玩家
         	for (Avatar avatar : playerList) {
         		try {
@@ -245,25 +245,49 @@ public class RoomLogic {
 				}
 			}
         	
-        }else{*/
-        count--;
-        playCardsLogic = new PlayCardsLogic();
-        playCardsLogic.setPlayerList(playerList);
-        playCardsLogic.initCard(roomVO);
-
-        for(int i=0;i<playerList.size();i++){
-            playerList.get(i).getSession().sendMsg(new PrepareGameResponse(1,playerList.get(i).avatarVO.getPaiArray(),playerList.indexOf(playCardsLogic.bankerAvatar)));
+        }else{
+	        count--;
+	        playCardsLogic = new PlayCardsLogic();
+	        playCardsLogic.setPlayerList(playerList);
+	        playCardsLogic.initCard(roomVO);
+	       /* int count = 0;
+	        if(roomVO.getRoomType() ==1){
+	        	//划水麻将，发了牌之后剩余的牌数量
+	        	if(roomVO.getHong()){
+	        		count = 4*28-13*4-1;
+	        	}
+	        	else{
+	        		count = 4*27-13*4-1;
+	        	}
+	        }
+	        else if(roomVO.getRoomType() ==2){
+	        	//划水麻将
+	        	
+	        }
+	        else{
+	        	//长沙麻将
+	        	
+	        }*/
+	        //playCardsLogic.updateSurplusCardCount(count);
+	        for(int i=0;i<playerList.size();i++){
+	        	//清除各种数据  1：本局胡牌时返回信息组成对象 ，
+	        	playerList.get(i).avatarVO.setHuReturnObjectVO(new HuReturnObjectVO());
+	        	//playerList.get(i).avatarVO.setCanHu(true);
+	        	playerList.get(i).huQuest = true;
+	            playerList.get(i).getSession().sendMsg(new PrepareGameResponse(1,playerList.get(i).avatarVO.getPaiArray(),playerList.indexOf(playCardsLogic.bankerAvatar)));
+	        }
         }
-        
     }
-
+    
     /**
-     * 一局牌结束
+     * 前后端握手消息处理
+     * @param avatar
      */
-    public void roundOver(){
-    	
-    	
+    public void shakeHandsMsg(Avatar avatar){
+    	playCardsLogic.shakeHandsMsg(avatar);
     }
+    
+    
 
     public RoomVO getRoomVO() {
         return roomVO;

@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dyz.gameserver.commons.message.ResponseMsg;
-import com.dyz.gameserver.net.MinaMsgHandler;
 
 public class GameMsgEncoder extends ProtocolEncoderAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(GameMsgEncoder.class);
@@ -18,9 +17,11 @@ public class GameMsgEncoder extends ProtocolEncoderAdapter {
 	public void encode(IoSession session, Object message,
 			ProtocolEncoderOutput out) throws Exception {
 			ResponseMsg value = (ResponseMsg) message;
-			logger.info("服务端发送给客户端信息加码");
+			
 		out.write(value.entireMsg());
+		out.flush();
 		value.release();
+		logger.info("服务端发送给客户端信息加码");
 	}
 
 	public void dispose() throws Exception {

@@ -47,6 +47,7 @@ public class ConnectAPI {
 	//胡牌
 	public static int HUPAI_REQUEST = 0x100009;
 	public static int HUPAI_RESPONSE = 0x100010;
+	public static int HUPAIALL_RESPONSE = 0x100110;
 	//吃
 	public static int CHIPAI_REQUEST = 0x100011;
 	public static int CHIPAI_RESPONSE = 0x100012;
@@ -55,9 +56,17 @@ public class ConnectAPI {
 
 	//放弃请求
 	public static int GAVEUP_REQUEST = 0x100015;
-
+	//有吃碰杠胡需要操作的返回信息/一个房间次数用完之后返回全局信息
+	public static int RETURN_INFO_RESPONSE =  0x100000;
+	
 	//游戏错误码返回
 	public static int ERROR_RESPONSE = 0xffff09;
+	
+	//游戏关闭返回
+	public static int CLOSE_RESPONSE = 0x000000;
+	
+	//后台与前段握手信息返回，(前段接收到信息自后返回，调用接口)
+	public static int SUCCESS_RETURN_MSG = 0x111111;
 
 
 }

@@ -34,7 +34,10 @@ public class Avatar implements GameObj {
     public boolean huQuest = false;
     
     
-    public CardVO getCardVO() {
+    
+    
+
+	public CardVO getCardVO() {
 		return cardVO;
 	}
 
@@ -109,7 +112,7 @@ public class Avatar implements GameObj {
 			}
 		}
 	}
-
+	
 	public Avatar(){
     }
 
@@ -216,7 +219,8 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkPeng(int cardIndex){
-        if(avatarVO.getPaiArray()[0][cardIndex] >= 2){
+    	//
+        if(avatarVO.currentCardList[0][cardIndex] >= 2){
             return true;
         }
         return false;
@@ -228,7 +232,8 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkGang(int cardIndex){
-        if(avatarVO.getPaiArray()[0][cardIndex] == 3){
+    	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
+        if(avatarVO.currentCardList[0][cardIndex] == 3){
             return true;
         }
         return false;
@@ -239,8 +244,9 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkGang(){
+    	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
         boolean result = false;
-        int [] paiList = getPaiArray();
+        int [] paiList = avatarVO.currentCardList[0];
         for (int i : paiList) {
         		if(i == 4){
         			result = true;
@@ -258,71 +264,72 @@ public class Avatar implements GameObj {
     	boolean flag = false;
     	//只有长沙麻将有吃的打法
     	System.out.println("判断吃否可以吃牌-----cardIndex:"+cardIndex);
+    	int []  cardList = avatarVO.currentCardList[0];
     	if(cardIndex>=0  && cardIndex <=8){
-    		if(cardIndex == 0 && avatarVO.getPaiArray()[0][1] >=1 && avatarVO.getPaiArray()[0][2] >=1 ){
+    		if(cardIndex == 0 && cardList[1] >=1 && cardList[2] >=1 ){
     			flag = true;
     		}
-    		else if(cardIndex == 1 && ((avatarVO.getPaiArray()[0][0] >=1 && avatarVO.getPaiArray()[0][2] >=1) 
-    				|| (avatarVO.getPaiArray()[0][3] >=1 && avatarVO.getPaiArray()[0][2] >=1))){
+    		else if(cardIndex == 1 && ((cardList[0] >=1 && cardList[2] >=1) 
+    				|| (cardList[3] >=1 && cardList[2] >=1))){
     			flag = true;
     		}
-    		else if(cardIndex ==8 && avatarVO.getPaiArray()[0][7] >=1 && avatarVO.getPaiArray()[0][6] >=1){
+    		else if(cardIndex ==8 && cardList[7] >=1 && cardList[6] >=1){
     			flag = true;
     		}
-    		else if(cardIndex ==7 && ((avatarVO.getPaiArray()[0][8] >=1 && avatarVO.getPaiArray()[0][6] >=1)
-    				|| (avatarVO.getPaiArray()[0][5] >=1 && avatarVO.getPaiArray()[0][6] >=1))){
+    		else if(cardIndex ==7 && ((cardList[8] >=1 && cardList[6] >=1)
+    				|| (cardList[5] >=1 && cardList[6] >=1))){
     			flag = true;
     		}
     		else if(cardIndex >=11 && cardIndex <= 15){
-    		  if((avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex+1] >=1)
-    				|| (avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex-2] >=1) 
-    				|| (avatarVO.getPaiArray()[0][cardIndex+1] >=1 && avatarVO.getPaiArray()[0][cardIndex+2] >=1)){
+    		  if((cardList[cardIndex-1] >=1 && cardList[cardIndex+1] >=1)
+    				|| (cardList[cardIndex-1] >=1 && cardList[cardIndex-2] >=1) 
+    				|| (cardList[cardIndex+1] >=1 && cardList[cardIndex+2] >=1)){
     			    flag = true;
     		  }
     		}
     	}
     	else if((cardIndex>=9 && cardIndex <=17)){
-    		if(cardIndex == 9 && avatarVO.getPaiArray()[0][10] >=1 && avatarVO.getPaiArray()[0][11] >=1 ){
+    		if(cardIndex == 9 && cardList[10] >=1 && cardList[11] >=1 ){
     			flag = true;
     		}
-    		else if(cardIndex == 10 && ((avatarVO.getPaiArray()[0][9] >=1 && avatarVO.getPaiArray()[0][11] >=1) 
-    				|| (avatarVO.getPaiArray()[0][11] >=1 && avatarVO.getPaiArray()[0][12] >=1))){
+    		else if(cardIndex == 10 && ((cardList[9] >=1 && cardList[11] >=1) 
+    				|| (cardList[11] >=1 && cardList[12] >=1))){
     			flag = true;
     		}
-    		else if(cardIndex ==17 && avatarVO.getPaiArray()[0][16] >=1 && avatarVO.getPaiArray()[0][15] >=1){
+    		else if(cardIndex ==17 && cardList[16] >=1 && cardList[15] >=1){
     			flag = true;
     		}
-    		else if(cardIndex ==16 && ((avatarVO.getPaiArray()[0][15] >=1 && avatarVO.getPaiArray()[0][17] >=1)
-    				|| (avatarVO.getPaiArray()[0][14] >=1 && avatarVO.getPaiArray()[0][15] >=1))){
+    		else if(cardIndex ==16 && ((cardList[15] >=1 && cardList[17] >=1)
+    				|| (cardList[14] >=1 && cardList[15] >=1))){
     			flag = true;
     		}
     		else if(cardIndex >=11 && cardIndex <= 15){
-    		  if((avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex+1] >=1)
-    				|| (avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex-2] >=1) 
-    				|| (avatarVO.getPaiArray()[0][cardIndex+1] >=1 && avatarVO.getPaiArray()[0][cardIndex+2] >=1)){
+    		  if((cardList[cardIndex-1] >=1 && cardList[cardIndex+1] >=1)
+    				|| (cardList[cardIndex-1] >=1 && cardList[cardIndex-2] >=1) 
+    				|| (cardList[cardIndex+1] >=1 && cardList[cardIndex+2] >=1)){
     			flag = true;
     		  }
     		}
     	}
     	else if(cardIndex>=18 && cardIndex <=27){
-    		if(cardIndex == 18 && avatarVO.getPaiArray()[0][19] >=1 && avatarVO.getPaiArray()[0][20] >=1 ){
+    		if(cardIndex == 18 && cardList[19] >=1 && cardList[20] >=1 ){
     			flag = true;
     		}
-    		else if(cardIndex == 19 && ((avatarVO.getPaiArray()[0][18] >=1 && avatarVO.getPaiArray()[0][20] >=1) 
-    				|| (avatarVO.getPaiArray()[0][20] >=1 && avatarVO.getPaiArray()[0][21] >=1))){
+    		else if(cardIndex == 19 && ((cardList[18] >=1 && cardList[20] >=1) 
+    				|| (cardList[20] >=1 && cardList[21] >=1))){
     			flag = true;
     		}
-    		else if(cardIndex ==27 && avatarVO.getPaiArray()[0][26] >=1 && avatarVO.getPaiArray()[0][25] >=1){
+    		else if(cardIndex ==27 && cardList[26] >=1 && cardList[25] >=1){
     			flag = true;
     		}
-    		else if(cardIndex ==26 && ((avatarVO.getPaiArray()[0][25] >=1 && avatarVO.getPaiArray()[0][27] >=1)
-    				|| (avatarVO.getPaiArray()[0][24] >=1 && avatarVO.getPaiArray()[0][25] >=1))){
+    		else if(cardIndex ==26 && ((cardList[25] >=1 && cardList[27] >=1)
+    				|| (cardList[24] >=1 && cardList[25] >=1))){
     			flag = true;
     		}
     		else if(cardIndex >=20 && cardIndex <= 25){
-	    		 if((avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex+1] >=1)
-	    			|| (avatarVO.getPaiArray()[0][cardIndex-1] >=1 && avatarVO.getPaiArray()[0][cardIndex-2] >=1) 
-	    			|| (avatarVO.getPaiArray()[0][cardIndex+1] >=1 && avatarVO.getPaiArray()[0][cardIndex+2] >=1)){
+	    		 if((cardList[cardIndex-1] >=1 && cardList[cardIndex+1] >=1)
+	    			|| (cardList[cardIndex-1] >=1 && cardList[cardIndex-2] >=1) 
+	    			|| (cardList[cardIndex+1] >=1 && cardList[cardIndex+2] >=1)){
 	    			 flag = true;
     		  } 
     		}

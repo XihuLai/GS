@@ -21,7 +21,7 @@ public class PickCardMsgProcessor extends MsgProcessor implements
         
     	
     	RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
-        if(roomLogic != null){
+        if(roomLogic != null ){
             roomLogic.pickCard();
         }else{
             gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000005));

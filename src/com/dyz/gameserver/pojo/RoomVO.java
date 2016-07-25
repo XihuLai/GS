@@ -37,7 +37,7 @@ public class RoomVO {
      */
     private int ziMo;
     /**
-     * 下鱼
+     * 下鱼(漂)(0--10)
      */
     private int xiaYu;
     /**

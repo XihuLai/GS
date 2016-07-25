@@ -17,15 +17,10 @@ public class OtherGangResponse extends ServerResponse {
      * @param avatarId
      * @param cardPoint
      */
-    public OtherGangResponse(int status,int tempPoint,int nextPoint,int avatarId,int type) {
+    public OtherGangResponse(int status,int cardPoint,int avatarId,int type) {
         super(status, ConnectAPI.OTHER_GANGPAI_NOICE);
         JSONObject jsonObject = new JSONObject();
-        if(tempPoint != 100){
-       	 	jsonObject.put("cardPoint",tempPoint);
-        }
-        if(nextPoint != 100){
-        	jsonObject.put("nextPoint",nextPoint);
-        }
+        jsonObject.put("cardPoint",cardPoint);
         jsonObject.put("avatarId",avatarId);
         jsonObject.put("type",type);
         try {

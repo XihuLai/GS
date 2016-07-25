@@ -1,6 +1,7 @@
 package com.dyz.gameserver.commons.session;
 
 import com.dyz.gameserver.commons.message.ResponseMsg;
+import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.gameserver.sprite.base.GameObj;
 import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.session.AttributeKey;
@@ -55,8 +56,9 @@ public class GameSession implements GameObj {
 	 * 发送消息给客户端
 	 * @param msg
 	 * @return
+	 * @throws InterruptedException 
 	 */
-	public WriteFuture sendMsg(ResponseMsg msg) {
+	public WriteFuture sendMsg(ResponseMsg msg)  {
 		if (session == null || !session.isConnected() || session.isClosing()) {
 			return null;
 		}
@@ -111,6 +113,9 @@ public class GameSession implements GameObj {
 		if(session != null && session.isConnected()) {
 			session.close(false);
 			System.out.println("关闭SESSION -- >  session.close(false);");
+			//关闭session的时候 如果用户还在房间，则踢出用户
+			
+			
 		}
 	}
 

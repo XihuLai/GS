@@ -5,6 +5,7 @@ import com.dyz.gameserver.msg.processor.chi.ChiMsgProcessor;
 import com.dyz.gameserver.msg.processor.chupai.ChuPaiMsgProcessor;
 import com.dyz.gameserver.msg.processor.createroom.CreateRoomMsgProcssor;
 import com.dyz.gameserver.msg.processor.gang.GangMsgProcessor;
+import com.dyz.gameserver.msg.processor.hu.HuPaiMsgProcessor;
 import com.dyz.gameserver.msg.processor.joinroom.JoinRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.LoginMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.OpenAppMsgProcessor;
@@ -44,7 +45,11 @@ public enum MsgProcessorRegister {
 	/**碰牌*/
 	gangPai(ConnectAPI.GANGPAI_REQUEST,new GangMsgProcessor()),
 	/**放弃操作*/
-	gaveUp(ConnectAPI.GAVEUP_REQUEST,new GaveUpMsgProcessor());
+	gaveUp(ConnectAPI.GAVEUP_REQUEST,new GaveUpMsgProcessor()),
+	/***/
+	hupai(ConnectAPI.HUPAI_REQUEST,new HuPaiMsgProcessor()),
+	/**与前段握手*/
+	SuccessRerunMsg(ConnectAPI.SUCCESS_RETURN_MSG,new SuccessReturnMsgProcessor());
 
 	private int msgCode;
 	private MsgProcessor processor;
