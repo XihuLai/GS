@@ -25,9 +25,12 @@ public class PickCardResponse extends ServerResponse {
         if(status >0){
             try {
                 output.writeUTF(JsonUtilTool.toJson(cardVO));
+                output.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            } finally {
+           	 output.close();
+			}
         }
         //entireMsg();
     }

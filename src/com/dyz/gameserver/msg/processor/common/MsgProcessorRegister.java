@@ -10,10 +10,12 @@ import com.dyz.gameserver.msg.processor.joinroom.JoinRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.LoginMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.OpenAppMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.SignUpMsgProcessor;
+import com.dyz.gameserver.msg.processor.outroom.DissolveRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.outroom.OutRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.pass.GaveUpMsgProcessor;
 import com.dyz.gameserver.msg.processor.peng.PengMsgProcessor;
 import com.dyz.gameserver.msg.processor.pickcard.PickCardMsgProcessor;
+import com.dyz.gameserver.msg.processor.startgame.PrepareGameMSGProcessor;
 
 
 /**
@@ -38,6 +40,8 @@ public enum MsgProcessorRegister {
 	chuPai(ConnectAPI.CHUPAI_REQUEST,new ChuPaiMsgProcessor()),
 	/**退出房间*/
 	outRoom(ConnectAPI.OUT_ROOM_REQUEST,new OutRoomMsgProcessor()),
+	/**申请解散房间*/
+	dissolveRoom(ConnectAPI.DISSOLVE_ROOM_REQUEST,new DissolveRoomMsgProcessor()),
 	/**吃牌*/
 	chiPai(ConnectAPI.CHIPAI_REQUEST,new ChiMsgProcessor()),
 	/**碰牌*/
@@ -46,11 +50,14 @@ public enum MsgProcessorRegister {
 	gangPai(ConnectAPI.GANGPAI_REQUEST,new GangMsgProcessor()),
 	/**放弃操作*/
 	gaveUp(ConnectAPI.GAVEUP_REQUEST,new GaveUpMsgProcessor()),
-	/***/
+	/*胡牌**/
 	hupai(ConnectAPI.HUPAI_REQUEST,new HuPaiMsgProcessor()),
 	/**与前段握手*/
-	SuccessRerunMsg(ConnectAPI.SUCCESS_RETURN_MSG,new SuccessReturnMsgProcessor());
-
+	successRerunMsg(ConnectAPI.SUCCESS_RETURN_MSG,new SuccessReturnMsgProcessor()),
+	/**游戏开始前准备*/
+	prepareGame(ConnectAPI.PrepareGame_MSG,new PrepareGameMSGProcessor());
+	
+	
 	private int msgCode;
 	private MsgProcessor processor;
 

@@ -24,7 +24,9 @@ public class JoinRoomNoice extends ServerResponse {
                 output.writeUTF(JsonUtilTool.toJson(avatarVO));
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            } finally {
+           	 output.close();
+			}
         }
        // entireMsg();
     }

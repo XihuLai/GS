@@ -34,7 +34,7 @@ public class CreateRoomMsgProcssor extends MsgProcessor implements
                     if(avatar.avatarVO.getRoomId() == 0) {
                         RoomManager.getInstance().createRoom(avatar,roomVO);
                         avatar.updateRoomCard(-1);
-                        System.out.println("房间创建成功"+roomVO.getMa()+"--"+roomVO.getName()+"-- roomId:"+roomVO.getRoomId());
+                        System.out.println("房间创建成功-- roomId:"+roomVO.getRoomId());
                         gameSession.sendMsg(new CreateRoomResponse(1,roomVO.getRoomId()+""));
                     }else{
                         System.out.println("你已经在房间里了，不能再创建房间");

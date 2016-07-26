@@ -42,7 +42,9 @@ public class GangResponse extends ServerResponse {
                 output.writeUTF(JsonUtilTool.toJson(gangBackVO));
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            } finally {
+           	 output.close();
+			}
         }
        // entireMsg();
     }

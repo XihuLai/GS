@@ -219,7 +219,6 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkPeng(int cardIndex){
-    	//
         if(avatarVO.currentCardList[0][cardIndex] >= 2){
             return true;
         }
@@ -232,7 +231,6 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkGang(int cardIndex){
-    	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
         if(avatarVO.currentCardList[0][cardIndex] == 3){
             return true;
         }
@@ -246,7 +244,7 @@ public class Avatar implements GameObj {
     public boolean checkGang(){
     	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
         boolean result = false;
-        int [] paiList = avatarVO.currentCardList[0];
+        int [] paiList = avatarVO.getPaiArray()[0];
         for (int i : paiList) {
         		if(i == 4){
         			result = true;
@@ -364,14 +362,14 @@ public class Avatar implements GameObj {
     public void pullCardFormList(int cardIndex){
         if(avatarVO.getPaiArray()[0][cardIndex]>0) {
             avatarVO.getPaiArray()[0][cardIndex]--;
-        }else{
+        }else{/*
             try {
                 session.sendMsg(new ErrorResponse(ErrorCode.Error_000007));
             } catch (IOException e) {
                 e.printStackTrace();
             }
             System.out.println("Error : pullCardFormList --> 牌数组里没有这张牌");
-        }
+        */}
     }
 
     /**

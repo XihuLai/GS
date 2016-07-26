@@ -9,4 +9,5 @@ package com.dyz.gameserver.gamerecord;
 public class GameRecord {
 
 	
+	
 }

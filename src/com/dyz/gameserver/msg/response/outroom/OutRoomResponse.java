@@ -9,13 +9,15 @@ import java.io.IOException;
 
 public class OutRoomResponse extends ServerResponse {
 
-	public OutRoomResponse(int status,RoomVO roomVO) {
+	public OutRoomResponse(int status,String str) {
 		super(status,ConnectAPI.OUT_ROOM_RESPONSE);
 		if(status>0){
 			try {
-				output.writeUTF(JsonUtilTool.toJson(roomVO));
+				output.writeUTF(str);
 			} catch (IOException e) {
 				e.printStackTrace();
+			} finally {
+           	 output.close();
 			}
 		}
 		//entireMsg();

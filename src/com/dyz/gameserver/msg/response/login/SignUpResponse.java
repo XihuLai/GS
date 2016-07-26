@@ -13,6 +13,8 @@ public class SignUpResponse extends ServerResponse{
 			output.writeBoolean(isSuccess);
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+       	 output.close();
 		}
 	}
 

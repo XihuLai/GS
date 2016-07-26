@@ -126,6 +126,7 @@ public class MsgBodyWrap {
 		}
 		if (out != null) {
 			try {
+				out.flush();
 				out.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -140,6 +141,7 @@ public class MsgBodyWrap {
 		}
 		if (dataOut != null) {
 			try {
+				out.flush();
 				dataOut.close();
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -25,6 +25,9 @@ public class ChiResponse extends ServerResponse {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            finally {
+            	 output.close();
+			}
         }
         //entireMsg();
     }

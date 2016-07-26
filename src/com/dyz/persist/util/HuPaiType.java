@@ -212,34 +212,33 @@ public class HuPaiType {
 				if(avatar.getRoomVO().getSevenDouble() && checkQiDui(paiList)){
 					if(str != null){
 						//七小队对
-						str = str +"-"+0+Rule.Hu_zi_qixiaodui;
+						str = str +"-"+0+Rule.Hu_self_qixiaodui;
 					}
 					else{
-						str = Rule.Hu_zi_qixiaodui;
+						str = Rule.Hu_self_qixiaodui;
 					}
 				}
 				if(str == null){
-					str = "0:"+Rule.Hu_zi_common;
+					//str = "0:"+Rule.Hu_zi_common;
 				}
 			}
 			else{
 				//点炮类型
-				//自摸类型
 				if(checkQingyise(paiList)){
 					//清一色
-					str = uuid+":"+Rule.Hu_zi_qingyise;
+					str = uuid+":"+Rule.Hu_d_qingyise;
 				}
 				if(avatar.getRoomVO().getSevenDouble() && checkQiDui(paiList)){
 					if(str != null){
 						//七小队对
-						str = str +"-"+uuid+":"+Rule.Hu_zi_qixiaodui;
+						str = str +"-"+uuid+":"+Rule.Hu_other_qixiaodui;
 					}
 					else{
-						str = uuid+":"+Rule.Hu_zi_qixiaodui;
+						str = uuid+":"+Rule.Hu_other_qixiaodui;
 					}
 				}
 				if(str == null){
-					str =uuid+":"+Rule.Hu_zi_common;
+					//str =uuid+":"+Rule.Hu_zi_common;
 				}
 			}
 		 

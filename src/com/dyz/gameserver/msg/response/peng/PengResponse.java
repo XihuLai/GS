@@ -28,7 +28,9 @@ public class PengResponse extends ServerResponse {
                 output.writeUTF(jsonObject.toString());
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            } finally {
+           	 output.close();
+			}
         }
         //entireMsg();
     }

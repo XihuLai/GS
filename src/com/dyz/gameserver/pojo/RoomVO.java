@@ -60,25 +60,23 @@ public class RoomVO {
      * 第二个key：1:自摸(zimo) value次数，2:接炮(jiepao) value次数,3:点炮(dianpao)value次数,
      * 4:明杠(minggang)value次数，5:暗杠(angang) value次数 , 6: 总成绩(scores)  value分数
      */
-    private Map<Integer , Map<String,Integer>> endStatistics;
+    private Map<Integer , Map<String,Integer>> endStatistics = new HashMap<Integer, Map<String,Integer>>();
     
 	public Map<Integer, Map<String, Integer>> updateEndStatistics(Integer uuid , String type ,int roundScore) {
-    	if(endStatistics == null){
-    		this.endStatistics = new HashMap<Integer, Map<String,Integer>>();
-    		Map<String,Integer > map = new HashMap<String , Integer>();
-    		map.put(type,roundScore);
-    		this.endStatistics.put(uuid, map);
-    	}
-    	else{
-    		Map<String,Integer > map = new HashMap<String , Integer>();
     		if(endStatistics.get(uuid) == null){
+    			Map<String,Integer > map = new HashMap<String , Integer>();
         		map.put(type,roundScore);
         		endStatistics.put(uuid, map);
     		}
     		else{
-    			endStatistics.get(uuid).put(type, endStatistics.get(uuid).get(type)+1);
+    			if(endStatistics.get(uuid).get(type) != null){
+    				endStatistics.get(uuid).put(type, endStatistics.get(uuid).get(type)+roundScore);
+    			}
+    			else{
+    				endStatistics.get(uuid).put(type, roundScore);
+    			}
     		}
-    	}
+    	
 		return endStatistics;
 	}
 

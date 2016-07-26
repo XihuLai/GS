@@ -20,6 +20,8 @@ public class LoginResponse extends ServerResponse{
 			//entireMsg();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+       	 output.close();
 		}
 	}
 

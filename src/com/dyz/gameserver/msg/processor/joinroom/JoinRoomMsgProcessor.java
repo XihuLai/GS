@@ -28,24 +28,15 @@ public class JoinRoomMsgProcessor extends MsgProcessor implements
 				if (roomLogic != null) {
 					boolean joinResult = roomLogic.intoRoom(avatar);
 					if(joinResult) {
-						/*
-						 * gameSession.sendMsg(new JoinRoomResponse(1, roomLogic.getRoomVO()));
-						 *人数不够四个时对所有玩家的通知已经在RoomLogic的sendJoinMess方法里面发送
-						 *人数达到4个时，直接开始游戏，在RoomLogic里面操作
-						 * 
-						 */
 						System.out.println("加入房间成功");
 					}else{
-						//消息已经在roomLogic的intoRoom方法里面发送
 						System.out.println("加入房间失败");
 					}
 				} else {
 					System.out.println("房间号有误");
-					//gameSession.sendMsg(new JoinRoomResponse(0,ErrorCode.Error_000012));
 				}
 			}else{
 				System.out.println("账户未登录或已经掉线!");
-				//gameSession.sendMsg(new JoinRoomResponse(0,ErrorCode.Error_000002));
 			}
 			System.out.println("roomId --> " + roomId);
 		}

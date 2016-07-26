@@ -15,10 +15,10 @@ import com.dyz.gameserver.msg.response.ErrorResponse;
  * @author luck
  *
  */
-public class PrepareGameProcessor extends MsgProcessor implements
+public class PrepareGameMSGProcessor extends MsgProcessor implements
 		INotAuthProcessor {
 
-	public PrepareGameProcessor() {
+	public PrepareGameMSGProcessor() {
 	}
 
 	@Override

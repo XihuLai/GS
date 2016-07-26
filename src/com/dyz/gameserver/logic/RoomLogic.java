@@ -1,21 +1,26 @@
 package com.dyz.gameserver.logic;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import com.alibaba.fastjson.JSONObject;
 import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
+import com.dyz.gameserver.msg.processor.outroom.DissolveRoomMsgProcessor;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.joinroom.JoinRoomNoice;
 import com.dyz.gameserver.msg.response.joinroom.JoinRoomResponse;
+import com.dyz.gameserver.msg.response.outroom.DissolveRoomResponse;
 import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
 import com.dyz.gameserver.msg.response.startgame.PrepareGameResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.HuReturnObjectVO;
 import com.dyz.gameserver.pojo.RoomVO;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -27,6 +32,8 @@ public class RoomLogic {
     private  Avatar createAvator;
     private RoomVO roomVO;
     private PlayCardsLogic playCardsLogic;
+    private int dissolveCount = 0;//同意解散房间的人数
+    
     
     /**
      * 房间属性 1-为普通房间
@@ -45,6 +52,7 @@ public class RoomLogic {
         count = roomVO.getRoundNumber();
     }
 
+    
     /**
      * 创建房间,默认进入装备状态
      * @param avatar
@@ -135,23 +143,82 @@ public class RoomLogic {
      * 退出房间
      * @param avatar
      */
-    public void exitRoom(Avatar avatar){
+    public void exitRoom(Avatar avatar , int roomId){
+    	
         avatar.avatarVO.setRoomId(0);
+        avatar.setRoomVO(new RoomVO());
         playerList.remove(avatar);
         roomVO.getPlayerList().remove(avatar.avatarVO);
+        
+        JSONObject json = new JSONObject();
+//		accountName:”名字”//退出房间玩家的名字(为空则表示是通知的自己)
+//		status_code:”0”//”0”退出成功，”1” 退出失败
+//		mess：”消息”
+        json.put("accountName", avatar.avatarVO.getAccount().getNickname());
+        json.put("status_code", "0");
+        json.put("uuid", avatar.getUuId());
         for (Avatar ava : playerList) {
 			//通知房间里面的其他玩家
-        	ava.getSession().sendMsg(new OutRoomResponse(1, roomVO));
+        	ava.getSession().sendMsg(new OutRoomResponse(1, json.toString()));
 		}
     }
 
     /**
-     * 销毁房间
+     * 申请解散房间
      */
-    public void destoryRoom(){
-
-    	
-    	
+    public void dissolveRoom(Avatar avatar , int roomId , String type){
+    	//向其他三家发送解散房间信息
+    	JSONObject json;
+    	if(type.equals("0")){
+    		dissolveCount++;
+    		json = new JSONObject();
+    		json.put("type", "0");
+    		json.put("uuid", avatar.getUuId());
+    		json.put("accountName", avatar.avatarVO.getAccount().getNickname());
+    		//申请解散房间
+    		for (Avatar ava : playerList) {
+    			if(ava.getUuId() != avatar.getUuId()){
+    				ava.getSession().sendMsg(new DissolveRoomResponse(roomId, null));
+    			}
+    		}
+    	}
+    	else if(type.equals("2")){
+    		json = new JSONObject();
+    		json.put("type", "2");
+    		json.put("uuid", avatar.getUuId());
+    		json.put("accountName", avatar.avatarVO.getAccount().getNickname());
+    		//拒绝解散房间，向其他玩家发送消息
+    		for (Avatar ava : playerList) {
+    			if(ava.getUuId() != avatar.getUuId()){
+    				ava.getSession().sendMsg(new DissolveRoomResponse(roomId, null));
+    			}
+    		}
+    	}
+    	else{
+    		//同意解散房间
+    		dissolveCount++;
+    	}
+    	//下面是判断是否所有人都同意解散房间
+    	int onlineCount = 0;
+    	for (Avatar avat : playerList) {
+			if(avat.avatarVO.getIsOnLine()){
+				onlineCount++;
+			}
+		}
+    	if(onlineCount == dissolveCount){
+    		json = new JSONObject();
+    		json.put("type", "1");
+    		//所有人都同意了解散房间
+    		for (Avatar avat : playerList) {
+    			avat.getSession().sendMsg(new DissolveRoomResponse(1, json.toString()));
+    		}
+    		for (Avatar av : playerList) {
+    			 av.avatarVO.setRoomId(0);
+    			 av.setRoomVO(new RoomVO());
+    		     playerList.remove(av);
+    		     roomVO.getPlayerList().remove(av.avatarVO);
+			}
+    	}
     }
     /**
      * 玩家选择放弃操作
@@ -173,7 +240,8 @@ public class RoomLogic {
     /**
      * 摸牌
      */
-    public void pickCard( ){
+    public void pickCard(){
+    	
         playCardsLogic.pickCard();
     }
     /**
@@ -250,6 +318,11 @@ public class RoomLogic {
 	        playCardsLogic = new PlayCardsLogic();
 	        playCardsLogic.setPlayerList(playerList);
 	        playCardsLogic.initCard(roomVO);
+	        
+	        //创建房间信息，游戏记录信息
+			//RoomInfoService.getInstance().createRoomInfo(roomVO);
+					
+	        
 	       /* int count = 0;
 	        if(roomVO.getRoomType() ==1){
 	        	//划水麻将，发了牌之后剩余的牌数量
@@ -272,7 +345,6 @@ public class RoomLogic {
 	        for(int i=0;i<playerList.size();i++){
 	        	//清除各种数据  1：本局胡牌时返回信息组成对象 ，
 	        	playerList.get(i).avatarVO.setHuReturnObjectVO(new HuReturnObjectVO());
-	        	//playerList.get(i).avatarVO.setCanHu(true);
 	        	playerList.get(i).huQuest = true;
 	            playerList.get(i).getSession().sendMsg(new PrepareGameResponse(1,playerList.get(i).avatarVO.getPaiArray(),playerList.indexOf(playCardsLogic.bankerAvatar)));
 	        }
@@ -286,7 +358,23 @@ public class RoomLogic {
     public void shakeHandsMsg(Avatar avatar){
     	playCardsLogic.shakeHandsMsg(avatar);
     }
-    
+    /**
+     * 开始下一局前，玩家准备
+     * @param avatar
+     */
+    public void readyNext(Avatar avatar){
+    	playerList.get(playerList.indexOf(avatar)).avatarVO.setIsReady(true);
+    	int hasReady = 0;
+    	for (Avatar ava : playerList) {
+			if(ava.avatarVO.getIsReady()){
+				hasReady++;
+			}
+		}
+    	if(hasReady == 4){
+    		//如果四家人都准备好了
+    		startGameRound();
+    	}
+    }
     
 
     public RoomVO getRoomVO() {

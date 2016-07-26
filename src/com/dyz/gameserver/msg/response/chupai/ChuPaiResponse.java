@@ -26,7 +26,9 @@ public class ChuPaiResponse extends ServerResponse {
                 output.writeUTF(json.toString());
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            } finally {
+           	 output.close();
+			}
         }
        // entireMsg();
     }

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weipai.mapper.RoomInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.weipai.model.RoomInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gameType" property="gametype" jdbcType="CHAR" />
+    <result column="isHong" property="ishong" jdbcType="CHAR" />
+    <result column="roomid" property="roomid" jdbcType="INTEGER" />
+    <result column="sevenDouble" property="sevendouble" jdbcType="CHAR" />
+    <result column="ma" property="ma" jdbcType="INTEGER" />
+    <result column="zimo" property="zimo" jdbcType="CHAR" />
+    <result column="xiayu" property="xiayu" jdbcType="INTEGER" />
+    <result column="addWordCard" property="addwordcard" jdbcType="CHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, gameType, isHong, roomid, sevenDouble, ma, zimo, xiayu, addWordCard, name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from roominfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from roominfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.weipai.model.RoomInfo" useGeneratedKeys="true"  keyColumn="id">
+    insert into roominfo (id, gameType, isHong, 
+      roomid, sevenDouble, ma, 
+      zimo, xiayu, addWordCard, 
+      name)
+    values (#{id,jdbcType=INTEGER}, #{gametype,jdbcType=CHAR}, #{ishong,jdbcType=CHAR}, 
+      #{roomid,jdbcType=INTEGER}, #{sevendouble,jdbcType=CHAR}, #{ma,jdbcType=INTEGER}, 
+      #{zimo,jdbcType=CHAR}, #{xiayu,jdbcType=INTEGER}, #{addwordcard,jdbcType=CHAR}, 
+      #{name,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.weipai.model.RoomInfo" >
+    insert into roominfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gametype != null" >
+        gameType,
+      </if>
+      <if test="ishong != null" >
+        isHong,
+      </if>
+      <if test="roomid != null" >
+        roomid,
+      </if>
+      <if test="sevendouble != null" >
+        sevenDouble,
+      </if>
+      <if test="ma != null" >
+        ma,
+      </if>
+      <if test="zimo != null" >
+        zimo,
+      </if>
+      <if test="xiayu != null" >
+        xiayu,
+      </if>
+      <if test="addwordcard != null" >
+        addWordCard,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gametype != null" >
+        #{gametype,jdbcType=CHAR},
+      </if>
+      <if test="ishong != null" >
+        #{ishong,jdbcType=CHAR},
+      </if>
+      <if test="roomid != null" >
+        #{roomid,jdbcType=INTEGER},
+      </if>
+      <if test="sevendouble != null" >
+        #{sevendouble,jdbcType=CHAR},
+      </if>
+      <if test="ma != null" >
+        #{ma,jdbcType=INTEGER},
+      </if>
+      <if test="zimo != null" >
+        #{zimo,jdbcType=CHAR},
+      </if>
+      <if test="xiayu != null" >
+        #{xiayu,jdbcType=INTEGER},
+      </if>
+      <if test="addwordcard != null" >
+        #{addwordcard,jdbcType=CHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.weipai.model.RoomInfo" >
+    update roominfo
+    <set >
+      <if test="gametype != null" >
+        gameType = #{gametype,jdbcType=CHAR},
+      </if>
+      <if test="ishong != null" >
+        isHong = #{ishong,jdbcType=CHAR},
+      </if>
+      <if test="roomid != null" >
+        roomid = #{roomid,jdbcType=INTEGER},
+      </if>
+      <if test="sevendouble != null" >
+        sevenDouble = #{sevendouble,jdbcType=CHAR},
+      </if>
+      <if test="ma != null" >
+        ma = #{ma,jdbcType=INTEGER},
+      </if>
+      <if test="zimo != null" >
+        zimo = #{zimo,jdbcType=CHAR},
+      </if>
+      <if test="xiayu != null" >
+        xiayu = #{xiayu,jdbcType=INTEGER},
+      </if>
+      <if test="addwordcard != null" >
+        addWordCard = #{addwordcard,jdbcType=CHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.weipai.model.RoomInfo" >
+    update roominfo
+    set gameType = #{gametype,jdbcType=CHAR},
+      isHong = #{ishong,jdbcType=CHAR},
+      roomid = #{roomid,jdbcType=INTEGER},
+      sevenDouble = #{sevendouble,jdbcType=CHAR},
+      ma = #{ma,jdbcType=INTEGER},
+      zimo = #{zimo,jdbcType=CHAR},
+      xiayu = #{xiayu,jdbcType=INTEGER},
+      addWordCard = #{addwordcard,jdbcType=CHAR},
+      name = #{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -31,8 +31,8 @@ public class Rule {
     public static String Hu_zi_qingyise = "zi_qingyise";//自摸清一色
     public static String Hu_haidilao = "haidilao";
     public static String Hu_haidipao = "haidipao";
-    public static String Hu_zi_qixiaodui = "qixiaodui";
-    public static String Hu_z_qixiaodui = "qixiaodui";
+    public static String Hu_self_qixiaodui = "self_qixiaodui";
+    public static String Hu_other_qixiaodui = "other_qixiaodui";
     public static String Hu_gangshangpao = "gangshangpao";
     public static String Hu_gangshanghua = "gangshanghua";
     public static String Hu_tian = "tian";

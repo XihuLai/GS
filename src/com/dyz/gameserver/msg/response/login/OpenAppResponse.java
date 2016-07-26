@@ -20,6 +20,8 @@ public class OpenAppResponse extends ServerResponse{
 		} catch (IOException e) {
 			
 			e.printStackTrace();
+		} finally {
+       	 output.close();
 		}
 	}
 }

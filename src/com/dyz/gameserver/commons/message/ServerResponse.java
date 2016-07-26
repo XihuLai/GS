@@ -29,7 +29,7 @@ public class ServerResponse implements ResponseMsg {
 		msgCode = code;
 	}
 
-	public IoBuffer entireMsg() {
+	public synchronized IoBuffer entireMsg() {
 		
 			byte[] body = output.toByteArray();
 			/* 标志 byte 长度short */
@@ -47,9 +47,10 @@ public class ServerResponse implements ResponseMsg {
 	/**
 	 * 释放资源(数据流、对象引用)
 	 */
-	public void release() {
+	public synchronized void release() {
 		if (output != null) {
 			output.close();
+			output = null;
 		}
 		output = null;
 	}

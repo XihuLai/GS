@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weipai.mapper.GameRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.weipai.model.GameRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="game_id" property="gameId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="cardIndex" property="cardindex" jdbcType="VARCHAR" />
+    <result column="acountindex_id" property="acountindexId" jdbcType="INTEGER" />
+    <result column="curentTime" property="curenttime" jdbcType="TIMESTAMP" />
+    <result column="playerList_one" property="playerlistOne" jdbcType="VARCHAR" />
+    <result column="playerList_two" property="playerlistTwo" jdbcType="VARCHAR" />
+    <result column="playerList_three" property="playerlistThree" jdbcType="VARCHAR" />
+    <result column="playerList_four" property="playerlistFour" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, game_id, type, cardIndex, acountindex_id, curentTime, playerList_one, playerList_two, 
+    playerList_three, playerList_four, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from gamerecord
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from gamerecord
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.weipai.model.GameRecord" >
+    insert into gamerecord (id, game_id, type, 
+      cardIndex, acountindex_id, curentTime, 
+      playerList_one, playerList_two, playerList_three, 
+      playerList_four, status)
+    values (#{id,jdbcType=INTEGER}, #{gameId,jdbcType=INTEGER}, #{type,jdbcType=CHAR}, 
+      #{cardindex,jdbcType=VARCHAR}, #{acountindexId,jdbcType=INTEGER}, #{curenttime,jdbcType=TIMESTAMP}, 
+      #{playerlistOne,jdbcType=VARCHAR}, #{playerlistTwo,jdbcType=VARCHAR}, #{playerlistThree,jdbcType=VARCHAR}, 
+      #{playerlistFour,jdbcType=VARCHAR}, #{status,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.weipai.model.GameRecord" >
+    insert into gamerecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gameId != null" >
+        game_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="cardindex != null" >
+        cardIndex,
+      </if>
+      <if test="acountindexId != null" >
+        acountindex_id,
+      </if>
+      <if test="curenttime != null" >
+        curentTime,
+      </if>
+      <if test="playerlistOne != null" >
+        playerList_one,
+      </if>
+      <if test="playerlistTwo != null" >
+        playerList_two,
+      </if>
+      <if test="playerlistThree != null" >
+        playerList_three,
+      </if>
+      <if test="playerlistFour != null" >
+        playerList_four,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gameId != null" >
+        #{gameId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="cardindex != null" >
+        #{cardindex,jdbcType=VARCHAR},
+      </if>
+      <if test="acountindexId != null" >
+        #{acountindexId,jdbcType=INTEGER},
+      </if>
+      <if test="curenttime != null" >
+        #{curenttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="playerlistOne != null" >
+        #{playerlistOne,jdbcType=VARCHAR},
+      </if>
+      <if test="playerlistTwo != null" >
+        #{playerlistTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="playerlistThree != null" >
+        #{playerlistThree,jdbcType=VARCHAR},
+      </if>
+      <if test="playerlistFour != null" >
+        #{playerlistFour,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.weipai.model.GameRecord" >
+    update gamerecord
+    <set >
+      <if test="gameId != null" >
+        game_id = #{gameId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="cardindex != null" >
+        cardIndex = #{cardindex,jdbcType=VARCHAR},
+      </if>
+      <if test="acountindexId != null" >
+        acountindex_id = #{acountindexId,jdbcType=INTEGER},
+      </if>
+      <if test="curenttime != null" >
+        curentTime = #{curenttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="playerlistOne != null" >
+        playerList_one = #{playerlistOne,jdbcType=VARCHAR},
+      </if>
+      <if test="playerlistTwo != null" >
+        playerList_two = #{playerlistTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="playerlistThree != null" >
+        playerList_three = #{playerlistThree,jdbcType=VARCHAR},
+      </if>
+      <if test="playerlistFour != null" >
+        playerList_four = #{playerlistFour,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.weipai.model.GameRecord" >
+    update gamerecord
+    set game_id = #{gameId,jdbcType=INTEGER},
+      type = #{type,jdbcType=CHAR},
+      cardIndex = #{cardindex,jdbcType=VARCHAR},
+      acountindex_id = #{acountindexId,jdbcType=INTEGER},
+      curentTime = #{curenttime,jdbcType=TIMESTAMP},
+      playerList_one = #{playerlistOne,jdbcType=VARCHAR},
+      playerList_two = #{playerlistTwo,jdbcType=VARCHAR},
+      playerList_three = #{playerlistThree,jdbcType=VARCHAR},
+      playerList_four = #{playerlistFour,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

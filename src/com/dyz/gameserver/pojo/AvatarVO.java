@@ -55,19 +55,16 @@ public class AvatarVO {
 	}
 	
 	public void setCurrentCardList(int[][] currentCardList) {
-		this.currentCardList =getPaiArray();
+		this.currentCardList =getPaiArray().clone();
 	}
 
 	/**
-	 * 从牌的数组中踢出传入的拍的index
+	 * 从牌的数组中踢出传入的牌的index
 	 * @param cardIndex
 	 */
 	public void updateCurrentCardList(int ...cardIndex) {
-		if(currentCardList  == null){
-			this.currentCardList = getPaiArray();
-		}
 		for (int i = 0; i < cardIndex.length; i++) {
-			this.currentCardList[0][cardIndex[i]] = this.currentCardList[0][cardIndex[i]]-1;
+			this.currentCardList[0][cardIndex[i]] = currentCardList[0][cardIndex[i]]-1;
 		}
 	}
 
@@ -79,50 +76,6 @@ public class AvatarVO {
 	public void setHuReturnObjectVO(HuReturnObjectVO huReturnObjectVO) {
 		this.huReturnObjectVO = huReturnObjectVO;
 	}
-
-	/* 
-	 * 
-     * key:type:游戏自摸1，接炮2，点炮3，暗杠4，明杠5 ，胡6记录(key),
-     * value:list里面，第一个为点炮/杠/胡次数，第二个元素为点炮/杠/胡分数总和
-     *
-	 * private Map<Integer , ArrayList<Integer>> scoreRecord;
-    
-    
-    public Map<Integer, ArrayList<Integer>> getScoreRecord() {
-		return scoreRecord;
-	}
-    *//**
-     *  游戏碰1，杠2，吃3，胡4记录(key),
-     * @param type 类型 
-     * @param score 分数
-     *//*
-	public synchronized void updateScoreRecord(int type , int score) {
-		if(scoreRecord == null){
-			scoreRecord = new HashMap<Integer, ArrayList<Integer>>();
-		}
-		ArrayList<Integer> list = scoreRecord.get(type);
-		if(list == null){
-			list = new ArrayList<Integer>();
-			list.add(1);
-			list.add(score);
-		}
-		else{
-			//在原来的基础上修改信息
-			list = scoreRecord.get(type);
-			list.add(list.get(0)+1);
-			list.add(list.get(1)+score);
-		}
-		scoreRecord.put(type, list);
-	}*/
-
-	/*public boolean isCanHu() {
-		return canHu;
-	}
-
-	public void setCanHu(boolean canHu) {
-		this.canHu = canHu;
-	}
-*/
 	public Account getAccount() {
         return account;
     }

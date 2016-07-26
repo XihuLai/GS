@@ -42,7 +42,7 @@ public class AccountService {
     /**
      * 创建新用户
      * @param account
-     * @return
+     * @return 插入信息表中id
      * @throws SQLException
      */
     public int createAccount(Account account) throws SQLException{

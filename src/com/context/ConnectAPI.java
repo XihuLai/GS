@@ -28,7 +28,10 @@ public class ConnectAPI {
 	public static int CREATEROOM_RESPONSE = 0x00010;
 	//开始游戏
 	public static int STARTGAME_RESPONSE = 0x00012;
-
+	//解散房间
+	public static int DISSOLVE_ROOM_REQUEST  = 0x000113;
+	public static int DISSOLVE_ROOM_RESPONSE  = 0x000114;
+	//退出房间
 	public static int OUT_ROOM_REQUEST  = 0x000013;
 	public static int OUT_ROOM_RESPONSE  = 0x000014;
 	//出牌
@@ -67,6 +70,9 @@ public class ConnectAPI {
 	
 	//后台与前段握手信息返回，(前段接收到信息自后返回，调用接口)
 	public static int SUCCESS_RETURN_MSG = 0x111111;
+	
+	//准备游戏
+	public static int PrepareGame_MSG = 0x222222;
 
 
 }

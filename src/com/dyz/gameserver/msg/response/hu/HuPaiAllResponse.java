@@ -25,7 +25,9 @@ public class HuPaiAllResponse extends ServerResponse {
                 output.writeUTF(str);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            } finally {
+           	 output.close();
+			}
         }
         //entireMsg();
     }

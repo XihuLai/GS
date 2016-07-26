@@ -50,7 +50,7 @@ public class RoomManager {
     	if(roomList.get(roomVO.getRoomId()) != null){
     		roomList.remove(roomVO.getRoomId());
     		for (Avatar avatar : avatars) {
-    			avatar.getSession().sendMsg(new OutRoomResponse(1, roomVO));
+    			//avatar.getSession().sendMsg(new OutRoomResponse(1, roomVO));
 			}
     	}
     }
