@@ -2,7 +2,6 @@ package com.dyz.gameserver.logic;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,7 +9,6 @@ import java.util.TimerTask;
 import com.alibaba.fastjson.JSONObject;
 import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
-import com.dyz.gameserver.msg.processor.outroom.DissolveRoomMsgProcessor;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.joinroom.JoinRoomNoice;
 import com.dyz.gameserver.msg.response.joinroom.JoinRoomResponse;

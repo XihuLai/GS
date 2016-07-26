@@ -23,15 +23,15 @@ import java.util.Map;
 public class Avatar implements GameObj {
     public AvatarVO avatarVO;
     //请求吃
-    public boolean chiQuest = false;
+    public boolean chiQuest = true;
     //存储吃牌的信息
     public CardVO cardVO = new CardVO();
     //请求碰
-    public boolean pengQuest = false;
+    public boolean pengQuest = true;
     //请求杠
-    public boolean gangQuest = false;
+    public boolean gangQuest = true;
     //请求胡
-    public boolean huQuest = false;
+    public boolean huQuest = true;
     
     
     

@@ -46,7 +46,7 @@ public class PlayCardsLogic {
      */
     private int curAvatarIndex;
     /**
-     * 当前出牌人的索引
+     * 当前摸牌人的索引
      */
     private int pickAvatarIndex;
     /**
@@ -223,21 +223,20 @@ public class PlayCardsLogic {
         int tempPoint = getNextCardPoint();//下一张牌的点数，及本次摸的牌点数
     	System.out.println("摸牌!--"+tempPoint);
         if(tempPoint != -1) {
-            playerList.get(nextIndex).getSession().sendMsg(new PickCardResponse(1, tempPoint));
-            System.out.println("摸牌玩家------index"+nextIndex+"名字"+playerList.get(nextIndex).avatarVO.getAccount().getNickname());
+        	 Avatar avatar = playerList.get(nextIndex);
+        	 avatar.getSession().sendMsg(new PickCardResponse(1, tempPoint));
+            System.out.println("摸牌玩家------index"+nextIndex+"名字"+avatar.avatarVO.getAccount().getNickname());
             //记录摸牌信息
             
             
             //摸牌之后就重置可否胡别人牌的标签
-            playerList.get(nextIndex).huQuest = true;
+            avatar.huQuest = true;
             for(int i=0;i<playerList.size();i++){
                 if(i != nextIndex){
                     playerList.get(i).getSession().sendMsg(new OtherPickCardResponse(1,nextIndex));
                 }
             }
             
-            Avatar avatar = playerList.get(nextIndex);
-            //curAvatarIndex = nextIndex;
             //判断自己摸上来的牌自己是否可以胡
             StringBuffer sb = new StringBuffer();
             //摸起来也要判断是否可以杠，胡
@@ -304,32 +303,32 @@ public class PlayCardsLogic {
     		if(chiAvatar.contains(avatar)){
     			chiAvatar.remove(avatar);
     		}
-    		if(huAvatar.size() == 0) {
-    			for(Avatar item : gangAvatar){
-    				if (item.gangQuest) {
-    					//进行这个玩家的杠操作，并且把后面的碰，吃数组置为0;
-    					gangCard(item,putOffCardPoint,1);
-    					clearArrayAndSetQuest();
-    					return;
-    				}
+    	}
+    	if(huAvatar.size() == 0) {
+    		for(Avatar item : gangAvatar){
+    			if (item.gangQuest) {
+    				//进行这个玩家的杠操作，并且把后面的碰，吃数组置为0;
+    				gangCard(item,putOffCardPoint,1);
+    				clearArrayAndSetQuest();
+    				return;
     			}
-    			for(Avatar item : penAvatar) {
-    				if (item.pengQuest) {
-    					//进行这个玩家的碰操作，并且把后面的吃数组置为0;
-    					pengCard(item, putOffCardPoint);
-    					clearArrayAndSetQuest();
-    					return;
-    				}
+    		}
+    		for(Avatar item : penAvatar) {
+    			if (item.pengQuest) {
+    				//进行这个玩家的碰操作，并且把后面的吃数组置为0;
+    				pengCard(item, putOffCardPoint);
+    				clearArrayAndSetQuest();
+    				return;
     			}
-    			for(Avatar item : chiAvatar){
-    				if (item.chiQuest) {
-    					//进行这个玩家的吃操作
-    					CardVO cardVo = new CardVO();
-    					cardVo.setCardPoint(putOffCardPoint);
-    					chiCard(item,cardVo);
-    					clearArrayAndSetQuest();
-    					return;
-    				}
+    		}
+    		for(Avatar item : chiAvatar){
+    			if (item.chiQuest) {
+    				//进行这个玩家的吃操作
+    				CardVO cardVo = new CardVO();
+    				cardVo.setCardPoint(putOffCardPoint);
+    				chiCard(item,cardVo);
+    				clearArrayAndSetQuest();
+    				return;
     			}
     		}
     	}
@@ -380,7 +379,9 @@ public class PlayCardsLogic {
             	StringBuffer sb = new StringBuffer();
             	//判断吃，碰， 胡 杠的时候需要把以前吃，碰，杠胡的牌踢出再计算
             	System.out.println("检测前牌数量-------"+putOffCardPoint+"------"+ava.getPaiArray()[putOffCardPoint]);
-            	if(ava.huQuest &&checkAvatarIsHuPai(ava,putOffCardPoint,"chu")){
+            	System.out.println("当前玩家状态---"+ava.huQuest);
+            	System.out.println(ava.getPaiArray());
+            	if(ava.huQuest  && checkAvatarIsHuPai(ava,putOffCardPoint,"chu")){
             		//胡牌状态为客户状态时才行
             		huAvatar.add(ava);
             		sb.append("hu,");
@@ -405,7 +406,7 @@ public class PlayCardsLogic {
             }
         }
         //如果没有吃，碰，杠，胡的情况，则下家自动摸牌
-        chuPaiCallBack(putOffCardPoint);
+        chuPaiCallBack();
     }
     
     /**
@@ -749,7 +750,7 @@ public class PlayCardsLogic {
      * @param cardPoint
      *
      */
-    private void chuPaiCallBack(int cardPoint){
+    private void chuPaiCallBack(){
     	//把出牌点数和下面该谁出牌发送会前端  下一家都还没有摸牌就要出牌了??
 
         if(checkMsgAndSend()){
