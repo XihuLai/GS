@@ -13,8 +13,8 @@ public class ChuPaiResponse extends ServerResponse {
     /**
      * 必须调用此方法设置消息号
      *
-     * @param status
-     * @param
+     * @param status  cardIndex牌点数   curAvatarIndex出牌人的索引
+     * @param 
      */
     public ChuPaiResponse(int status, int cardIndex,int curAvatarIndex) {
         super(status, ConnectAPI.CHUPAI_RESPONSE);

@@ -90,6 +90,7 @@ public class HuReturnObjectVO {
 		if(type.equals("4") || type.equals("5")){
 			//杠的总分
 			updateGangScore(score);
+			updateTotalScore(score);
 		}else{
 			//胡之后游戏总分
 			updateTotalScore(score);

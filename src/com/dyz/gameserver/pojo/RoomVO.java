@@ -34,6 +34,7 @@ public class RoomVO {
     private int ma;
     /**
      *是否自摸胡，还是可以抢杠胡
+     *0 可抢杠胡(默认)   1自摸胡
      */
     private int ziMo;
     /**

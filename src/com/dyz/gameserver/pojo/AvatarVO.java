@@ -29,7 +29,7 @@ public class AvatarVO {
     /**
      * 当前牌组，踢出掉了每次的吃，碰，杠，胡
      */
-    public int [][] currentCardList;
+   // public int [][] currentCardList;
     /**
      * 牌数组
      * 
@@ -50,23 +50,23 @@ public class AvatarVO {
     
     
 
-	public int[][] getCurrentCardList() {
-		return currentCardList;
-	}
+//	public int[][] getCurrentCardList() {
+//		return currentCardList;
+//	}
 	
-	public void setCurrentCardList(int[][] currentCardList) {
+	/*public void setCurrentCardList(int[][] currentCardList) {
 		this.currentCardList =getPaiArray().clone();
-	}
+	}*/
 
 	/**
 	 * 从牌的数组中踢出传入的牌的index
 	 * @param cardIndex
 	 */
-	public void updateCurrentCardList(int ...cardIndex) {
+	/*public void updateCurrentCardList(int ...cardIndex) {
 		for (int i = 0; i < cardIndex.length; i++) {
 			this.currentCardList[0][cardIndex[i]] = currentCardList[0][cardIndex[i]]-1;
 		}
-	}
+	}*/
 
     
    public HuReturnObjectVO getHuReturnObjectVO() {

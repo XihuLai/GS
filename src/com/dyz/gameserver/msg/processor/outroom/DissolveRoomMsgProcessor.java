@@ -8,7 +8,6 @@ import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.persist.util.GlobalUtil;
-import com.dyz.persist.util.JsonUtilTool;
 
 import net.sf.json.JSONObject;
 

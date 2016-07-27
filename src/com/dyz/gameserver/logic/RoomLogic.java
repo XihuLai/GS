@@ -143,22 +143,40 @@ public class RoomLogic {
      */
     public void exitRoom(Avatar avatar , int roomId){
     	
-        avatar.avatarVO.setRoomId(0);
-        avatar.setRoomVO(new RoomVO());
-        playerList.remove(avatar);
-        roomVO.getPlayerList().remove(avatar.avatarVO);
         
         JSONObject json = new JSONObject();
 //		accountName:”名字”//退出房间玩家的名字(为空则表示是通知的自己)
 //		status_code:”0”//”0”退出成功，”1” 退出失败
 //		mess：”消息”
+//      type："0"//1退出房间    1解散房间
         json.put("accountName", avatar.avatarVO.getAccount().getNickname());
         json.put("status_code", "0");
         json.put("uuid", avatar.getUuId());
-        for (Avatar ava : playerList) {
-			//通知房间里面的其他玩家
-        	ava.getSession().sendMsg(new OutRoomResponse(1, json.toString()));
-		}
+        
+        
+        if(avatar.avatarVO.isMain()){
+        	//群主退出房间就是解散房间
+        	json.put("type", "1");
+        	  for (int i= 0 ; i < playerList.size(); i++) {
+        			  playerList.get(i).getSession().sendMsg(new OutRoomResponse(1, json.toString()));
+      		}
+        	  avatar.avatarVO.setRoomId(0);
+        	  avatar.setRoomVO(new RoomVO());
+        	  playerList.remove(avatar);
+        	  roomVO.getPlayerList().remove(avatar.avatarVO);
+        }
+        else{
+        	json.put("type", "0");
+      	    //退出房间。通知房间里面的其他玩家
+        	for (int i= 0 ; i < playerList.size(); i++) {
+        		//通知房间里面的其他玩家
+        		playerList.get(i).getSession().sendMsg(new OutRoomResponse(1, json.toString()));
+        	}
+        	roomVO.getPlayerList().remove(avatar.avatarVO);
+        	avatar.avatarVO.setRoomId(0);
+        	avatar.setRoomVO(new RoomVO());
+        	playerList.remove(avatar);
+        }
     }
 
     /**
@@ -343,7 +361,6 @@ public class RoomLogic {
 	        for(int i=0;i<playerList.size();i++){
 	        	//清除各种数据  1：本局胡牌时返回信息组成对象 ，
 	        	playerList.get(i).avatarVO.setHuReturnObjectVO(new HuReturnObjectVO());
-	        	playerList.get(i).huQuest = true;
 	            playerList.get(i).getSession().sendMsg(new PrepareGameResponse(1,playerList.get(i).avatarVO.getPaiArray(),playerList.indexOf(playCardsLogic.bankerAvatar)));
 	        }
         }

@@ -23,15 +23,18 @@ import java.util.Map;
 public class Avatar implements GameObj {
     public AvatarVO avatarVO;
     //请求吃
-    public boolean chiQuest = true;
+    public boolean chiQuest = false;
     //存储吃牌的信息
     public CardVO cardVO = new CardVO();
     //请求碰
-    public boolean pengQuest = true;
+    public boolean pengQuest = false;
     //请求杠
-    public boolean gangQuest = true;
+    public boolean gangQuest = false;
     //请求胡
-    public boolean huQuest = true;
+    public boolean huQuest = false;
+    
+    //当前玩家能否吃
+    public boolean canHu = true;
     
     
     
@@ -214,24 +217,24 @@ public class Avatar implements GameObj {
     }
 
     /**
-     * 檢測是否可以碰 大于等于2张都可以碰
+     * 檢測是否可以碰 大于等于2张且对应的下标不为1都可以碰
      * @param cardIndex
      * @return
      */
     public boolean checkPeng(int cardIndex){
-        if(avatarVO.currentCardList[0][cardIndex] >= 2){
+        if(avatarVO.getPaiArray()[0][cardIndex] >= 2 && avatarVO.getPaiArray()[1][cardIndex] != 1){
             return true;
         }
         return false;
     }
 
     /**
-     * 檢測是否可以杠别人出的牌
+     * 檢測是否可以杠别人出的牌/此牌对应的下标不为1
      * @param cardIndex
      * @return
      */
     public boolean checkGang(int cardIndex){
-        if(avatarVO.currentCardList[0][cardIndex] == 3){
+        if(avatarVO.getPaiArray()[0][cardIndex] == 3 && avatarVO.getPaiArray()[0][cardIndex] != 1){
             return true;
         }
         return false;
@@ -241,17 +244,12 @@ public class Avatar implements GameObj {
      * @param 
      * @return
      */
-    public boolean checkGang(){
+    public boolean checkSelfGang(int cardIndex){
     	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
-        boolean result = false;
-        int [] paiList = avatarVO.getPaiArray()[0];
-        for (int i : paiList) {
-        		if(i == 4){
-        			result = true;
-        		}
-		}
-        
-        return result;
+    	if(avatarVO.getPaiArray()[0][cardIndex] == 4){
+            return true;
+        }
+        return false;
     }
     /**
      * 檢測是否可以吃
@@ -262,7 +260,10 @@ public class Avatar implements GameObj {
     	boolean flag = false;
     	//只有长沙麻将有吃的打法
     	System.out.println("判断吃否可以吃牌-----cardIndex:"+cardIndex);
-    	int []  cardList = avatarVO.currentCardList[0];
+    	/**
+    	 * 这里检测吃的时候需要踢出掉碰 杠了的牌****
+    	 */
+    	int []  cardList = avatarVO.getPaiArray()[0];
     	if(cardIndex>=0  && cardIndex <=8){
     		if(cardIndex == 0 && cardList[1] >=1 && cardList[2] >=1 ){
     			flag = true;
@@ -339,10 +340,10 @@ public class Avatar implements GameObj {
      * 为自己的牌组里加入新牌
      * @param cardIndex
      */
-    public boolean putCardInList(int cardIndex){
+    public boolean putCardInList(int cardIndex,int type){
         if(avatarVO.getPaiArray()[0][cardIndex]<4) {
             avatarVO.getPaiArray()[0][cardIndex]++;
-            
+            avatarVO.getPaiArray()[1][cardIndex] = type;//碰 1  杠2  胡3  吃4
            return true;
         }else{
             System.out.println("Error : putCardInList --> 牌数组里已经有4张牌");
