@@ -31,7 +31,6 @@
     </environments>
     <!-- Continue going here -->
     <mappers>
-        <mapper resource="com/dyz/myBatis/sqlMapper/UserMapper.xml" />
         <mapper resource="com/dyz/myBatis/sqlMapper/AccountMapper.xml"/>
     </mappers>
 </configuration>

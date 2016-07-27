@@ -18,7 +18,7 @@ public class InitServers {
         Reader reader = Resources.getResourceAsReader("myBatisConfig.xml");
         SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(reader);
         //===============================================================
-        UserService.getInstance().initSetSession(sessionFactory);
+        //UserService.getInstance().initSetSession(sessionFactory);
         AccountService.getInstance().initSetSession(sessionFactory);
     }
 
