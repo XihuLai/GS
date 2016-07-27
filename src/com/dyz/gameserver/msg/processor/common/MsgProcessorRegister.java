@@ -1,6 +1,7 @@
 package com.dyz.gameserver.msg.processor.common;
 
 import com.context.ConnectAPI;
+import com.dyz.gameserver.msg.processor.HeadMsgProcessor;
 import com.dyz.gameserver.msg.processor.chi.ChiMsgProcessor;
 import com.dyz.gameserver.msg.processor.chupai.ChuPaiMsgProcessor;
 import com.dyz.gameserver.msg.processor.createroom.CreateRoomMsgProcssor;
@@ -55,8 +56,9 @@ public enum MsgProcessorRegister {
 	/**与前段握手*/
 	successRerunMsg(ConnectAPI.SUCCESS_RETURN_MSG,new SuccessReturnMsgProcessor()),
 	/**游戏开始前准备*/
-	prepareGame(ConnectAPI.PrepareGame_MSG,new PrepareGameMSGProcessor());
-	
+	prepareGame(ConnectAPI.PrepareGame_MSG,new PrepareGameMSGProcessor()),
+
+	head(ConnectAPI.head,new HeadMsgProcessor());
 	
 	private int msgCode;
 	private MsgProcessor processor;

@@ -31,23 +31,23 @@ public class NetManager {
 		acceptor.setBacklog(100);
 		acceptor.setReuseAddress(true);
 		acceptor.setHandler(iohandler);
-		
+
         DefaultIoFilterChainBuilder chain = acceptor.getFilterChain();
         IoFilter protocol = new ProtocolCodecFilter(new GameProtocolcodecFactory());
         chain.addLast("codec", protocol);
-		threadpool = new OrderedThreadPoolExecutor(500);
+		threadpool = new OrderedThreadPoolExecutor(1000);
 		threadpool.setThreadFactory(new ServerThreadFactory("OrderedThreadPool"));
 		chain.addLast("threadPool", new ExecutorFilter(threadpool));
 		
-		int recsize = 5120;
-		int sendsize = 40480;                                                                                         
+		int recsize = 32768;
+		int sendsize = 32768;
 		int timeout = 10;
 		//
 		SocketSessionConfig sc = acceptor.getSessionConfig();
 		sc.setReuseAddress(true);// 设置每一个非主监听连接的端口可以重用
 		sc.setReceiveBufferSize(recsize);// 设置输入缓冲区的大小
 		sc.setSendBufferSize(sendsize);// 设置输出缓冲区的大小
-		sc.setTcpNoDelay(true);// flush函数的调用 设置为非延迟发送，为true则不组装成大包发送，收到东西马上发出   
+		sc.setTcpNoDelay(true);// flush函数的调用 设置为非延迟发送，为true则不组装成大包发送，收到东西马上发出
 		sc.setSoLinger(0);
 		//设置超时
 		sc.setIdleTime(IdleStatus.READER_IDLE, timeout);

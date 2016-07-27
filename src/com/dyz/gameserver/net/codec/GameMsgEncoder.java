@@ -25,7 +25,7 @@ public class GameMsgEncoder extends ProtocolEncoderAdapter {
 		out.write(value.entireMsg());
 		out.flush();
 		value.release();
-		logger.info("服务端发送给客户端信息加码");
+		//logger.info("服务端发送给客户端信息加码");
 	}
 
 	public void dispose() throws Exception {

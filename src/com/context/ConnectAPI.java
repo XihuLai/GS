@@ -6,7 +6,7 @@ public class ConnectAPI {
 		// TODO Auto-generated constructor stub
 	}
 
-	
+
 	public static int LOGIN_REQUEST = 0x000001;
 	public static int LOGIN_RESPONSE = 0x000002;
 	
@@ -34,6 +34,10 @@ public class ConnectAPI {
 	//退出房间
 	public static int OUT_ROOM_REQUEST  = 0x000013;
 	public static int OUT_ROOM_RESPONSE  = 0x000014;
+
+	public static int head = 0x000030;
+	public static int headRESPONSE = 0x000031;
+
 	//出牌
 	public static int CHUPAI_REQUEST = 0x100001;
 	public static int CHUPAI_RESPONSE = 0x100002;
