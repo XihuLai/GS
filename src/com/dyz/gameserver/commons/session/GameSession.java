@@ -62,6 +62,11 @@ public class GameSession implements GameObj {
 		if (session == null || !session.isConnected() || session.isClosing()) {
 			return null;
 		}
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		return session.write(msg);
 	}
 
