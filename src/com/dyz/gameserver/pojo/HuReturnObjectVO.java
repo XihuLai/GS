@@ -73,7 +73,7 @@ public class HuReturnObjectVO {
 	 * 统计 不同type的次数和(胡才有)得分
 	 *  游戏自摸1，接炮2，点炮3，暗杠4，明杠5 ，胡6记录(type),加码7
 	 * @param type 类型 
-	 * @param score 分数
+	 * @param score 分数（划水麻将则是番数）
 	 */
 	public synchronized void updateGangAndHuInfos(String type , int score) {
 		ArrayList<Integer> listNew = new ArrayList<Integer>();

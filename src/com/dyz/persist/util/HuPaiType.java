@@ -37,7 +37,7 @@ public class HuPaiType {
 		 }
 		 else if(roomType == 2){
 			 //划水麻将
-			  huaShui(avatarShu , avatar, cardIndex);
+			  huaShui(avatarShu , avatar, cardIndex,playerList,count);
 		 }
 		 else{
 			 //长沙麻将
@@ -49,16 +49,70 @@ public class HuPaiType {
 	 * @param uuid
 	 * @param avatar
 	 * @param str
+	 * huCount 是否是一炮多响
 	 * @return
 	 */
-	private static void huaShui(Avatar avatarShu , Avatar avatar,  int cardIndex){
+	private static void huaShui(Avatar avatarShu , Avatar avatar,  int cardIndex , List<Avatar> playerList , int huCount){
 		String str;
 		int [] paiList = avatar.getPaiArray();
 		 if(avatarShu.getUuId() == avatar.getUuId() ){
-			 //自摸类型---然后判断牌组是什么类型(清一色？七对？龙对？等等)
+			 //自摸类型
+			 /*str ="0:"+cardIndex+":"+Rule.Hu_zi_common;  
+			 for (int i = 0; i < playerList.size(); i++) {
+				 if(playerList.get(i).getUuId() == avatar.getUuId()){
+					// avatar.avatarVO.updateScoreRecord(1, 2*3);//记录分数
+					//:游戏自摸1，接炮2，点炮3，暗杠4，明杠5 ，胡6记录(key),
+					//修改自己的分数
+					 playerList.get(i).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("1", 2*3);
+					 for (int j = 0; j < selfCount; j++) {
+						 //抓码 抓到自己，再加分
+						 playerList.get(i).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", 2*3);
+					 }
+				}
+				else{
+					//修改其他三家分数
+					//ava.avatarVO.updateScoreRecord(1, -1*2);//记录分数（负分表示别人自摸扣的分）
+					playerList.get(i).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("1", -1*2);
+					for (int j = 0; j < selfCount; j++) {
+						//胡家抓码抓到自己，所有这里还要再减分
+						playerList.get(i).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*2);
+					}
+				}
+			}*/
 		 }
 		 else{
-			 
+			//点炮   单响  
+			 if(huCount == 1){
+				 str =avatarShu.getUuId()+":"+cardIndex+":"+Rule.Hu_d_self;  
+				 //修改胡家自己的分数
+				 
+				 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("2",1);
+				 
+				 //修改点炮玩家的分数
+				avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("3",-1);
+				 //存储hu的关系信息 胡玩家uuid：胡牌id：胡牌类型
+				 String string = avatar.getUuId()+":"+cardIndex+":"+Rule.Hu_d_other; 
+				 //点炮信息放入放炮玩家信息中
+				 avatarShu.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", string);
+			 }
+			 else{
+				 //点炮  多响   (抓码人为点炮玩家)
+				 //点炮玩家被抓到码的次数   selfCount
+				//胡牌玩家被抓到码的次数
+				 str =avatarShu.getUuId()+":"+cardIndex+":"+Rule.Hu_d_self;  
+				 //修改胡家自己的分数
+				 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("2",1);
+				
+				 
+				 //修改点炮玩家的分数
+				 avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("3",-1);
+					
+				 //存储hu的关系信息 胡玩家uuid：胡牌id：胡牌类型
+				 String string = avatar.getUuId()+":"+cardIndex+":"+Rule.Hu_d_other; 
+				 //点炮信息放入放炮玩家信息中
+				 avatarShu.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", string);
+					
+			 }
 		 }
 	}
 	/**

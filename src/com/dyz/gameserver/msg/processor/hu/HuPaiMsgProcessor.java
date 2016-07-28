@@ -23,7 +23,7 @@ public class HuPaiMsgProcessor extends MsgProcessor implements
     public void process(GameSession gameSession, ClientRequest request) throws Exception {
         RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
         if(roomLogic != null){
-            CardVO cardVO = JsonUtilTool.fromJson(request.getString(),CardVO.class);
+           CardVO cardVO = JsonUtilTool.fromJson(request.getString(),CardVO.class);
            boolean isHu =  roomLogic.huPai(gameSession.getRole(Avatar.class),cardVO.getCardPoint());
            if(isHu){
            }

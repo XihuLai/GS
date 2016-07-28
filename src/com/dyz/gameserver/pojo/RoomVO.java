@@ -58,8 +58,24 @@ public class RoomVO {
     /**
      * 开一个房间几局游戏完后，统计所有玩家的杠，胡次数
      * 第一个key：用户uuid
+     * 
+     * 转转麻将
      * 第二个key：1:自摸(zimo) value次数，2:接炮(jiepao) value次数,3:点炮(dianpao)value次数,
      * 4:明杠(minggang)value次数，5:暗杠(angang) value次数 , 6: 总成绩(scores)  value分数
+     *  
+     *  
+     *  划水麻将
+     *  第二个key 不同  value 为番数
+     *  跟庄("跟庄")	1番（庄家出3番，其他每人得1番）
+		过路杠("glgang")	1番
+		暗杠("angang")	2番
+		放杠("fanggang")	3番（谁放牌谁出番）
+		自摸("zimo")	4番（其他三家每家出4番）
+		普通点炮(pudian)	5番（谁放炮谁出番）
+		七对点炮(qidian)	5*3番（谁放炮谁出番）
+		七对自摸(qizimo)	4*3番（其他三家每家出12番）
+		杠开(gangkaihu)	4*3番（其他三家每家出12番）      （杠上花）
+		抢杠(qiangganghu)	5*3番（谁要杠牌谁出番）         （抢杠胡）
      */
     private Map<Integer , Map<String,Integer>> endStatistics = new HashMap<Integer, Map<String,Integer>>();
     

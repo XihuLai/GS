@@ -42,6 +42,9 @@ public class Rule {
     public static String Gang_ming = "ming";
     public static String Gang_an = "an";
     public static String Gang_dian = "diangang";
+    //划水麻将
+    public static String Gang_ming_guolu = "gang_guolu";//过路杠
+    public static String Gang_fang = "fanggang";//放杠
     
 }
 

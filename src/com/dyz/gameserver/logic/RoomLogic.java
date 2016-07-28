@@ -83,7 +83,7 @@ public class RoomLogic {
             playerList.add(avatar);
             roomVO.getPlayerList().add(avatar.avatarVO);
             avatar.getSession().sendMsg(new JoinRoomResponse(1, roomVO));
-
+            System.err.println("房间当前人数："+playerList.size());
             if(playerList.size() == 4){
             	//当人数4个时自动开始游戏
                 //checkCanBeStartGame();当最后一个人加入时，不需要检测其他玩家是否准备(一句结束后开始才需要检测玩家是否准备)
@@ -91,6 +91,7 @@ public class RoomLogic {
                 TimerTask tt=new TimerTask() {
                     @Override
                     public void run() {
+                    	createAvator.updateRoomCard(-1);//开始游戏，减去房主的房卡
                         startGameRound();
                     }
                 };
@@ -160,6 +161,7 @@ public class RoomLogic {
         	  for (int i= 0 ; i < playerList.size(); i++) {
         			  playerList.get(i).getSession().sendMsg(new OutRoomResponse(1, json.toString()));
       		}
+        	  roomVO.setRoomId(0);
         	  avatar.avatarVO.setRoomId(0);
         	  avatar.setRoomVO(new RoomVO());
         	  playerList.remove(avatar);
@@ -172,10 +174,11 @@ public class RoomLogic {
         		//通知房间里面的其他玩家
         		playerList.get(i).getSession().sendMsg(new OutRoomResponse(1, json.toString()));
         	}
-        	roomVO.getPlayerList().remove(avatar.avatarVO);
+        	roomVO.setRoomId(0);
         	avatar.avatarVO.setRoomId(0);
         	avatar.setRoomVO(new RoomVO());
         	playerList.remove(avatar);
+        	roomVO.getPlayerList().remove(avatar.avatarVO);
         }
     }
 
@@ -194,7 +197,7 @@ public class RoomLogic {
     		//申请解散房间
     		for (Avatar ava : playerList) {
     			if(ava.getUuId() != avatar.getUuId()){
-    				ava.getSession().sendMsg(new DissolveRoomResponse(roomId, null));
+    				ava.getSession().sendMsg(new DissolveRoomResponse(roomId, json.toString()));
     			}
     		}
     	}
@@ -206,7 +209,7 @@ public class RoomLogic {
     		//拒绝解散房间，向其他玩家发送消息
     		for (Avatar ava : playerList) {
     			if(ava.getUuId() != avatar.getUuId()){
-    				ava.getSession().sendMsg(new DissolveRoomResponse(roomId, null));
+    				ava.getSession().sendMsg(new DissolveRoomResponse(roomId, json.toString()));
     			}
     		}
     	}

@@ -36,7 +36,22 @@ public class Avatar implements GameObj {
     //当前玩家能否吃
     public boolean canHu = true;
     
-    
+    /**
+     * 检测到有人胡牌时存储胡牌的详细消息(划水麻将和长沙麻将用)
+     * key:胡的牌索引
+     * value:    1：过路杠	 1番
+					2：暗杠	2番
+					3：放杠	3番（谁放牌谁出番）
+					4：自摸	4番（其他三家每家出4番）
+					5：普通点炮	5番（谁放炮谁出番）
+					6：七对点炮	5*3番（谁放炮谁出番）
+					7：七对自摸	4*3番（其他三家每家出12番）
+					8：杠开	4*3番（其他三家每家出12番）
+					9：抢杠	5*3番（谁要杠牌谁出番）
+					10：一炮双响	根据胡牌者的牌型来计算放炮者出的番数（胡牌两方所胡牌型的番数相加）
+					11：一炮三响	根据胡牌者的牌型来计算放炮者出的番数（同上）
+     */
+    //public Map<Integer,Integer> huAvatarDetailInfo = new HashMap<Integer,Integer>();
     
     
 
@@ -81,7 +96,6 @@ public class Avatar implements GameObj {
      */
     private AsyncTaskQueue asyncTaskQueue = new AsyncTaskQueue();
     /**
-     * 存储本局 碰，杠，胡关系
      * list里面字符串规则 
      * 杠：uuid(出牌家),介绍(明杠，暗杠)  （123，明杠）
      * 自己摸来杠：介绍(明杠，暗杠)
@@ -91,10 +105,10 @@ public class Avatar implements GameObj {
      * 
      * 碰：
      * 
-     * eg:  碰： key:1     value:  123(出牌玩家uuid):碰的牌的下标(不需要类型)
-     * 			杠：key:2    value:  123(出牌玩家uuid):杠的牌的下标：杠的类型(杠需要)
-     * 			胡：key:3    value:  123(出牌玩家uuid):胡的牌的下标：胡的类型(杠需要)
-     *         吃：key:4    value:  123(出牌玩家uuid):吃的牌的下标(不需要类型)
+     * eg:  碰： key:1     value: 碰的牌的下标
+     * 			杠：key:2    value: 杠的牌的下标
+     * 			胡：key:3    value: 胡的牌的下标
+     *         吃：key:4    value:  吃的牌的下标(1:2:3)
      * 
      * key:1:碰    2:杠    3:胡   4:吃
      * value:信息，分条信息之间用","隔开
@@ -234,7 +248,7 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkGang(int cardIndex){
-        if(avatarVO.getPaiArray()[0][cardIndex] == 3 && avatarVO.getPaiArray()[0][cardIndex] != 1){
+        if(avatarVO.getPaiArray()[0][cardIndex] == 3 && avatarVO.getPaiArray()[1][cardIndex] != 1){
             return true;
         }
         return false;
@@ -244,12 +258,21 @@ public class Avatar implements GameObj {
      * @param 
      * @return
      */
-    public boolean checkSelfGang(int cardIndex){
+    public boolean checkSelfGang(){
     	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
-    	if(avatarVO.getPaiArray()[0][cardIndex] == 4){
-            return true;
-        }
-        return false;
+    	boolean flag = false;
+    	for (int i= 0 ; i <avatarVO.getPaiArray()[0].length ; i++) {
+    		if (avatarVO.getPaiArray()[0][i] == 4 && avatarVO.getPaiArray()[1][i] == 1) {
+				//过路杠
+    			flag = true;
+			}
+    		if (avatarVO.getPaiArray()[0][i] == 4 && avatarVO.getPaiArray()[1][i] == 0) {
+				//暗杠
+    			flag = true;
+			}
+		}
+    	System.out.println(avatarVO.getPaiArray()[0].length);
+        return flag;
     }
     /**
      * 檢測是否可以吃
@@ -338,6 +361,7 @@ public class Avatar implements GameObj {
 
     /**
      * 为自己的牌组里加入新牌
+     * /碰 1  杠2  胡3  吃4
      * @param cardIndex
      */
     public boolean putCardInList(int cardIndex,int type){

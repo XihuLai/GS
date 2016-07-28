@@ -1,6 +1,11 @@
 package com.dyz.gameserver.commons.session;
 
+import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.message.ResponseMsg;
+import com.dyz.gameserver.logic.PlayCardsLogic;
+import com.dyz.gameserver.logic.RoomLogic;
+import com.dyz.gameserver.manager.RoomManager;
+import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.gameserver.sprite.base.GameObj;
 import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.session.AttributeKey;
@@ -115,9 +120,17 @@ public class GameSession implements GameObj {
 	public void close(){
 		System.out.println("关闭SESSION -- > "+session.getRemoteAddress());
 		if(session != null && session.isConnected()) {
+			//关闭session的时候 如果用户还在房间，则踢出用户
+			GameSession playerObj = (GameSession) session.getAttribute(KEY_PLAYER_SESSION);
+			Avatar avatar = playerObj.getRole(Avatar.class);
+			System.out.println("房间:"+avatar.getRoomVO().getRoomId()+"---解散");
+			avatar.getRoomVO().setRoomId(0);
+			avatar.avatarVO.setRoomId(0);
+			avatar.setRoomVO(new RoomVO());
+			avatar.getRoomVO().getPlayerList().remove(avatar.avatarVO);
+			
 			session.close(false);
 			System.out.println("关闭SESSION -- >  session.close(false);");
-			//关闭session的时候 如果用户还在房间，则踢出用户
 			
 			
 		}

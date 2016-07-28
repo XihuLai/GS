@@ -32,7 +32,7 @@ public class AvatarVO {
    // public int [][] currentCardList;
     /**
      * 牌数组
-     * 
+     * /碰 1  杠2  胡3  吃4
      */
     private int[][] paiArray;
 /*    *//**
