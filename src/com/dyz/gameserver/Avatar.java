@@ -10,6 +10,7 @@ import com.dyz.gameserver.sprite.Character;
 import com.dyz.gameserver.sprite.base.GameObj;
 import com.dyz.gameserver.sprite.tool.AsyncTaskQueue;
 import com.dyz.myBatis.services.AccountService;
+import com.dyz.persist.util.GlobalUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -439,7 +440,8 @@ public class Avatar implements GameObj {
     }
 
     public int[] getSinglePaiArray() {
-        return avatarVO.getPaiArray()[0];
+        int[] result = GlobalUtil.CloneIntList(avatarVO.getPaiArray()[0]);
+        return result;
     }
 
     public String printPaiString(){
