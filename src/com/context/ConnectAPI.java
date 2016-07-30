@@ -73,10 +73,12 @@ public class ConnectAPI {
 	public static int CLOSE_RESPONSE = 0x000000;
 	
 	//后台与前段握手信息返回，(前段接收到信息自后返回，调用接口)
-	public static int SUCCESS_RETURN_MSG = 0x111111;
+	public static int SUCCESS_RETURN_MSG_REQUEST = 0x111111;
+	public static int SUCCESS_RETURN_MSG_RESPONSE = 0x222222;
 	
 	//准备游戏
-	public static int PrepareGame_MSG = 0x222222;
+	public static int  PrepareGame_MSG_REQUEST = 0x333333;
+	public static int PrepareGame_MSG_RESPONSE = 0x444444;
 
 
 }

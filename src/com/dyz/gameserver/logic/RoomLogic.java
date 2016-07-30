@@ -9,6 +9,7 @@ import com.dyz.gameserver.msg.response.joinroom.JoinRoomResponse;
 import com.dyz.gameserver.msg.response.outroom.DissolveRoomResponse;
 import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
 import com.dyz.gameserver.msg.response.startgame.PrepareGameResponse;
+import com.dyz.gameserver.msg.response.startgame.StartGameResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.HuReturnObjectVO;
@@ -166,6 +167,7 @@ public class RoomLogic {
         	  avatar.setRoomVO(new RoomVO());
         	  playerList.remove(avatar);
         	  roomVO.getPlayerList().remove(avatar.avatarVO);
+        	  roomVO = null;
         }
         else{
         	json.put("type", "0");
@@ -236,6 +238,7 @@ public class RoomLogic {
     			 av.setRoomVO(new RoomVO());
     		     playerList.remove(av);
     		     roomVO.getPlayerList().remove(av.avatarVO);
+    		     roomVO = null;
 			}
     	}
     }
@@ -313,7 +316,11 @@ public class RoomLogic {
             return;
         }
         avatar.avatarVO.setIsReady(true);
-
+        int avatarIndex = playerList.indexOf(avatar);
+        //成功则返回
+        for (Avatar ava : playerList) {
+        	//ava.getSession().sendMsg(new PrepareGameResponse(1,avatarIndex));
+		}
         checkCanBeStartGame();
     }
 
@@ -364,7 +371,7 @@ public class RoomLogic {
 	        for(int i=0;i<playerList.size();i++){
 	        	//清除各种数据  1：本局胡牌时返回信息组成对象 ，
 	        	playerList.get(i).avatarVO.setHuReturnObjectVO(new HuReturnObjectVO());
-	            playerList.get(i).getSession().sendMsg(new PrepareGameResponse(1,playerList.get(i).avatarVO.getPaiArray(),playerList.indexOf(playCardsLogic.bankerAvatar)));
+	            playerList.get(i).getSession().sendMsg(new StartGameResponse(1,playerList.get(i).avatarVO.getPaiArray(),playerList.indexOf(playCardsLogic.bankerAvatar)));
 	        }
         }
     }

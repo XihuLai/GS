@@ -14,7 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,10 +38,12 @@ public class Avatar implements GameObj {
     //当前玩家能否吃
     public boolean canHu = true;
     
+    
+    public List<Integer> gangIndex = new  ArrayList<Integer>();
     /**
      * 检测到有人胡牌时存储胡牌的详细消息(划水麻将和长沙麻将用)
-     * key:胡的牌索引
-     * value:    1：过路杠	 1番
+     *      0: 天胡
+     *            1：过路杠	 1番
 					2：暗杠	2番
 					3：放杠	3番（谁放牌谁出番）
 					4：自摸	4番（其他三家每家出4番）
@@ -50,8 +54,12 @@ public class Avatar implements GameObj {
 					9：抢杠	5*3番（谁要杠牌谁出番）
 					10：一炮双响	根据胡牌者的牌型来计算放炮者出的番数（胡牌两方所胡牌型的番数相加）
 					11：一炮三响	根据胡牌者的牌型来计算放炮者出的番数（同上）
+					
+				数组格式   牌索引:类型
+				放弃的时候需要清空
+					
      */
-    //public Map<Integer,Integer> huAvatarDetailInfo = new HashMap<Integer,Integer>();
+    public List<String> huAvatarDetailInfo = new ArrayList<String>();
     
     
 
@@ -110,7 +118,7 @@ public class Avatar implements GameObj {
      * 			胡：key:3    value: 胡的牌的下标
      *         吃：key:4    value:  吃的牌的下标(1:2:3)
      * 
-     * key:1:碰    2:杠    3:胡   4:吃
+     * key:1:碰    2:杠    3:胡   4:吃   5:抢胡
      * value:信息，分条信息之间用","隔开
      */
     private Map<Integer,String> resultRelation = new HashMap<Integer,String>(); 
@@ -221,20 +229,43 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkPeng(int cardIndex){
-        if(avatarVO.getPaiArray()[0][cardIndex] >= 2 && avatarVO.getPaiArray()[1][cardIndex] != 1){
-            return true;
+    	System.out.println("杠了的牌="+cardIndex+"=="+getResultRelation().get(2));
+    	System.out.println("碰了的牌="+cardIndex+"=="+getResultRelation().get(1));
+        if(avatarVO.getPaiArray()[0][cardIndex] >= 2 ){
+        	if(getResultRelation().get(1) == null ){
+        		return true;
+        	}
+        	else{
+        		if(	getResultRelation().get(1).contains(cardIndex+"")){
+        			return false;
+        		}
+        		else{
+        			return true;
+        		}
+        	}
         }
         return false;
     }
 
     /**
-     * 檢測是否可以杠别人出的牌/此牌对应的下标不为1
+     * 檢測是否可以杠别人出的牌/此牌对应的下标不为1（碰过了的牌）
      * @param cardIndex
      * @return
      */
     public boolean checkGang(int cardIndex){
-        if(avatarVO.getPaiArray()[0][cardIndex] == 3 && avatarVO.getPaiArray()[1][cardIndex] != 1){
-            return true;
+    	System.out.println("杠了的牌="+cardIndex+"=="+getResultRelation().get(2));
+    	System.out.println("碰了的牌="+cardIndex+"=="+getResultRelation().get(1));
+        if(avatarVO.getPaiArray()[0][cardIndex] == 3){
+        	if(getResultRelation().get(1) ==null){
+        		return true;
+        	}else{
+        		if(getResultRelation().get(1).contains(cardIndex+"")){
+        			return false;
+        		}
+        		else{
+        			return true;
+        		}
+        	}
         }
         return false;
     }
@@ -246,17 +277,24 @@ public class Avatar implements GameObj {
     public boolean checkSelfGang(){
     	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
     	boolean flag = false;
+    	System.out.println("杠了的牌==="+getResultRelation().get(2));
+    	System.out.println("碰了的牌==="+getResultRelation().get(1));
     	for (int i= 0 ; i <avatarVO.getPaiArray()[0].length ; i++) {
-    		if (avatarVO.getPaiArray()[0][i] == 4 && avatarVO.getPaiArray()[1][i] == 1) {
-				//过路杠
-    			flag = true;
-			}
-    		if (avatarVO.getPaiArray()[0][i] == 4 && avatarVO.getPaiArray()[1][i] == 0) {
-				//暗杠
-    			flag = true;
+    		if (avatarVO.getPaiArray()[0][i] == 4) {
+    			if(getResultRelation().get(1) != null && getResultRelation().get(1).contains(i+"")){
+    				if(getResultRelation().get(2) != null && getResultRelation().get(2).contains(i+"") ){
+    					flag = false;
+    				}
+    				else{
+    					flag = true;
+    				}
+    			}else{
+    				//(划水麻将分过路杠和暗杠)
+    				gangIndex.add(i);
+    				flag = true;
+    			}
 			}
 		}
-    	System.out.println(avatarVO.getPaiArray()[0].length);
         return flag;
     }
     /**

@@ -1,7 +1,13 @@
 package com.dyz.gameserver.commons.session;
 
+import com.alibaba.fastjson.JSONObject;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.message.ResponseMsg;
+import com.dyz.gameserver.logic.PlayCardsLogic;
+import com.dyz.gameserver.logic.RoomLogic;
+import com.dyz.gameserver.manager.RoomManager;
+import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
+import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.gameserver.sprite.base.GameObj;
 import org.apache.mina.core.future.WriteFuture;
@@ -65,11 +71,6 @@ public class GameSession implements GameObj {
 			System.out.println("session == null || !session.isConnected() || session.isClosing()");
 			return null;
 		}
-//		try {
-//			Thread.sleep(100);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
 		return session.write(msg);
 	}
 
@@ -119,14 +120,28 @@ public class GameSession implements GameObj {
 	public void close(){
 		System.out.println("关闭SESSION -- > "+session.getRemoteAddress());
 		if(session != null && session.isConnected()) {
-			//关闭session的时候 如果用户还在房间，则踢出用户
+			
+			//关闭session的时候(掉线) 如果用户还在房间，则踢出用户，并向其他玩家发送消息
 			GameSession playerObj = (GameSession) session.getAttribute(KEY_PLAYER_SESSION);
 			Avatar avatar = playerObj.getRole(Avatar.class);
-			System.out.println("房间:"+avatar.getRoomVO().getRoomId()+"---解散");
-			avatar.getRoomVO().setRoomId(0);
+			
+			if(avatar.getRoomVO().getPlayerList().size() >= 2){
+				//房间还有其他玩家，则向其他玩家发送离线玩家退出房间消息  
+				JSONObject json = new JSONObject();
+				json.put("accountName", avatar.avatarVO.getAccount().getNickname());
+		        json.put("status_code", "0");
+		        json.put("uuid", avatar.getUuId());
+		        json.put("type", "0");
+				RoomLogic roomLogic =RoomManager.getInstance().getRoom(avatar.avatarVO.getRoomId());
+				for (Avatar ava :roomLogic.getPlayerList()) {
+					if(avatar.getUuId() != ava.getUuId()){
+						ava.getSession().sendMsg(new OutRoomResponse(1, json.toString()));
+					}
+				}
+			}
 			avatar.avatarVO.setRoomId(0);
 			avatar.setRoomVO(new RoomVO());
-			avatar.getRoomVO().getPlayerList().remove(avatar.avatarVO);
+			avatar.destroyObj();
 			
 			session.close(false);
 			System.out.println("关闭SESSION -- >  session.close(false);");
