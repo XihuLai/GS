@@ -194,12 +194,14 @@ public class PlayCardsLogic {
     public boolean checkAvatarIsHuPai(Avatar avatar,int cardIndex,String type){
     	if(cardIndex != 100){
     		//传入的参数牌索引为100时表示天胡/或是摸牌，不需要再在添加到牌组中
+    		System.out.println("检测胡牌的时候------添加别人打的牌");
     		avatar.putCardInList(cardIndex);
     	}
         if(checkHu(avatar,cardIndex)){
             System.out.println("确实胡牌了");
 			System.out.println(avatar.printPaiString() +"  avatar = "+avatar.avatarVO.getAccount().getNickname());
             if(type.equals("chu")){
+            	System.out.println("检测胡牌的时候------移除别人打的牌");
             	avatar.pullCardFormList(cardIndex);
             }
             return true;
@@ -386,7 +388,6 @@ public class PlayCardsLogic {
         curAvatarIndex = playerList.indexOf(avatar);
         
         avatar.pullCardFormList(putOffCardPoint);
-        int nextIndex = getNextAvatarIndex();
         for(int i=0;i<playerList.size();i++){
             //不能返回给自己
             if(i != curAvatarIndex) {
@@ -394,10 +395,10 @@ public class PlayCardsLogic {
                 System.out.println("发送打牌消息----"+playerList.get(i).avatarVO.getAccount().getNickname());
             }
     	}
-        Avatar ava;
         //房间为可抢杠胡
         if(avatar.getRoomVO().getZiMo() != 1){
         	//出牌时，房间为可抢杠胡时才检测其他玩家有没胡的情况
+        	Avatar ava;
         	StringBuffer sb;
         	for(int i=0;i<playerList.size();i++){
         		ava = playerList.get(i);
@@ -409,7 +410,6 @@ public class PlayCardsLogic {
         				huAvatar.add(ava);
         				sb.append("hu,");
         			}
-
         			if (ava.checkGang(putOffCardPoint)) {
         				gangAvatar.add(ava);
         				//同时传会杠的牌的点数
@@ -419,7 +419,7 @@ public class PlayCardsLogic {
         				penAvatar.add(ava);
         				sb.append("peng,");
         			}
-        			if ( roomVO.getRoomType() == 3 && nextIndex == i && ava.checkChi(putOffCardPoint)){
+        			if ( roomVO.getRoomType() == 3 && getNextAvatarIndex() == i && ava.checkChi(putOffCardPoint)){
         				//(长沙麻将)只有下一家才能吃
         				chiAvatar.add(ava);
         				sb.append("chi");

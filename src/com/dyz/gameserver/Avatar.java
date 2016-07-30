@@ -406,7 +406,6 @@ public class Avatar implements GameObj {
     public boolean putCardInList(int cardIndex){
         if(avatarVO.getPaiArray()[0][cardIndex]<4) {
             avatarVO.getPaiArray()[0][cardIndex]++;
-            //avatarVO.getPaiArray()[1][cardIndex] = type
            return true;
         }else{
             System.out.println("Error : putCardInList --> 牌数组里已经有4张牌");
