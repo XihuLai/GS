@@ -384,7 +384,6 @@ public class PlayCardsLogic {
         System.out.println("出牌点数"+putOffCardPoint);
 
         curAvatarIndex = playerList.indexOf(avatar);
-        //playerList.get(curAvatarIndex).pullCardFormList(putOffCardPoint);
         
         avatar.pullCardFormList(putOffCardPoint);
         int nextIndex = getNextAvatarIndex();
@@ -396,12 +395,14 @@ public class PlayCardsLogic {
             }
     	}
         Avatar ava;
+        //房间为可抢杠胡
         if(avatar.getRoomVO().getZiMo() != 1){
         	//出牌时，房间为可抢杠胡时才检测其他玩家有没胡的情况
+        	StringBuffer sb;
         	for(int i=0;i<playerList.size();i++){
         		ava = playerList.get(i);
         		if(ava.getUuId() != avatar.getUuId()) {
-        			StringBuffer sb = new StringBuffer();
+        			sb = new StringBuffer();
         			//判断吃，碰， 胡 杠的时候需要把以前吃，碰，杠胡的牌踢出再计算
         			if(ava.canHu  && checkAvatarIsHuPai(ava,putOffCardPoint,"chu")){
         				//胡牌状态为可胡的状态时才行
@@ -500,7 +501,7 @@ public class PlayCardsLogic {
                  for (int i=0;i<playerList.size();i++){
                 	 if(playerList.get(i).getUuId() == avatar.getUuId()){
                 		   //碰了的牌放入到avatar的resultRelation  Map中
-                		 playerList.get(i).getResultRelation().put(1,cardIndex+"");
+                		 playerList.get(i).putResultRelation(1,cardIndex+"");
                 		 playerList.get(i).avatarVO.getPaiArray()[1][cardIndex]=1;
                 	 }
                      playerList.get(i).getSession().sendMsg(new PengResponse(1,cardIndex,playerList.indexOf(avatar)));
@@ -508,7 +509,7 @@ public class PlayCardsLogic {
                  //更新用户的正常牌组(不算上碰，杠，胡，吃)
                 //playerList.get(avatarIndex).avatarVO.updateCurrentCardList(cardIndex,cardIndex,cardIndex);
                  //碰了的牌放入到avatar的resultRelation  Map中
-                 avatar.getResultRelation().put(1,cardIndex+"");
+                 //avatar.getResultRelation().put(1,cardIndex+"");
     		 }
     	 }else{
              if(penAvatar.size() > 0) {
@@ -721,25 +722,25 @@ public class PlayCardsLogic {
     	if(huCount ==1 && avatar.getRoomVO().getMa() >= 1){
     		sb.append(avatar.getUuId());
     		//单响    胡家抓码
+    		int ma;
     		for (int i = 0; i < avatar.getRoomVO().getMa(); i++) {
-    			if(getNextCardPoint() != -1){
-    				mas.add(getNextCardPoint());
-    				sb.append(":"+getNextCardPoint());
-    			}
+    			ma = (int) Math.round(Math.random()*26);
+    			mas.add(ma);
+    			sb.append(":"+ma);
     		}
     		allMas = sb.toString();
     	}
     	else if(huCount >= 1 && avatar.getRoomVO().getMa() >= 1){
     		//多响   点炮玩家抓码
     		sb.append(playerList.get(pickAvatarIndex).getUuId());
+    		int ma;
     		for (int i = 0; i < avatar.getRoomVO().getMa(); i++) {
-    			if(getNextCardPoint() != -1){
-    				mas.add(getNextCardPoint());
-    				sb.append(":"+getNextCardPoint());
+    			ma = (int) Math.round(Math.random()*26);
+    			mas.add(ma);
+    			sb.append(":"+ma);
     			}
-    		}
     		allMas = sb.toString();
-    	}
+        }
     	 while(huAvatar.size() > 0) {
     		 if(huAvatar.contains(avatar)){
     			 if(playerList.get(pickAvatarIndex).getUuId() != avatar.getUuId()){
@@ -1045,6 +1046,7 @@ public class PlayCardsLogic {
     private boolean checkHu(Avatar avatar,Integer cardIndex){
         //根据不同的游戏类型进行不用的判断
         if(roomVO.getRoomType() == 1){
+        	//转转麻将
         	return checkHuZZhuan(avatar);
         }
         else if(roomVO.getRoomType() == 2){
@@ -1300,7 +1302,7 @@ public class PlayCardsLogic {
 					ava.getSession().sendMsg(new ReturnInfoResponse(1, "qiangHu,"));
 					//存抢胡信息（划水麻将才有，转转麻将当做普通点炮）
 					if(roomVO.getRoomType() == 2){
-						ava.getResultRelation().put(5, cardPoint+"");
+						ava.putResultRelation(5, cardPoint+"");
 					}
 				}
 				ava.pullCardFormList(cardPoint);

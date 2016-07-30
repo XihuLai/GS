@@ -263,6 +263,7 @@ public class Avatar implements GameObj {
         			return false;
         		}
         		else{
+        			System.out.println(getResultRelation().get(1));
         			return true;
         		}
         	}
