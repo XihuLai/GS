@@ -284,12 +284,27 @@ public class Avatar implements GameObj {
     	for (int i= 0 ; i <avatarVO.getPaiArray()[0].length ; i++) {
     		if (avatarVO.getPaiArray()[0][i] == 4) {
     			if(resultRelation.get(1) != null && resultRelation.get(1).contains(i+"")){
-    				if(resultRelation.get(2) != null && resultRelation.get(2).contains(i+"") ){
+    				if(resultRelation.get(2) == null){
+    					gangIndex.add(i);
+    					return true;
+    				}
+    				else{
+    					if(resultRelation.get(2).contains(i+"")){
+    						return false;
+    					}
+    					else{
+    						gangIndex.add(i);
+    						return true;
+    					}
+    				}
+    				
+    				/*if(resultRelation.get(2) != null && resultRelation.get(2).contains(i+"") ){
     					flag = false;
     				}
     				else{
+    					gangIndex.add(i);
     					flag = true;
-    				}
+    				}*/
     			}else{
     				//(划水麻将分过路杠和暗杠)
     				gangIndex.add(i);
