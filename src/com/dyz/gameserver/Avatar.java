@@ -229,14 +229,14 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkPeng(int cardIndex){
-    	System.out.println("杠了的牌="+cardIndex+"=="+getResultRelation().get(2));
-    	System.out.println("碰了的牌="+cardIndex+"=="+getResultRelation().get(1));
+    	System.out.println("杠了的牌="+cardIndex+"=="+resultRelation.get(2));
+    	System.out.println("碰了的牌="+cardIndex+"=="+resultRelation.get(1));
         if(avatarVO.getPaiArray()[0][cardIndex] >= 2 ){
-        	if(getResultRelation().get(1) == null ){
+        	if(resultRelation.get(1) == null ){
         		return true;
         	}
         	else{
-        		if(	getResultRelation().get(1).contains(cardIndex+"")){
+        		if(	resultRelation.get(1).contains(cardIndex+"")){
         			return false;
         		}
         		else{
@@ -253,17 +253,17 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkGang(int cardIndex){
-    	System.out.println("杠了的牌="+cardIndex+"=="+getResultRelation().get(2));
-    	System.out.println("碰了的牌="+cardIndex+"=="+getResultRelation().get(1));
+    	System.out.println("杠了的牌="+cardIndex+"=="+resultRelation.get(2));
+    	System.out.println("碰了的牌="+cardIndex+"=="+resultRelation.get(1));
         if(avatarVO.getPaiArray()[0][cardIndex] == 3){
-        	if(getResultRelation().get(1) ==null){
+        	if(resultRelation.get(1) ==null){
         		return true;
         	}else{
-        		if(getResultRelation().get(1).contains(cardIndex+"")){
+        		if(resultRelation.get(1).contains(cardIndex+"")){
         			return false;
         		}
         		else{
-        			System.out.println(getResultRelation().get(1));
+        			System.out.println(resultRelation.get(1));
         			return true;
         		}
         	}
@@ -278,12 +278,12 @@ public class Avatar implements GameObj {
     public boolean checkSelfGang(){
     	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
     	boolean flag = false;
-    	System.out.println("杠了的牌==="+getResultRelation().get(2));
-    	System.out.println("碰了的牌==="+getResultRelation().get(1));
+    	System.out.println("杠了的牌==="+resultRelation.get(2));
+    	System.out.println("碰了的牌==="+resultRelation.get(1));
     	for (int i= 0 ; i <avatarVO.getPaiArray()[0].length ; i++) {
     		if (avatarVO.getPaiArray()[0][i] == 4) {
-    			if(getResultRelation().get(1) != null && getResultRelation().get(1).contains(i+"")){
-    				if(getResultRelation().get(2) != null && getResultRelation().get(2).contains(i+"") ){
+    			if(resultRelation.get(1) != null && resultRelation.get(1).contains(i+"")){
+    				if(resultRelation.get(2) != null && resultRelation.get(2).contains(i+"") ){
     					flag = false;
     				}
     				else{
