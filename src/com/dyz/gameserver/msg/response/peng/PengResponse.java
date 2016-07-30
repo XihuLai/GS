@@ -20,18 +20,13 @@ public class PengResponse extends ServerResponse {
      */
     public PengResponse(int status, int cardPoint,int AvatarId) {
         super(status, ConnectAPI.PENGPAI_RESPONSE);
-        if(status >0){
-            try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("cardPoint",cardPoint);
-                jsonObject.put("avatarId",AvatarId);
-                output.writeUTF(jsonObject.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-           	 output.close();
-			}
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("cardPoint",cardPoint);
+            jsonObject.put("avatarId",AvatarId);
+            output.writeUTF(jsonObject.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //entireMsg();
     }
 }

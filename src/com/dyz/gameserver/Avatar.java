@@ -208,20 +208,6 @@ public class Avatar implements GameObj {
         cleanPaiData();
     }
 
-
-    /**
-     * kevinTest
-     */
-    public void printPaiArray(){
-        int[] pais = getPaiArray();
-        System.out.print("[");
-        for(int i=0;i<pais.length-1;i++){
-            System.out.print(pais[i]+",");
-        }
-        System.out.print(pais[pais.length -1]);
-        System.out.println("]");
-    }
-
     /**
      * 清理玩家的牌数据
      */
@@ -235,7 +221,6 @@ public class Avatar implements GameObj {
             }
         }
         //TODO kevinTest
-        printPaiArray();
     }
 
     /**
@@ -402,10 +387,10 @@ public class Avatar implements GameObj {
      * /碰 1  杠2  胡3  吃4
      * @param cardIndex
      */
-    public boolean putCardInList(int cardIndex,int type){
+    public boolean putCardInList(int cardIndex){
         if(avatarVO.getPaiArray()[0][cardIndex]<4) {
             avatarVO.getPaiArray()[0][cardIndex]++;
-            avatarVO.getPaiArray()[1][cardIndex] = type;//碰 1  杠2  胡3  吃4
+            //avatarVO.getPaiArray()[1][cardIndex] = type
            return true;
         }else{
             System.out.println("Error : putCardInList --> 牌数组里已经有4张牌");
@@ -416,6 +401,15 @@ public class Avatar implements GameObj {
             }
             return false;
         }
+    }
+
+    /**
+     * 设置牌的状态
+     * @param cardIndex
+     * @param type;//碰 1  杠2  胡3  吃4
+     */
+    public void setCardListStatus(int cardIndex,int type){
+        avatarVO.getPaiArray()[1][cardIndex] = type;
     }
 
     /**
@@ -439,13 +433,27 @@ public class Avatar implements GameObj {
      * 得到牌组的一维数组。用来判断是否胡牌和听牌用
      * @return
      */
-    public int[] getPaiArray(){
-            return avatarVO.getPaiArray()[0];
+    public int[][] getPaiArray(){
+            return avatarVO.getPaiArray();
     }
 
+    public int[] getSinglePaiArray() {
+        return avatarVO.getPaiArray()[0];
+    }
 
+    public String printPaiString(){
+        String sb = "";
+        for(int a=0;a<2;a++) {
+             sb += "[";
+            for (int i = 0; i < avatarVO.getPaiArray()[a].length; i++) {
+                sb += avatarVO.getPaiArray()[a][i]+",";
+            }
+            sb += "]";
+        }
+        return sb;
+    }
     @Override
-    public void destroy() {
+    public void destroyObj() {
     	//统计在线用户****
         logger.info("用户{}断开服务器链接",avatarVO.getAccount().getNickname());
         avatarVO.setPaiArray(null);

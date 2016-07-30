@@ -42,7 +42,7 @@ public class JoinRoomMsgProcessor extends MsgProcessor implements
 		}
 		else{
 			System.out.println("该用户还没有登录");
-			gameSession.destroy();
+			gameSession.destroyObj();
 		}
 	}
 

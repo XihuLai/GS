@@ -54,6 +54,7 @@ public class HuPaiType {
 	 */
 	private static void huaShui(Avatar avatarShu , Avatar avatar,  int cardIndex , List<Avatar> playerList , int huCount){
 		String str;
+		int [] paiList = avatar.getSinglePaiArray();
 		 if(avatarShu.getUuId() == avatar.getUuId() ){
 			 //自摸类型 普通自摸每家4番  七小队自摸每家4*3番
 			 if(avatar.huAvatarDetailInfo.size() > 0){
@@ -315,7 +316,7 @@ public class HuPaiType {
 	private static void changSha(Avatar  avatarShu , Avatar avatar , int cardIndex){
 		String str = null;
 		int uuid  = avatarShu.getUuId();
-		int [] paiList = avatar.getPaiArray();
+		int [] paiList = avatar.getSinglePaiArray();
 		 //长沙麻将
 		 if(avatarShu.getUuId() == avatar.getUuId() ){
 				//自摸类型

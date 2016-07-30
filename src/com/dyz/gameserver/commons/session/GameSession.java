@@ -56,6 +56,7 @@ public class GameSession implements GameObj {
      */
 	public static GameSession getInstance(IoSession session) {
 		Object playerObj = session.getAttribute(KEY_PLAYER_SESSION);
+		session.getService().getManagedSessions();
 		return (GameSession) playerObj;
 	}
 	
@@ -67,12 +68,8 @@ public class GameSession implements GameObj {
 	 */
 	public WriteFuture sendMsg(ResponseMsg msg)  {
 		if (session == null || !session.isConnected() || session.isClosing()) {
+			System.out.println("session == null || !session.isConnected() || session.isClosing()");
 			return null;
-		}
-		try {
-			Thread.sleep(300);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 		return session.write(msg);
 	}
@@ -144,7 +141,7 @@ public class GameSession implements GameObj {
 			}
 			avatar.avatarVO.setRoomId(0);
 			avatar.setRoomVO(new RoomVO());
-			avatar.destroy();
+			avatar.destroyObj();
 			
 			session.close(false);
 			System.out.println("关闭SESSION -- >  session.close(false);");
@@ -154,7 +151,7 @@ public class GameSession implements GameObj {
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyObj() {
 		close();
 	}
 }

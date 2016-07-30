@@ -3,6 +3,7 @@ package com.dyz.gameserver.net;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.bootstrap.GameServer;
 import com.dyz.gameserver.commons.message.ClientRequest;
+import com.dyz.gameserver.commons.message.ServerResponse;
 import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.context.GameServerContext;
 import com.dyz.gameserver.logic.RoomLogic;
@@ -19,12 +20,16 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 	
 	private static final Logger logger = LoggerFactory.getLogger(MinaMsgHandler.class);
 	
+//	@Override
+//	public void sessionCreated(IoSession session) throws Exception {
+//
+//	}
 	@Override
-	public void sessionCreated(IoSession session) throws Exception {
+	public void sessionOpened(IoSession session) throws Exception{
 		new GameSession(session);
 		logger.info("a session create from ip {}",session.getRemoteAddress());
 		System.out.println(session.getId());
-		
+
 	}
 	
 	@Override
@@ -33,6 +38,7 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 		ClientRequest clientRequest = (ClientRequest) message;
 		GameSession gameSession = GameSession.getInstance(session);
 		if (gameSession == null) {
+			logger.info("gameSession == null");
 			return;
 		}
 		
@@ -43,7 +49,7 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 	public void exceptionCaught(IoSession session, Throwable cause)
 			throws Exception {
 		//强制退出
-		logger.error("服务器出错 {}",cause.getMessage());
+		//logger.error("服务器出错 {}",cause.getMessage());
 		//cause.printStackTrace();
 	}
 
@@ -73,17 +79,30 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 			
 			//解散房间
 			//每次有人退出房间/退出游戏就检测看房间还剩余几人，若只剩余一个，则解散房间
-			if(gameSession.getRole(Avatar.class).getRoomVO() != null){
+			RoomVO roomvo = gameSession.getRole(Avatar.class).getRoomVO();
+			if( roomvo != null){
 				Avatar ava = gameSession.getRole(Avatar.class);
-				if(gameSession.getRole(Avatar.class).getRoomVO().getPlayerList().size() <= 2){
+				if(roomvo.getPlayerList().size() <= 2){
 					System.out.println("解散房间：房间号："+gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
 					gameSession.getRole(Avatar.class).setRoomVO(new RoomVO());
 				}
 				else{
-					int avatarIndex = gameSession.getRole(Avatar.class).getRoomVO().getPlayerList().indexOf(ava);
-					gameSession.getRole(Avatar.class).getRoomVO().getPlayerList().remove(avatarIndex);
+					//int avatarIndex = roomvo.getPlayerList().indexOf(ava);
+					roomvo.getPlayerList().remove(ava.avatarVO);
+					RoomLogic roomLogic = RoomManager.getInstance().getRoom(roomvo.getRoomId());
+					if(roomLogic != null) {
+						for (int i = 0; i < roomLogic.getPlayerList().size(); i++) {
+							if(roomLogic.getPlayerList().get(i).getUuId() == ava.getUuId()){
+								roomLogic.getPlayerList().remove(ava);
+								i--;
+							}else {
+								roomLogic.getPlayerList().get(i).getSession().sendMsg(new ServerResponse(101, 1));
+							}
+						}
+					}
 				}
 			}
+			gameSession.close();
 		}
 
 	}

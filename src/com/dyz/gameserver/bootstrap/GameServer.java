@@ -1,11 +1,5 @@
 package com.dyz.gameserver.bootstrap;
 
-import java.util.Collection;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.dyz.gameserver.commons.message.MsgDispatcher;
 import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.context.ExecutorServiceManager;
@@ -14,6 +8,10 @@ import com.dyz.gameserver.msg.response.common.CloseGameResponse;
 import com.dyz.gameserver.net.MinaMsgHandler;
 import com.dyz.gameserver.net.NetManager;
 import com.dyz.myBatis.services.InitServers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
 
 public class GameServer {
 	
@@ -70,9 +68,5 @@ public class GameServer {
 			logger.info("服务器关闭异常");
 			e.printStackTrace();
 		}
-	}
-	
-	public static void main(String[] args) {
-		new GameServer().startUp();
 	}
 }

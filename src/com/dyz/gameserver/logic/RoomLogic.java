@@ -1,11 +1,5 @@
 package com.dyz.gameserver.logic;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.alibaba.fastjson.JSONObject;
 import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
@@ -20,6 +14,12 @@ import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.HuReturnObjectVO;
 import com.dyz.gameserver.pojo.RoomVO;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -245,7 +245,7 @@ public class RoomLogic {
     /**
      * 玩家选择放弃操作
      * @param avatar
-     * @param type 1-胡，2-杠，3-碰，4-吃
+     * @param  //1-胡，2-杠，3-碰，4-吃
      */
     public void gaveUpAction(Avatar avatar){
         playCardsLogic.gaveUpAction(avatar);

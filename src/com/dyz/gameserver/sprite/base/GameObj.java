@@ -9,5 +9,5 @@ package com.dyz.gameserver.sprite.base;
  */
 public interface GameObj {
 
-	public void destroy();
+	public void destroyObj();
 }
