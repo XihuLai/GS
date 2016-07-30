@@ -371,8 +371,9 @@ public class PlayCardsLogic {
      * @param cardPoint
      */
     public void putOffCard(Avatar avatar,int cardPoint){
-    	//已经出牌就清楚所有的吃，碰，杠，胡的数组
+    	//已经出牌就清除所有的吃，碰，杠，胡的数组
     	clearAvatar();
+    	
         putOffCardPoint = cardPoint;
         System.out.println("出牌点数"+putOffCardPoint);
 
@@ -737,7 +738,6 @@ public class PlayCardsLogic {
     			 if(playerList.get(pickAvatarIndex).getUuId() != avatar.getUuId()){
     				 //点炮    别人点炮的时候查看是否可以胡
     				 if(avatar.canHu){
-    					System.out.println(avatar.getPaiArray()[cardIndex]);
         				 //胡牌数组中移除掉胡了的人
         				huAvatar.remove(avatar);
         				huCount++;
