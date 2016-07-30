@@ -12,15 +12,6 @@ public class NormalHuPai {
 
     public  boolean checkHu(int[][] paiList){
         JIANG = 0;
-        for(int i=0;i<paiList[0].length;i++){
-            //碰 1  杠2  胡3  吃4
-            if(paiList[1][i] == 1){
-                paiList[0][i] -= 3;
-            }
-            if(paiList[1][i] == 2){
-                paiList[0][i] -= 4;
-            }
-        }
         return isHuPai(paiList[0]);
     }
 
