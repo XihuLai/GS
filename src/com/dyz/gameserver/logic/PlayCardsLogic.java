@@ -737,7 +737,6 @@ public class PlayCardsLogic {
     			 if(playerList.get(pickAvatarIndex).getUuId() != avatar.getUuId()){
     				 //点炮    别人点炮的时候查看是否可以胡
     				 if(avatar.canHu){
-    					System.out.println(avatar.getPaiArray()[cardIndex]);
         				 //胡牌数组中移除掉胡了的人
         				huAvatar.remove(avatar);
         				huCount++;
