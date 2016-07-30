@@ -371,7 +371,8 @@ public class PlayCardsLogic {
      * @param cardPoint
      */
     public void putOffCard(Avatar avatar,int cardPoint){
-    	
+    	//已经出牌就清楚所有的吃，碰，杠，胡的数组
+    	clearAvatar();
         putOffCardPoint = cardPoint;
         System.out.println("出牌点数"+putOffCardPoint);
 
@@ -709,7 +710,7 @@ public class PlayCardsLogic {
     	int huCount = huAvatar.size();
     	StringBuffer sb = new StringBuffer();
     	List<Integer> mas = new ArrayList<Integer>();
-    	if(huCount ==1 && avatar.getRoomVO().getMa() >= 1){
+    	if(avatar.getRoomVO().getMa() >= 1 && huCount ==1 ){
     		sb.append(avatar.getUuId());
     		//单响    胡家抓码
     		int ma;
@@ -720,7 +721,7 @@ public class PlayCardsLogic {
     		}
     		allMas = sb.toString();
     	}
-    	else if(huCount >= 1 && avatar.getRoomVO().getMa() >= 1){
+    	else if(avatar.getRoomVO().getMa() >= 1 && huCount >= 1){
     		//多响   点炮玩家抓码
     		sb.append(playerList.get(pickAvatarIndex).getUuId());
     		int ma;
@@ -1299,5 +1300,14 @@ public class PlayCardsLogic {
 			}
 		}
 		return flag;
+    }
+    
+    
+    public void clearAvatar(){
+    	huAvatar.clear();
+        penAvatar.clear(); 
+        gangAvatar.clear(); 
+        chiAvatar.clear(); 
+        qishouHuAvatar.clear(); 
     }
 }
