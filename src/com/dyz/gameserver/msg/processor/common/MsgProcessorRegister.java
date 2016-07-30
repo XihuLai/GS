@@ -54,9 +54,9 @@ public enum MsgProcessorRegister {
 	/*胡牌**/
 	hupai(ConnectAPI.HUPAI_REQUEST,new HuPaiMsgProcessor()),
 	/**与前段握手*/
-	successRerunMsg(ConnectAPI.SUCCESS_RETURN_MSG,new SuccessReturnMsgProcessor()),
+	successRerunMsg(ConnectAPI.SUCCESS_RETURN_MSG_RESPONSE,new SuccessReturnMsgProcessor()),
 	/**游戏开始前准备*/
-	prepareGame(ConnectAPI.PrepareGame_MSG,new PrepareGameMSGProcessor()),
+	prepareGame(ConnectAPI.PrepareGame_MSG_REQUEST,new PrepareGameMSGProcessor()),
 
 	head(ConnectAPI.head,new HeadMsgProcessor());
 	
