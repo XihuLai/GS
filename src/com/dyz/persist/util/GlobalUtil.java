@@ -31,4 +31,12 @@ public class GlobalUtil {
         int result = Integer.parseInt(subStr);
         return result;
     }
+
+    public static int[] CloneIntList(int[] List) {
+        int[] result = new int[List.length];
+        for(int i=0;i<List.length;i++){
+            result[i] = List[i];
+        }
+        return result;
+    }
 }

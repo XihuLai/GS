@@ -1,15 +1,5 @@
 package com.dyz.gameserver.logic;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.context.ErrorCode;
@@ -1127,7 +1117,7 @@ public class PlayCardsLogic {
     				flag =   Naizi.testHuiPai(paiList.clone());
     			}
     			else{
-    				flag = normalHuPai.checkHu(paiList.clone());
+    				flag = normalHuPai.checkHu(paiList);
     			}
     		}
 		return flag;
@@ -1170,7 +1160,7 @@ public class PlayCardsLogic {
     				flag =   Naizi.testHuiPai(paiList.clone());
     			}
     			else{
-    				flag = normalHuPai.checkHu(paiList.clone());
+    				flag = normalHuPai.checkHu(paiList);
     			}
     		}
     	}
