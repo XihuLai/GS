@@ -31,7 +31,7 @@ public class Character implements GameObj{
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyObj() {
 		logger.info("用户{}断开服务器链接",user.getName());
 	}
 }

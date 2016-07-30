@@ -16,7 +16,7 @@ public class HeadMsgProcessor extends MsgProcessor implements
         String index = request.getString();
         //for(int i=0;i<10;i++) {
             gameSession.sendMsg(new HeadResponse(1, index+""));
-        //}
+       // }
         System.out.println("revice = "+index);
     }
 }

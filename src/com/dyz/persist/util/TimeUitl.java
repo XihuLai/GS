@@ -37,7 +37,7 @@ public class TimeUitl {
                 }else{
                     System.out.println("到点啦！移除 gameSession");
                 }
-                gobj.destroy();
+                gobj.destroyObj();
             }
         };
         timer.schedule(tt, delayTime);

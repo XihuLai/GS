@@ -11,8 +11,8 @@ public class Naizi {
 //        System.out.println(Naizi.testHuiPai(test.paiList));
 //    }
 
-    public static  boolean testHuiPai(int [] paiList ){
-       return getNeedHunNum(paiList);
+    public static  boolean testHuiPai(int [][] paiList ){
+       return getNeedHunNum(paiList[0]);
     }
 
     /**

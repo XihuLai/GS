@@ -2,9 +2,6 @@ package com.dyz.gameserver.commons.session;
 
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.message.ResponseMsg;
-import com.dyz.gameserver.logic.PlayCardsLogic;
-import com.dyz.gameserver.logic.RoomLogic;
-import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.gameserver.sprite.base.GameObj;
 import org.apache.mina.core.future.WriteFuture;
@@ -53,6 +50,7 @@ public class GameSession implements GameObj {
      */
 	public static GameSession getInstance(IoSession session) {
 		Object playerObj = session.getAttribute(KEY_PLAYER_SESSION);
+		session.getService().getManagedSessions();
 		return (GameSession) playerObj;
 	}
 	
@@ -64,13 +62,14 @@ public class GameSession implements GameObj {
 	 */
 	public WriteFuture sendMsg(ResponseMsg msg)  {
 		if (session == null || !session.isConnected() || session.isClosing()) {
+			System.out.println("session == null || !session.isConnected() || session.isClosing()");
 			return null;
 		}
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			Thread.sleep(100);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 		return session.write(msg);
 	}
 
@@ -137,7 +136,7 @@ public class GameSession implements GameObj {
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyObj() {
 		close();
 	}
 }

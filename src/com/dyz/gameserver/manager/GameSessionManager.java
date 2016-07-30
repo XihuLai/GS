@@ -65,7 +65,7 @@ public class GameSessionManager {
      */
     public void removeGameSession(Avatar avatar){
         GameSession gameSession =  sessionMap.remove("uuid_"+avatar.getUuId());
-        gameSession.destroy();
+        gameSession.destroyObj();
         gameSession = null;
     }
 

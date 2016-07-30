@@ -22,16 +22,10 @@ public class PickCardResponse extends ServerResponse {
         super(status, ConnectAPI.PICKCARD_RESPONSE);
         CardVO cardVO = new CardVO();
         cardVO.setCardPoint(cardPoint);
-        if(status >0){
-            try {
-                output.writeUTF(JsonUtilTool.toJson(cardVO));
-                output.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-           	 output.close();
-			}
+        try {
+            output.writeUTF(JsonUtilTool.toJson(cardVO));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //entireMsg();
     }
 }

@@ -37,7 +37,7 @@ public class loginBackMsgProcessor extends MsgProcessor implements INotAuthProce
 		}
 		else{
 			System.out.println("该用户还没有登录");
-			gameSession.destroy();
+			gameSession.destroyObj();
 		}
 	}
 
