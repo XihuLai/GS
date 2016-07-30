@@ -39,7 +39,7 @@ public class Avatar implements GameObj {
     //当前玩家能否吃
     public boolean canHu = true;
     
-    
+    //当自己摸牌时检测自己是否有杠的牌。把杠的牌放入到整个list里面，然后在转入给前端
     public List<Integer> gangIndex = new  ArrayList<Integer>();
     /**
      * 检测到有人胡牌时存储胡牌的详细消息(划水麻将和长沙麻将用)

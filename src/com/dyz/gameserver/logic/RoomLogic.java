@@ -188,10 +188,11 @@ public class RoomLogic {
      * 申请解散房间
      */
     public void dissolveRoom(Avatar avatar , int roomId , String type){
-    	//向其他三家发送解散房间信息
+    	//向其他几个玩家发送解散房间信息  
     	JSONObject json;
+    	//为0时表示是申请解散房间，1表示同意解散房间  2表示不同意解散房间
+    	dissolveCount  = playerList.size();
     	if(type.equals("0")){
-    		dissolveCount++;
     		json = new JSONObject();
     		json.put("type", "0");
     		json.put("uuid", avatar.getUuId());
@@ -215,7 +216,7 @@ public class RoomLogic {
     			}
     		}
     	}
-    	else{
+    	else if(type.equals("1")){
     		//同意解散房间
     		dissolveCount++;
     	}
