@@ -125,7 +125,7 @@ public class HuPaiType {
 		 }
 	}
 	/**
-	 * 转转麻将
+	 * 转转麻将 算分
 	 * @param uuid
 	 * @param avatar
 	 * @param str
@@ -137,7 +137,6 @@ public class HuPaiType {
 		List<Integer> maPoint = new ArrayList<Integer>();;
 		if(mas != null){
 			for (Integer cardPoint : mas) {
-				
 				maPoint.add(returnMa(cardPoint));
 			}
 		}

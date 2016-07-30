@@ -241,21 +241,17 @@ public class PlayCardsLogic {
             avatar.putCardInList(tempPoint);
             if (avatar.checkSelfGang()) {
             	gangAvatar.add(avatar);
-            	StringBuffer  strb  = new StringBuffer();
+            	sb.append("gang");
             	for (int i : avatar.gangIndex) {
-            		strb.append(":"+i);
+            		sb.append(":"+i);
 				}
-            	sb.append("gang"+strb+",");
+            	sb.append(",");
             }
             if(checkAvatarIsHuPai(avatar,100,"mo")){
             	//检测完之后不需要移除
             	huAvatar.add(avatar);
             	sb.append("hu,");
             }
-			if (avatar.checkSelfGang()) {
-				gangAvatar.add(avatar);
-				sb.append("gang,");
-			}
             if(sb.length()>2){
 				avatar.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
             }
@@ -343,10 +339,10 @@ public class PlayCardsLogic {
     				}
     			}
     		}
-    		//如果都没有人胡，没有人杠，没有人碰，没有人吃的情况下。则下一玩家摸牌
-    		if(huAvatar.size() == 0 && gangAvatar.size() == 0 && penAvatar.size() == 0 && chiAvatar.size() == 0){
-    			pickCard();
-    		}
+    	}
+    	//如果都没有人胡，没有人杠，没有人碰，没有人吃的情况下。则下一玩家摸牌
+    	if(huAvatar.size() == 0 && gangAvatar.size() == 0 && penAvatar.size() == 0 && chiAvatar.size() == 0){
+    		pickCard();
     	}
     }
 
@@ -711,6 +707,10 @@ public class PlayCardsLogic {
     	int huCount = huAvatar.size();
     	StringBuffer sb = new StringBuffer();
     	List<Integer> mas = new ArrayList<Integer>();
+    	//把胡了的牌索引放入到对应赢家的牌组中，然后打上标签3
+    	avatar.putCardInList(cardIndex);
+    	avatar.getPaiArray()[1][cardIndex] = 3;
+    	
     	if(avatar.getRoomVO().getMa() >= 1 && huCount ==1 ){
     		sb.append(avatar.getUuId());
     		//单响    胡家抓码
@@ -723,8 +723,8 @@ public class PlayCardsLogic {
     		allMas = sb.toString();
     	}
     	else if(avatar.getRoomVO().getMa() >= 1 && huCount >= 1){
-    		//多响   点炮玩家抓码
-    		sb.append(playerList.get(pickAvatarIndex).getUuId());
+    		//多响   点炮玩家抓码   出牌人的索引  curAvatarIndex
+    		sb.append(playerList.get(curAvatarIndex).getUuId());
     		int ma;
     		for (int i = 0; i < avatar.getRoomVO().getMa(); i++) {
     			ma = (int) Math.round(Math.random()*26);
