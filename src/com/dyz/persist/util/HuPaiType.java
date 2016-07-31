@@ -140,6 +140,7 @@ public class HuPaiType {
 				maPoint.add(returnMa(cardPoint));
 			}
 		}
+			
 			//抓的码里面有多少个指向对应的各个玩家
 			selfCount  = Collections.frequency(maPoint, 0);//自己 
 			int downCount  = Collections.frequency(maPoint, 1);//下家
@@ -164,7 +165,7 @@ public class HuPaiType {
 				 for (int i = 0; i < playerList.size(); i++) {
 					 if(playerList.get(i).getUuId() == avatar.getUuId()){
 						// avatar.avatarVO.updateScoreRecord(1, 2*3);//记录分数
-						//:游戏自摸1，接炮2，点炮3，暗杠4，明杠5 ，胡6记录(key),
+						//:游戏自摸1，接炮2，点炮3，暗杠4，明杠5 ，胡6记录(key), 码7
 						//修改自己的分数
 						 avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
 						 
@@ -177,6 +178,7 @@ public class HuPaiType {
 					else{
 						//修改其他三家分数
 						//ava.avatarVO.updateScoreRecord(1, -1*2);//记录分数（负分表示别人自摸扣的分）
+						str =avatar.getUuId()+":"+cardIndex+":"+Rule.Hu_other_common;
 						playerList.get(i).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("1", -1*2);
 						for (int j = 0; j < selfCount; j++) {
 							playerList.get(i).avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
@@ -289,8 +291,6 @@ public class HuPaiType {
 					
 			 }
 		 }
-		//存储hu的关系信息，胡牌信息放入胡牌玩家存储信息中
-		 avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
 	}
 	
 	
@@ -412,13 +412,11 @@ public class HuPaiType {
 	}
 	
 	private static int otherIndex(int selfindex,int count){
-		if((selfindex + count) >= 4){
-			selfindex = selfindex + count -4;
+		int thisIndex = selfindex + count;
+		if(thisIndex>= 4){
+			selfindex = selfindex -4;
 		}
-		else{
-			selfindex = selfindex + count;
-		}
-		return selfindex;
+		return thisIndex;
 	}
 	
 }

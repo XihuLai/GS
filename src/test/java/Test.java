@@ -1,5 +1,9 @@
 package test.java;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dyz.gameserver.pojo.HuReturnObjectVO;
@@ -8,7 +12,7 @@ public class Test {
 
 	public static void main(String[] args) {
 		
-		JSONObject json = new JSONObject();
+		/*JSONObject json = new JSONObject();
 		JSONArray array = new JSONArray();
 		HuReturnObjectVO   ssss= new HuReturnObjectVO();
 		ssss.setNickname("nick1111");
@@ -74,6 +78,8 @@ public class Test {
 		gggg.updateTotalInfo("hu","0:15:zi_common,3333:9:d_self,2222:1:d_other");
 		array.add(gggg);
 		json.put("avatarList", array);
-		System.out.println(json.toString());
+		System.out.println(json.toString());*/
+		
+		
 	}
 }

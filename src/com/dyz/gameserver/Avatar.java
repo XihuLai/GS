@@ -283,18 +283,18 @@ public class Avatar implements GameObj {
     	System.out.println("碰了的牌==="+resultRelation.get(1));
     	for (int i= 0 ; i <avatarVO.getPaiArray()[0].length ; i++) {
     		if (avatarVO.getPaiArray()[0][i] == 4) {
-    			if(resultRelation.get(1) != null && resultRelation.get(1).contains(i+"")){
+    			//if(resultRelation.get(1) != null && resultRelation.get(1).contains(i+"")){
     				if(resultRelation.get(2) == null){
     					gangIndex.add(i);
     					return true;
     				}
     				else{
-    					if(resultRelation.get(2).contains(i+"")){
-    						return false;
-    					}
-    					else{
+    					if(!resultRelation.get(2).contains(i+"")){
     						gangIndex.add(i);
     						return true;
+    					}
+    					else{
+    						return false;
     					}
     				}
     				
@@ -305,11 +305,11 @@ public class Avatar implements GameObj {
     					gangIndex.add(i);
     					flag = true;
     				}*/
-    			}else{
+    			//}else{
     				//(划水麻将分过路杠和暗杠)
-    				gangIndex.add(i);
-    				flag = true;
-    			}
+    			//	gangIndex.add(i);
+    			//	flag = true;
+    			//}
 			}
 		}
         return flag;

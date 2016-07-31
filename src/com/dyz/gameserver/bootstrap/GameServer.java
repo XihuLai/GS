@@ -17,13 +17,13 @@ public class GameServer {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GameServer.class);
 
-	private int port = 1101;
+	private static int port = 1101;
 	
 	private static GameServer instance=new GameServer();
 	
 	public static MsgDispatcher msgDispatcher = new MsgDispatcher();;
 	
-	private NetManager netManager;
+	private static NetManager netManager;
 	
 	private GameServer(){
 		netManager = new NetManager();
@@ -33,7 +33,10 @@ public class GameServer {
 		return instance;
 	}
 	
-	public void startUp(){
+	public static void main(String[] args) {
+		startUp();
+	}
+	public static void startUp(){
 		try {
 			logger.info("开始启动服务器 ...");
 			ExecutorServiceManager.getInstance().initExecutorService();
