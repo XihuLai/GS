@@ -24,7 +24,7 @@ public class MessageBoxMsgProcessor extends MsgProcessor implements INotAuthProc
         if(roomLogic != null){
             int selfUuid = gameSession.getRole(Avatar.class).getUuId();
             List<Avatar> playerList = roomLogic.getPlayerList();
-            if(playerList != null && playerList.size() > 1){
+            if(playerList != null){
                 for(int i=0;i<playerList.size();i++){
                     if(playerList.get(i).getUuId() != selfUuid){
                         playerList.get(i).getSession().sendMsg(new MessageBoxResponse(code));
