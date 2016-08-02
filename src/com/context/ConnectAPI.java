@@ -80,5 +80,8 @@ public class ConnectAPI {
 	public static int  PrepareGame_MSG_REQUEST = 0x333333;
 	public static int PrepareGame_MSG_RESPONSE = 0x444444;
 
+	public static int MessageBox_Request = 203;
+	public static int MessageBox_Notice = 204;
+
 
 }

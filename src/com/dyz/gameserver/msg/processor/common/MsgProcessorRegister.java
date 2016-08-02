@@ -11,6 +11,7 @@ import com.dyz.gameserver.msg.processor.joinroom.JoinRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.LoginMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.OpenAppMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.SignUpMsgProcessor;
+import com.dyz.gameserver.msg.processor.messageBox.MessageBoxMsgProcessor;
 import com.dyz.gameserver.msg.processor.outroom.DissolveRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.outroom.OutRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.pass.GaveUpMsgProcessor;
@@ -57,6 +58,8 @@ public enum MsgProcessorRegister {
 	successRerunMsg(ConnectAPI.SUCCESS_RETURN_MSG_RESPONSE,new SuccessReturnMsgProcessor()),
 	/**游戏开始前准备*/
 	prepareGame(ConnectAPI.PrepareGame_MSG_REQUEST,new PrepareGameMSGProcessor()),
+
+	messageBox(ConnectAPI.MessageBox_Request,new MessageBoxMsgProcessor()),
 
 	head(ConnectAPI.head,new HeadMsgProcessor());
 	

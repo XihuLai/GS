@@ -13,7 +13,6 @@ import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class NetManager {
 
@@ -63,8 +62,8 @@ public class NetManager {
      */
 	public void stop() throws InterruptedException{
 		acceptor.unbind();
-		threadpool.shutdown();
-		threadpool.awaitTermination(5, TimeUnit.SECONDS);
+		//threadpool.shutdown();
+		//threadpool.awaitTermination(5, TimeUnit.SECONDS);
 		acceptor.dispose(true);
 	}
 	
