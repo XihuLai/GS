@@ -147,7 +147,7 @@ public class PlayCardsLogic {
         	//转转麻将
             paiCount = 27;
             if(roomVO.getHong()){
-                paiCount = 28;
+                paiCount = 34;
             }
         }else if(roomVO.getRoomType() == 2){
         	//划水麻将
@@ -163,7 +163,13 @@ public class PlayCardsLogic {
         listCard = new ArrayList<Integer>();
         for (int i = 0; i < paiCount; i++) {
             for (int k = 0; k < 4; k++) {
-                listCard.add(i);
+				if(roomVO.getHong() && i == 27) {
+					listCard.add(31);
+				}else if(roomVO.getHong() && i >= 28){
+					break;
+				}else{
+					listCard.add(i);
+				}
             }
         }
         
@@ -197,7 +203,7 @@ public class PlayCardsLogic {
      */
     public void shuffleTheCards() {
         Collections.shuffle(listCard);
-        System.out.print("listCard --> "+listCard.toString());
+		Collections.shuffle(listCard);
     }
     /**
      * 检测玩家是否胡牌了
