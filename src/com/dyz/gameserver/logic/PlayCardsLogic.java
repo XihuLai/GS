@@ -1041,7 +1041,7 @@ public class PlayCardsLogic {
     			 for (Avatar itemAva : playerList) {
     				 if(playerList.get(pickAvatarIndex).getUuId() == itemAva.getUuId() ){
                         // itemAva.avatarVO.setMain(true);
-    					 //bankerAvatar = itemAva;
+    					 bankerAvatar = itemAva;
     					 itemAva.avatarVO.setMain(true);
     				 }
     				 else{
@@ -1053,7 +1053,7 @@ public class PlayCardsLogic {
         		//重新分配庄家，下一局胡家坐庄
     			 for (Avatar itemAva : playerList) {
     				 if(avatar.getUuId() == itemAva.getUuId() ){
-    					// bankerAvatar = itemAva;
+    					bankerAvatar = itemAva;
     					 itemAva.avatarVO.setMain(true);
     				 }
     				 else{
