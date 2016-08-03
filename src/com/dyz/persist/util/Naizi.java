@@ -12,7 +12,15 @@ public class Naizi {
 //    }
 
     public static  boolean testHuiPai(int [][] paiList ){
-       return getNeedHunNum(paiList[0]);
+        int[] pai =GlobalUtil.CloneIntList(paiList[0]);
+        for(int i=0;i<paiList[0].length;i++){
+            if(paiList[1][i] == 1 && pai[i] >= 3) {
+                pai[i] -= 3;
+            }else if(paiList[1][i] == 2 && pai[i] == 4){
+                pai[i]  -= 4;
+            }
+        }
+       return getNeedHunNum(pai);
     }
 
     /**
@@ -21,7 +29,7 @@ public class Naizi {
      * @return
      */
     private static boolean getNeedHunNum(int[] paiList){
-    	int zhong = paiList[27];
+    	int zhong = paiList[31];
         int[] wan_arr = new int[9];
         int[] tiao_arr = new int[9];
         int[] tong_arr = new int[9];
@@ -50,20 +58,17 @@ public class Naizi {
 
         needNum = getNumWithJiang(wan_arr.clone()) + getNumber(tiao_arr.clone()) + getNumber(tong_arr.clone());
         if(needNum <= zhong){
-        	//System.out.println("将在万中 要  "+needNum +" wan = "+getNumWithJiang(wan_arr.clone())+"   tiao = "+getNumber(tiao_arr.clone())+"    tong = "+getNumber(tong_arr.clone()));
         	return true;
         }
         else {
         	needNum = getNumber(wan_arr.clone()) + getNumWithJiang(tiao_arr.clone()) + getNumber(tong_arr.clone());
         	if(needNum <= zhong){
-        		// System.out.println("将在条中 要  "+needNum+" wan = "+getNumber(wan_arr.clone())+"   tiao = "+getNumWithJiang(tiao_arr.clone())+"    tong = "+getNumber(tong_arr.clone()));
         		return true;
         	}
         	else{
         		needNum = getNumber(wan_arr.clone()) + getNumber(tiao_arr.clone()) + getNumWithJiang(tong_arr.clone());
         		if(needNum <= zhong){
         			return true;
-        			//System.out.println("将在筒中 要  "+needNum+" wan = "+getNumber(wan_arr.clone())+"   tiao = "+getNumber(tiao_arr.clone())+"    tong = "+getNumWithJiang(tong_arr.clone()));
         		}
         		else{
         			return false;
@@ -203,7 +208,7 @@ public class Naizi {
         if(isjiang == false){
             result += 2;
         }
-        System.out.print("getNumWithJiang");
+        System.out.print("getNumWithJiang ===>  "+result+"  ==>> ");
         for(int a = 0;a<temp_arr.length;a++){
             System.out.print(temp_arr[a]+",");
         }
@@ -237,13 +242,14 @@ public class Naizi {
                             result++;
                         } else {
                             temp_arr[i] = 0;
+                            result  += 2;
                         }
                     }
                 } else {
                     if(i == 7) {
                         if (temp_arr[i] > 0 && temp_arr[i + 1] > 0) {
                             temp_arr[i]--;
-                            temp_arr[i]--;
+                            temp_arr[i+1]--;
                             result++;
                             i--;
                         } else if (temp_arr[i] > 0 && temp_arr[i + 1] == 0) {
@@ -258,7 +264,7 @@ public class Naizi {
             }
         }
 
-        System.out.print("getNumber");
+        System.out.print("getNumber ===>  "+result+"  ==>> ");
         for(int a = 0;a<temp_arr.length;a++){
             System.out.print(temp_arr[a]+",");
         }
