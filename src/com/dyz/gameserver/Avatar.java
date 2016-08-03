@@ -1,8 +1,14 @@
 package com.dyz.gameserver;
 
-import com.context.ErrorCode;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dyz.gameserver.commons.session.GameSession;
-import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.RoomVO;
@@ -11,14 +17,6 @@ import com.dyz.gameserver.sprite.base.GameObj;
 import com.dyz.gameserver.sprite.tool.AsyncTaskQueue;
 import com.dyz.myBatis.services.AccountService;
 import com.dyz.persist.util.GlobalUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -230,22 +228,45 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkPeng(int cardIndex){
-    	System.out.println("杠了的牌="+cardIndex+"=="+resultRelation.get(2));
-    	System.out.println("碰了的牌="+cardIndex+"=="+resultRelation.get(1));
+    	System.out.println("杠了的牌="+cardIndex+"====="+resultRelation.get(2));
+    	System.out.println("碰了的牌="+cardIndex+"====="+resultRelation.get(1));
+    	boolean flag = false;
         if(avatarVO.getPaiArray()[0][cardIndex] >= 2 ){
         	if(resultRelation.get(1) == null ){
-        		return true;
+        		//return true;
+        		flag = true;
         	}
         	else{
-        		if(	resultRelation.get(1).contains(cardIndex+"")){
+        		String strs [] = resultRelation.get(1).split(",");
+        		for (int i = 0; i < strs.length; i++) {
+        			if(strs[i].equals(cardIndex+"")){
+						flag  =  false;
+						 i = strs.length;
+					}
+					else{
+						flag  =  true;
+					}
+				}
+        		
+        		/*for (String str : strs) {
+					if(str.equals(cardIndex+"")){
+						return false;
+					}
+					else{
+						return true;
+					}
+				}*///2016-8-3
+        		/*if(	resultRelation.get(1).contains(cardIndex+"")){
+        			System.out.println("碰了的牌包含");
         			return false;
         		}
         		else{
+        			System.out.println("碰了的牌不包含");
         			return true;
-        		}
+        		}*/
         	}
         }
-        return false;
+        return flag;
     }
 
     /**
@@ -254,22 +275,43 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkGang(int cardIndex){
-    	System.out.println("杠了的牌="+cardIndex+"=="+resultRelation.get(2));
-    	System.out.println("碰了的牌="+cardIndex+"=="+resultRelation.get(1));
+    	System.out.println("gang 杠了的牌="+cardIndex+"=="+resultRelation.get(2));
+    	System.out.println("gang 碰了的牌="+cardIndex+"=="+resultRelation.get(1));
+    	boolean flag = false;
         if(avatarVO.getPaiArray()[0][cardIndex] == 3){
         	if(resultRelation.get(1) ==null){
-        		return true;
+        		flag = true;
+        		//return true;
         	}else{
-        		if(resultRelation.get(1).contains(cardIndex+"")){
+        		String strs [] = resultRelation.get(1).split(",");
+        		for (int i = 0; i < strs.length; i++) {
+        			if(strs[i].equals(cardIndex+"")){
+						flag  =  false;
+						 i = strs.length;
+					}
+					else{
+						flag  =  true;
+					}
+				}
+        		/*for (String str : strs) {
+					if(str.equals(cardIndex+"")){
+						return false;
+					}
+					else{
+						return true;
+					}
+				}*///2016-8-3
+        		/*2016-8-2
+        		 * if(resultRelation.get(1).contains(cardIndex+"")){
         			return false;
         		}
         		else{
         			System.out.println(resultRelation.get(1));
         			return true;
-        		}
+        		}*/
         	}
         }
-        return false;
+        	return flag;
     }
     /**
      * 检测当前自己的牌是否可杠
@@ -278,24 +320,47 @@ public class Avatar implements GameObj {
      */
     public boolean checkSelfGang(){
     	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
-    	boolean flag = false;
     	System.out.println("杠了的牌==="+resultRelation.get(2));
     	System.out.println("碰了的牌==="+resultRelation.get(1));
+    	boolean flag = false;
     	for (int i= 0 ; i <avatarVO.getPaiArray()[0].length ; i++) {
     		if (avatarVO.getPaiArray()[0][i] == 4) {
     			//if(resultRelation.get(1) != null && resultRelation.get(1).contains(i+"")){
     				if(resultRelation.get(2) == null){
     					gangIndex.add(i);
-    					return true;
+    					flag =  true;
     				}
     				else{
-    					if(!resultRelation.get(2).contains(i+"")){
+    					String strs [] = resultRelation.get(2).split(",");
+    					for (int j = 0; j < strs.length; j++) {
+    						if(strs[j].equals(i+"")){
+    							flag =  false;
+    							j = strs.length;
+    						}
+    						else{
+    							gangIndex.add(i);
+    							flag =  true;
+    						}
+						}
+    					
+    	        		/*for (String str : strs) {
+    						if(str.equals(i+"")){
+    							return false;
+    						}
+    						else{
+    							gangIndex.add(i);
+    							return true;
+    						}
+    					}*/////2016-8-3
+    	        		
+    					/*2016-8-2
+    					 * if(!resultRelation.get(2).contains(i+"")){
     						gangIndex.add(i);
     						return true;
     					}
     					else{
     						return false;
-    					}
+    					}*/
     				}
     				
     				/*if(resultRelation.get(2) != null && resultRelation.get(2).contains(i+"") ){
@@ -409,13 +474,14 @@ public class Avatar implements GameObj {
             avatarVO.getPaiArray()[0][cardIndex]++;
            return true;
         }else{
-            System.out.println("Error : putCardInList --> 牌数组里已经有4张牌");
-            try {
-                session.sendMsg(new ErrorResponse(ErrorCode.Error_000008));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return false;
+        	//再没检测出为什么牌组里面已经有4张牌的错误消息前暂且注释掉
+            //System.out.println("Error : putCardInList --> 牌数组里已经有4张牌");
+            //try {  
+                //session.sendMsg(new ErrorResponse(ErrorCode.Error_000008));
+           // } catch (IOException e) {
+            //    e.printStackTrace();
+           // }
+            return true;
         }
     }
 

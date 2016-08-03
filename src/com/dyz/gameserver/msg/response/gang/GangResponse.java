@@ -22,11 +22,11 @@ public class GangResponse extends ServerResponse {
      * @param nextPoint 第二张牌
      * @param type  明杠0 ， 暗杠 1
      */
-    public GangResponse(int status, int fristPoint,int nextPoint,int type) {
+	public GangResponse(int status, int fristPoint,int nextPoint,int type) {
         super(status, ConnectAPI.GANGPAI_RESPONSE);
         if(status >0){
             GangBackVO gangBackVO = new GangBackVO();
-            List<Integer> cardVOList = new ArrayList<Integer>();
+           /* List<Integer> cardVOList = new ArrayList<Integer>();
             //=========================================
             if(fristPoint != 100) {
                 cardVOList.add(fristPoint);
@@ -36,7 +36,7 @@ public class GangResponse extends ServerResponse {
                 cardVOList.add(nextPoint);
             }
             //=========================================
-            gangBackVO.setCardList(cardVOList);
+            gangBackVO.setCardList(cardVOList);*/  //2016-8-1
             gangBackVO.setType(type);
             try {
                 output.writeUTF(JsonUtilTool.toJson(gangBackVO));

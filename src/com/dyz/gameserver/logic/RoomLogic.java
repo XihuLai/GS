@@ -1,5 +1,11 @@
 package com.dyz.gameserver.logic;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.alibaba.fastjson.JSONObject;
 import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
@@ -15,12 +21,6 @@ import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.HuReturnObjectVO;
 import com.dyz.gameserver.pojo.RoomVO;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
  * Created by kevin on 2016/6/18.
  * 房间逻辑
@@ -31,7 +31,10 @@ public class RoomLogic {
     private  Avatar createAvator;
     private RoomVO roomVO;
     private PlayCardsLogic playCardsLogic;
-    private int dissolveCount = 0;//同意解散房间的人数
+    /**
+     * //同意解散房间的人数
+     */
+    private int dissolveCount = 1;
     
     
     /**
@@ -115,11 +118,12 @@ public class RoomLogic {
      * @throws IOException 
      */
     public void checkCanBeStartGame() throws IOException{
+    	System.out.println("检测是否可以开始游戏");
     	if(playerList.size() == 4){
     		//房间里面4个人且都准备好了则开始游戏
     		List<AvatarVO> avatarVos = new ArrayList<>();
     		for(int i=0;i<playerList.size();i++){
-    			if(playerList.get(i).avatarVO.getIsReady() == false){
+    			if(!playerList.get(i).avatarVO.getIsReady()){
     				//还有人没有准备
     				avatarVos.add(playerList.get(i).avatarVO);
     			}
@@ -134,6 +138,7 @@ public class RoomLogic {
     			}
     			isBegin = true;
     			//所有人都准备好了
+    			System.out.println("所有人都准备好了");
     			startGameRound();
     		}
     	}
@@ -161,12 +166,12 @@ public class RoomLogic {
         	json.put("type", "1");
         	  for (int i= 0 ; i < playerList.size(); i++) {
         			  playerList.get(i).getSession().sendMsg(new OutRoomResponse(1, json.toString()));
+        			  roomVO.getPlayerList().remove(playerList.get(i).avatarVO);
+        			  playerList.get(i).setRoomVO(new RoomVO());
+        			  playerList.get(i).avatarVO.setRoomId(0);
       		}
+        	  playerList.clear();
         	  roomVO.setRoomId(0);
-        	  avatar.avatarVO.setRoomId(0);
-        	  avatar.setRoomVO(new RoomVO());
-        	  playerList.remove(avatar);
-        	  roomVO.getPlayerList().remove(avatar.avatarVO);
         	  roomVO = null;
         }
         else{
@@ -175,10 +180,9 @@ public class RoomLogic {
         	for (int i= 0 ; i < playerList.size(); i++) {
         		//通知房间里面的其他玩家
         		playerList.get(i).getSession().sendMsg(new OutRoomResponse(1, json.toString()));
+        		playerList.get(i).avatarVO.setRoomId(0);
+        		playerList.get(i).setRoomVO(new RoomVO());
         	}
-        	roomVO.setRoomId(0);
-        	avatar.avatarVO.setRoomId(0);
-        	avatar.setRoomVO(new RoomVO());
         	playerList.remove(avatar);
         	roomVO.getPlayerList().remove(avatar.avatarVO);
         }
@@ -191,7 +195,7 @@ public class RoomLogic {
     	//向其他几个玩家发送解散房间信息  
     	JSONObject json;
     	//为0时表示是申请解散房间，1表示同意解散房间  2表示不同意解散房间
-    	dissolveCount  = playerList.size();
+    	//dissolveCount  = playerList.size();
     	if(type.equals("0")){
     		json = new JSONObject();
     		json.put("type", "0");
@@ -218,7 +222,7 @@ public class RoomLogic {
     	}
     	else if(type.equals("1")){
     		//同意解散房间
-    		dissolveCount++;
+    		dissolveCount = dissolveCount+1;
     	}
     	//下面是判断是否所有人都同意解散房间
     	int onlineCount = 0;
@@ -227,20 +231,25 @@ public class RoomLogic {
 				onlineCount++;
 			}
 		}
-    	if(onlineCount == dissolveCount){
+    	if(onlineCount <= dissolveCount){
     		json = new JSONObject();
     		json.put("type", "1");
     		//所有人都同意了解散房间
     		for (Avatar avat : playerList) {
     			avat.getSession().sendMsg(new DissolveRoomResponse(1, json.toString()));
+    			avat.avatarVO.setRoomId(0);;
     		}
-    		for (Avatar av : playerList) {
+/*    		for (Avatar av : playerList) {
     			 av.avatarVO.setRoomId(0);
     			 av.setRoomVO(new RoomVO());
-    		     playerList.remove(av);
-    		     roomVO.getPlayerList().remove(av.avatarVO);
-    		     roomVO = null;
+    		     //playerList.remove(av);
+    		     //roomVO.getPlayerList().remove(av.avatarVO);
+    		    // roomVO = null;
 			}
+*/    		 
+    		 playerList.clear();;
+		     roomVO.getPlayerList().clear();;
+		     roomVO = null;
     	}
     }
     /**
@@ -320,7 +329,7 @@ public class RoomLogic {
         int avatarIndex = playerList.indexOf(avatar);
         //成功则返回
         for (Avatar ava : playerList) {
-        	//ava.getSession().sendMsg(new PrepareGameResponse(1,avatarIndex));
+        	ava.getSession().sendMsg(new PrepareGameResponse(1,avatarIndex));
 		}
         checkCanBeStartGame();
     }

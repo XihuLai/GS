@@ -26,14 +26,18 @@ INotAuthProcessor  {
 			int roomId = Integer.parseInt(json.get("roomId").toString());
 			String type = json.get("type").toString();
 			Avatar avatar = gameSession.getRole(Avatar.class);
+			System.out.println("申请解散房间");
 			if (avatar != null && roomId != 0) {
 				RoomLogic roomLogic = RoomManager.getInstance().getRoom(roomId);
 				if (roomLogic != null) {
-					//解散房间
+					//申请解散/解散房间
 					roomLogic.dissolveRoom(avatar,roomId,type);
 				} else {
-					
+					System.out.println("房间有问题");
 				}
+			}
+			else{
+				System.out.println("房间号不能为0");
 			}
 		}		
 	}
