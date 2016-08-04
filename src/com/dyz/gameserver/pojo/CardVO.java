@@ -6,13 +6,15 @@ package com.dyz.gameserver.pojo;
 public class CardVO {
     private int cardPoint;
     
-   /* private int onePoint;//两个吃牌之一
+    private int onePoint;//两个吃牌之一
     
     private int twoPoint;//两个吃牌之二
-*/
+    
+    private String type;//代表胡的类型（qiangHu）
+
     
     
-  /*  public int getOnePoint() {
+  public int getOnePoint() {
 		return onePoint;
 	}
 
@@ -26,7 +28,15 @@ public class CardVO {
 
 	public void setTwoPoint(int twoPoint) {
 		this.twoPoint = twoPoint;
-	}*/
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public int getCardPoint() {
         return cardPoint;

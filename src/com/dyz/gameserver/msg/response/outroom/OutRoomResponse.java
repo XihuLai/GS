@@ -1,11 +1,9 @@
 package com.dyz.gameserver.msg.response.outroom;
 
+import java.io.IOException;
+
 import com.context.ConnectAPI;
 import com.dyz.gameserver.commons.message.ServerResponse;
-import com.dyz.gameserver.pojo.RoomVO;
-import com.dyz.persist.util.JsonUtilTool;
-
-import java.io.IOException;
 
 public class OutRoomResponse extends ServerResponse {
 	/**

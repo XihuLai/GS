@@ -287,7 +287,7 @@ public class Avatar implements GameObj {
         		for (int i = 0; i < strs.length; i++) {
         			if(strs[i].equals(cardIndex+"")){
 						flag  =  false;
-						 i = strs.length;
+						i = strs.length;
 					}
 					else{
 						flag  =  true;
@@ -336,6 +336,7 @@ public class Avatar implements GameObj {
     						if(strs[j].equals(i+"")){
     							flag =  false;
     							j = strs.length;
+    							i = avatarVO.getPaiArray()[0].length;
     						}
     						else{
     							gangIndex.add(i);

@@ -24,7 +24,7 @@ public class HuPaiMsgProcessor extends MsgProcessor implements
         RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
         if(roomLogic != null){
            CardVO cardVO = JsonUtilTool.fromJson(request.getString(),CardVO.class);
-           boolean isHu =  roomLogic.huPai(gameSession.getRole(Avatar.class),cardVO.getCardPoint());
+           boolean isHu =  roomLogic.huPai(gameSession.getRole(Avatar.class),cardVO.getCardPoint(),cardVO.getType());
            if(isHu){
            }
            else{

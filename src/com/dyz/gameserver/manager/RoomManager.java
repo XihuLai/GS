@@ -1,13 +1,11 @@
 package com.dyz.gameserver.manager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.logic.RoomLogic;
-import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
 import com.dyz.gameserver.pojo.RoomVO;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -45,13 +43,13 @@ public class RoomManager {
      * 销毁房间/通知房间里面的玩家退出房间
      * @param avatar
      */
-    public void destroyRoom(List<Avatar> avatars, RoomVO roomVO){
+    public void destroyRoom(RoomVO roomVO){
     	
     	if(roomList.get(roomVO.getRoomId()) != null){
     		roomList.remove(roomVO.getRoomId());
-    		for (Avatar avatar : avatars) {
-    			//avatar.getSession().sendMsg(new OutRoomResponse(1, roomVO));
-			}
+//    		for (Avatar avatar : avatars) {
+//    			//avatar.getSession().sendMsg(new OutRoomResponse(1, roomVO));
+//			}
     	}
     }
 

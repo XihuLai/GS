@@ -9,6 +9,7 @@ import java.util.TimerTask;
 import com.alibaba.fastjson.JSONObject;
 import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
+import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.joinroom.JoinRoomNoice;
 import com.dyz.gameserver.msg.response.joinroom.JoinRoomResponse;
@@ -170,6 +171,7 @@ public class RoomLogic {
         			  playerList.get(i).setRoomVO(new RoomVO());
         			  playerList.get(i).avatarVO.setRoomId(0);
       		}
+        	  RoomManager.getInstance().destroyRoom(roomVO);
         	  playerList.clear();
         	  roomVO.setRoomId(0);
         	  roomVO = null;
@@ -185,6 +187,21 @@ public class RoomLogic {
         	}
         	playerList.remove(avatar);
         	roomVO.getPlayerList().remove(avatar.avatarVO);
+        	//如果该房间里面的人数只有一个人时，解散房间
+        	if(playerList.size() == 1){
+	        	  json.put("type", "1");
+	          	  for (int i= 0 ; i < playerList.size(); i++) {
+	          			  playerList.get(i).getSession().sendMsg(new OutRoomResponse(1, json.toString()));
+	          			  roomVO.getPlayerList().remove(playerList.get(i).avatarVO);
+	          			  playerList.get(i).setRoomVO(new RoomVO());
+	          			  playerList.get(i).avatarVO.setRoomId(0);
+	        		}
+	          	  //销毁房间
+	          	  RoomManager.getInstance().destroyRoom(roomVO);
+	        	  playerList.clear();
+	        	  roomVO.setRoomId(0);
+	        	  roomVO = null;
+        	}
         }
     }
 
@@ -305,8 +322,8 @@ public class RoomLogic {
      * @param avatar
      * @return
      */
-    public boolean huPai(Avatar avatar,int cardIndex){
-    	return playCardsLogic.huPai( avatar, cardIndex);
+    public boolean huPai(Avatar avatar,int cardIndex,String type){
+    	return playCardsLogic.huPai( avatar, cardIndex,type);
     	
     }
     
@@ -354,7 +371,7 @@ public class RoomLogic {
 	        playCardsLogic = new PlayCardsLogic();
 	        playCardsLogic.setPlayerList(playerList);
 	        playCardsLogic.initCard(roomVO);
-	        
+	        System.out.println("下局开始时人数："+playerList.size());
 	        //创建房间信息，游戏记录信息
 			//RoomInfoService.getInstance().createRoomInfo(roomVO);
 					
