@@ -17,7 +17,7 @@ public class GameServer {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GameServer.class);
 
-	private static int port = 1101;
+	private static int port = 10122;
 	
 	private static GameServer instance=new GameServer();
 	
