@@ -80,16 +80,16 @@ public class Naizi {
     private static int getNumWithJiang(int[] temp_arr){
         boolean isjiang = false;
         int result = 0;
-        for(int i=0;i<9;i++){
-            if(temp_arr[i]== 3) {
-                temp_arr[i] = 0;//先去除掉成坎的牌组
-            }
-            if(temp_arr[i] == 4){
-                temp_arr[i] = 1;//这4张牌还在手中的情况
-            }else if(temp_arr[i] > 4) {
-                temp_arr[i] = 0;//该牌被扛掉了
-            }
-        }
+//        for(int i=0;i<9;i++){
+//            if(temp_arr[i]== 3) {
+//                temp_arr[i] = 0;//先去除掉成坎的牌组
+//            }
+//            if(temp_arr[i] == 4){
+//                temp_arr[i] = 1;//这4张牌还在手中的情况
+//            }else if(temp_arr[i] > 4) {
+//                temp_arr[i] = 0;//该牌被扛掉了
+//            }
+//        }
         for(int i=0;i<9;i++){
             if(temp_arr[i]>0){
                     if (i < 7) {
