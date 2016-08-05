@@ -7,6 +7,7 @@ import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
+import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.createroom.CreateRoomResponse;
 import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.persist.util.JsonUtilTool;
@@ -42,7 +43,7 @@ public class CreateRoomMsgProcssor extends MsgProcessor implements
                     }
                 }else{
                     System.out.println("房间卡没有了");
-                    gameSession.sendMsg(new CreateRoomResponse(0,ErrorCode.Error_000014));
+                    gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000014));
                 }
             }
         }else{

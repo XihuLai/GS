@@ -13,7 +13,7 @@ public class GlobalUtil {
 
     public static boolean checkIsLogin(GameSession session){
         if(session.isLogin() == false){
-            System.out.println("此帐号没有登录");
+            System.out.println("账户未登录或已经掉线!");
             try {
                 session.sendMsg(new ErrorResponse(ErrorCode.Error_000002));
             } catch (IOException e) {

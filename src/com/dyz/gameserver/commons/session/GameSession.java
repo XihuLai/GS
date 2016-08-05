@@ -3,11 +3,9 @@ package com.dyz.gameserver.commons.session;
 import com.alibaba.fastjson.JSONObject;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.message.ResponseMsg;
-import com.dyz.gameserver.logic.PlayCardsLogic;
 import com.dyz.gameserver.logic.RoomLogic;
 import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
-import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.gameserver.sprite.base.GameObj;
 import org.apache.mina.core.future.WriteFuture;
@@ -68,7 +66,7 @@ public class GameSession implements GameObj {
 	 */
 	public WriteFuture sendMsg(ResponseMsg msg)  {
 		if (session == null || !session.isConnected() || session.isClosing()) {
-			System.out.println("session == null || !session.isConnected() || session.isClosing()");
+			System.out.println("session == "+session+" session.isConnected ==  "+session.isConnected()+" session.isClosing =  "+session.isClosing());
 			return null;
 		}
 		return session.write(msg);
@@ -145,8 +143,6 @@ public class GameSession implements GameObj {
 			
 			session.close(false);
 			System.out.println("关闭SESSION -- >  session.close(false);");
-			
-			
 		}
 	}
 

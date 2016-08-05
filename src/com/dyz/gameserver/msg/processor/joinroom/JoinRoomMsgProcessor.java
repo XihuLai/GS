@@ -1,5 +1,6 @@
 package com.dyz.gameserver.msg.processor.joinroom;
 
+import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.message.ClientRequest;
 import com.dyz.gameserver.commons.session.GameSession;
@@ -7,6 +8,7 @@ import com.dyz.gameserver.logic.RoomLogic;
 import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
+import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.persist.util.GlobalUtil;
 import net.sf.json.JSONObject;
 
@@ -24,6 +26,10 @@ public class JoinRoomMsgProcessor extends MsgProcessor implements
 			int roomId = (int)json.get("roomId");
 			Avatar avatar = gameSession.getRole(Avatar.class);
 			if (avatar != null) {
+				if(avatar.avatarVO.getRoomId() != 0){
+					avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000017));
+					return;
+				}
 				RoomLogic roomLogic = RoomManager.getInstance().getRoom(roomId);
 				if (roomLogic != null) {
 					boolean joinResult = roomLogic.intoRoom(avatar);
@@ -33,10 +39,8 @@ public class JoinRoomMsgProcessor extends MsgProcessor implements
 						System.out.println("加入房间失败");
 					}
 				} else {
-					System.out.println("房间号有误");
+					avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000018));
 				}
-			}else{
-				System.out.println("账户未登录或已经掉线!");
 			}
 			System.out.println("roomId --> " + roomId);
 		}

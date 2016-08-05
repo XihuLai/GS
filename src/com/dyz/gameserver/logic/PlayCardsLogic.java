@@ -1,14 +1,5 @@
 package com.dyz.gameserver.logic;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.context.ErrorCode;
@@ -34,6 +25,10 @@ import com.dyz.persist.util.HuPaiType;
 import com.dyz.persist.util.Naizi;
 import com.dyz.persist.util.NormalHuPai;
 import com.dyz.persist.util.StringUtil;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.Map.Entry;
 
 
 /**
@@ -87,10 +82,6 @@ public class PlayCardsLogic {
      * 上一家出的牌的点数
      */
     private int putOffCardPoint;
-   /* *//**
-     * 剩余牌的数量，转转麻将抓码的时候需要
-     *//*
-    private int surplusCardCount;*/
     /**
      * 4家玩家信息集合
      */

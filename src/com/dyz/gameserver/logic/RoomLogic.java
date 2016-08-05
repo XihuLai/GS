@@ -1,11 +1,5 @@
 package com.dyz.gameserver.logic;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.alibaba.fastjson.JSONObject;
 import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
@@ -22,6 +16,12 @@ import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.HuReturnObjectVO;
 import com.dyz.gameserver.pojo.RoomVO;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by kevin on 2016/6/18.
  * 房间逻辑
@@ -36,8 +36,6 @@ public class RoomLogic {
      * //同意解散房间的人数
      */
     private int dissolveCount = 1;
-    
-    
     /**
      * 房间属性 1-为普通房间
      */
@@ -55,7 +53,6 @@ public class RoomLogic {
         count = roomVO.getRoundNumber();
     }
 
-    
     /**
      * 创建房间,默认进入装备状态
      * @param avatar
@@ -77,8 +74,12 @@ public class RoomLogic {
      */
     public boolean intoRoom(Avatar avatar){
         if(playerList.size() == 4){
-            //avatar.getSession().sendMsg(new JoinRoomResponse(0,ErrorCode.Error_000011));
-            return false;
+			try {
+				avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000011));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return false;
         }else {
             avatar.avatarVO.setMain(false);
             avatar.avatarVO.setIsReady(true);
@@ -88,7 +89,6 @@ public class RoomLogic {
             playerList.add(avatar);
             roomVO.getPlayerList().add(avatar.avatarVO);
             avatar.getSession().sendMsg(new JoinRoomResponse(1, roomVO));
-            System.err.println("房间当前人数："+playerList.size());
             if(playerList.size() == 4){
             	//当人数4个时自动开始游戏
                 //checkCanBeStartGame();当最后一个人加入时，不需要检测其他玩家是否准备(一句结束后开始才需要检测玩家是否准备)
