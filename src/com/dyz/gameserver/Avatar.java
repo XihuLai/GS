@@ -228,8 +228,8 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkPeng(int cardIndex){
-    	System.out.println("杠了的牌="+cardIndex+"====="+resultRelation.get(2));
-    	System.out.println("碰了的牌="+cardIndex+"====="+resultRelation.get(1));
+//    	System.out.println("杠了的牌="+cardIndex+"====="+resultRelation.get(2));
+//    	System.out.println("碰了的牌="+cardIndex+"====="+resultRelation.get(1));
     	boolean flag = false;
         if(avatarVO.getPaiArray()[0][cardIndex] >= 2 ){
         	if(resultRelation.get(1) == null ){
@@ -266,6 +266,12 @@ public class Avatar implements GameObj {
         		}*/
         	}
         }
+        //如果有两个红中，则可碰
+        if(!flag && roomVO.getHong()){
+        	if(avatarVO.getPaiArray()[0][27] == 2){
+        		flag = true;
+        	}
+        }
         return flag;
     }
 
@@ -275,8 +281,8 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkGang(int cardIndex){
-    	System.out.println("gang 杠了的牌="+cardIndex+"=="+resultRelation.get(2));
-    	System.out.println("gang 碰了的牌="+cardIndex+"=="+resultRelation.get(1));
+//    	System.out.println("gang 杠了的牌="+cardIndex+"=="+resultRelation.get(2));
+//    	System.out.println("gang 碰了的牌="+cardIndex+"=="+resultRelation.get(1));
     	boolean flag = false;
         if(avatarVO.getPaiArray()[0][cardIndex] == 3){
         	if(resultRelation.get(1) ==null){
@@ -320,8 +326,8 @@ public class Avatar implements GameObj {
      */
     public boolean checkSelfGang(){
     	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
-    	System.out.println("杠了的牌==="+resultRelation.get(2));
-    	System.out.println("碰了的牌==="+resultRelation.get(1));
+//    	System.out.println("杠了的牌==="+resultRelation.get(2));
+//    	System.out.println("碰了的牌==="+resultRelation.get(1));
     	boolean flag = false;
     	for (int i= 0 ; i <avatarVO.getPaiArray()[0].length ; i++) {
     		if (avatarVO.getPaiArray()[0][i] == 4) {

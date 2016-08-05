@@ -8,10 +8,17 @@ import com.dyz.gameserver.msg.response.common.CloseGameResponse;
 import com.dyz.gameserver.net.MinaMsgHandler;
 import com.dyz.gameserver.net.NetManager;
 import com.dyz.myBatis.services.InitServers;
+import com.jcraft.jzlib.InflaterInputStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collection;
+import java.util.Scanner;
 
 public class GameServer {
 	
@@ -33,8 +40,8 @@ public class GameServer {
 		return instance;
 	}
 	
-	public static void main(String[] args) {
-		startUp();
+	public static void main(String[] args) throws IOException {
+           startUp();
 	}
 	public static void startUp(){
 		try {
@@ -54,7 +61,7 @@ public class GameServer {
 		
 	}
 	
-	public void stop() {
+	public static void stop() {
 		try {
 			//关闭服务器前，向所有线程玩家发送关闭消息
 			Collection<GameSession> list = GameSessionManager.getInstance().sessionMap.values();

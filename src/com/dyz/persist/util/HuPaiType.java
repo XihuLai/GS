@@ -2,7 +2,14 @@ package com.dyz.persist.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.lang.math.Fraction;
+
+import java.util.Set;
 
 import com.context.Rule;
 import com.dyz.gameserver.Avatar;
@@ -13,8 +20,34 @@ import com.dyz.gameserver.Avatar;
  *
  */
 public class HuPaiType {
-
+     
+	/**
+	 * 有效码 key：原始码   value：处理之后的码
+	 */
+	private  Map<Integer , Integer> map = new HashMap<Integer , Integer>();
+	/**
+	 * 有效码
+	 */
+	private   List<Integer> validMa = new ArrayList<Integer>();
 	
+	/**
+	 * 包含所有的有效码(处理成0-3之间数的码)
+	 */
+	private static StringBuffer sb = new StringBuffer();
+	
+	
+	private static HuPaiType huPaiType ;
+	
+	
+	private HuPaiType() {
+		
+	}
+	public  static HuPaiType getInstance(){
+		if(huPaiType == null){
+			huPaiType = new HuPaiType();
+		}
+		return huPaiType;
+	}
 	/**
 	 * 
 	 * 	 //区分转转麻将，划水麻将，长沙麻将
@@ -29,11 +62,12 @@ public class HuPaiType {
      * Map：key-->1：表示信息    2:表示次数
      * count 为1表示单胡  2表示多响
      */
-	public static void getHuType(Avatar avatarShu , Avatar avatar , int roomType ,int cardIndex,List<Avatar> playerList,List<Integer> mas,int count,String type){
+	public  void getHuType(Avatar avatarShu , Avatar avatar , int roomType ,int cardIndex,
+			List<Avatar> playerList,List<Integer> mas,int count,String type,boolean hongzhong){
 		 //区分转转麻将，划水麻将，长沙麻将
 		 if(roomType == 1){
 			 //转转麻将没有大小胡之分
-			 zhuanZhuan(avatarShu , avatar , cardIndex,playerList,mas,count,type);
+			 zhuanZhuan(avatarShu , avatar , cardIndex,playerList,mas,count,type,hongzhong);
 		 }
 		 else if(roomType == 2){
 			 //划水麻将
@@ -132,183 +166,217 @@ public class HuPaiType {
 	 * @param playerList
 	 * @param mas
 	 * @param count
+	 *  type  qiangganghu
 	 */
-	private static void zhuanZhuan(Avatar  avatarShu , Avatar avatar , int cardIndex, List<Avatar> playerList,List<Integer> mas , int count,String type){
+	private  void zhuanZhuan(Avatar  avatarShu , Avatar avatar , int cardIndex, List<Avatar> playerList,
+			List<Integer> mas , int count,String type,boolean hongzhong){
 		int score = 0;
-		
 		String str; 
 		int selfCount = 0;
-		List<Integer> maPoint = new ArrayList<Integer>();;
+		List<Integer> maPoint = new ArrayList<Integer>();
+		//有效的码   sb = "1,2,3"样式
+		sb.append("0,");
 		if(mas != null){
+			int ma;
 			for (Integer cardPoint : mas) {
-				maPoint.add(returnMa(cardPoint));
+				ma = returnMa(cardPoint);
+				maPoint.add(ma);
 				System.out.println("处理过的码----"+cardPoint);
+				map.put(cardPoint, ma);
 			}
 		}
-			//抓的码里面有多少个指向对应的各个玩家
-			selfCount  = Collections.frequency(maPoint, 0);//自己 
-			int downCount  = Collections.frequency(maPoint, 1);//下家
-			int towardCount  = Collections.frequency(maPoint, 2);//对家
-			int upCount  = Collections.frequency(maPoint, 3);//上家
-			
-			
-			//int selfIndex = 0;//胡家在数组中的位置 （0-3）//2016-8-3
-			int selfIndex = playerList.indexOf(avatar);
-			/*for (int i = 0; i < playerList.size(); i++) {
+		//抓的码里面有多少个指向对应的各个玩家
+		selfCount  = Collections.frequency(maPoint, 0);//自己 
+		int downCount  = Collections.frequency(maPoint, 1);//下家
+		int towardCount  = Collections.frequency(maPoint, 2);//对家
+		int upCount  = Collections.frequency(maPoint, 3);//上家
+		
+		
+		//int selfIndex = 0;//胡家在数组中的位置 （0-3）//2016-8-3
+		int selfIndex = playerList.indexOf(avatar);
+		/*for (int i = 0; i < playerList.size(); i++) {
 				if(playerList.get(i).getUuId() == avatar.getUuId()){
 					selfIndex = i;
 				}
 			}*///2016-8-3
-			//其他三家在playerList中的下标，同上面的selfCount，downCount对应
-			int downIndex = otherIndex(selfIndex,1);
-			int towardIndex = otherIndex(selfIndex,2);
-			int upIndex = otherIndex(selfIndex,3);
-		    if(avatarShu.getUuId() == avatar.getUuId() ){
-		    	//自摸
-		    	score = 2;
-				 for (int i = 0; i < playerList.size(); i++) {
-					 str ="0:"+cardIndex+":"+Rule.Hu_zi_common;  
-					 if(playerList.get(i).getUuId() == avatar.getUuId()){
-						// avatar.avatarVO.updateScoreRecord(1, 2*3);//记录分数
-						//:游戏自摸1，接炮2，点炮3，暗杠4，明杠5 ，胡6记录(key), 码7
-						//修改自己的分数
-						 //avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
-						 playerList.get(i).avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
-						 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("1", score*3);
-						 for (int j = 0; j < selfCount; j++) {
-							 //抓码 抓到自己，再加分
-							 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score*3);
-						 }
-					}
-					else{
-						//修改其他三家分数
-						//ava.avatarVO.updateScoreRecord(1, -1*2);//记录分数（负分表示别人自摸扣的分）
-						str =avatar.getUuId()+":"+cardIndex+":"+Rule.Hu_other_common;
-						playerList.get(i).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("1", -1*score);
-						for (int j = 0; j < selfCount; j++) {
-							playerList.get(i).avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
-							//胡家抓码抓到自己，所有这里还要再减分
-							playerList.get(i).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
-						}
+		//其他三家在playerList中的下标，同上面的selfCount，downCount对应
+		int downIndex = otherIndex(selfIndex,1);
+		int towardIndex = otherIndex(selfIndex,2);
+		int upIndex = otherIndex(selfIndex,3);
+		if(avatarShu.getUuId() == avatar.getUuId() ){
+			//自摸所有码都有效
+			sb.append("1,2,3");
+			//自摸
+			score = 2;
+			for (int i = 0; i < playerList.size(); i++) {
+				str ="0:"+cardIndex+":"+Rule.Hu_zi_common;  
+				if(playerList.get(i).getUuId() == avatar.getUuId()){
+					// avatar.avatarVO.updateScoreRecord(1, 2*3);//记录分数
+					//:游戏自摸1，接炮2，点炮3，暗杠4，明杠5 ，胡6记录(key), 码7
+					//修改自己的分数
+					//avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
+					playerList.get(i).avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
+					avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("1", score*3);
+					for (int j = 0; j < selfCount; j++) {
+						//抓码 抓到自己，再加分
+						avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score*3);
 					}
 				}
-			    //抓码加减分
-				for (int j = 0; j < downCount; j++) {
-					//抓码 抓到下家，胡家加分，下家减分
-					playerList.get(selfIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
-					playerList.get(downIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
+				else{
+					//修改其他三家分数
+					//ava.avatarVO.updateScoreRecord(1, -1*2);//记录分数（负分表示别人自摸扣的分）
+					str =avatar.getUuId()+":"+cardIndex+":"+Rule.Hu_other_common;
+					playerList.get(i).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("1", -1*score);
+					for (int j = 0; j < selfCount; j++) {
+						playerList.get(i).avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
+						//胡家抓码抓到自己，所有这里还要再减分
+						playerList.get(i).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
+					}
 				}
-				for (int j = 0; j < towardCount; j++) {
-					//抓码 抓到对家，胡家加分，对家减分
-					playerList.get(selfIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
-					playerList.get(towardIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
-				}
-				for (int j = 0; j < upCount; j++) {
-					//抓码 抓到上家，胡家加分，上家减分
-					playerList.get(selfIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
-					playerList.get(upIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7",-1*score);
-				}
-		 }
-		 else{
-			 //点炮   单响  
-			 score = 1;
-			 if(StringUtil.isNotEmpty(type) && type.equals("qianghu")){
-				 score = 6;
-			 }
-			 if(count == 1){
-				 int dPaoIndex = playerList.indexOf(avatarShu);//点炮人在数组中的下标 2016-8-1
+			}
+			//抓码加减分
+			for (int j = 0; j < downCount; j++) {
+				//抓码 抓到下家，胡家加分，下家减分
+				playerList.get(selfIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
+				playerList.get(downIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
+			}
+			for (int j = 0; j < towardCount; j++) {
+				//抓码 抓到对家，胡家加分，对家减分
+				playerList.get(selfIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
+				playerList.get(towardIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
+			}
+			for (int j = 0; j < upCount; j++) {
+				//抓码 抓到上家，胡家加分，上家减分
+				playerList.get(selfIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
+				playerList.get(upIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7",-1*score);
+			}
+		}
+		else{
+			//点炮   单响  
+			score = 1;
+			//抢杠胡加上红中癞子时 抢杠胡 6分
+			if(StringUtil.isNotEmpty(type) && type.equals("qianghu") && hongzhong){
+				score = 6;
+			}
+			if(count == 1){
+				int dPaoIndex = playerList.indexOf(avatarShu);//点炮人在数组中的下标 2016-8-1
 				/* for (Avatar ava : playerList) {
 					if(ava.getUuId() == avatarShu.getUuId()){
 						 //得到点炮玩家的下标
 						 dPaoIndex = playerList.indexOf(ava);
 					 }
 				 }*///2016-8-1
-				 //点炮玩家被抓到码的次数
-				 int dPaoCount = 0;
-				 if(dPaoIndex == downIndex){
-					 dPaoCount = downCount;
-				 }
-				 else if(dPaoIndex == towardIndex){
-					 dPaoCount = towardCount;
-				 }
-				 else if(dPaoIndex == upIndex){
-					 dPaoCount = upCount;
-				 }
-				 
-				 str =avatarShu.getUuId()+":"+cardIndex+":"+Rule.Hu_d_self;  
-				 //修改胡家自己的分数
-				 avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
-				 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("2",score);
-				 //修改点炮玩家的分数
-				 avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("3",-1*score);
-				 
-				 for (int j = 0; j < selfCount; j++) {
-					 //抓码 抓到胡家，胡家加分
-					 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
-					 //抓码 抓到胡家，点家再减分
-					 avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
-				 }
-				 for (int j = 0; j < dPaoCount; j++) {
-					 //抓码 抓到点炮玩家，胡家加分
-					 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
-					 //抓码 抓到输家，点家再减分
-					 avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
-				 }
-				 
-				 //存储hu的关系信息 胡玩家uuid：胡牌id：胡牌类型
-				  str = avatar.getUuId()+":"+cardIndex+":"+Rule.Hu_d_other; 
-				 //点炮信息放入放炮玩家信息中
-				 avatarShu.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
-			 }
-			 else{
-				 //点炮  多响   (抓码人为点炮玩家)
-				 //点炮玩家被抓到码的次数   selfCount
+				//点炮玩家被抓到码的次数
+				int dPaoCount = 0;
+				if(dPaoIndex == downIndex){
+					dPaoCount = downCount;
+					sb.append("1,");
+				}
+				else if(dPaoIndex == towardIndex){
+					dPaoCount = towardCount;
+					sb.append("2,");
+				}
+				else if(dPaoIndex == upIndex){
+					dPaoCount = upCount;
+					sb.append("3");
+				}
+				
+				str =avatarShu.getUuId()+":"+cardIndex+":"+Rule.Hu_d_self;  
+				//修改胡家自己的分数
+				avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
+				avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("2",score);
+				//修改点炮玩家的分数
+				avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("3",-1*score);
+				
+				for (int j = 0; j < selfCount; j++) {
+					//抓码 抓到胡家，胡家加分
+					avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
+					//抓码 抓到胡家，点家再减分
+					avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
+				}
+				if(StringUtil.isNotEmpty(type) && type.equals("qianghu") && hongzhong){
+					//抢胡抓的码 只有 1 5 9 或红中有效
+				}
+				else{
+					for (int j = 0; j < dPaoCount; j++) {
+						//抓码 抓到点炮玩家，胡家加分
+						avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
+						//抓码 抓到输家，点家再减分
+						avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
+					}
+				}
+				
+				//存储hu的关系信息 胡玩家uuid：胡牌id：胡牌类型
+				str = avatar.getUuId()+":"+cardIndex+":"+Rule.Hu_d_other; 
+				//点炮信息放入放炮玩家信息中
+				avatarShu.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
+			}
+			else{
+				//点炮  多响   (抓码人为点炮玩家)
+				//点炮玩家被抓到码的次数   selfCount
 				//胡牌玩家被抓到码的次数
-				 selfIndex = playerList.indexOf(avatarShu);//点家的索引，及摸码玩家的索引
-				 
+				selfIndex = playerList.indexOf(avatarShu);//点家的索引，及摸码玩家的索引
+				
 				downIndex = otherIndex(selfIndex,1);
 				towardIndex = otherIndex(selfIndex,2);
 				upIndex = otherIndex(selfIndex,3);
-					
-				 int huCount = playerList.indexOf(avatar);
-				 if(huCount == downIndex){
-					 huCount = downCount;
-				 }
-				 else if(huCount == towardIndex){
-					 huCount = towardCount;
-				 }
-				 else if(huCount == upIndex){
-					 huCount = upCount;
-				 }
-				 
-				 str =avatarShu.getUuId()+":"+cardIndex+":"+Rule.Hu_d_self;  
-				 //修改胡家自己的分数
-				 avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
-				 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("2",score);
-				 //修改点炮玩家的分数
-				 avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("3",-1*score);
-				 for (int j = 0; j < selfCount; j++) {
-					 //抓码 抓到自己，赢家加分
-					 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
-					 //抓码 抓到胡家，输家再减分
-					 avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
-				 }
-				 for (int j = 0; j < huCount; j++) {
-					 //抓码 抓到点炮玩家，赢家加分
-					 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
-					 //抓码 抓到自己，输家再减分
-					 avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
-				 }
-				 //存储hu的关系信息 胡玩家uuid：胡牌id：胡牌类型
-				  str = avatar.getUuId()+":"+cardIndex+":"+Rule.Hu_d_other; 
-				 //点炮信息放入放炮玩家信息中
-				 avatarShu.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
-					
-			 }
-		 }
+				
+				int huCount = playerList.indexOf(avatar);
+				if(huCount == downIndex){
+					huCount = downCount;
+					sb.append("1,");
+				}
+				else if(huCount == towardIndex){
+					huCount = towardCount;
+					sb.append("2,");
+				}
+				else if(huCount == upIndex){
+					huCount = upCount;
+					sb.append("3");
+				}
+				
+				str =avatarShu.getUuId()+":"+cardIndex+":"+Rule.Hu_d_self;  
+				//修改胡家自己的分数
+				avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
+				avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("2",score);
+				//修改点炮玩家的分数
+				avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("3",-1*score);
+				for (int j = 0; j < selfCount; j++) {
+					//抓码 抓到自己，赢家加分
+					avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
+					//抓码 抓到胡家，输家再减分
+					avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
+				}
+				if(StringUtil.isNotEmpty(type) && type.equals("qianghu")){
+					//抢胡抓的码 只有 1 5 9 或红中有效
+				}
+				else{
+					for (int j = 0; j < huCount; j++) {
+						//抓码 抓到点炮玩家，赢家加分
+						avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
+						//抓码 抓到自己，输家再减分
+						avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
+					}
+				}
+				//存储hu的关系信息 胡玩家uuid：胡牌id：胡牌类型
+				str = avatar.getUuId()+":"+cardIndex+":"+Rule.Hu_d_other; 
+				//点炮信息放入放炮玩家信息中
+				avatarShu.avatarVO.getHuReturnObjectVO().updateTotalInfo("hu", str);
+				
+			}
+		}
+		Set<Entry<Integer, Integer>>  set= map.entrySet();
+		for (Entry<Integer, Integer> entry : set) {
+			if(sb.toString().contains(entry.getKey()+"")){
+				validMa.add(entry.getKey());
+			}
+		}
 	}
-	
-	
+	/**
+	 * 处理抓到的码点数，成0-3之间的数
+	 * @param cardPoint
+	 * @return
+	 */
 	public static int returnMa(int cardPoint){
 			if(cardPoint  <= 8){ 
 				return cardPoint%4;
@@ -432,6 +500,12 @@ public class HuPaiType {
 			thisIndex = thisIndex -4;
 		}
 		return thisIndex;
+	}
+	public List<Integer> getValidMa() {
+		return validMa;
+	}
+	public void setValidMa(List<Integer> validMa) {
+		this.validMa = validMa;
 	}
 	
 }

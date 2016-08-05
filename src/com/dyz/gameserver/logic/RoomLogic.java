@@ -350,7 +350,6 @@ public class RoomLogic {
 		}
         checkCanBeStartGame();
     }
-
     /**
      * 开始一回合新的游戏
      */
@@ -368,7 +367,15 @@ public class RoomLogic {
         	
         }else{
 	        count--;
-	        playCardsLogic = new PlayCardsLogic();
+	        if((roomVO.getRoundNumber() - count) > 1){
+	        	//说明不是第一局
+	        	Avatar avatar = playCardsLogic.bankerAvatar;
+	        	playCardsLogic = new PlayCardsLogic();
+	        	playCardsLogic.bankerAvatar = avatar;
+	        }
+	        else{
+	        	playCardsLogic = new PlayCardsLogic();
+	        }
 	        playCardsLogic.setPlayerList(playerList);
 	        playCardsLogic.initCard(roomVO);
 	        System.out.println("下局开始时人数："+playerList.size());
