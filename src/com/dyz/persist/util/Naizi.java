@@ -80,16 +80,12 @@ public class Naizi {
     private static int getNumWithJiang(int[] temp_arr){
         boolean isjiang = false;
         int result = 0;
-//        for(int i=0;i<9;i++){
-//            if(temp_arr[i]== 3) {
-//                temp_arr[i] = 0;//先去除掉成坎的牌组
-//            }
-//            if(temp_arr[i] == 4){
-//                temp_arr[i] = 1;//这4张牌还在手中的情况
-//            }else if(temp_arr[i] > 4) {
-//                temp_arr[i] = 0;//该牌被扛掉了
-//            }
-//        }
+        boolean isOne = true;
+        for(int i=0;i<9;i++){
+            if(temp_arr[i]>1){
+                isOne = false;
+            }
+        }
         for(int i=0;i<9;i++){
             if(temp_arr[i]>0){
                     if (i < 7) {
@@ -114,20 +110,16 @@ public class Naizi {
                                 //如果下一张为空，再下一张不为空，先判断有将没有，如果没有将，并且这张牌只有一张，补一张赖子组成将
                                 //                                                             如果这张牌有两张以上，直接做将，不补赖子。
                                 //                                                如果有将的情况，为中间补一张赖子。
-                                if (isjiang == false) {
-                                    if (temp_arr[i] == 1) {
-                                        temp_arr[i] = 0;
-                                        isjiang = true;
-                                        result++;
-                                        i--;
-                                    } else {
-                                        if (temp_arr[i] >= 2) {
+                                if(isOne){
+                                    if (isjiang == false) {
+                                        if (temp_arr[i] == 1) {
+                                            temp_arr[i] = 0;
                                             isjiang = true;
-                                            temp_arr[i] -= 2;
+                                            result++;
                                             i--;
                                         }
                                     }
-                                } else {
+                                }else {
                                     temp_arr[i]--;
                                     temp_arr[i + 2]--;
                                     result++;
@@ -270,5 +262,10 @@ public class Naizi {
         }
         System.out.println();
         return result;
+    }
+
+    public static void main(String[] args){
+        int [] test = new int[]{0,1,0,0,1,1,1,0,0,     0,0,0,0,0,0,0,0,0,     0,0,1,1,1,0,0,0,0,   0,0,0,0,1,0,0};
+        getNeedHunNum(test);
     }
 }
