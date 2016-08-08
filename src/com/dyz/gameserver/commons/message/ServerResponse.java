@@ -33,10 +33,11 @@ public class ServerResponse implements ResponseMsg {
 		
 			byte[] body = output.toByteArray();
 			/* 标志 byte 长度short */
-			int length = MsgProtocol.flagSize+MsgProtocol.lengthSize+MsgProtocol.msgCodeSize+ body.length;
-			IoBuffer buf = IoBuffer.allocate(length+4);
+			int length = MsgProtocol.flagSize+MsgProtocol.lengthSize+MsgProtocol.msgCodeSize+ body.length+4;
+			System.out.println(length);
+			IoBuffer buf = IoBuffer.allocate(length);
 			buf.put(MsgProtocol.defaultFlag);//flag
-			buf.putInt(body.length+MsgProtocol.msgCodeSize+4);//lengh
+			buf.putInt(length);//lengh
 			buf.putInt(msgCode);
 			buf.putInt(status);
 			buf.put(body);

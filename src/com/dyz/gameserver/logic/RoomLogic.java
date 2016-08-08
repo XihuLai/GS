@@ -37,6 +37,10 @@ public class RoomLogic {
      */
     private int dissolveCount = 1;
     /**
+     *记录是否已经有人申请解散房间
+     */
+    private boolean dissolve = false;
+    /**
      * 房间属性 1-为普通房间
      */
     private int roomType = 1;
@@ -213,6 +217,7 @@ public class RoomLogic {
     	JSONObject json;
     	//为0时表示是申请解散房间，1表示同意解散房间  2表示不同意解散房间
     	//dissolveCount  = playerList.size();
+    	dissolve = true;
     	if(type.equals("0")){
     		dissolveCount = 1;
     		json = new JSONObject();
@@ -435,6 +440,13 @@ public class RoomLogic {
     		startGameRound();
     	}
     }
+    /**
+     * 断线重连，如果房间还未被解散的时候，则返回整个房间信息
+     * @param avatar
+     */
+    public void returnBackAction(Avatar avatar){
+    	playCardsLogic.returnBackAction(avatar);
+    }
     
 
     public RoomVO getRoomVO() {
@@ -452,6 +464,13 @@ public class RoomLogic {
 	public int getCount() {
 		return count;
 	}
-	
+
+	public boolean isDissolve() {
+		return dissolve;
+	}
+
+	public void setDissolveCount(int dissolveCount) {
+		this.dissolveCount = dissolveCount;
+	}
 	
 }

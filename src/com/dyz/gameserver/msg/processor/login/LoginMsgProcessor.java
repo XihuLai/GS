@@ -4,12 +4,15 @@ import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.message.ClientRequest;
 import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.context.GameServerContext;
+import com.dyz.gameserver.logic.RoomLogic;
 import com.dyz.gameserver.manager.GameSessionManager;
+import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.login.LoginResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.LoginVO;
+import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.myBatis.model.Account;
 import com.dyz.myBatis.services.AccountService;
 import com.dyz.persist.util.GlobalUtil;
@@ -56,16 +59,20 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			//如果玩家是掉线的，则直接从缓存(GameServerContext)中取掉线玩家的信息
 			Avatar avatar = GameServerContext.getAvatarFromOff(account.getUuid());
 			if(avatar == null) {
+				//断线超过时间后，自动退出
 				avatar = new Avatar();
 				AvatarVO avatarVO = new AvatarVO();
 				avatarVO.setAccount(account);
 				avatar.avatarVO = avatarVO;
 			}else{
+				//断线重连
 				GameServerContext.remove_offLine_Character(avatar);
 				GameServerContext.add_onLine_Character(avatar);
 				avatar.avatarVO.setIsOnLine(true);
 				TimeUitl.stopAndDestroyTimer(avatar);
 				System.out.println("用户回来了，断线重连，中止计时器");
+				//返回用户断线前的房间信息******
+				returnBackAction(avatar);
 			}
 			//把session放入到GameSessionManager
 			boolean flag = GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
@@ -91,6 +98,25 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 		avatar.avatarVO.setIsOnLine(true);
 		GameServerContext.add_onLine_Character(avatar);
 		gameSession.sendMsg(new LoginResponse(1,avatar.avatarVO));
+	}
+	
+	/**
+	 *玩家断线重连操作
+	 * @param gameSession
+	 * @param avatar
+     */
+	public void returnBackAction(Avatar avatar){
+		
+		RoomLogic roomLogic = RoomManager.getInstance().getRoom(avatar.avatarVO.getRoomId());
+		if(roomLogic !=null){
+			//如果用户是在玩游戏的时候短信，房间还未被解散，则需要返回游戏房间其他用户信息，牌组信息
+			roomLogic.returnBackAction(avatar);
+		}
+		else{
+			//如果不是在游戏时断线，则直接返回个人用户信息avatar
+			avatar.getSession().sendMsg(new LoginResponse(1, avatar.avatarVO));
+		}
+		
 	}
 
 }

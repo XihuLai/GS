@@ -14,6 +14,7 @@ import com.dyz.gameserver.msg.response.gang.GangResponse;
 import com.dyz.gameserver.msg.response.gang.OtherGangResponse;
 import com.dyz.gameserver.msg.response.hu.HuPaiAllResponse;
 import com.dyz.gameserver.msg.response.hu.HuPaiResponse;
+import com.dyz.gameserver.msg.response.login.OtherBackLoginResonse;
 import com.dyz.gameserver.msg.response.peng.PengResponse;
 import com.dyz.gameserver.msg.response.pickcard.OtherPickCardResponse;
 import com.dyz.gameserver.msg.response.pickcard.PickCardResponse;
@@ -344,6 +345,7 @@ public class PlayCardsLogic {
             	sb.append("hu,");
             }
             if(sb.length()>2){
+            	System.out.println(sb);
 				avatar.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
             }
             
@@ -468,10 +470,11 @@ public class PlayCardsLogic {
      * @param cardPoint
      */
     public void putOffCard(Avatar avatar,int cardPoint){
+    	
+    	//出牌信息放入到缓存中，掉线重连的时候，返回房间信息需要
+        avatar.avatarVO.setChupais(cardPoint+"");
+    	
     	//已经出牌就清除所有的吃，碰，杠，胡的数组
-//    	for (int i = 0; i < avatar.getPaiArray()[0].length; i++) {
-//    		System.out.println(avatar.getPaiArray()[0][i]+",");
-//		}
     	clearAvatar();
     	
         putOffCardPoint = cardPoint;
@@ -671,6 +674,11 @@ public class PlayCardsLogic {
     			 }
     			 if(gangAvatar.contains(avatar)){
     				 gangAvatar.remove(avatar);
+    				 //存储杠牌的信息，
+    				 avatar.putResultRelation(2,cardPoint+"");
+    				 avatar.avatarVO.getPaiArray()[1][cardPoint] = 2;
+    				 avatar.getPaiArray()[1][cardPoint] = 2;
+    				 
     				 avatar.setCardListStatus(cardPoint,2);//杠牌标记2
     				 //判断杠的类型，自杠，还是点杠
     				 String str;
@@ -804,41 +812,12 @@ public class PlayCardsLogic {
     					 //整个房间统计每一局游戏 杠，胡的总次数
     					 roomVO.updateEndStatistics(avatar.getUuId(), endStatisticstype, 1);
     				 }
-    				 //存储杠牌的信息，
-    				 playerList.get(avatarIndex).putResultRelation(2,cardPoint+"");
-    				 playerList.get(avatarIndex).avatarVO.getHuReturnObjectVO().updateTotalInfo("gang", str);
-    				 playerList.get(avatarIndex).avatarVO.getPaiArray()[1][cardPoint] = 2;
+    				 
+    				 avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("gang", str);
     				 
     				 clearArrayAndSetQuest();
-    				 //杠了以后要摸一张牌（pickCardAfterGang()方法里面）
-//    			 int tempPoint = 100;
-//    			 int nextPoint = 100;
     				 if(gangType == 0) {
     					 //可以换牌的情况只补一张牌
-    					 // tempPoint = getNextCardPoint();//2016-8-1
-    					 //if (tempPoint != -1) {
-    					 //    avatar.putCardInList(tempPoint);
-    					 /*  //判断自己摸上来的牌自己是否可以胡****
-                         StringBuffer sb = new StringBuffer();
-                    	 if (avatar.checkSelfGang() ||avatar.gangIndex.size()>0) {
-                         	gangAvatar.add(avatar);
-                         	sb.append("gang");
-                         	for (int i : avatar.gangIndex) {
-                         		sb.append(":"+i);
-             				}
-                         	sb.append(",");
-                         }
-                         if(checkAvatarIsHuPai(avatar,100,"mo")){
-                         	//检测完之后不需要移除
-                         	huAvatar.add(avatar);
-                         	sb.append("hu,");
-                         }
-                         if(sb.length()>2){
-             				avatar.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
-                         }*/
-    					 //这里不需要这里不需要 开始就已经处理了
-    					 // avatar.setCardListStatus(tempPoint,2);
-    					 //playerList.get(avatarIndex).getSession().sendMsg(new GangResponse(1, tempPoint,100,type));//2016-8-1
     					 //摸牌并判断自己摸上来的牌自己是否可以胡/可以杠****
     					 for (int i=0;i<playerList.size();i++){
     						 if(avatar.getUuId() != playerList.get(i).getUuId()){
@@ -855,24 +834,6 @@ public class PlayCardsLogic {
     					 //  }
     				 }else if(gangType == 1){
     					 //摸两张  **** 这里需要单独处理摸的两张牌 是否可以胡，可以杠
-    					 //  tempPoint = getNextCardPoint();
-    					 //  nextPoint = getNextCardPoint();
-    					 //添加两张牌到自己的牌组中
-    					 /*  if (tempPoint != -1) { 
-                         avatar.putCardInList(tempPoint);
-                         if(nextPoint != -1){
-                        	    avatar.putCardInList(nextPoint);//2016-8-1
-                         }
-                         else{
-                        	 nextPoint = 100;//2016-8-1
-                         }
-                     }
-                     else{
-                    	 tempPoint =100;//2016-8-1
-                     }*/
-    					 //这里不需要 开始就已经处理了
-    					 // avatar.setCardListStatus(tempPoint,2);
-    					 //playerList.get(avatarIndex).getSession().sendMsg(new GangResponse(1, tempPoint, nextPoint,type));//2016-8-1
     					 //摸牌并判断自己摸上来的牌自己是否可以胡/可以杠****
     					 for (int i=0;i<playerList.size();i++){
     						 if(avatar.getUuId() != playerList.get(i).getUuId()){
@@ -886,8 +847,6 @@ public class PlayCardsLogic {
     					 }
     					 pickCardAfterGang(avatar);//2016-8-1
     				 }
-    				 //更新用户的正常牌组(不算上碰，杠，胡，吃)
-    				 // playerList.get(avatarIndex).avatarVO.updateCurrentCardList(cardPoint,cardPoint,cardPoint,cardPoint);
     			 }
     		 }
     	 }else{
@@ -1123,7 +1082,12 @@ public class PlayCardsLogic {
     	int count = 10;
     	for (Avatar avatar : playerList) {
     		avatar.getSession().sendMsg(new HuPaiResponse(1,json.toString()));
+    		//清除一些存储数据
+    		avatar.getResultRelation().clear();
+    		
+    		
     		count = RoomManager.getInstance().getRoom(avatar.getRoomVO().getRoomId()).getCount();
+    		
 		}
     	//房间局数用完，返回本局胡牌信息的同时返回整个房间这几局的胡，杠等统计信息
 	  if(count <= 0){
@@ -1169,6 +1133,8 @@ public class PlayCardsLogic {
 			for (Avatar avatar : playerList) {
 				avatar.getSession().sendMsg(new HuPaiAllResponse(1,js.toString()));
 			}
+			//4局完成之后解散房间//销毁
+		 	RoomManager.getInstance().destroyRoom(roomVO);
 		}
 		//判断该房间还有没有次数。有则清除玩家的准备状态，为下一局开始做准备
 		else{
@@ -1643,6 +1609,28 @@ public class PlayCardsLogic {
     	}
 		return flag;
     }
+    /**
+     * 玩家玩游戏时断线重连
+     * @param avatar
+     */
+    public void returnBackAction(Avatar avatar){
+    	
+    	for (int i = 0; i < playerList.size(); i++) {
+    		if(i!= playerList.indexOf(avatar)){
+    			//给其他三个玩家返回重连用户信息
+    			playerList.get(i).getSession().sendMsg(new OtherBackLoginResonse(1, avatar.avatarVO));
+    		}
+    		else{
+    			//给自己返回整个房间信息
+    			
+    			
+    		}
+		}
+    	
+    	
+    }
+    
+    
   
     
     public void clearAvatar(){

@@ -1,6 +1,7 @@
 package com.dyz.gameserver.pojo;
 
 import com.dyz.myBatis.model.Account;
+import com.dyz.persist.util.StringUtil;
 
 /**
  * Created by kevin on 2016/6/23.
@@ -26,6 +27,10 @@ public class AvatarVO {
      * 是否在线
      */
     private boolean isOnLine = false;
+    /**
+     * 打了的牌的字符串  1,2,3,4,5,6,1,3,5 格式
+     */
+    private StringBuffer  chupais = new StringBuffer();
     /**
      * 当前牌组，踢出掉了每次的吃，碰，杠，胡
      */
@@ -123,4 +128,18 @@ public class AvatarVO {
     public void setPaiArray(int[][] paiArray) {
         this.paiArray = paiArray;
     }
+
+	public StringBuffer getChupais() {
+		return chupais;
+	}
+
+	public void setChupais(String chupai) {
+		if(StringUtil.isEmpty(chupais.toString())){
+			chupais.append(chupai);
+		}
+		else{
+			chupais.append(","+chupai);
+		}
+	}
+    
 }
