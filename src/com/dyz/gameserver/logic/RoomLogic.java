@@ -135,12 +135,12 @@ public class RoomLogic {
     				for (Avatar avatar : playerList) {
     					avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000010));
     				}
-    				return;
+    			}else{
+    				isBegin = true;
+    				//所有人都准备好了
+    				System.out.println("所有人都准备好了");
+    				startGameRound();
     			}
-    			isBegin = true;
-    			//所有人都准备好了
-    			System.out.println("所有人都准备好了");
-    			startGameRound();
     		}
     	}
     }
@@ -214,6 +214,7 @@ public class RoomLogic {
     	//为0时表示是申请解散房间，1表示同意解散房间  2表示不同意解散房间
     	//dissolveCount  = playerList.size();
     	if(type.equals("0")){
+    		dissolveCount = 1;
     		json = new JSONObject();
     		json.put("type", "0");
     		json.put("uuid", avatar.getUuId());
@@ -265,7 +266,7 @@ public class RoomLogic {
 			}
 */    		 
     		 playerList.clear();;
-		     roomVO.getPlayerList().clear();;
+		     roomVO.getPlayerList().clear();
 		     roomVO = null;
     	}
     }
@@ -367,7 +368,7 @@ public class RoomLogic {
         	
         }else{
 	        count--;
-	        if((roomVO.getRoundNumber() - count) > 1){
+	        if((count +1) != roomVO.getRoundNumber()){
 	        	//说明不是第一局
 	        	Avatar avatar = playCardsLogic.bankerAvatar;
 	        	playCardsLogic = new PlayCardsLogic();

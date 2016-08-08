@@ -17,6 +17,7 @@ import com.dyz.gameserver.sprite.base.GameObj;
 import com.dyz.gameserver.sprite.tool.AsyncTaskQueue;
 import com.dyz.myBatis.services.AccountService;
 import com.dyz.persist.util.GlobalUtil;
+import com.dyz.persist.util.StringUtil;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -219,7 +220,6 @@ public class Avatar implements GameObj {
                 avatarVO.getPaiArray()[i][k] = 0;
             }
         }
-        //TODO kevinTest
     }
 
     /**
@@ -247,29 +247,6 @@ public class Avatar implements GameObj {
 						flag  =  true;
 					}
 				}
-        		
-        		/*for (String str : strs) {
-					if(str.equals(cardIndex+"")){
-						return false;
-					}
-					else{
-						return true;
-					}
-				}*///2016-8-3
-        		/*if(	resultRelation.get(1).contains(cardIndex+"")){
-        			System.out.println("碰了的牌包含");
-        			return false;
-        		}
-        		else{
-        			System.out.println("碰了的牌不包含");
-        			return true;
-        		}*/
-        	}
-        }
-        //如果有两个红中，则可碰
-        if(!flag && roomVO.getHong()){
-        	if(avatarVO.getPaiArray()[0][27] == 2){
-        		flag = true;
         	}
         }
         return flag;
@@ -317,7 +294,7 @@ public class Avatar implements GameObj {
         		}*/
         	}
         }
-        	return flag;
+        return flag;
     }
     /**
      * 检测当前自己的牌是否可杠
@@ -332,11 +309,23 @@ public class Avatar implements GameObj {
     	for (int i= 0 ; i <avatarVO.getPaiArray()[0].length ; i++) {
     		if (avatarVO.getPaiArray()[0][i] == 4) {
     			//if(resultRelation.get(1) != null && resultRelation.get(1).contains(i+"")){
-    				if(resultRelation.get(2) == null){
+    				if(resultRelation.get(2) == null ){
     					gangIndex.add(i);
     					flag =  true;
     				}
-    				else{
+    				else if(resultRelation.get(1) !=null ){
+    					String st1 = resultRelation.get(1);
+    			    	if(StringUtil.isNotEmpty(st1) && !flag){
+    			    		String str1[] = st1.split(",");
+    			    		for (String st : str1) {
+    			    			if(st.equals(i+"")){
+    			    				gangIndex.add(i);
+    			    				flag = true;
+    			    			}
+    			    		}
+    			    	}
+    				}
+    				if(!flag && resultRelation.get(2) != null ){
     					String strs [] = resultRelation.get(2).split(",");
     					for (int j = 0; j < strs.length; j++) {
     						if(strs[j].equals(i+"")){
@@ -349,39 +338,7 @@ public class Avatar implements GameObj {
     							flag =  true;
     						}
 						}
-    					
-    	        		/*for (String str : strs) {
-    						if(str.equals(i+"")){
-    							return false;
-    						}
-    						else{
-    							gangIndex.add(i);
-    							return true;
-    						}
-    					}*/////2016-8-3
-    	        		
-    					/*2016-8-2
-    					 * if(!resultRelation.get(2).contains(i+"")){
-    						gangIndex.add(i);
-    						return true;
-    					}
-    					else{
-    						return false;
-    					}*/
     				}
-    				
-    				/*if(resultRelation.get(2) != null && resultRelation.get(2).contains(i+"") ){
-    					flag = false;
-    				}
-    				else{
-    					gangIndex.add(i);
-    					flag = true;
-    				}*/
-    			//}else{
-    				//(划水麻将分过路杠和暗杠)
-    			//	gangIndex.add(i);
-    			//	flag = true;
-    			//}
 			}
 		}
         return flag;

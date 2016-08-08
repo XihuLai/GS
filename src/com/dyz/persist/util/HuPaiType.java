@@ -28,12 +28,12 @@ public class HuPaiType {
 	/**
 	 * 有效码
 	 */
-	private   List<Integer> validMa = new ArrayList<Integer>();
+	private   List<Integer> validMa;
 	
 	/**
 	 * 包含所有的有效码(处理成0-3之间数的码)
 	 */
-	private static StringBuffer sb = new StringBuffer();
+	private static StringBuffer sb;
 	
 	
 	private static HuPaiType huPaiType ;
@@ -170,6 +170,7 @@ public class HuPaiType {
 	 */
 	private  void zhuanZhuan(Avatar  avatarShu , Avatar avatar , int cardIndex, List<Avatar> playerList,
 			List<Integer> mas , int count,String type,boolean hongzhong){
+		sb = new StringBuffer();
 		int score = 0;
 		String str; 
 		int selfCount = 0;
@@ -204,8 +205,6 @@ public class HuPaiType {
 		int towardIndex = otherIndex(selfIndex,2);
 		int upIndex = otherIndex(selfIndex,3);
 		if(avatarShu.getUuId() == avatar.getUuId() ){
-			//自摸所有码都有效
-			sb.append("1,2,3");
 			//自摸
 			score = 2;
 			for (int i = 0; i < playerList.size(); i++) {
@@ -234,21 +233,28 @@ public class HuPaiType {
 					}
 				}
 			}
-			//抓码加减分
-			for (int j = 0; j < downCount; j++) {
-				//抓码 抓到下家，胡家加分，下家减分
-				playerList.get(selfIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
-				playerList.get(downIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
+			if(hongzhong){
+				//抢胡抓的码 只有 1 5 9 或红中有效
 			}
-			for (int j = 0; j < towardCount; j++) {
-				//抓码 抓到对家，胡家加分，对家减分
-				playerList.get(selfIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
-				playerList.get(towardIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
-			}
-			for (int j = 0; j < upCount; j++) {
-				//抓码 抓到上家，胡家加分，上家减分
-				playerList.get(selfIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
-				playerList.get(upIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7",-1*score);
+			else{
+				//自摸没选红中癞子的情况下所有码都有效
+				sb.append("1,2,3");
+				//抓码加减分
+				for (int j = 0; j < downCount; j++) {
+					//抓码 抓到下家，胡家加分，下家减分
+					playerList.get(selfIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
+					playerList.get(downIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
+				}
+				for (int j = 0; j < towardCount; j++) {
+					//抓码 抓到对家，胡家加分，对家减分
+					playerList.get(selfIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
+					playerList.get(towardIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
+				}
+				for (int j = 0; j < upCount; j++) {
+					//抓码 抓到上家，胡家加分，上家减分
+					playerList.get(selfIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", score);
+					playerList.get(upIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7",-1*score);
+				}
 			}
 		}
 		else{
@@ -270,15 +276,21 @@ public class HuPaiType {
 				int dPaoCount = 0;
 				if(dPaoIndex == downIndex){
 					dPaoCount = downCount;
-					sb.append("1,");
+					if(!hongzhong){
+						sb.append("1,");
+					}
 				}
 				else if(dPaoIndex == towardIndex){
 					dPaoCount = towardCount;
-					sb.append("2,");
+					if(!hongzhong){
+						sb.append("2,");
+					}
 				}
 				else if(dPaoIndex == upIndex){
 					dPaoCount = upCount;
-					sb.append("3");
+					if(!hongzhong){
+						sb.append("3");
+					}
 				}
 				
 				str =avatarShu.getUuId()+":"+cardIndex+":"+Rule.Hu_d_self;  
@@ -295,7 +307,7 @@ public class HuPaiType {
 					avatarShu.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos("7", -1*score);
 				}
 				if(StringUtil.isNotEmpty(type) && type.equals("qianghu") && hongzhong){
-					//抢胡抓的码 只有 1 5 9 或红中有效
+					//有红中癞子的时候抢胡抓的码 只有 1 5 9 或红中有效
 				}
 				else{
 					for (int j = 0; j < dPaoCount; j++) {
@@ -365,12 +377,14 @@ public class HuPaiType {
 				
 			}
 		}
+		validMa = new ArrayList<Integer>();
 		Set<Entry<Integer, Integer>>  set= map.entrySet();
 		for (Entry<Integer, Integer> entry : set) {
-			if(sb.toString().contains(entry.getKey()+"")){
+			if(sb.toString().contains(entry.getValue()+"")){
 				validMa.add(entry.getKey());
 			}
 		}
+		System.out.println("有效码："+validMa);
 	}
 	/**
 	 * 处理抓到的码点数，成0-3之间的数

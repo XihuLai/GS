@@ -40,8 +40,8 @@ public class NetManager {
 
 		chain.addLast("ThreadPool",new ExecutorFilter(Executors.newCachedThreadPool()));
 		
-		int recsize = 1024*64;
-		int sendsize = 1024*64;
+		int recsize = 1024*1024*2;
+		int sendsize = 1024*1024*2;
 		int timeout = 10;
 		//
 		SocketSessionConfig sc = acceptor.getSessionConfig();
