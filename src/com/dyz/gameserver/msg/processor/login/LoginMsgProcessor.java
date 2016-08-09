@@ -12,7 +12,6 @@ import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.login.LoginResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.LoginVO;
-import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.myBatis.model.Account;
 import com.dyz.myBatis.services.AccountService;
 import com.dyz.persist.util.GlobalUtil;
@@ -64,25 +63,32 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 				AvatarVO avatarVO = new AvatarVO();
 				avatarVO.setAccount(account);
 				avatar.avatarVO = avatarVO;
+				//把session放入到GameSessionManager
+				GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
+				loginAction(gameSession,avatar);
+				/*boolean flag = GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
+				if(flag) {
+					loginAction(gameSession,avatar);
+				}else{
+					gameSession.sendMsg(new LoginResponse(0,null));
+					TimeUitl.delayDestroy(gameSession,500);
+				}*/
+				System.out.println("GameSessionManager getVauleSize -- >" +GameSessionManager.getInstance().getVauleSize());
 			}else{
 				//断线重连
 				GameServerContext.remove_offLine_Character(avatar);
 				GameServerContext.add_onLine_Character(avatar);
 				avatar.avatarVO.setIsOnLine(true);
 				TimeUitl.stopAndDestroyTimer(avatar);
+				avatar.setSession(gameSession);
 				System.out.println("用户回来了，断线重连，中止计时器");
 				//返回用户断线前的房间信息******
+				gameSession.setLogin(true);
+				gameSession.setRole(avatar);
 				returnBackAction(avatar);
+				//把session放入到GameSessionManager
+				GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
 			}
-			//把session放入到GameSessionManager
-			boolean flag = GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
-			if(flag) {
-				loginAction(gameSession,avatar);
-			}else{
-				gameSession.sendMsg(new LoginResponse(0,null));
-				TimeUitl.delayDestroy(gameSession,500);
-			}
-			System.out.println("GameSessionManager getVauleSize -- >" +GameSessionManager.getInstance().getVauleSize());
 		}
 	}
 

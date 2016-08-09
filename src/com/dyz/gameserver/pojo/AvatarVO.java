@@ -1,5 +1,8 @@
 package com.dyz.gameserver.pojo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.dyz.myBatis.model.Account;
 import com.dyz.persist.util.StringUtil;
 
@@ -28,26 +31,22 @@ public class AvatarVO {
      */
     private boolean isOnLine = false;
     /**
+     * 当前分数，起始分1000
+     */
+    private int scores = 1000;
+    /**
      * 打了的牌的字符串  1,2,3,4,5,6,1,3,5 格式
      */
-    private StringBuffer  chupais = new StringBuffer();
+    private List<Integer>  chupais = new ArrayList<Integer>();
     /**
-     * 当前牌组，踢出掉了每次的吃，碰，杠，胡
+     * 普通牌张数
      */
-   // public int [][] currentCardList;
+    public int commonCards;
     /**
      * 牌数组
      * /碰 1  杠2  胡3  吃4
      */
     private int[][] paiArray;
-/*    *//**
-     * 有一个规则（很重要：在一圈内（这里的一圈标识一人抓了一次牌）如若A玩家听牌胡 二 五条 ，
-     * B玩家打出 二五条此时A玩家没有选择胡牌，那么在这一圈内，C D玩家如果也打得出二五条，
-     * A玩家不能胡牌，直到A玩家下一次摸牌后（自摸可以）， 此时有人打了就可以胡了，如若又没胡，
-     * 那么在这一圈内 其他玩家打的也不能胡）
-     *//*
-    private boolean canHu = true;
-*/    
     /**
      * 存储整局牌的 杠，胡以及得分情况的对象，游戏结束时直接返回对象
      */
@@ -55,23 +54,6 @@ public class AvatarVO {
     
     
 
-//	public int[][] getCurrentCardList() {
-//		return currentCardList;
-//	}
-	
-	/*public void setCurrentCardList(int[][] currentCardList) {
-		this.currentCardList =getPaiArray().clone();
-	}*/
-
-	/**
-	 * 从牌的数组中踢出传入的牌的index
-	 * @param cardIndex
-	 */
-	/*public void updateCurrentCardList(int ...cardIndex) {
-		for (int i = 0; i < cardIndex.length; i++) {
-			this.currentCardList[0][cardIndex[i]] = currentCardList[0][cardIndex[i]]-1;
-		}
-	}*/
 
     
    public HuReturnObjectVO getHuReturnObjectVO() {
@@ -129,17 +111,42 @@ public class AvatarVO {
         this.paiArray = paiArray;
     }
 
-	public StringBuffer getChupais() {
+	public List<Integer> getChupais() {
 		return chupais;
 	}
+	/**
+	 * 出了的牌添加到数组中
+	 * @param chupai
+	 */
+	public void updateChupais(Integer chupai) {
+		chupais.add(chupai);
+ 	}
+	/**
+	 * 移除最后一张牌
+	 * @param chupai
+	 */
+	public void removeLastChupais() {
+		int inde = chupais.size();
+		chupais.remove(inde-1);
+ 	}
+	
+	public int getCommonCards() {
+		return commonCards;
+	}
 
-	public void setChupais(String chupai) {
-		if(StringUtil.isEmpty(chupais.toString())){
-			chupais.append(chupai);
-		}
-		else{
-			chupais.append(","+chupai);
-		}
+	public void setCommonCards(int commonCards) {
+		this.commonCards = commonCards;
+	}
+
+	public int getScores() {
+		return scores;
+	}
+	/**
+	 * 修改分数  正加  负减
+	 * @param score
+	 */
+	public void supdateScores(int score) {
+		this.scores = this.scores +score;
 	}
     
 }

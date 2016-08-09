@@ -9,6 +9,7 @@ import com.dyz.gameserver.msg.processor.gang.GangMsgProcessor;
 import com.dyz.gameserver.msg.processor.hu.HuPaiMsgProcessor;
 import com.dyz.gameserver.msg.processor.joinroom.JoinRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.LoginMsgProcessor;
+import com.dyz.gameserver.msg.processor.login.LogoutMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.OpenAppMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.SignUpMsgProcessor;
 import com.dyz.gameserver.msg.processor.messageBox.MessageBoxMsgProcessor;
@@ -28,7 +29,7 @@ import com.dyz.gameserver.msg.processor.startgame.PrepareGameMSGProcessor;
 public enum MsgProcessorRegister {
 	/**用户打开app*/
 	openApp(ConnectAPI.OPENAPP_REQUEST,new OpenAppMsgProcessor()),
-	/**登陆处理器*/
+	/**登陆处理器*//**断线重连**/
 	login(ConnectAPI.LOGIN_REQUEST,new LoginMsgProcessor()),
 	/**用户注册处理器*/
 	signUp(ConnectAPI.SIGNUP_REQUEST,new SignUpMsgProcessor()),
@@ -58,7 +59,9 @@ public enum MsgProcessorRegister {
 	successRerunMsg(ConnectAPI.SUCCESS_RETURN_MSG_RESPONSE,new SuccessReturnMsgProcessor()),
 	/**游戏开始前准备*/
 	prepareGame(ConnectAPI.PrepareGame_MSG_REQUEST,new PrepareGameMSGProcessor()),
-
+	/**退出游戏*/
+	loginOutGame(ConnectAPI.LOGINOUTGAME_MSG_REQUEST,new LogoutMsgProcessor()),
+	
 	messageBox(ConnectAPI.MessageBox_Request,new MessageBoxMsgProcessor()),
 
 	head(ConnectAPI.head,new HeadMsgProcessor());

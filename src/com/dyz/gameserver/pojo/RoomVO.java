@@ -13,9 +13,13 @@ public class RoomVO {
      */
     private int roomId;
     /**
-     * 房间的使用次数
+     * 房间的使用总次数
      */
     private int roundNumber;
+    /**
+     * 房间当前轮数
+     */
+    private int currentRound = 0;
     /**
      *是否红中当赖子
      */
@@ -50,7 +54,6 @@ public class RoomVO {
      * 房间名
      */
     public String name;
-    
     /**
      * 整个房间对应的所有人的牌组
      */
@@ -101,34 +104,9 @@ public class RoomVO {
     public Map<Integer, Map<String, Integer>> getEndStatistics() {
 		return endStatistics;
 	}
-    /**
-     * 开一个房间几局游戏完后，统计所有玩家的杠，胡次数
-     *type: 
-     * 1:自摸次数
-     * 2:接炮次数
-     * 3:点炮次数
-     * 4：明杠次数
-     * 5：暗杠次数
-     * 6: 总成绩
-     * 
-     */
-    /*public Map<Integer , Integer> map;
     
-    public Map<Integer, Integer> getMap() {
-		return map;
-	}
-
-	public synchronized void updateMap(int type ) {
-		if(map == null){
-			map = new HashMap<Integer , Integer>();
-		}
-		if(map.get(type) == null){
-			map.put(type, 1);
-		}
-		else{
-			map.put(type, 1+map.get(type));
-		}
-	}*/
+    
+    
     
 	public int getRoomId() {
         return roomId;
@@ -149,8 +127,17 @@ public class RoomVO {
     public void setRoundNumber(int roundNumber) {
         this.roundNumber = roundNumber;
     }
+    
+    public int getCurrentRound() {
+		return currentRound;
+	}
 
-    public int getRoomType() {
+	public void setCurrentRound(int currentRound) {
+		this.currentRound = currentRound;
+	}
+
+
+	public int getRoomType() {
         return roomType;
     }
 
@@ -221,4 +208,5 @@ public class RoomVO {
     public void setAddWordCard(boolean addWordCard) {
         this.addWordCard = addWordCard;
     }
+
 }

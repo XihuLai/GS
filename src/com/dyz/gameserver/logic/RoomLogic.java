@@ -1,5 +1,11 @@
 package com.dyz.gameserver.logic;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.alibaba.fastjson.JSONObject;
 import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
@@ -15,12 +21,6 @@ import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.HuReturnObjectVO;
 import com.dyz.gameserver.pojo.RoomVO;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -39,7 +39,7 @@ public class RoomLogic {
     /**
      *记录是否已经有人申请解散房间
      */
-    private boolean dissolve = false;
+    private boolean dissolve = true;
     /**
      * 房间属性 1-为普通房间
      */
@@ -101,7 +101,12 @@ public class RoomLogic {
                     @Override
                     public void run() {
                     	createAvator.updateRoomCard(-1);//开始游戏，减去房主的房卡
-                        startGameRound();
+                    	try {
+							Thread.sleep(2000);
+							startGameRound();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
                     }
                 };
                 timer.schedule(tt, 1000);
@@ -217,7 +222,7 @@ public class RoomLogic {
     	JSONObject json;
     	//为0时表示是申请解散房间，1表示同意解散房间  2表示不同意解散房间
     	//dissolveCount  = playerList.size();
-    	dissolve = true;
+    	dissolve = false;
     	if(type.equals("0")){
     		dissolveCount = 1;
     		json = new JSONObject();
@@ -270,7 +275,7 @@ public class RoomLogic {
     		    // roomVO = null;
 			}
 */    		 
-    		 playerList.clear();;
+    		 playerList.clear();
 		     roomVO.getPlayerList().clear();
 		     roomVO = null;
     	}
@@ -373,6 +378,7 @@ public class RoomLogic {
         	
         }else{
 	        count--;
+	        roomVO.setCurrentRound(roomVO.getCurrentRound() +1);
 	        if((count +1) != roomVO.getRoundNumber()){
 	        	//说明不是第一局
 	        	Avatar avatar = playCardsLogic.bankerAvatar;
@@ -445,6 +451,8 @@ public class RoomLogic {
      * @param avatar
      */
     public void returnBackAction(Avatar avatar){
+    	
+    	
     	playCardsLogic.returnBackAction(avatar);
     }
     

@@ -1,5 +1,14 @@
 package com.dyz.gameserver.logic;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.context.ErrorCode;
@@ -14,6 +23,7 @@ import com.dyz.gameserver.msg.response.gang.GangResponse;
 import com.dyz.gameserver.msg.response.gang.OtherGangResponse;
 import com.dyz.gameserver.msg.response.hu.HuPaiAllResponse;
 import com.dyz.gameserver.msg.response.hu.HuPaiResponse;
+import com.dyz.gameserver.msg.response.login.BackLoginResponse;
 import com.dyz.gameserver.msg.response.login.OtherBackLoginResonse;
 import com.dyz.gameserver.msg.response.peng.PengResponse;
 import com.dyz.gameserver.msg.response.pickcard.OtherPickCardResponse;
@@ -27,10 +37,6 @@ import com.dyz.persist.util.HuPaiType;
 import com.dyz.persist.util.Naizi;
 import com.dyz.persist.util.NormalHuPai;
 import com.dyz.persist.util.StringUtil;
-
-import java.io.IOException;
-import java.util.*;
-import java.util.Map.Entry;
 
 
 /**
@@ -100,6 +106,8 @@ public class PlayCardsLogic {
      * 房间信息
      */
     private RoomVO roomVO;
+    
+    private ResponseMsg responseMsg;
 
 	private NormalHuPai normalHuPai;
     /**
@@ -472,7 +480,7 @@ public class PlayCardsLogic {
     public void putOffCard(Avatar avatar,int cardPoint){
     	
     	//出牌信息放入到缓存中，掉线重连的时候，返回房间信息需要
-        avatar.avatarVO.setChupais(cardPoint+"");
+        avatar.avatarVO.updateChupais(cardPoint);
     	
     	//已经出牌就清除所有的吃，碰，杠，胡的数组
     	clearAvatar();
@@ -521,6 +529,7 @@ public class PlayCardsLogic {
         			if(sb.length()>1){
         				System.out.println(sb);
         				ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
+        				responseMsg = new ReturnInfoResponse(1, sb.toString());
         			}
         		}
         	}
@@ -549,6 +558,7 @@ public class PlayCardsLogic {
 					if(sb.length()>1){
 						System.out.println(sb);
 						ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
+						responseMsg = new ReturnInfoResponse(1, sb.toString());
 					}
 	        	}
 	        }
@@ -622,6 +632,9 @@ public class PlayCardsLogic {
     				 gangAvatar.remove(avatar);
     			 }
     			 if(penAvatar.contains(avatar)){
+    				 //把出的牌从出牌玩家的chupais中移除掉
+    				 playerList.get(curAvatarIndex).avatarVO.removeLastChupais();
+    				 
     				 //更新牌组
     				 flag = avatar.putCardInList(cardIndex);
     				 avatar.setCardListStatus(cardIndex,1);
@@ -637,6 +650,7 @@ public class PlayCardsLogic {
     					 }
     					 playerList.get(i).getSession().sendMsg(new PengResponse(1,cardIndex,playerList.indexOf(avatar)));
     				 }
+    				 responseMsg = new PengResponse(1,cardIndex,playerList.indexOf(avatar));
     				 //更新摸牌人信息 2016-8-3
     				 pickAvatarIndex = playerList.indexOf(avatar);
     				 curAvatarIndex = playerList.indexOf(avatar);
@@ -777,6 +791,9 @@ public class PlayCardsLogic {
     				 }
     				 else{
     					 //点杠(分在明杠里面)（划水麻将里面的放杠）
+    					 //把出的牌从出牌玩家的chupais中移除掉
+        				 playerList.get(curAvatarIndex).avatarVO.removeLastChupais();
+        				 
     					 //更新牌组(点杠时才需要更新)   自摸时不需要更新
     					 flag = avatar.putCardInList(cardPoint);
     					 if(roomVO.getRoomType() == 1){
@@ -823,10 +840,12 @@ public class PlayCardsLogic {
     						 if(avatar.getUuId() != playerList.get(i).getUuId()){
     							 //杠牌返回给其他人只返回杠的类型和杠牌的玩家位置
     							 playerList.get(i).getSession().sendMsg(new OtherGangResponse(1,cardPoint,avatarIndex,type));
+    							 responseMsg = new OtherGangResponse(1,cardPoint,avatarIndex,type);
     						 }
     						 else{
     							 //杠牌返回给其他人只返回杠的类型和杠牌的玩家位置
     							 playerList.get(i).getSession().sendMsg(new GangResponse(1, 1, 1,type));
+    							 responseMsg = new GangResponse(1, 1, 1,type);
     						 }
     					 }
     					 pickCardAfterGang(avatar);//2016-8-1
@@ -839,10 +858,12 @@ public class PlayCardsLogic {
     						 if(avatar.getUuId() != playerList.get(i).getUuId()){
     							 //杠牌返回给其他人只返回杠的类型和杠牌的玩家位置
     							 playerList.get(i).getSession().sendMsg(new OtherGangResponse(1,cardPoint,avatarIndex,type));
+    							 responseMsg = new OtherGangResponse(1,cardPoint,avatarIndex,type);
     						 }
     						 else{
     							 //杠牌返回给其他人只返回杠的类型和杠牌的玩家位置
     							 playerList.get(i).getSession().sendMsg(new GangResponse(1, 1, 1,type));
+    							 responseMsg = new GangResponse(1, 1, 1,type);
     						 }
     					 }
     					 pickCardAfterGang(avatar);//2016-8-1
@@ -1075,6 +1096,8 @@ public class PlayCardsLogic {
     		array.add(huReturnObjectVO);
     		//在整个房间信息中修改总分数(房间次数用完之后的总分数)
     		roomVO.updateEndStatistics(avatar.getUuId(), "scores", huReturnObjectVO.getTotalScore());
+    		//修改存储的分数(断线重连需要)
+    		avatar.avatarVO.supdateScores(huReturnObjectVO.getTotalScore());
 		}
     	json.put("avatarList", array);
     	json.put("allMas", allMas);
@@ -1615,18 +1638,33 @@ public class PlayCardsLogic {
      */
     public void returnBackAction(Avatar avatar){
     	
+    	RoomVO room = roomVO;
     	for (int i = 0; i < playerList.size(); i++) {
-    		if(i!= playerList.indexOf(avatar)){
     			//给其他三个玩家返回重连用户信息
-    			playerList.get(i).getSession().sendMsg(new OtherBackLoginResonse(1, avatar.avatarVO));
+    			playerList.get(i).getSession().sendMsg(new OtherBackLoginResonse(1, avatar.getUuId()+""));
+    	}
+    	//给自己返回整个房间信息
+    	List<AvatarVO> playerLists = new ArrayList<AvatarVO>();
+    	AvatarVO avatarVo = null ;
+    	for (int j = 0; j < room.getPlayerList().size(); j++) {
+    		int paiCount = 0;//有多少张普通牌
+    		
+    		avatarVo = playerList.get(j).avatarVO;
+    		for (int k = 0; k < avatarVo.getPaiArray()[0].length; k++) {
+    			if(avatarVo.getPaiArray()[0][k] != 0 && avatarVo.getPaiArray()[1][k] == 0){
+    				paiCount++;
+    				avatarVo.getPaiArray()[0][k] = 0;
+    			}
     		}
-    		else{
-    			//给自己返回整个房间信息
-    			
-    			
-    		}
-		}
-    	
+    		avatarVo.setCommonCards(paiCount);
+    		playerLists.add(avatarVo);
+    	}
+    	//*****
+    	playerList.add(avatar);
+    	playerLists.add(avatarVo);
+    	room.setPlayerList(playerLists);
+    	avatar.getSession().sendMsg(new BackLoginResponse(1, room));
+    	avatar.getSession().sendMsg(responseMsg);
     	
     }
     

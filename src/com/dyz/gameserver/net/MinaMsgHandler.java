@@ -49,8 +49,8 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 	public void exceptionCaught(IoSession session, Throwable cause)
 			throws Exception {
 		//强制退出
-		//logger.error("服务器出错 {}",cause.getMessage());
-		//cause.printStackTrace();
+		logger.error("服务器出错 {}",cause.getMessage());
+		cause.printStackTrace();
 	}
 
 	/**

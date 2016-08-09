@@ -10,7 +10,7 @@ import java.net.Socket;
 
 public class Client {
 	public static final String IP_ADDR = "localhost";//服务器地址 
-	public static final int PORT = 1101;//服务器端口号  
+	public static final int PORT = 10122;//服务器端口号  
 	
     public static void main(String[] args) {  
         System.out.println("客户端启动...");  

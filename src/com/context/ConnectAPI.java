@@ -36,7 +36,9 @@ public class ConnectAPI {
 	//退出房间
 	public static int OUT_ROOM_REQUEST  = 0x000013;
 	public static int OUT_ROOM_RESPONSE  = 0x000014;
-
+    //离线通知 
+	public static int OFF_LINE_RESPONSE  = 0x000015;
+	
 	public static int head = 0x000030;
 	public static int headRESPONSE = 0x000031;
 
@@ -81,6 +83,8 @@ public class ConnectAPI {
 	//准备游戏
 	public static int  PrepareGame_MSG_REQUEST = 0x333333;
 	public static int PrepareGame_MSG_RESPONSE = 0x444444;
+	//退出游戏
+	public static int  LOGINOUTGAME_MSG_REQUEST = 0x555555;
 	//固定语音盒子协议
 	public static int MessageBox_Request = 203;
 	public static int MessageBox_Notice = 204;

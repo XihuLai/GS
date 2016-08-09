@@ -5,6 +5,7 @@ import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.message.ResponseMsg;
 import com.dyz.gameserver.logic.RoomLogic;
 import com.dyz.gameserver.manager.RoomManager;
+import com.dyz.gameserver.msg.response.offline.OffLineResponse;
 import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
 import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.gameserver.sprite.base.GameObj;
@@ -117,30 +118,28 @@ public class GameSession implements GameObj {
 	 */
 	public void close(){
 		System.out.println("关闭SESSION -- > "+session.getRemoteAddress());
-		if(session != null && session.isConnected()) {
-			
-			//关闭session的时候(掉线) 如果用户还在房间，则踢出用户，并向其他玩家发送消息
+		if(session != null) {
+			//关闭session的时候(掉线) 如果只其一个用户还在房间，则踢出用户并解散房间，并向其他玩家发送消息
 			GameSession playerObj = (GameSession) session.getAttribute(KEY_PLAYER_SESSION);
 			Avatar avatar = playerObj.getRole(Avatar.class);
-			
+			RoomLogic roomLogic =RoomManager.getInstance().getRoom(avatar.avatarVO.getRoomId());
 			if(avatar.getRoomVO().getPlayerList().size() >= 2){
-				//房间还有其他玩家，则向其他玩家发送离线玩家退出房间消息  
-				JSONObject json = new JSONObject();
-				json.put("accountName", avatar.avatarVO.getAccount().getNickname());
-		        json.put("status_code", "0");
-		        json.put("uuid", avatar.getUuId());
-		        json.put("type", "0");
-				RoomLogic roomLogic =RoomManager.getInstance().getRoom(avatar.avatarVO.getRoomId());
+				//房间还有其他玩家，则向其他玩家发送离线玩家消息  
 				for (Avatar ava :roomLogic.getPlayerList()) {
 					if(avatar.getUuId() != ava.getUuId()){
-						ava.getSession().sendMsg(new OutRoomResponse(1, json.toString()));
+						//发送离线通知
+						ava.getSession().sendMsg(new OffLineResponse(1,avatar.getUuId()+""));
 					}
 				}
 			}
-			avatar.avatarVO.setRoomId(0);
-			avatar.setRoomVO(new RoomVO());
-			avatar.destroyObj();
-			
+			else{
+				RoomManager.getInstance().destroyRoom(avatar.getRoomVO());
+				//房间只有一个人且掉线，则踢出用户并解散房间
+				avatar.avatarVO.setRoomId(0);
+				avatar.setRoomVO(new RoomVO());
+				avatar.destroyObj();
+				roomLogic = null;
+			}
 			session.close(false);
 			System.out.println("关闭SESSION -- >  session.close(false);");
 		}

@@ -13,12 +13,17 @@ import com.dyz.persist.util.GlobalUtil;
 
 import net.sf.json.JSONObject;
 
+/**
+ * 暂时不用整个类
+ * @author luck
+ *
+ */
 public class loginBackMsgProcessor extends MsgProcessor implements INotAuthProcessor{
 
 	@Override
 	public void process(GameSession gameSession, ClientRequest request) throws Exception {
 		
-		if(GlobalUtil.checkIsLogin(gameSession)) {
+		/*if(GlobalUtil.checkIsLogin(gameSession)) {
 			JSONObject json = JSONObject.fromObject(request.getString());
 			int roomId = (int)json.get("roomId");
 			Avatar avatar = gameSession.getRole(Avatar.class);
@@ -38,7 +43,7 @@ public class loginBackMsgProcessor extends MsgProcessor implements INotAuthProce
 		else{
 			System.out.println("该用户还没有登录");
 			gameSession.destroyObj();
-		}
+		}*/
 	}
 
 }

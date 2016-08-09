@@ -31,10 +31,9 @@ public class CreateRoomMsgProcssor extends MsgProcessor implements
             if (avatar == null) {
                 System.out.println("用户是空的，不能创建房间");
             }else{
-                if(avatar.avatarVO.getAccount().getRoomcard() > 0) {
+                if(avatar.avatarVO.getAccount().getRoomcard() >= roomVO.getRoundNumber()/4) {
                     if(avatar.avatarVO.getRoomId() == 0) {
                         RoomManager.getInstance().createRoom(avatar,roomVO);
-                       // avatar.updateRoomCard(-1);
                         System.out.println("房间创建成功-- roomId:"+roomVO.getRoomId());
                         gameSession.sendMsg(new CreateRoomResponse(1,roomVO.getRoomId()+""));
                     }else{
