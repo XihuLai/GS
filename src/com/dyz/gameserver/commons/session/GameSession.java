@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.message.ResponseMsg;
 import com.dyz.gameserver.logic.RoomLogic;
+import com.dyz.gameserver.manager.GameSessionManager;
 import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.response.offline.OffLineResponse;
 import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
@@ -29,6 +30,9 @@ public class GameSession implements GameObj {
 	 * 用户的服务器地址
 	 */
 	private String address;
+	
+	
+	
 	/**
 	 *
 	 */
@@ -118,27 +122,34 @@ public class GameSession implements GameObj {
 	 */
 	public void close(){
 		System.out.println("关闭SESSION -- > "+session.getRemoteAddress());
-		if(session != null) {
+		if(session != null ) {
 			//关闭session的时候(掉线) 如果只其一个用户还在房间，则踢出用户并解散房间，并向其他玩家发送消息
 			GameSession playerObj = (GameSession) session.getAttribute(KEY_PLAYER_SESSION);
 			Avatar avatar = playerObj.getRole(Avatar.class);
-			RoomLogic roomLogic =RoomManager.getInstance().getRoom(avatar.avatarVO.getRoomId());
-			if(avatar.getRoomVO().getPlayerList().size() >= 2){
-				//房间还有其他玩家，则向其他玩家发送离线玩家消息  
-				for (Avatar ava :roomLogic.getPlayerList()) {
-					if(avatar.getUuId() != ava.getUuId()){
-						//发送离线通知
-						ava.getSession().sendMsg(new OffLineResponse(1,avatar.getUuId()+""));
+			if(avatar != null){
+				RoomLogic roomLogic =RoomManager.getInstance().getRoom(avatar.avatarVO.getRoomId());
+				if(roomLogic != null ){
+					if(avatar.getRoomVO().getPlayerList().size() >= 2){
+						//房间还有其他玩家，则向其他玩家发送离线玩家消息  
+						for (Avatar ava :roomLogic.getPlayerList()) {
+							if(avatar.getUuId() != ava.getUuId()){
+								//发送离线通知
+								ava.getSession().sendMsg(new OffLineResponse(1,avatar.getUuId()+""));
+							}
+						}
 					}
+					else{
+						RoomManager.getInstance().destroyRoom(avatar.getRoomVO());
+						//房间只有一个人且掉线，则踢出用户并解散房间
+						avatar.avatarVO.setRoomId(0);
+						avatar.setRoomVO(new RoomVO());
+						avatar.destroyObj();
+						roomLogic = null;
+						
+					}
+					//所有断线玩家  移除session
+					GameSessionManager.getInstance().removeGameSession(avatar);
 				}
-			}
-			else{
-				RoomManager.getInstance().destroyRoom(avatar.getRoomVO());
-				//房间只有一个人且掉线，则踢出用户并解散房间
-				avatar.avatarVO.setRoomId(0);
-				avatar.setRoomVO(new RoomVO());
-				avatar.destroyObj();
-				roomLogic = null;
 			}
 			session.close(false);
 			System.out.println("关闭SESSION -- >  session.close(false);");

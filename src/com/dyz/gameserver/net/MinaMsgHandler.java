@@ -79,7 +79,7 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 			
 			//解散房间
 			//每次有人退出房间/退出游戏就检测看房间还剩余几人，若只剩余一个，则解散房间
-			RoomVO roomvo = gameSession.getRole(Avatar.class).getRoomVO();
+			/*RoomVO roomvo = gameSession.getRole(Avatar.class).getRoomVO();
 			if( roomvo != null){
 				Avatar ava = gameSession.getRole(Avatar.class);
 				if(roomvo.getPlayerList().size() <= 2){
@@ -101,7 +101,7 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 						}
 					}
 				}
-			}
+			}*/
 			gameSession.close();
 		}
 

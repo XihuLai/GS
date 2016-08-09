@@ -41,6 +41,7 @@ public class GameSessionManager {
         if(result){
             System.out.println("这个用户已登录了");
         }else{
+        	System.out.println("denglu");
             sessionMap.put("uuid_"+useId,gameSession);
         }
         return !result;
@@ -65,7 +66,9 @@ public class GameSessionManager {
      */
     public void removeGameSession(Avatar avatar){
         GameSession gameSession =  sessionMap.remove("uuid_"+avatar.getUuId());
-        gameSession.destroyObj();
+        if(gameSession != null){
+        	gameSession.destroyObj();
+        }
         gameSession = null;
     }
 

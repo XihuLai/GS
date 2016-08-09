@@ -53,6 +53,8 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 
 				loginAction(gameSession,tempAva);
 				System.out.println("创建新用户并登录");
+				//把session放入到GameSessionManager
+				GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,tempAva.getUuId());
 			}
 		}else{
 			//如果玩家是掉线的，则直接从缓存(GameServerContext)中取掉线玩家的信息
@@ -66,13 +68,6 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 				//把session放入到GameSessionManager
 				GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
 				loginAction(gameSession,avatar);
-				/*boolean flag = GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
-				if(flag) {
-					loginAction(gameSession,avatar);
-				}else{
-					gameSession.sendMsg(new LoginResponse(0,null));
-					TimeUitl.delayDestroy(gameSession,500);
-				}*/
 				System.out.println("GameSessionManager getVauleSize -- >" +GameSessionManager.getInstance().getVauleSize());
 			}else{
 				//断线重连
