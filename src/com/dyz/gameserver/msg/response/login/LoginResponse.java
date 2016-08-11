@@ -9,6 +9,8 @@ import java.io.IOException;
 
 public class LoginResponse extends ServerResponse{
 
+	
+	
 	public LoginResponse(int status, AvatarVO avatarVO) {
 		super(status,ConnectAPI.LOGIN_RESPONSE);
 		try {
@@ -24,5 +26,5 @@ public class LoginResponse extends ServerResponse{
        	 output.close();
 		}
 	}
-
+	
 }

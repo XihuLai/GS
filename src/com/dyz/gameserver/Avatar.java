@@ -38,6 +38,8 @@ public class Avatar implements GameObj {
     //当前玩家能否吃
     public boolean canHu = true;
     
+    public boolean qiangHu = true;
+    
     //当自己摸牌时检测自己是否有杠的牌。把杠的牌放入到整个list里面，然后在转入给前端
     public List<Integer> gangIndex = new  ArrayList<Integer>();
     /**
@@ -299,14 +301,13 @@ public class Avatar implements GameObj {
     					for (int j = 0; j < strs.length; j++) {
     						if(strs[j].equals(i+"")){
     							flag =  false;
+    							gangIndex.clear();
     							j = 100;
     							i = 100;
     						}
     						else{
     							gangIndex.add(i);
     							flag =  true;
-    							j = 100;
-    							i = 100;
     						}
 						}
     				}

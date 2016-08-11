@@ -67,4 +67,15 @@ public class AccountService {
         return null;
     }
 
+    /**
+     * 创建新用户
+     * @param account
+     * @return 插入信息表中id
+     * @throws SQLException
+     */
+    public int selectMaxId() throws SQLException{
+        int index = accMap.selectMaxId();
+        System.out.println("-account selectMaxId index->>" + index);
+        return index;
+    }
 }

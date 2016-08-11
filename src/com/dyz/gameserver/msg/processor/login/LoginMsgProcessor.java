@@ -21,7 +21,7 @@ import com.dyz.persist.util.TimeUitl;
 public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor{
 
 	@Override
-	public void process(GameSession gameSession, ClientRequest request)
+	public synchronized void process(GameSession gameSession, ClientRequest request)
 			throws Exception {
 		String message = request.getString();
 		LoginVO loginVO = JsonUtilTool.fromJson(message,LoginVO.class);
@@ -32,7 +32,8 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			//gameSession.sendMsg(new LoginResponse1004(false));
 			account = new Account();
 			account.setOpenid(loginVO.getOpenId());
-			account.setUuid(GlobalUtil.getRandomUUid());
+			//uuid由id+10000构成
+			account.setUuid(AccountService.getInstance().selectMaxId()+10000);
 			account.setRoomcard(3);
 			account.setHeadicon(loginVO.getHeadIcon());
 			account.setNickname(loginVO.getNickName());
@@ -107,11 +108,26 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 	 * @param avatar
      */
 	public void returnBackAction(Avatar avatar){
-		
-		RoomLogic roomLogic = RoomManager.getInstance().getRoom(avatar.avatarVO.getRoomId());
-		if(roomLogic !=null){
-			//如果用户是在玩游戏的时候短信，房间还未被解散，则需要返回游戏房间其他用户信息，牌组信息
-			roomLogic.returnBackAction(avatar);
+		if(avatar.avatarVO.getRoomId() != 0){
+			RoomLogic roomLogic = RoomManager.getInstance().getRoom(avatar.avatarVO.getRoomId());
+			if(roomLogic !=null){
+				//如果用户是在玩游戏的时候断线，且返回时房间还未被解散，则需要返回游戏房间其他用户信息，牌组信息
+				roomLogic.returnBackAction(avatar);
+			}
+			else{
+				//如果是在游戏时断线,但是返回的时候，游戏房间已经被解散，则移除该用户的房间信息
+				AvatarVO avatarVO = new AvatarVO(); 
+				avatarVO.setAccount(avatar.avatarVO.getAccount());
+				GameSession gamesession = avatar.getSession();
+				avatar = new Avatar();
+				avatar.avatarVO = avatarVO;
+				avatar.setSession(gamesession);
+				avatar.avatarVO.setIsOnLine(true);
+				gamesession.setRole(avatar);
+				gamesession.setLogin(true);
+				GameServerContext.add_onLine_Character(avatar);
+				gamesession.sendMsg(new LoginResponse(1, avatar.avatarVO));
+			}
 		}
 		else{
 			//如果不是在游戏时断线，则直接返回个人用户信息avatar

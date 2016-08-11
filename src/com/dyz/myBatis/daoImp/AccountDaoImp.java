@@ -183,4 +183,11 @@ public class AccountDaoImp implements AccountMapper {
         }
         return flag;
     }
+
+	@Override
+	public int selectMaxId() {
+		 SqlSession sqlSession = sqlSessionFactory.openSession();
+		 AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
+		return mapper.selectMaxId();
+	}
 }

@@ -80,9 +80,9 @@ public class RoomVO {
 		杠开(gangkaihu)	4*3番（其他三家每家出12番）      （杠上花）
 		抢杠(qiangganghu)	5*3番（谁要杠牌谁出番）         （抢杠胡）
      */
-    private Map<Integer , Map<String,Integer>> endStatistics = new HashMap<Integer, Map<String,Integer>>();
+    private Map<String , Map<String,Integer>> endStatistics = new HashMap<String, Map<String,Integer>>();
     
-	public Map<Integer, Map<String, Integer>> updateEndStatistics(Integer uuid , String type ,int roundScore) {
+	public Map<String, Map<String, Integer>> updateEndStatistics(String uuid , String type ,int roundScore) {
     		if(endStatistics.get(uuid) == null){
     			Map<String,Integer > map = new HashMap<String , Integer>();
         		map.put(type,roundScore);
@@ -101,7 +101,7 @@ public class RoomVO {
 	}
 
 	  
-    public Map<Integer, Map<String, Integer>> getEndStatistics() {
+    public Map<String, Map<String, Integer>> getEndStatistics() {
 		return endStatistics;
 	}
     
@@ -112,7 +112,7 @@ public class RoomVO {
         return roomId;
     }
 
-	public void setEndStatistics(Map<Integer, Map<String, Integer>> endStatistics) {
+	public void setEndStatistics(Map<String, Map<String, Integer>> endStatistics) {
 		this.endStatistics = endStatistics;
 	}
 

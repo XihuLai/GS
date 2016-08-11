@@ -118,10 +118,16 @@ public class Naizi {
                                     i--;
                                 } else if (temp_arr[i + 1] > 0 && temp_arr[i + 2] == 0) {
                                     //如果这张牌的下一张不为空，再下一张为空，需要一张赖子
-                                    temp_arr[i]--;
-                                    temp_arr[i + 1]--;
-                                    result++;
-                                    i--;
+                                	if(isjiang == false && temp_arr[i] >= 2){
+                                		isjiang = true;
+                                		temp_arr[i] -= 2;
+                                		i--;
+                                	}else{
+		                                    temp_arr[i]--;
+		                                    temp_arr[i + 1]--;
+		                                    result++;
+		                                    i--;
+                                	}
                                 } else if (temp_arr[i + 1] == 0 && temp_arr[i + 2] > 0) {
                                     //如果下一张为空，再下一张不为空，先判断有将没有，如果没有将，并且这张牌只有一张，补一张赖子组成将
                                     //                                                             如果这张牌有两张以上，直接做将，不补赖子。
@@ -287,7 +293,7 @@ public class Naizi {
     }
 
     public static void main(String[] args){
-        int [] test = new int[]{0,0,3,0,1,1,0,0,0,     0,0,0,0,0,0,1,1,1,     2,0,0,0,0,0,0,2,0,   0,0,0,0,2,0,0};
+        int [] test = new int[]{0,0,0,2,1,0,1,0,0,     0,0,0,2,2,1,0,0,0,     1,1,1,0,0,0,0,0,0,   0,0,0,0,2,0,0};
         getNeedHunNum(test);
     }
 }

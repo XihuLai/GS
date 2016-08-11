@@ -1,22 +1,23 @@
-package com.dyz.gameserver.msg.processor;
+package com.dyz.gameserver.msg.processor.heartbeat;
+
 
 import com.dyz.gameserver.commons.message.ClientRequest;
 import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
-import com.dyz.gameserver.msg.response.HeadResponse;
+import com.dyz.persist.util.TimeUitl;
 
 /**
- * Created by kevin on 2016/7/26.
+ * 心跳协议
+ * 
  */
 public class HeadMsgProcessor extends MsgProcessor implements
-        INotAuthProcessor {
+        INotAuthProcessor  {
     @Override
     public void process(GameSession gameSession, ClientRequest request) throws Exception {
-        String index = request.getString();
-        //for(int i=0;i<10;i++) {
-            gameSession.sendMsg(new HeadResponse(1, index+""));
-       // }
-        System.out.println("revice = "+index);
+    	//放入时间工具里面   当gamesession里面的time为10时，自动断线该用户
+    	//System.out.println("心跳"+gameSession.getAddress()+"--"+gameSession.getTime());
+//    	gameSession.addTime(0);
+//    	TimeUitl.heartbeat(gameSession);
     }
 }

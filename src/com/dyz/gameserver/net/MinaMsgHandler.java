@@ -28,7 +28,7 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 	public void sessionOpened(IoSession session) throws Exception{
 		new GameSession(session);
 		logger.info("a session create from ip {}",session.getRemoteAddress());
-		System.out.println(session.getId());
+		//System.out.println(session.getId());
 
 	}
 	
@@ -70,7 +70,7 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 				//把用户从在线列表中移除，并加入到离线列表
 				GameServerContext.remove_onLine_Character(avatar);
 				GameServerContext.add_offLine_Character(avatar);
-				avatar.avatarVO.setIsOnLine(false);;
+				avatar.avatarVO.setIsOnLine(false);
 				//把session从GameSessionManager移除
 				GameSessionManager.getInstance().removeGameSession(avatar);
 				//把用户数据保留半个小时

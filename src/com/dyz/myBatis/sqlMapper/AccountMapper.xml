@@ -118,6 +118,13 @@
     from account
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <!-- 获取最大的id -->
+  <select id="selectMaxId"  resultType="INTEGER">
+    select 
+   	MAX(id)
+    from account
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--
       WARNING - @mbggenerated

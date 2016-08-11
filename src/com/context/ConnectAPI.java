@@ -39,6 +39,7 @@ public class ConnectAPI {
     //离线通知 
 	public static int OFF_LINE_RESPONSE  = 0x000015;
 	
+	//心跳协议
 	public static int head = 0x000030;
 	public static int headRESPONSE = 0x000031;
 
@@ -88,6 +89,8 @@ public class ConnectAPI {
 	//固定语音盒子协议
 	public static int MessageBox_Request = 203;
 	public static int MessageBox_Notice = 204;
+	//玩家房卡变化协议
+	public static  int ROOMCARDCHANGER_RESPONSE = 0x777777;
 
 
 }

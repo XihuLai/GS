@@ -1,21 +1,20 @@
 package com.dyz.gameserver.commons.session;
 
-import com.alibaba.fastjson.JSONObject;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+
+import org.apache.mina.core.future.WriteFuture;
+import org.apache.mina.core.session.AttributeKey;
+import org.apache.mina.core.session.IoSession;
+
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.message.ResponseMsg;
 import com.dyz.gameserver.logic.RoomLogic;
 import com.dyz.gameserver.manager.GameSessionManager;
 import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.response.offline.OffLineResponse;
-import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
 import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.gameserver.sprite.base.GameObj;
-import org.apache.mina.core.future.WriteFuture;
-import org.apache.mina.core.session.AttributeKey;
-import org.apache.mina.core.session.IoSession;
-
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 /**
  * 游戏中的session回话，封装了mina的session
  * @author dyz
@@ -30,8 +29,10 @@ public class GameSession implements GameObj {
 	 * 用户的服务器地址
 	 */
 	private String address;
-	
-	
+	/**
+	 * 记录心跳时间， 间隔，到达一定时间就表示前端断线了
+	 */
+	private int time = 0;
 	
 	/**
 	 *
@@ -121,10 +122,10 @@ public class GameSession implements GameObj {
 	 * 关闭SESSION
 	 */
 	public void close(){
-		System.out.println("关闭SESSION -- > "+session.getRemoteAddress());
+		System.out.println("关闭SESSION -- > "+session.getRemoteAddress()+getAddress());
 		if(session != null ) {
 			//关闭session的时候(掉线) 如果只其一个用户还在房间，则踢出用户并解散房间，并向其他玩家发送消息
-			GameSession playerObj = (GameSession) session.getAttribute(KEY_PLAYER_SESSION);
+			/*GameSession playerObj = (GameSession) session.getAttribute(KEY_PLAYER_SESSION);
 			Avatar avatar = playerObj.getRole(Avatar.class);
 			if(avatar != null){
 				RoomLogic roomLogic =RoomManager.getInstance().getRoom(avatar.avatarVO.getRoomId());
@@ -150,8 +151,9 @@ public class GameSession implements GameObj {
 					//所有断线玩家  移除session
 					GameSessionManager.getInstance().removeGameSession(avatar);
 				}
-			}
+			}*/
 			session.close(false);
+			//session.getService().dispose(false);
 			System.out.println("关闭SESSION -- >  session.close(false);");
 		}
 	}
@@ -160,4 +162,18 @@ public class GameSession implements GameObj {
 	public void destroyObj() {
 		close();
 	}
+
+	public int getTime() {
+		return time;
+	}
+
+	public void addTime(int i) {
+		if(i == 0){
+			this.time = i;
+		}
+		else{
+			this.time = this.time + i;
+		}
+	}
+	
 }

@@ -1,11 +1,11 @@
 package com.dyz.gameserver.msg.processor.common;
 
 import com.context.ConnectAPI;
-import com.dyz.gameserver.msg.processor.HeadMsgProcessor;
 import com.dyz.gameserver.msg.processor.chi.ChiMsgProcessor;
 import com.dyz.gameserver.msg.processor.chupai.ChuPaiMsgProcessor;
 import com.dyz.gameserver.msg.processor.createroom.CreateRoomMsgProcssor;
 import com.dyz.gameserver.msg.processor.gang.GangMsgProcessor;
+import com.dyz.gameserver.msg.processor.heartbeat.HeadMsgProcessor;
 import com.dyz.gameserver.msg.processor.hu.HuPaiMsgProcessor;
 import com.dyz.gameserver.msg.processor.joinroom.JoinRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.LoginMsgProcessor;
@@ -63,7 +63,7 @@ public enum MsgProcessorRegister {
 	loginOutGame(ConnectAPI.LOGINOUTGAME_MSG_REQUEST,new LogoutMsgProcessor()),
 	
 	messageBox(ConnectAPI.MessageBox_Request,new MessageBoxMsgProcessor()),
-
+	/**心跳协议*/
 	head(ConnectAPI.head,new HeadMsgProcessor());
 	
 	private int msgCode;

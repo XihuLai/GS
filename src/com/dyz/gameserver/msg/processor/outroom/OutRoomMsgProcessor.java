@@ -34,7 +34,7 @@ public class OutRoomMsgProcessor extends MsgProcessor implements
 				RoomLogic roomLogic = RoomManager.getInstance().getRoom(roomId);
 				if (roomLogic != null) {
 					//退出房间
-					roomLogic.exitRoom(avatar,roomId);
+					roomLogic.exitRoom(avatar);
 				} else {
 					System.out.println("房间号有误");
 					JSONObject js = new JSONObject();

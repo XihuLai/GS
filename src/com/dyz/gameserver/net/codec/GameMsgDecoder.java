@@ -32,6 +32,7 @@ public class GameMsgDecoder extends CumulativeProtocolDecoder {
 			ProtocolDecoderOutput protocolDecoderOutput) throws Exception {
 	//	logger.info("iobuffer.remaining()   =   "+iobuffer.remaining());
 	//	logger.info("服务端消息的解码");
+		
 		if(iobuffer.remaining()<(MsgProtocol.flagSize+MsgProtocol.lengthSize+MsgProtocol.msgCodeSize)){//数据不完整
 			logger.info("数据包长度不足");
 			return false;

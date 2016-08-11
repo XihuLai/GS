@@ -93,4 +93,9 @@ public interface AccountMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(Account record);
+    /**
+     * 获取最大的id值
+     * @return int
+     */
+    int selectMaxId();
 }
