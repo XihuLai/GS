@@ -74,7 +74,7 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 				//把session从GameSessionManager移除
 				GameSessionManager.getInstance().removeGameSession(avatar);
 				//把用户数据保留半个小时
-				TimeUitl.delayDestroy(avatar,60*30*1000);
+				TimeUitl.delayDestroy(avatar,60*5*1000);
 			}
 			
 			//解散房间

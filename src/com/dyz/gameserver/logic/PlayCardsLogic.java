@@ -932,7 +932,7 @@ public class PlayCardsLogic {
     		sb.append(avatar.getUuId());
     		//单响    胡家抓码
     		int ma;
-    		if(avatar.getPaiArray()[0][31] == 0){
+    		if(roomVO.getHong() && avatar.getPaiArray()[0][31] == 0){
     			listCount++;
     		}
     		for (int i = 0; i < listCount; i++) {
