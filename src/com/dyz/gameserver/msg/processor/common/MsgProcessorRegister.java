@@ -4,6 +4,7 @@ import com.context.ConnectAPI;
 import com.dyz.gameserver.msg.processor.chi.ChiMsgProcessor;
 import com.dyz.gameserver.msg.processor.chupai.ChuPaiMsgProcessor;
 import com.dyz.gameserver.msg.processor.createroom.CreateRoomMsgProcssor;
+import com.dyz.gameserver.msg.processor.draw.DrawProcessor;
 import com.dyz.gameserver.msg.processor.gang.GangMsgProcessor;
 import com.dyz.gameserver.msg.processor.heartbeat.HeadMsgProcessor;
 import com.dyz.gameserver.msg.processor.hu.HuPaiMsgProcessor;
@@ -64,7 +65,9 @@ public enum MsgProcessorRegister {
 	
 	messageBox(ConnectAPI.MessageBox_Request,new MessageBoxMsgProcessor()),
 	/**心跳协议*/
-	head(ConnectAPI.head,new HeadMsgProcessor());
+	head(ConnectAPI.head,new HeadMsgProcessor()),
+	/**抽奖*/
+	draw(ConnectAPI.DRAw_REQUEST,new DrawProcessor());
 	
 	private int msgCode;
 	private MsgProcessor processor;

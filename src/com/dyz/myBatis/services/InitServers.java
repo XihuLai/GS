@@ -20,6 +20,7 @@ public class InitServers {
         //===============================================================
         //UserService.getInstance().initSetSession(sessionFactory);
         AccountService.getInstance().initSetSession(sessionFactory);
+        PrizeService.getInstance().initSetSession(sessionFactory);
     }
 
     private static InitServers initServers = new InitServers();

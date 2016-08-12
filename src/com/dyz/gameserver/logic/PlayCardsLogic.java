@@ -301,7 +301,7 @@ public class PlayCardsLogic {
         else{
         	System.out.println("流局");
         	//流局处理，直接算分
-        	settlementData();
+        	settlementData("1");
         }
     }
     /**
@@ -359,7 +359,7 @@ public class PlayCardsLogic {
         else{
         	//流局
         	System.out.println("流局");
-        	settlementData();
+        	settlementData("1");
         }
     }
     /**
@@ -896,11 +896,16 @@ public class PlayCardsLogic {
     	}
     	StringBuffer sb = new StringBuffer();
     	avatar.getPaiArray()[1][cardIndex] = 3;
+    	//当胡家手上没有红中，则多抓一个码
+    	int listCount = avatar.getRoomVO().getMa();
     	if(avatar.getRoomVO().getMa() >= 1 && huCount ==1 ){
     		sb.append(avatar.getUuId());
     		//单响    胡家抓码
     		int ma;
-    		for (int i = 0; i < avatar.getRoomVO().getMa(); i++) {
+    		if(avatar.getPaiArray()[0][31] == 0){
+    			listCount++;
+    		}
+    		for (int i = 0; i < listCount; i++) {
     			//ma = (int) Math.round(Math.random()*26);
     			ma  = getNextCardPoint();
     			if(ma != -1){
@@ -918,7 +923,7 @@ public class PlayCardsLogic {
     		if(StringUtil.isEmpty(allMas)){
     			sb.append(playerList.get(pickAvatarIndex).getUuId());
     			int ma;
-    			for (int i = 0; i < avatar.getRoomVO().getMa(); i++) {
+    			for (int i = 0; i < listCount; i++) {
     				//ma = (int) Math.round(Math.random()*26);
     				ma = getNextCardPoint();
     				if(ma != -1){
@@ -1077,16 +1082,16 @@ public class PlayCardsLogic {
     		 //更新roomlogic的PlayerList信息
     		 RoomManager.getInstance().getRoom(playerList.get(0).getRoomVO().getRoomId()).setPlayerList(playerList);
     		 //一局牌胡了，返回这一局的所有数据吃，碰， 杠，胡等信息
-    		 settlementData();
+    		 settlementData("0");
     	 }
     	 
 		return flag;
     }
     
     /**
-     * 胡牌后返回结算数据信息
+     * 胡牌/流局/解散房间后返回结算数据信息
      */
-    public void settlementData(){
+    public void settlementData(String  type){
     	JSONArray array = new JSONArray();
     	JSONObject json = new JSONObject();
     	for (Avatar avatar : playerList) {
@@ -1102,6 +1107,7 @@ public class PlayCardsLogic {
 		}
     	json.put("avatarList", array);
     	json.put("allMas", allMas);
+    	json.put("type", type);
     	json.put("validMas", HuPaiType.getInstance().getValidMa());
     	int count = 10;
     	for (Avatar avatar : playerList) {

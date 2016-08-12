@@ -282,10 +282,9 @@ public class RoomLogic {
     			}
     		}
     		if(onlineCount <= dissolveCount+1){
-    			//先结算信息，
-    			playCardsLogic.settlementData();
-    			//结算房间
-    			destoryRoomLogic();
+    			RoomManager.getInstance().getRoom(avatar.getRoomVO().getRoomId()).count = 0;
+    			//先结算信息，里面同时调用了解散房间的信息
+    			playCardsLogic.settlementData("2");
     			/*json = new JSONObject();
     			json.put("type", "3");
     			//所有人都同意了解散房间
@@ -419,7 +418,8 @@ public class RoomLogic {
 	        }
 	        else{
 	        	//第一局 减房卡
-	        	createAvator.updateRoomCard(-1);//开始游戏，减去房主的房卡
+	        	int currentCard = 0-roomVO.getRoundNumber()/4;
+	        	createAvator.updateRoomCard(currentCard);//开始游戏，减去房主的房卡
 	        	int roomCard = createAvator.avatarVO.getAccount().getRoomcard();
 	        	createAvator.getSession().sendMsg(new RoomCardChangerResponse(1,roomCard));
 	        	playCardsLogic = new PlayCardsLogic();

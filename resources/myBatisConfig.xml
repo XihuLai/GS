@@ -32,5 +32,6 @@
     <!-- Continue going here -->
     <mappers>
         <mapper resource="com/dyz/myBatis/sqlMapper/AccountMapper.xml"/>
+        <mapper resource="com/dyz/myBatis/sqlMapper/PrizeMapper.xml"/>
     </mappers>
 </configuration>

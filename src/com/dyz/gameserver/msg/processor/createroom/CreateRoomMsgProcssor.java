@@ -41,7 +41,7 @@ public class CreateRoomMsgProcssor extends MsgProcessor implements
                         gameSession.sendMsg(new CreateRoomResponse(1,avatar.avatarVO.getRoomId()+""));
                     }
                 }else{
-                    System.out.println("房间卡没有了");
+                    System.out.println("房间卡不足");
                     gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000014));
                 }
             }

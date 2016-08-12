@@ -8,6 +8,7 @@ import com.dyz.gameserver.msg.response.common.CloseGameResponse;
 import com.dyz.gameserver.net.MinaMsgHandler;
 import com.dyz.gameserver.net.NetManager;
 import com.dyz.myBatis.services.InitServers;
+import com.dyz.persist.util.PrizeProbability;
 import com.jcraft.jzlib.InflaterInputStream;
 
 import org.slf4j.Logger;
@@ -54,11 +55,12 @@ public class GameServer {
 			netManager.startListner(new MinaMsgHandler(), port);//后台数据链接的时候再开一个listner
 			logger.info("服务器监听端口:{}完成",port);
 			logger.info("game server started...");
+			PrizeProbability.initPrizesProbability();
+			logger.info("初始化奖品概率");
 		} catch (Exception e) {
 			logger.error("服务器启动失败");
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public static void stop() {

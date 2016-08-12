@@ -91,6 +91,10 @@ public class ConnectAPI {
 	public static int MessageBox_Notice = 204;
 	//玩家房卡变化协议
 	public static  int ROOMCARDCHANGER_RESPONSE = 0x777777;
+	
+	//抽奖协议
+	public static  int DRAw_REQUEST = 0x888888;
+	public static  int DRAw_RESPONSE = 0x999999;
 
 
 }

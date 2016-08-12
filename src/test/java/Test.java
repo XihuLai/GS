@@ -7,6 +7,7 @@ import java.util.List;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dyz.gameserver.pojo.HuReturnObjectVO;
+import com.dyz.persist.util.StringUtil;
 
 public class Test {
 
@@ -79,7 +80,6 @@ public class Test {
 		array.add(gggg);
 		json.put("avatarList", array);
 		System.out.println(json.toString());*/
-		
 		
 	}
 }

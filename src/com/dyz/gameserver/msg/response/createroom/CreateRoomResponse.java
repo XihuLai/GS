@@ -16,9 +16,11 @@ public class CreateRoomResponse extends ServerResponse {
      */
     public CreateRoomResponse(int status,String obj) throws IOException {
         super(status,ConnectAPI.CREATEROOM_RESPONSE);
-        output.writeUTF(obj);
-        System.out.println("roomId:"+obj);
-       	output.close();
-        //entireMsg();
+        if(status > 0){
+        	output.writeUTF(obj);
+        	System.out.println("roomId:"+obj);
+        	output.close();
+        	
+        }
     }
 }
