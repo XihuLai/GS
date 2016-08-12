@@ -41,7 +41,13 @@ public class AvatarVO {
     /**
      * 普通牌张数
      */
-    public int commonCards;
+    private int commonCards;
+    /**
+     * 摸牌出牌状态 
+     * 摸了牌/碰/杠 true  出牌了false
+     * 为true 表示该出牌了    为false表示不该出牌
+     */
+    private boolean hasMopaiChupai = false;
     /**
      * 牌数组
      * /碰 1  杠2  胡3  吃4
@@ -147,6 +153,14 @@ public class AvatarVO {
 	 */
 	public void supdateScores(int score) {
 		this.scores = this.scores +score;
+	}
+
+	public boolean isHasMopaiChupai() {
+		return hasMopaiChupai;
+	}
+
+	public void setHasMopaiChupai(boolean hasMopaiChupai) {
+		this.hasMopaiChupai = hasMopaiChupai;
 	}
     
 }

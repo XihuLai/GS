@@ -17,7 +17,6 @@ import com.dyz.gameserver.sprite.base.GameObj;
 import com.dyz.gameserver.sprite.tool.AsyncTaskQueue;
 import com.dyz.myBatis.services.AccountService;
 import com.dyz.persist.util.GlobalUtil;
-import com.dyz.persist.util.StringUtil;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -284,8 +283,8 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkSelfGang(){
-     	System.out.println("杠了的牌======"+resultRelation.get(2));
-     	System.out.println("碰了的牌======"+resultRelation.get(1));
+     	//System.out.println("杠了的牌======"+resultRelation.get(2));
+     	//System.out.println("碰了的牌======"+resultRelation.get(1));
     	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
     	boolean flag = false;
     	for (int i= 0 ; i < 27 ; i++) {

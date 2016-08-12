@@ -6,7 +6,7 @@ import com.dyz.gameserver.commons.message.ServerResponse;
 import java.io.IOException;
 
 /**
- *  一个房间次数用完之后返回全局信息
+ *  返回碰 胡 杠 吃的信息
  * @author luck
  *
  */

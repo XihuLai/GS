@@ -517,6 +517,15 @@ public class RoomLogic {
 		this.dissolveCount = dissolveCount;
 	}
 	/**
+	 * 断线重连返回最后操作信息
+	 * @param avatar
+	 */
+	public void LoginReturnInfo(Avatar avatar){
+		playCardsLogic.LoginReturnInfo(avatar);
+	}
+	
+	
+	/**
 	 * 解散房间，销毁房间逻辑
 	 */
 	public void destoryRoomLogic(){

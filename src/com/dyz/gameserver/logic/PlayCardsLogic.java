@@ -19,11 +19,13 @@ import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.chupai.ChuPaiResponse;
 import com.dyz.gameserver.msg.response.common.ReturnInfoResponse;
+import com.dyz.gameserver.msg.response.common.ReturnOnLineResponse;
 import com.dyz.gameserver.msg.response.gang.GangResponse;
 import com.dyz.gameserver.msg.response.gang.OtherGangResponse;
 import com.dyz.gameserver.msg.response.hu.HuPaiAllResponse;
 import com.dyz.gameserver.msg.response.hu.HuPaiResponse;
 import com.dyz.gameserver.msg.response.login.BackLoginResponse;
+import com.dyz.gameserver.msg.response.login.OtherBackLoginResonse;
 import com.dyz.gameserver.msg.response.peng.PengResponse;
 import com.dyz.gameserver.msg.response.pickcard.OtherPickCardResponse;
 import com.dyz.gameserver.msg.response.pickcard.PickCardResponse;
@@ -82,13 +84,21 @@ public class PlayCardsLogic {
      */
     List<Integer> mas = new ArrayList<Integer>();
     /**
-     * 下张牌的点数
+     * 下张牌的索引
      */
-    private int cardindex = 0;
+    private int nextCardindex = 0;
     /**
      * 上一家出的牌的点数
      */
     private int putOffCardPoint;
+    /**
+     * 判断是否是抢胡
+     */
+    private boolean qianghu = false;
+    /**
+     * 当前玩家摸的牌的点数
+     */
+    private int currentCardPoint;
     /**
      * 4家玩家信息集合
      */
@@ -105,8 +115,14 @@ public class PlayCardsLogic {
      * 房间信息
      */
     private RoomVO roomVO;
-    
-    private ResponseMsg responseMsg;
+    /**
+     * 记录某个玩家断线时最后一条消息
+     */
+    //private ResponseMsg responseMsg;
+    /**
+     * 记录某个玩家断线时发送最后一条消息的玩家
+     */
+    //private Avatar lastAvtar;
 
 	private NormalHuPai normalHuPai;
     /**
@@ -252,13 +268,15 @@ public class PlayCardsLogic {
     	/*while(shakeHandsInfo.size() > 0){
     		System.out.println("握手信息提醒：前段有消息未返回!");
     	}*/
-        //下一个人摸牌
+        //摸牌
         pickAvatarIndex = getNextAvatarIndex();
         //pickAvatarIndex = nextIndex;
         //本次摸得牌点数，下一张牌的点数，及本次摸的牌点数
         int tempPoint = getNextCardPoint();
+        currentCardPoint = tempPoint;
     	System.out.println("摸牌："+tempPoint+"----上一家出牌"+putOffCardPoint+"--摸牌人索引:"+pickAvatarIndex);
     	Avatar avatar = playerList.get(pickAvatarIndex);
+    	avatar.avatarVO.setHasMopaiChupai(true);//修改出牌 摸牌状态
     	avatar.qiangHu = true;
     	avatar.canHu = true;
         if(tempPoint != -1) {
@@ -315,6 +333,7 @@ public class PlayCardsLogic {
     	
         //本次摸得牌点数，下一张牌的点数，及本次摸的牌点数
         int tempPoint = getNextCardPoint();
+        currentCardPoint = tempPoint;
     	System.out.println("摸牌!--"+tempPoint);
         if(tempPoint != -1) {
         	//int avatarIndex = playerList.indexOf(avatar); // 2016-8-2注释
@@ -382,6 +401,7 @@ public class PlayCardsLogic {
      */
     public void gaveUpAction(Avatar avatar){
     	avatar.huAvatarDetailInfo.clear();
+    	qianghu = false;
     	if(pickAvatarIndex == playerList.indexOf(avatar)){
     		//如果是自己摸的不胡，则 canHu = true；
     		avatar.canHu = false;
@@ -480,7 +500,7 @@ public class PlayCardsLogic {
     	
     	//出牌信息放入到缓存中，掉线重连的时候，返回房间信息需要
         avatar.avatarVO.updateChupais(cardPoint);
-    	
+        avatar.avatarVO.setHasMopaiChupai(true);//修改出牌 摸牌状态
     	//已经出牌就清除所有的吃，碰，杠，胡的数组
     	clearAvatar();
     	
@@ -528,7 +548,8 @@ public class PlayCardsLogic {
         			if(sb.length()>1){
         				System.out.println(sb);
         				ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
-        				responseMsg = new ReturnInfoResponse(1, sb.toString());
+//        				responseMsg = new ReturnInfoResponse(1, sb.toString());
+//        				lastAvtar = ava;
         			}
         		}
         	}
@@ -557,7 +578,8 @@ public class PlayCardsLogic {
 					if(sb.length()>1){
 						System.out.println(sb);
 						ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
-						responseMsg = new ReturnInfoResponse(1, sb.toString());
+//						responseMsg = new ReturnInfoResponse(1, sb.toString());
+//						lastAvtar = ava;
 					}
 	        	}
 	        }
@@ -622,7 +644,9 @@ public class PlayCardsLogic {
     	boolean flag = false;
     	//这里可能是自己能胡能碰能杠 但是选择碰
     	 //if((huAvatar.size() == 0 || huAvatar.contains(avatar))  && penAvatar.size() >= 1)) {
-    	if((penAvatar.size() >= 1 && huAvatar.size() == 0) || ( huAvatar.contains(avatar) && huAvatar.size() ==1 && penAvatar.size() >=1)) {
+    	if((penAvatar.size() >= 1 && huAvatar.size() == 0) ||
+    			( huAvatar.contains(avatar) && huAvatar.size() ==1 && penAvatar.size() >=1)) {
+    		    avatar.avatarVO.setHasMopaiChupai(true);//修改出牌 摸牌状态
     		// if((huAvatar.contains(avatar) && huAvatar.size() == 1 ) || huAvatar.size() == 0){
     			 if(huAvatar.contains(avatar)){
     				 huAvatar.remove(avatar);
@@ -649,7 +673,8 @@ public class PlayCardsLogic {
     					 }
     					 playerList.get(i).getSession().sendMsg(new PengResponse(1,cardIndex,playerList.indexOf(avatar)));
     				 }
-    				 responseMsg = new PengResponse(1,cardIndex,playerList.indexOf(avatar));
+//    				 responseMsg = new PengResponse(1,cardIndex,playerList.indexOf(avatar));
+//    				 lastAvtar = avatar;
     				 //更新摸牌人信息 2016-8-3
     				 pickAvatarIndex = playerList.indexOf(avatar);
     				 curAvatarIndex = playerList.indexOf(avatar);
@@ -676,6 +701,7 @@ public class PlayCardsLogic {
     	//if(gangAvatar.size() > 0  && huAvatar.size() == 0 || (huAvatar.size() == 1 && huAvatar.contains(avatar) )) {//2016-8-1
     	if(gangAvatar.size() > 0) {
     		 if((huAvatar.contains(avatar) && huAvatar.size() == 1 ) || huAvatar.size() == 0){
+    			 avatar.avatarVO.setHasMopaiChupai(true);//修改出牌 摸牌状态
     			 if(huAvatar.contains(avatar)){
     				 huAvatar.remove(avatar);
     			 }
@@ -839,12 +865,14 @@ public class PlayCardsLogic {
     						 if(avatar.getUuId() != playerList.get(i).getUuId()){
     							 //杠牌返回给其他人只返回杠的类型和杠牌的玩家位置
     							 playerList.get(i).getSession().sendMsg(new OtherGangResponse(1,cardPoint,avatarIndex,type));
-    							 responseMsg = new OtherGangResponse(1,cardPoint,avatarIndex,type);
+//    							 responseMsg = new OtherGangResponse(1,cardPoint,avatarIndex,type);
+//    							 lastAvtar = playerList.get(i);
     						 }
     						 else{
     							 //杠牌返回给其他人只返回杠的类型和杠牌的玩家位置
     							 playerList.get(i).getSession().sendMsg(new GangResponse(1, 1, 1,type));
-    							 responseMsg = new GangResponse(1, 1, 1,type);
+//    							 responseMsg = new GangResponse(1, 1, 1,type);
+//    							 lastAvtar = playerList.get(i);
     						 }
     					 }
     					 pickCardAfterGang(avatar);//2016-8-1
@@ -857,12 +885,14 @@ public class PlayCardsLogic {
     						 if(avatar.getUuId() != playerList.get(i).getUuId()){
     							 //杠牌返回给其他人只返回杠的类型和杠牌的玩家位置
     							 playerList.get(i).getSession().sendMsg(new OtherGangResponse(1,cardPoint,avatarIndex,type));
-    							 responseMsg = new OtherGangResponse(1,cardPoint,avatarIndex,type);
+//    							 responseMsg = new OtherGangResponse(1,cardPoint,avatarIndex,type);
+//    							 lastAvtar = playerList.get(i);
     						 }
     						 else{
     							 //杠牌返回给其他人只返回杠的类型和杠牌的玩家位置
     							 playerList.get(i).getSession().sendMsg(new GangResponse(1, 1, 1,type));
-    							 responseMsg = new GangResponse(1, 1, 1,type);
+//    							 responseMsg = new GangResponse(1, 1, 1,type);
+//    							 lastAvtar = playerList.get(i);
     						 }
     					 }
     					 pickCardAfterGang(avatar);//2016-8-1
@@ -1217,7 +1247,7 @@ public class PlayCardsLogic {
      * 发牌
      */
     private void dealingTheCards() {
-        cardindex = 0;
+    	nextCardindex = 0;
         bankerAvatar = null;
         for (int i = 0; i < 13; i++) {
             for (int k = 0; k < playerList.size(); k++) {
@@ -1226,20 +1256,20 @@ public class PlayCardsLogic {
                         bankerAvatar = playerList.get(k);
                     }
                 }
-                playerList.get(k).putCardInList(listCard.get(cardindex));
-                cardindex++;
+                playerList.get(k).putCardInList(listCard.get(nextCardindex));
+                nextCardindex++;
             }
         }
-        bankerAvatar.putCardInList(listCard.get(cardindex));
-        cardindex++;
+        bankerAvatar.putCardInList(listCard.get(nextCardindex));
+        nextCardindex++;
         //检测一下庄家有没有天胡/杠 
-       if(checkHu(bankerAvatar,cardindex-1)){
+       if(checkHu(bankerAvatar,nextCardindex-1)){
     	   //检查有没有天胡/有则把相关联的信息放入缓存中
     	   huAvatar.add(bankerAvatar);
     	   pickAvatarIndex = 0;//第一个摸牌人就是庄家
     	   //发送消息
     	   bankerAvatar.getSession().sendMsg(new HuPaiResponse(1,"hu,"));
-    	   bankerAvatar.huAvatarDetailInfo.add(cardindex-1+":"+0);
+    	   bankerAvatar.huAvatarDetailInfo.add(nextCardindex-1+":"+0);
        }
        //检测庄家起手有没的杠
        if(bankerAvatar.checkSelfGang()){
@@ -1254,9 +1284,9 @@ public class PlayCardsLogic {
      * @return
      */
     public int getNextCardPoint(){
-        cardindex++;
-        if(cardindex<listCard.size()){
-            return listCard.get(cardindex);
+    	nextCardindex++;
+        if(nextCardindex<listCard.size()){
+            return listCard.get(nextCardindex);
         }
         return -1;
     }
@@ -1631,6 +1661,7 @@ public class PlayCardsLogic {
 					flag = true;
 				}
 				ava.pullCardFormList(cardPoint);
+				qianghu = true;
 			}
 		}
     	if(flag){
@@ -1646,38 +1677,144 @@ public class PlayCardsLogic {
      */
     public void returnBackAction(Avatar avatar){
     	
-    	RoomVO room = roomVO;
+    	RoomVO room = roomVO.clone();
+    	List<AvatarVO> lists = new ArrayList<AvatarVO>();
     	for (int i = 0; i < playerList.size(); i++) {
     			//给其他三个玩家返回重连用户信息
-    			//playerList.get(i).getSession().sendMsg(new OtherBackLoginResonse(1, avatar.getUuId()+""));
+    			playerList.get(i).getSession().sendMsg(new OtherBackLoginResonse(1, avatar.getUuId()+""));
+    			lists.add(playerList.get(i).avatarVO);
     	}
     	//给自己返回整个房间信息
-    	List<AvatarVO> playerLists = new ArrayList<AvatarVO>();
     	AvatarVO avatarVo = null ;
-    	for (int j = 0; j < room.getPlayerList().size(); j++) {
+    	List<AvatarVO> playerLists = new ArrayList<AvatarVO>();
+    	for (int j = 0; j < lists.size(); j++) {
     		int paiCount = 0;//有多少张普通牌
-    		
-    		avatarVo = playerList.get(j).avatarVO;
-    		for (int k = 0; k < avatarVo.getPaiArray()[0].length; k++) {
-    			if(avatarVo.getPaiArray()[0][k] != 0 && avatarVo.getPaiArray()[1][k] == 0){
-    				paiCount++;
-    				avatarVo.getPaiArray()[0][k] = 0;
+    		avatarVo = lists.get(j);
+    		if(avatarVo.getAccount().getUuid() != avatar.getUuId()){
+    			//其他三家的牌组需要处理，不能让重连的玩家知道详细的牌组
+    			for (int k = 0; k < avatarVo.getPaiArray()[0].length; k++) {
+    				if(avatarVo.getPaiArray()[0][k] != 0 && avatarVo.getPaiArray()[1][k] == 0){
+    					paiCount= paiCount +avatarVo.getPaiArray()[0][k];
+    					//avatarVo.getPaiArray()[0][k] = 0;
+    				}
     			}
+    			avatarVo.setCommonCards(paiCount);
+    			playerLists.add(avatarVo);
+    			
     		}
-    		avatarVo.setCommonCards(paiCount);
-    		playerLists.add(avatarVo);
+    		else{
+    			//不需要处理自己的牌组
+    			playerLists.add(avatarVo);
+    		}
     	}
-    	//*****
-    	playerList.add(avatar);
-    	playerLists.add(avatarVo);
+    	if(playerList.size() == 3){
+    		playerList.add(avatar);
+    	}
+    	if(playerLists.size() == 3){
+    		playerLists.add(avatar.avatarVO);
+    	}
+    	/*else{
+    		for (int i = 0; i < playerLists.size(); i++) {
+				if(playerLists.get(i).getAccount().getUuid() == avatar.getUuId() ){
+					playerLists.remove(i);
+					playerLists.add(avatar.avatarVO);;
+				}
+			}
+    	}*/
     	room.setPlayerList(playerLists);
     	avatar.getSession().sendMsg(new BackLoginResponse(1, room));
-    	avatar.getSession().sendMsg(responseMsg);
+    	//lastAvtar.getSession().sendMsg(responseMsg);
+    }
+    /**
+     * 断线重连返回最后操作信息
+     * @param avatar
+     */
+    public void LoginReturnInfo(Avatar avatar){
+    	//断线重连之后，该进行的下一步操作，json存储下一步操作指引
+    	JSONObject json = new JSONObject();//
+    	StringBuffer sb = new StringBuffer();
+    	if(huAvatar.contains(avatar)){
+    		//这里需要判断是自摸胡，还是别人点炮胡
+    		if(qianghu){
+    			sb.append("qianghu,");
+    			System.out.println("抢胡");
+    		}
+    		else{
+    			sb.append("hu,");
+    			System.out.println("胡");
+    		}
+    		if(pickAvatarIndex != curAvatarIndex){
+    			//自摸
+    			json.put("currentCardPoint", currentCardPoint);//当前摸的牌点数
+    		}
+    		else{
+    			//点炮
+    			json.put("curAvatarIndex", curAvatarIndex);//当前出牌人的索引
+    			json.put("putOffCardPoint", putOffCardPoint);//当前出的牌的点数
+    		}
+    	}
+    	if(penAvatar.contains(avatar)){
+    		sb.append("peng,");
+    		json.put("curAvatarIndex", curAvatarIndex);//当前出牌人的索引
+    		json.put("putOffCardPoint", putOffCardPoint);//当前出的牌的点数
+    		System.out.println("碰");
+    	}
+    	if(gangAvatar.contains(avatar)){
+    		//这里需要判断是别人打牌杠，还是自己摸牌杠
+    		if(avatar.getUuId() == playerList.get(pickAvatarIndex).getUuId()){
+    			//自摸杠
+    			sb.append("gang:"+currentCardPoint+",");
+    			json.put("currentCardPoint", currentCardPoint);//当前摸的牌点数
+    			System.out.println("自杠");
+    		}
+    		else{
+    			json.put("curAvatarIndex", curAvatarIndex);//当前出牌人的索引
+        		json.put("putOffCardPoint", putOffCardPoint);//当前出的牌的点数
+    			sb.append("gang:"+putOffCardPoint+",");
+    			System.out.println("点杠");
+    		}
+    	}
+    	if(sb.length()>1){
+			System.out.println(sb);
+			//该自己杠/胡/碰
+			//游戏轮数
+			int roundNum = RoomManager.getInstance().getRoom(avatar.getRoomVO().getRoomId()).getCount();
+    		json.put("gameRound", roundNum);//游戏轮数
+    		//桌面剩余牌数
+    		json.put("surplusCards", listCard.size() - nextCardindex);
+    		System.out.println(json.toString());
+			avatar.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			avatar.getSession().sendMsg(new ReturnOnLineResponse(1, json.toString()));
+		}
+    	else{
+    		if(avatar.getUuId() == playerList.get(pickAvatarIndex).getUuId()){
+    			//该自己出牌
+    			System.out.println("自己出牌");
+    			json.put("currentCardPoint", currentCardPoint);//当前摸的牌点数
+    			json.put("pickAvatarIndex", pickAvatarIndex);//当前摸牌人的索引
+    			json.put("curAvatarIndex", curAvatarIndex);//当前出牌人的索引
+    			json.put("putOffCardPoint", putOffCardPoint);//当前出的牌的点数
+    		}
+    		else{
+        		json.put("curAvatarIndex", curAvatarIndex);//当前出牌人的索引
+        		json.put("pickAvatarIndex", pickAvatarIndex);//当前摸牌人的索引
+        		json.put("putOffCardPoint", putOffCardPoint);//当前出的牌的点数
+    		}
+    		//游戏局数
+    		int roundNum = RoomManager.getInstance().getRoom(avatar.getRoomVO().getRoomId()).getCount();
+    		json.put("gameRound", roundNum);
+    		//桌面剩余牌数
+    		json.put("surplusCards", listCard.size() - nextCardindex - 6);
+    		System.out.println(json.toString());
+    		avatar.getSession().sendMsg(new ReturnOnLineResponse(1, json.toString()));
+    	}
     	
     }
-    
-    
-  
     
     public void clearAvatar(){
     	huAvatar.clear();

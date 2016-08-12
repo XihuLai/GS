@@ -13,6 +13,11 @@ public class ConnectAPI {
 	public static int BACK_LOGIN_REQUEST = 0x001001;
 	public static int BACK_LOGIN_RESPONSE = 0x001002;
 	
+	
+	public static int RETURN_ONLINE_RESPONSE = 0x001003;//断线重连返回打牌逻辑消息
+	public static int RETURN_ONLINE_REQUEST = 0x001004;//断线重连打牌逻辑请求
+	
+	
 	public static int OTHER_BACK_LOGIN_RESPONSE = 0x001111;//断线玩家重连之后 其他三家人接收信息
 
 	public static int JOIN_ROOM_REQUEST  = 0x000003;

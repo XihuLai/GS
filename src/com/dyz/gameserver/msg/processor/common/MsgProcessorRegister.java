@@ -10,6 +10,7 @@ import com.dyz.gameserver.msg.processor.heartbeat.HeadMsgProcessor;
 import com.dyz.gameserver.msg.processor.hu.HuPaiMsgProcessor;
 import com.dyz.gameserver.msg.processor.joinroom.JoinRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.LoginMsgProcessor;
+import com.dyz.gameserver.msg.processor.login.LoginReturnInfoMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.LogoutMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.OpenAppMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.SignUpMsgProcessor;
@@ -32,6 +33,8 @@ public enum MsgProcessorRegister {
 	openApp(ConnectAPI.OPENAPP_REQUEST,new OpenAppMsgProcessor()),
 	/**登陆处理器*//**断线重连**/
 	login(ConnectAPI.LOGIN_REQUEST,new LoginMsgProcessor()),
+	/**登陆处理器*//**断线重连**/
+	loginReturnInfo(ConnectAPI.RETURN_ONLINE_REQUEST,new LoginReturnInfoMsgProcessor()),
 	/**用户注册处理器*/
 	signUp(ConnectAPI.SIGNUP_REQUEST,new SignUpMsgProcessor()),
 	/**创建 房间*/

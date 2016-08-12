@@ -208,5 +208,23 @@ public class RoomVO {
     public void setAddWordCard(boolean addWordCard) {
         this.addWordCard = addWordCard;
     }
+    
+    public RoomVO clone(){
+    	RoomVO result = new RoomVO();
+    	result.roomId = roomId;
+        result.roundNumber = roundNumber;
+        result.currentRound = currentRound;
+        result.hong = hong;
+        result.roomType = roomType;
+        result.sevenDouble = sevenDouble;
+        result.ma = ma;
+        result.ziMo = ziMo;
+        result.xiaYu = xiaYu;
+        result.addWordCard = addWordCard;
+        result.name = name;
+        result.playerList = playerList;
+        result.endStatistics = endStatistics;
+        return result;
+    }
 
 }
