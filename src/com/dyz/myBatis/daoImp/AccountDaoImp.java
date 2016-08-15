@@ -159,7 +159,18 @@ public class AccountDaoImp implements AccountMapper {
      */
     @Override
     public int updateByPrimaryKeySelective(Account record) {
-        return 0;
+        int flag = 0;
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try{
+            AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
+            flag = mapper.updateByPrimaryKeySelective(record);
+            sqlSession.commit();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            sqlSession.close();
+        }
+        return flag;
     }
 
     /**
@@ -176,6 +187,7 @@ public class AccountDaoImp implements AccountMapper {
         try {
             AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
             flag = mapper.updateByPrimaryKey(record);
+            sqlSession.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }finally {

@@ -33,9 +33,21 @@ public class AccountService {
     public void updateAccount(Account account) {
         try {
             int index = accMap.updateByPrimaryKey(account);
-            System.out.println("-account update index->>" + index);
+            System.out.println("===index====> "+index);
         }catch (Exception e){
-
+            System.out.println(e.getMessage());
+        }
+    }
+    /**
+     *
+     * @param account
+     * @throws SQLException
+     */
+    public void updateByPrimaryKeySelective(Account account){
+        try{
+            int index = accMap.updateByPrimaryKeySelective(account);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
     }
 
@@ -67,9 +79,19 @@ public class AccountService {
         return null;
     }
 
+    public List<Account> selectAll(){
+        List<Account> accounts = null;
+        try {
+            accounts = accMap.selectByExample(new AccountExample());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return accounts;
+    }
+
     /**
      * 创建新用户
-     * @param account
+     * @param
      * @return 插入信息表中id
      * @throws SQLException
      */

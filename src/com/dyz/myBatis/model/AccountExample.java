@@ -853,6 +853,66 @@ public class AccountExample {
             addCriterion("sex not between", value1, value2, "sex");
             return (Criteria) this;
         }
+
+        public Criteria andPrizecountIsNull() {
+            addCriterion("prizeCount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrizecountIsNotNull() {
+            addCriterion("prizeCount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrizecountEqualTo(Integer value) {
+            addCriterion("prizeCount =", value, "prizecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrizecountNotEqualTo(Integer value) {
+            addCriterion("prizeCount <>", value, "prizecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrizecountGreaterThan(Integer value) {
+            addCriterion("prizeCount >", value, "prizecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrizecountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("prizeCount >=", value, "prizecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrizecountLessThan(Integer value) {
+            addCriterion("prizeCount <", value, "prizecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrizecountLessThanOrEqualTo(Integer value) {
+            addCriterion("prizeCount <=", value, "prizecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrizecountIn(List<Integer> values) {
+            addCriterion("prizeCount in", values, "prizecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrizecountNotIn(List<Integer> values) {
+            addCriterion("prizeCount not in", values, "prizecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrizecountBetween(Integer value1, Integer value2) {
+            addCriterion("prizeCount between", value1, value2, "prizecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrizecountNotBetween(Integer value1, Integer value2) {
+            addCriterion("prizeCount not between", value1, value2, "prizecount");
+            return (Criteria) this;
+        }
     }
 
     /**

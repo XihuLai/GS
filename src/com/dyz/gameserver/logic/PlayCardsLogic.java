@@ -1,14 +1,5 @@
 package com.dyz.gameserver.logic;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.context.ErrorCode;
@@ -29,15 +20,15 @@ import com.dyz.gameserver.msg.response.login.OtherBackLoginResonse;
 import com.dyz.gameserver.msg.response.peng.PengResponse;
 import com.dyz.gameserver.msg.response.pickcard.OtherPickCardResponse;
 import com.dyz.gameserver.msg.response.pickcard.PickCardResponse;
-import com.dyz.gameserver.pojo.AvatarVO;
-import com.dyz.gameserver.pojo.CardVO;
-import com.dyz.gameserver.pojo.FinalGameEndItemVo;
-import com.dyz.gameserver.pojo.HuReturnObjectVO;
-import com.dyz.gameserver.pojo.RoomVO;
+import com.dyz.gameserver.pojo.*;
 import com.dyz.persist.util.HuPaiType;
 import com.dyz.persist.util.Naizi;
 import com.dyz.persist.util.NormalHuPai;
 import com.dyz.persist.util.StringUtil;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.Map.Entry;
 
 
 /**
@@ -642,6 +633,14 @@ public class PlayCardsLogic {
      */
     public boolean pengCard(Avatar avatar , int cardIndex){
     	boolean flag = false;
+		if(cardIndex < 0){
+			try {
+				avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000019));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
     	//这里可能是自己能胡能碰能杠 但是选择碰
     	 //if((huAvatar.size() == 0 || huAvatar.contains(avatar))  && penAvatar.size() >= 1)) {
     	if((penAvatar.size() >= 1 && huAvatar.size() == 0) ||
