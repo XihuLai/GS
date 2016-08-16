@@ -1167,12 +1167,13 @@ public class PlayCardsLogic {
     		avatar.getSession().sendMsg(new HuPaiResponse(1,json.toString()));
     		//清除一些存储数据
     		avatar.getResultRelation().clear();
-
+<<<<<<< HEAD
+=======
     		avatar.avatarVO.getChupais().clear();
     		avatar.avatarVO.setCommonCards(0);
     		avatar.avatarVO.setHasMopaiChupai(false);
     		
-
+>>>>>>> bcde1ba326a6deeb5eacfd1e00fcb75c8386d9f6
     		count = RoomManager.getInstance().getRoom(avatar.getRoomVO().getRoomId()).getCount();
 		}
     	//房间局数用完，返回本局胡牌信息的同时返回整个房间这几局的胡，杠等统计信息
