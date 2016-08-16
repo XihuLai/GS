@@ -14,7 +14,6 @@ import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.LoginVO;
 import com.dyz.myBatis.model.Account;
 import com.dyz.myBatis.services.AccountService;
-import com.dyz.persist.util.GlobalUtil;
 import com.dyz.persist.util.JsonUtilTool;
 import com.dyz.persist.util.TimeUitl;
 
@@ -41,6 +40,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			account.setProvince(loginVO.getProvince());
 			account.setSex(loginVO.getSex());
 			account.setUnionid(loginVO.getUnionid());
+			account.setPrizecount(1);
 
 			if(AccountService.getInstance().createAccount(account) == 0){
 				gameSession.sendMsg(new LoginResponse(0,null));
@@ -104,7 +104,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 	
 	/**
 	 *玩家断线重连操作
-	 * @param gameSession
+	 * @param
 	 * @param avatar
      */
 	public void returnBackAction(Avatar avatar){

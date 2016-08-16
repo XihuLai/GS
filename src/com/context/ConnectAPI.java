@@ -100,6 +100,7 @@ public class ConnectAPI {
 	//抽奖协议
 	public static  int DRAw_REQUEST = 0x888888;
 	public static  int DRAw_RESPONSE = 0x999999;
-
+	//被跟庄通知
+	public static int Game_FollowBanker_Notice = 0x100016;
 
 }

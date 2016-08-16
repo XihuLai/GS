@@ -50,7 +50,7 @@ public class GameServerContext {
 	}
 
 	/**
-	 *
+	 *从离线列表中得到用户
 	 * @param uuid
 	 * @return avatar
      */
@@ -59,7 +59,16 @@ public class GameServerContext {
 		avatar = ALL_OFFLINE_PLAYER.get(uuid);
 		return avatar;
 	}
-
+	/**
+	 * 从在线列表中得到用户
+	 * @param uuid
+	 * @return avatar
+	 */
+	public static Avatar getAvatarFromOn(int uuid){
+		Avatar avatar = null;
+		avatar = ALL_ONLINE_PLAYER.get(uuid);
+		return avatar;
+	}
 	/**
 	 * 把用户从掉线hashmap中删除
 	 * @param avatar
@@ -67,4 +76,5 @@ public class GameServerContext {
 	public static void remove_offLine_Character(Avatar avatar){
 		ALL_OFFLINE_PLAYER.remove(avatar.getUuId());
 	}
+
 }

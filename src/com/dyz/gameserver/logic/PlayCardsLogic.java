@@ -1,14 +1,5 @@
 package com.dyz.gameserver.logic;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.context.ErrorCode;
@@ -20,6 +11,7 @@ import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.chupai.ChuPaiResponse;
 import com.dyz.gameserver.msg.response.common.ReturnInfoResponse;
 import com.dyz.gameserver.msg.response.common.ReturnOnLineResponse;
+import com.dyz.gameserver.msg.response.followBanker.FollowBankerResponse;
 import com.dyz.gameserver.msg.response.gang.GangResponse;
 import com.dyz.gameserver.msg.response.gang.OtherGangResponse;
 import com.dyz.gameserver.msg.response.hu.HuPaiAllResponse;
@@ -29,15 +21,15 @@ import com.dyz.gameserver.msg.response.login.OtherBackLoginResonse;
 import com.dyz.gameserver.msg.response.peng.PengResponse;
 import com.dyz.gameserver.msg.response.pickcard.OtherPickCardResponse;
 import com.dyz.gameserver.msg.response.pickcard.PickCardResponse;
-import com.dyz.gameserver.pojo.AvatarVO;
-import com.dyz.gameserver.pojo.CardVO;
-import com.dyz.gameserver.pojo.FinalGameEndItemVo;
-import com.dyz.gameserver.pojo.HuReturnObjectVO;
-import com.dyz.gameserver.pojo.RoomVO;
+import com.dyz.gameserver.pojo.*;
 import com.dyz.persist.util.HuPaiType;
 import com.dyz.persist.util.Naizi;
 import com.dyz.persist.util.NormalHuPai;
 import com.dyz.persist.util.StringUtil;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.Map.Entry;
 
 
 /**
@@ -133,6 +125,14 @@ public class PlayCardsLogic {
      * 控制胡牌返回次数
      */
     int numb = 1;
+	//跟庄牌
+	int followPoint = -1;
+	//是否跟庄
+	boolean followBanke = true;
+	//跟庄的次数
+	int followNumber = 0;
+	//是否被跟庄，最后结算的时候用
+	boolean isFollow = false;
     /**
      * 和前段握手，判断是否丢包的情况，丢包则继续发送信息
      *Integer为用户uuid
@@ -196,22 +196,6 @@ public class PlayCardsLogic {
 				}
             }
         }
-        
-        
-        /***
-        if(paiCount == 27||paiCount ==34){
-        	  
-        }else if(paiCount == 28){
-        	 for (int i = 0; i < 34; i++) {
-        		 if(i<27 || i== 31){
-        			 for (int k = 0; k < 4; k++) {
-                         listCard.add(i);
-                     }
-        		 }
-                
-             }
-        }
-        **/
      
         for(int i=0;i<playerList.size();i++){
             playerList.get(i).avatarVO.setPaiArray(new int[2][paiCount]);
@@ -497,7 +481,29 @@ public class PlayCardsLogic {
      * @param cardPoint
      */
     public void putOffCard(Avatar avatar,int cardPoint){
-    	
+		if(roomVO.getRoomType() == 2){
+			if(followBanke){
+				if(followPoint == -1){
+					followPoint = cardPoint;
+					followNumber++;
+				}else {
+					if (followPoint != cardPoint) {
+						followBanke = false;
+					} else {
+						followNumber++;
+					}
+				}
+				if(followNumber == 4){
+					//
+					followBanke = false;
+					isFollow = true;
+					System.out.println("被跟庄");
+					for(int i=0;i<playerList.size();i++){
+						playerList.get(i).getSession().sendMsg(new FollowBankerResponse());
+					}
+				}
+			}
+		}
     	//出牌信息放入到缓存中，掉线重连的时候，返回房间信息需要
         avatar.avatarVO.updateChupais(cardPoint);
         avatar.avatarVO.setHasMopaiChupai(true);//修改出牌 摸牌状态
@@ -642,6 +648,19 @@ public class PlayCardsLogic {
      */
     public boolean pengCard(Avatar avatar , int cardIndex){
     	boolean flag = false;
+		if(roomVO.getRoomType() == 2) {
+			if (followBanke) {
+				followBanke = false;
+			}
+		}
+		if(cardIndex < 0){
+			try {
+				avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000019));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
     	//这里可能是自己能胡能碰能杠 但是选择碰
     	 //if((huAvatar.size() == 0 || huAvatar.contains(avatar))  && penAvatar.size() >= 1)) {
     	if((penAvatar.size() >= 1 && huAvatar.size() == 0) ||
@@ -696,6 +715,11 @@ public class PlayCardsLogic {
      */
     public boolean gangCard(Avatar avatar , int cardPoint,int gangType){
     	boolean flag = false;
+		if(roomVO.getRoomType() == 2) {
+			if (followBanke) {
+				followBanke = false;
+			}
+		}
     	int avatarIndex = playerList.indexOf(avatar);
     	//if(gangAvatar.size() > 0 && huAvatar.size() == 0) {//2016-8-1
     	//if(gangAvatar.size() > 0  && huAvatar.size() == 0 || (huAvatar.size() == 1 && huAvatar.contains(avatar) )) {//2016-8-1

@@ -1,18 +1,20 @@
 package com.dyz.gameserver.msg.processor.draw;
 
-import java.util.List;
-
 import com.alibaba.fastjson.JSONObject;
+import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.message.ClientRequest;
 import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
+import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.draw.DrawResponse;
 import com.dyz.myBatis.model.Prize;
 import com.dyz.myBatis.services.PrizeService;
 import com.dyz.persist.util.GlobalUtil;
 import com.dyz.persist.util.PrizeProbability;
+
+import java.util.List;
 
 /**
  * 抽奖处理类
@@ -34,7 +36,12 @@ INotAuthProcessor  {
 				}
 				else if(type.equals("1")){
 					//随机获取奖品id
-					getPrizeInfo(gameSession);
+					if(avatar.avatarVO.getAccount().getPrizecount() > 0) {
+						getPrizeInfo(gameSession);
+						avatar.avatarVO.getAccount().setPrizecount(avatar.avatarVO.getAccount().getPrizecount()-1);
+					}else{
+						avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000020));
+					}
 				}
 			}
 			else{
