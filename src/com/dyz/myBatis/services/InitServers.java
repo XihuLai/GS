@@ -24,6 +24,7 @@ public class InitServers {
         PrizeService.getInstance().initSetSession(sessionFactory);
 
         TaskTimer.showTimer();
+        TaskTimer.headBag();
     }
 
     private static InitServers initServers = new InitServers();

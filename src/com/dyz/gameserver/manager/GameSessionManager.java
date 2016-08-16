@@ -3,8 +3,7 @@ package com.dyz.gameserver.manager;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.session.GameSession;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by kevin on 2016/6/20.
@@ -65,11 +64,24 @@ public class GameSessionManager {
      * @param avatar
      */
     public void removeGameSession(Avatar avatar){
+        System.out.println("removeForMap");
         GameSession gameSession =  sessionMap.remove("uuid_"+avatar.getUuId());
         if(gameSession != null){
-        	gameSession.destroyObj();
+        	//gameSession.destroyObj();
         }
-        gameSession = null;
+    }
+
+    public List<GameSession> getAllSession(){
+        List<GameSession> result = null;
+        if(getVauleSize() >0) {
+            result = new ArrayList<GameSession>();
+            Collection<GameSession> connection = sessionMap.values();
+            Iterator<GameSession> iterator = connection.iterator();
+            while (iterator.hasNext()) {
+                result.add(iterator.next());
+            }
+        }
+        return result;
     }
 
     /**

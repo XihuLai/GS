@@ -1,12 +1,5 @@
 package com.dyz.gameserver.logic;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
@@ -25,6 +18,10 @@ import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.HuReturnObjectVO;
 import com.dyz.gameserver.pojo.RoomVO;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -418,7 +415,7 @@ public class RoomLogic {
 	        }
 	        else{
 	        	//第一局 减房卡
-	        	int currentCard = 0-roomVO.getRoundNumber()/4;
+	        	int currentCard = -roomVO.getRoundNumber()/4;
 	        	createAvator.updateRoomCard(currentCard);//开始游戏，减去房主的房卡
 	        	int roomCard = createAvator.avatarVO.getAccount().getRoomcard();
 	        	createAvator.getSession().sendMsg(new RoomCardChangerResponse(1,roomCard));
@@ -553,7 +550,7 @@ public class RoomLogic {
 	}
 	/**
 	 * 房主退出房间，及解散房间，详细清除数据,销毁房间逻辑
-	 * @param avatar
+	 * @param
 	 */
 	public void exitRoomDetail(JSONObject json){
 		AvatarVO avatarVO;

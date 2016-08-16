@@ -1,13 +1,5 @@
 package com.dyz.gameserver;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.CardVO;
@@ -17,6 +9,13 @@ import com.dyz.gameserver.sprite.base.GameObj;
 import com.dyz.gameserver.sprite.tool.AsyncTaskQueue;
 import com.dyz.myBatis.services.AccountService;
 import com.dyz.persist.util.GlobalUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -473,8 +472,8 @@ public class Avatar implements GameObj {
     @Override
     public void destroyObj() {
     	//统计在线用户****
-        logger.info("用户{}断开服务器链接",avatarVO.getAccount().getNickname());
-        avatarVO.setPaiArray(null);
+        logger.info("Avatar用户{}断开服务器链接",avatarVO.getAccount().getNickname());
+       // avatarVO.setPaiArray(null);
         if(session != null){
             System.out.println("session 不为空");
         }else{

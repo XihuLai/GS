@@ -1,20 +1,21 @@
 package com.dyz.gameserver.commons.session;
 
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-
-import org.apache.mina.core.future.WriteFuture;
-import org.apache.mina.core.session.AttributeKey;
-import org.apache.mina.core.session.IoSession;
-
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.message.ResponseMsg;
+import com.dyz.gameserver.context.GameServerContext;
 import com.dyz.gameserver.logic.RoomLogic;
 import com.dyz.gameserver.manager.GameSessionManager;
 import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.response.offline.OffLineResponse;
 import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.gameserver.sprite.base.GameObj;
+import com.dyz.persist.util.TimeUitl;
+import org.apache.mina.core.future.WriteFuture;
+import org.apache.mina.core.session.AttributeKey;
+import org.apache.mina.core.session.IoSession;
+
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 /**
  * 游戏中的session回话，封装了mina的session
  * @author dyz
@@ -124,10 +125,18 @@ public class GameSession implements GameObj {
 	public void close(){
 		System.out.println("关闭SESSION -- > "+session.getRemoteAddress()+getAddress());
 		if(session != null ) {
+			session.close(false);
 			//关闭session的时候(掉线) 如果只其一个用户还在房间，则踢出用户并解散房间，并向其他玩家发送消息
-			/*GameSession playerObj = (GameSession) session.getAttribute(KEY_PLAYER_SESSION);
-			Avatar avatar = playerObj.getRole(Avatar.class);
+			//GameSession playerObj = (GameSession) session.getAttribute(KEY_PLAYER_SESSION);
+			Avatar avatar = getRole(Avatar.class);
 			if(avatar != null){
+				//avatar.destroy();因为有断线重联功能，所以在这里不能清除角色数据
+				//把用户从在线列表中移除，并加入到离线列表
+				GameServerContext.remove_onLine_Character(avatar);
+				GameServerContext.add_offLine_Character(avatar);
+				avatar.avatarVO.setIsOnLine(false);
+				//把用户数据保留半个小时
+				TimeUitl.delayDestroy(avatar,60*30*1000);
 				RoomLogic roomLogic =RoomManager.getInstance().getRoom(avatar.avatarVO.getRoomId());
 				if(roomLogic != null ){
 					if(avatar.getRoomVO().getPlayerList().size() >= 2){
@@ -144,15 +153,14 @@ public class GameSession implements GameObj {
 						//房间只有一个人且掉线，则踢出用户并解散房间
 						avatar.avatarVO.setRoomId(0);
 						avatar.setRoomVO(new RoomVO());
-						avatar.destroyObj();
+						//avatar.destroyObj();
 						roomLogic = null;
-						
 					}
 					//所有断线玩家  移除session
-					GameSessionManager.getInstance().removeGameSession(avatar);
 				}
-			}*/
-			session.close(false);
+				//把session从GameSessionManager移除
+				GameSessionManager.getInstance().removeGameSession(avatar);
+			}
 			//session.getService().dispose(false);
 			System.out.println("关闭SESSION -- >  session.close(false);");
 		}

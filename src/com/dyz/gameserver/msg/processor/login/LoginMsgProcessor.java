@@ -45,7 +45,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			if(AccountService.getInstance().createAccount(account) == 0){
 				gameSession.sendMsg(new LoginResponse(0,null));
 				System.out.println("创建新用户失败");
-				TimeUitl.delayDestroy(gameSession,500);
+				TimeUitl.delayDestroy(gameSession,1000);
 			}else{
 				Avatar tempAva = new Avatar();
 				AvatarVO tempAvaVo = new AvatarVO();
