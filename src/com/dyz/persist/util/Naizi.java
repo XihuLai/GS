@@ -223,11 +223,11 @@ public class Naizi {
         if(isjiang == false){
             result += 2;
         }
-        System.out.print("getNumWithJiang ===>  "+result+"  ==>> ");
+        //system.out.print("getNumWithJiang ===>  "+result+"  ==>> ");
         for(int a = 0;a<temp_arr.length;a++){
-            System.out.print(temp_arr[a]+",");
+            //system.out.print(temp_arr[a]+",");
         }
-        System.out.println();
+        //system.out.println();
         return  result;
     }
 
@@ -284,11 +284,11 @@ public class Naizi {
             }
         }
 
-        System.out.print("getNumber ===>  "+result+"  ==>> ");
+        //system.out.print("getNumber ===>  "+result+"  ==>> ");
         for(int a = 0;a<temp_arr.length;a++){
-            System.out.print(temp_arr[a]+",");
+            //system.out.print(temp_arr[a]+",");
         }
-        System.out.println();
+        //system.out.println();
         return result;
     }
 

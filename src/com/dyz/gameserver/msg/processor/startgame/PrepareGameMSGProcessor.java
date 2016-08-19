@@ -35,7 +35,7 @@ public class PrepareGameMSGProcessor extends MsgProcessor implements
 					roomLogic.readyGame(avatar);
 				}
 				else{
-					System.out.println("账户未登录或已经掉线!");
+					//system.out.println("账户未登录或已经掉线!");
 					gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000002));
 				}
 			}else{

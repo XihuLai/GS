@@ -136,7 +136,7 @@ public class RoomLogic {
      * @throws IOException 
      */
     public void checkCanBeStartGame() throws IOException{
-    	System.out.println("检测是否可以开始游戏");
+    	//system.out.println("检测是否可以开始游戏");
     	if(playerList.size() == 4){
     		//房间里面4个人且都准备好了则开始游戏
     		List<AvatarVO> avatarVos = new ArrayList<>();
@@ -155,7 +155,7 @@ public class RoomLogic {
     			}else{
     				isBegin = true;
     				//所有人都准备好了
-    				System.out.println("所有人都准备好了");
+    				//system.out.println("所有人都准备好了");
     				startGameRound();
     			}
     		}
@@ -255,7 +255,7 @@ public class RoomLogic {
     		}
     		refuse = refuse+1;
     		if(refuse == 2){
-    			System.out.println("拒绝解散房间");
+    			//system.out.println("拒绝解散房间");
     			//重置申请状态， 
     			refuse = 0;
     			dissolve = true;
@@ -376,7 +376,7 @@ public class RoomLogic {
     public void readyGame(Avatar avatar) throws IOException{
     		  //返回房间
     		if(avatar.avatarVO.getRoomId() != roomVO.getRoomId()){
-    			System.out.println("你不是这个房间的");
+    			////system.out.println("你不是这个房间的");
     			try {
     				avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000006));
     			} catch (IOException e) {
@@ -427,7 +427,7 @@ public class RoomLogic {
 	        }
 	        playCardsLogic.setPlayerList(playerList);
 	        playCardsLogic.initCard(roomVO);
-	        System.out.println("下局开始时人数："+playerList.size());
+	        //system.out.println("下局开始时人数："+playerList.size());
 	        //创建房间信息，游戏记录信息
 			//RoomInfoService.getInstance().createRoomInfo(roomVO);
 					

@@ -183,7 +183,7 @@ public class HuPaiType {
 			for (Integer cardPoint : mas) {
 				ma = returnMa(cardPoint);
 				maPoint.add(ma);
-				System.out.println("处理过的码----"+cardPoint);
+				//system.out.println("处理过的码----"+cardPoint);
 				map.put(cardPoint, ma);
 			}
 		}
@@ -385,7 +385,7 @@ public class HuPaiType {
 				validMa.add(entry.getKey());
 			}
 		}
-		System.out.println("有效码："+validMa);
+		//system.out.println("有效码："+validMa);
 	}
 	/**
 	 * 处理抓到的码点数，成0-3之间的数

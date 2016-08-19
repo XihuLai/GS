@@ -121,7 +121,18 @@ public class AccountDaoImp implements AccountMapper {
      */
     @Override
     public Account selectByPrimaryKey(Integer id) {
-        return null;
+    	 Account result = null;
+         SqlSession sqlSession = sqlSessionFactory.openSession();
+         try {
+             AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
+             result = mapper.selectByPrimaryKey(id);
+             sqlSession.commit();
+         } catch (Exception e) {
+             e.printStackTrace();
+         }finally {
+             sqlSession.close();
+         }
+        return result;
     }
 
     /**

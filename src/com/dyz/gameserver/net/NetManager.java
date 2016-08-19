@@ -20,7 +20,7 @@ public class NetManager {
 	private OrderedThreadPoolExecutor threadpool;
 
 	/**
-	 * 开始监听端口
+	 * 开始监听端口 前段
 	 * @param iohandler
 	 * @param listenPort
 	 * @throws Exception
@@ -44,6 +44,39 @@ public class NetManager {
 		int sendsize = 1024*1024*2;
 		int timeout = 10;
 		//
+		SocketSessionConfig sc = acceptor.getSessionConfig();
+		sc.setReuseAddress(true);// 设置每一个非主监听连接的端口可以重用
+		sc.setReceiveBufferSize(recsize);// 设置输入缓冲区的大小
+		sc.setSendBufferSize(sendsize);// 设置输出缓冲区的大小
+		sc.setReadBufferSize(recsize);
+		sc.setTcpNoDelay(true);// flush函数的调用 设置为非延迟发送，为true则不组装成大包发送，收到东西马上发出
+		sc.setSoLinger(0);
+		//设置超时
+		sc.setIdleTime(IdleStatus.BOTH_IDLE, timeout);
+		acceptor.bind(new InetSocketAddress(listenPort));
+	}
+	
+	
+	/**
+	 * 开始监听端口 后台
+	 * @param iohandler
+	 * @param listenPort
+	 * @throws Exception
+     */
+	public  void startHostListner(IoHandler iohandler,int listenPort) throws Exception{
+		acceptor = new NioSocketAcceptor();
+		acceptor.setBacklog(10);
+		acceptor.setReuseAddress(true);
+		acceptor.setHandler(iohandler);
+
+        DefaultIoFilterChainBuilder chain = acceptor.getFilterChain();
+        IoFilter protocol = new ProtocolCodecFilter(new GameProtocolcodecFactory());
+        chain.addLast("codec", protocol);
+		chain.addLast("ThreadPool",new ExecutorFilter(Executors.newCachedThreadPool()));
+		
+		int recsize = 1024*1024*2;
+		int sendsize = 1024*1024*2;
+		int timeout = 10;
 		SocketSessionConfig sc = acceptor.getSessionConfig();
 		sc.setReuseAddress(true);// 设置每一个非主监听连接的端口可以重用
 		sc.setReceiveBufferSize(recsize);// 设置输入缓冲区的大小

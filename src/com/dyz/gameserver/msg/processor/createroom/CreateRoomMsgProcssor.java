@@ -29,24 +29,24 @@ public class CreateRoomMsgProcssor extends MsgProcessor implements
         if(gameSession.isLogin()) {
             Avatar avatar = gameSession.getRole(Avatar.class);
             if (avatar == null) {
-                System.out.println("用户是空的，不能创建房间");
+                //system.out.println("用户是空的，不能创建房间");
             }else{
                 if(avatar.avatarVO.getAccount().getRoomcard() >= roomVO.getRoundNumber()/4) {
                     if(avatar.avatarVO.getRoomId() == 0) {
                         RoomManager.getInstance().createRoom(avatar,roomVO);
-                        System.out.println("房间创建成功-- roomId:"+roomVO.getRoomId());
+                        //system.out.println("房间创建成功-- roomId:"+roomVO.getRoomId());
                         gameSession.sendMsg(new CreateRoomResponse(1,roomVO.getRoomId()+""));
                     }else{
-                        System.out.println("你已经在房间里了，不能再创建房间");
+                        //system.out.println("你已经在房间里了，不能再创建房间");
                         gameSession.sendMsg(new CreateRoomResponse(1,avatar.avatarVO.getRoomId()+""));
                     }
                 }else{
-                    System.out.println("房间卡不足");
+                    //system.out.println("房间卡不足");
                     gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000014));
                 }
             }
         }else{
-            System.out.println("该用户还没有登录");
+            //system.out.println("该用户还没有登录");
             gameSession.destroyObj();
         }
 

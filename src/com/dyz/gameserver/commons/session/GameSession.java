@@ -73,7 +73,7 @@ public class GameSession implements GameObj {
 	 */
 	public WriteFuture sendMsg(ResponseMsg msg)  {
 		if (session == null || !session.isConnected() || session.isClosing()) {
-			System.out.println("session == "+session+" session.isConnected ==  "+session.isConnected()+" session.isClosing =  "+session.isClosing());
+			//system.out.println("session == "+session+" session.isConnected ==  "+session.isConnected()+" session.isClosing =  "+session.isClosing());
 			return null;
 		}
 		return session.write(msg);
@@ -123,7 +123,7 @@ public class GameSession implements GameObj {
 	 * 关闭SESSION
 	 */
 	public void close(){
-		System.out.println("关闭SESSION -- > "+session.getRemoteAddress()+getAddress());
+		//System.out.println("关闭SESSION -- > "+session.getRemoteAddress()+getAddress());
 		if(session != null ) {
 			session.close(false);
 			//关闭session的时候(掉线) 如果只其一个用户还在房间，则踢出用户并解散房间，并向其他玩家发送消息
@@ -147,7 +147,7 @@ public class GameSession implements GameObj {
 									//发送离线通知
 									ava.getSession().sendMsg(new OffLineResponse(1,avatar.getUuId()+""));
 									//同意解散房间人数 设置为0,有人掉线就取消解散房间
-									System.out.println("有人掉线就取消解散房间");
+									//system.out.println("有人掉线就取消解散房间");
 									roomLogic.setDissolveCount(1);
 									roomLogic.setDissolve(true);
 								}
@@ -168,7 +168,7 @@ public class GameSession implements GameObj {
 				GameSessionManager.getInstance().removeGameSession(avatar);
 			}
 			//session.getService().dispose(false);
-			System.out.println("关闭SESSION -- >  session.close(false);");
+			//System.out.println("关闭SESSION -- >  session.close(false);");
 		}
 	}
 

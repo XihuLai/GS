@@ -36,7 +36,7 @@ public class OutRoomMsgProcessor extends MsgProcessor implements
 					//退出房间
 					roomLogic.exitRoom(avatar);
 				} else {
-					System.out.println("房间号有误");
+					//system.out.println("房间号有误");
 					JSONObject js = new JSONObject();
 					js.put("accountName", "");
 					js.put("status_code", "1");

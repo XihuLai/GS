@@ -28,7 +28,7 @@ public class HuPaiMsgProcessor extends MsgProcessor implements
            if(isHu){
            }
            else{
-        	   System.out.println("胡不起");
+        	   //system.out.println("胡不起");
            }
         }else{
             gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000005));

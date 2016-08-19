@@ -100,4 +100,9 @@ public class AccountService {
         System.out.println("-account selectMaxId index->>" + index);
         return index;
     }
+     
+    public Account selectByPrimaryKey(Integer id){
+    	
+    	return accMap.selectByPrimaryKey(id);
+    }
 }

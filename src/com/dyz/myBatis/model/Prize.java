@@ -12,8 +12,20 @@ public class Prize {
     private Integer probability;
 
     private String status;
+    
+    private String notice;
+    
+    
 
-    public Integer getId() {
+    public String getNotice() {
+		return notice;
+	}
+
+	public void setNotice(String notice) {
+		this.notice = notice;
+	}
+
+	public Integer getId() {
         return id;
     }
 

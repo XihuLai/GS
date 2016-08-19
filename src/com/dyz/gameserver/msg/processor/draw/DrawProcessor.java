@@ -45,11 +45,11 @@ INotAuthProcessor  {
 				}
 			}
 			else{
-				System.out.println("账户信息有误");
+				//system.out.println("账户信息有误");
 			}
 		}
 		else{
-			System.out.println("账户未登录");
+			//system.out.println("账户未登录");
 		}
 	}	
 	/**

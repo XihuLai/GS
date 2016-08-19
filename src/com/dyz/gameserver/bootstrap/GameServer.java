@@ -1,31 +1,28 @@
 package com.dyz.gameserver.bootstrap;
 
+import java.io.IOException;
+import java.util.Collection;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dyz.gameserver.commons.message.MsgDispatcher;
 import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.context.ExecutorServiceManager;
 import com.dyz.gameserver.manager.GameSessionManager;
 import com.dyz.gameserver.msg.response.common.CloseGameResponse;
+import com.dyz.gameserver.net.MinaHostMsgHandler;
 import com.dyz.gameserver.net.MinaMsgHandler;
 import com.dyz.gameserver.net.NetManager;
 import com.dyz.myBatis.services.InitServers;
 import com.dyz.persist.util.PrizeProbability;
-import com.jcraft.jzlib.InflaterInputStream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Collection;
-import java.util.Scanner;
 
 public class GameServer {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GameServer.class);
 
 	private static int port = 10122;
+	private static int hostPort = 10123;
 	
 	private static GameServer instance=new GameServer();
 	
@@ -52,7 +49,8 @@ public class GameServer {
 			//DBUtil.initAllSqlMapClient();
 			InitServers.getInstance().initServersFun();
 			logger.info("数据库连接初始化完成");
-			netManager.startListner(new MinaMsgHandler(), port);//后台数据链接的时候再开一个listner
+			netManager.startListner(new MinaMsgHandler(), port);//前段监听端口
+			netManager.startHostListner(new MinaHostMsgHandler(),hostPort);//后台数据链接的时候再开一个listner
 			logger.info("服务器监听端口:{}完成",port);
 			logger.info("game server started...");
 			PrizeProbability.initPrizesProbability();
