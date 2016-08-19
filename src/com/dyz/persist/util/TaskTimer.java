@@ -69,11 +69,14 @@ public class TaskTimer {
                         gameSessionList.get(i).addTime(1);
                         if(gameSessionList.get(i).getTime() > 15){
                             gameSessionList.get(i).destroyObj();
+                            gameSessionList.get(i).sendMsg(new HeadResponse(1,"1"));
                         }
-                        try {
-                            gameSessionList.get(i).sendMsg(new HeadResponse(1,"0"));
-                        }catch (Exception e){
-                            System.out.println(e.getMessage());
+                        else{
+                        	try {
+                        		gameSessionList.get(i).sendMsg(new HeadResponse(1,"0"));
+                        	}catch (Exception e){
+                        		System.out.println(e.getMessage());
+                        	}
                         }
                     }
                 }

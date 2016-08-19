@@ -9,6 +9,8 @@ import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.joinroom.JoinRoomNoice;
 import com.dyz.gameserver.msg.response.joinroom.JoinRoomResponse;
+import com.dyz.gameserver.msg.response.login.BackLoginResponse;
+import com.dyz.gameserver.msg.response.login.OtherBackLoginResonse;
 import com.dyz.gameserver.msg.response.outroom.DissolveRoomResponse;
 import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
 import com.dyz.gameserver.msg.response.roomcard.RoomCardChangerResponse;
@@ -278,6 +280,7 @@ public class RoomLogic {
     				onlineCount++;
     			}
     		}
+    		
     		if(onlineCount <= dissolveCount+1){
     			RoomManager.getInstance().getRoom(avatar.getRoomVO().getRoomId()).count = 0;
     			//先结算信息，里面同时调用了解散房间的信息
@@ -415,8 +418,9 @@ public class RoomLogic {
 	        }
 	        else{
 	        	//第一局 减房卡
-	        	int currentCard = -roomVO.getRoundNumber()/4;
-	        	createAvator.updateRoomCard(currentCard);//开始游戏，减去房主的房卡
+	        	int currentCard = 0 - roomVO.getRoundNumber()/4;
+	        	createAvator.updateRoomCard(currentCard);//开始游戏，减去房主的房卡,同时更新缓存里面对象的房卡(已经在此方法中修改)
+	        	
 	        	int roomCard = createAvator.avatarVO.getAccount().getRoomcard();
 	        	createAvator.getSession().sendMsg(new RoomCardChangerResponse(1,roomCard));
 	        	playCardsLogic = new PlayCardsLogic();
@@ -484,9 +488,19 @@ public class RoomLogic {
      * @param avatar
      */
     public void returnBackAction(Avatar avatar){
-    	
-    	
-    	playCardsLogic.returnBackAction(avatar);
+    	if(playCardsLogic == null){
+        		//只是在房间，游戏尚未开始,打牌逻辑为空
+        	for (int i = 0; i < playerList.size(); i++) {
+        		if(playerList.get(i).getUuId() != avatar.getUuId()){
+        			//给其他三个玩家返回重连用户信息
+        			playerList.get(i).getSession().sendMsg(new OtherBackLoginResonse(1, avatar.getUuId()+""));
+        		}
+        	}
+        	avatar.getSession().sendMsg(new BackLoginResponse(1, roomVO));
+    	}
+    	else{
+    		playCardsLogic.returnBackAction(avatar);
+    	}
     }
     
 
@@ -508,6 +522,10 @@ public class RoomLogic {
 
 	public boolean isDissolve() {
 		return dissolve;
+	}
+
+	public void setDissolve(boolean dissolve) {
+		this.dissolve = dissolve;
 	}
 
 	public void setDissolveCount(int dissolveCount) {

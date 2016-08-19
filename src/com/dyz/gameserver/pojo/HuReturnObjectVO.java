@@ -49,7 +49,7 @@ public class HuReturnObjectVO {
 	}
 	/**
 	 * 统计吃，碰，杠，胡的详细信息， 比如 谁杠了谁的什么牌，明杠，还是暗杠等
-	 * @param type 信息类型  "chi","peng","gang","hu",
+	 * @param type 信息类型  "chi","peng","gang","hu",     划水麻将跟庄"gengzhuang"
 	 * @param str   信息内容
 	 */
 	public synchronized void updateTotalInfo(String type ,String str) {

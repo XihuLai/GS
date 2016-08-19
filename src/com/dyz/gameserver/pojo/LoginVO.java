@@ -17,6 +17,8 @@ public class LoginVO {
     private String city;
 
     private int sex;
+    
+    private String IP;
 
 
     public String getOpenId() {
@@ -74,4 +76,13 @@ public class LoginVO {
     public void setSex(int sex) {
         this.sex = sex;
     }
+
+	public String getIP() {
+		return IP;
+	}
+
+	public void setIP(String iP) {
+		IP = iP;
+	}
+    
 }

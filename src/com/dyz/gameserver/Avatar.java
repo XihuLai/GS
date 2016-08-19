@@ -37,27 +37,46 @@ public class Avatar implements GameObj {
     public boolean canHu = true;
     
     public boolean qiangHu = true;
+    /**
+     * 是否是一局结算时掉线
+     */
+    public boolean overOff = false;
+    /**
+     * 存储某一句游戏断线时 结算信息
+     */
+    public String oneSettlementInfo;
     
     //当自己摸牌时检测自己是否有杠的牌。把杠的牌放入到整个list里面，然后在转入给前端
     public List<Integer> gangIndex = new  ArrayList<Integer>();
     /**
      * 检测到有人胡牌时存储胡牌的详细消息(划水麻将和长沙麻将用)
      *      0: 天胡
-     *            1：过路杠	 1番
-					2：暗杠	2番
-					3：放杠	3番（谁放牌谁出番）
-					4：自摸	4番（其他三家每家出4番）
-					5：普通点炮	5番（谁放炮谁出番）
-					6：七对点炮	5*3番（谁放炮谁出番）
-					7：七对自摸	4*3番（其他三家每家出12番）
-					8：杠开	4*3番（其他三家每家出12番）
-					9：抢杠	5*3番（谁要杠牌谁出番）
+     *             1：明杠 	 1*3番
+					2：暗杠	 2*3番
+					3：放杠/点杠 	   1*3番（谁放牌谁出番）
+					4：自摸 	6番（其他三家每家出2番）
+					5：普通点炮	3番（谁放炮谁出番）
+					6：七对点炮	3*3番（谁放炮谁出番）
+					7：七对自摸	18番（其他三家每家出6番）
+					8：杠开/杠上花	18番（其他三家每家出6番）
+					9：抢杠	3*3番（谁要杠牌谁出番）
 					10：一炮双响	根据胡牌者的牌型来计算放炮者出的番数（胡牌两方所胡牌型的番数相加）
 					11：一炮三响	根据胡牌者的牌型来计算放炮者出的番数（同上）
 					
 				数组格式   牌索引:类型
 				放弃的时候需要清空
-					
+		*
+		*小胡点炮：3
+		*大胡点炮：3*3
+		*
+		*小胡自摸： 2*3   （每家2分）
+		*大胡自摸： 2*3*3  (每家6分)
+		*
+		*
+		*
+		* 
+		* 
+		* 		
      */
     public List<String> huAvatarDetailInfo = new ArrayList<String>();
     
@@ -278,17 +297,20 @@ public class Avatar implements GameObj {
     }
     /**
      * 检测当前自己的牌是否可杠
-     * @param 
+     * @param  
      * @return
      */
     public boolean checkSelfGang(){
-     	//System.out.println("杠了的牌======"+resultRelation.get(2));
-     	//System.out.println("碰了的牌======"+resultRelation.get(1));
+     	System.out.println("杠了的牌==杠家id"+avatarVO.getAccount().getUuid()+"===="+resultRelation.get(2));
+     	System.out.println("碰了的牌==杠家id"+avatarVO.getAccount().getUuid()+"===="+resultRelation.get(1));
     	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
     	boolean flag = false;
-    	for (int i= 0 ; i < 27 ; i++) {
-    		if (avatarVO.getPaiArray()[0][i] == 4 && i< 100) {
-    			//先判断所有4个的牌组中是否有未杠过的
+    	if(!roomVO.isAddWordCard()){
+    		//划水麻将没有风牌  就27
+    		for (int i= 0 ; i < 27 ; i++) {
+    			if (avatarVO.getPaiArray()[0][i] == 4 && i< 100 
+    					&& avatarVO.getPaiArray()[1][i] != 2) {
+    				//先判断所有4个的牌组中是否有未杠过的
     				if(resultRelation.get(2) == null ){
     					gangIndex.add(i);
     					flag =  true;
@@ -307,10 +329,40 @@ public class Avatar implements GameObj {
     							gangIndex.add(i);
     							flag =  true;
     						}
-						}
+    					}
     				}
-			}
-		}
+    			}
+    		}
+    	}
+    	else{
+    		//划水麻将有风牌  就 34
+    		for (int i= 0 ; i < 34 ; i++) {
+    			if (avatarVO.getPaiArray()[0][i] == 4 && i< 100
+    					&& avatarVO.getPaiArray()[1][i] != 2) {
+    				//先判断所有4个的牌组中是否有未杠过的
+    				if(resultRelation.get(2) == null ){
+    					gangIndex.add(i);
+    					flag =  true;
+    					i = 100;
+    				}
+    				else if(resultRelation.get(2) != null ){
+    					String strs [] = resultRelation.get(2).split(",");
+    					for (int j = 0; j < strs.length; j++) {
+    						if(strs[j].equals(i+"")){
+    							flag =  false;
+    							gangIndex.clear();
+    							j = 100;
+    							i = 100;
+    						}
+    						else{
+    							gangIndex.add(i);
+    							flag =  true;
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
         return flag;
     }
     /**

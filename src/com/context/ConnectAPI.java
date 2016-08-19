@@ -43,6 +43,7 @@ public class ConnectAPI {
 	public static int OUT_ROOM_RESPONSE  = 0x000014;
     //离线通知 
 	public static int OFF_LINE_RESPONSE  = 0x000015;
+	public static int ON_LINE_RESPONSE  = 0x000016;
 	
 	//心跳协议
 	public static int head = 0x000030;

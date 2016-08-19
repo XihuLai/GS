@@ -13,7 +13,7 @@ public class HeadResponse extends ServerResponse {
      * 必须调用此方法设置消息号
      *
      * @param status
-     * @param message
+     * @param message 
      */
     public HeadResponse(int status, String message) {
         super(status, ConnectAPI.headRESPONSE);

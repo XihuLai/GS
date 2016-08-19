@@ -32,7 +32,8 @@ INotAuthProcessor  {
 				if(roomLogic != null){
 					if(type.equals("0")){
 						//申请解散房间
-						if (roomLogic.isDissolve() ) {
+						if (roomLogic.isDissolve()) {
+							roomLogic.setDissolveCount(1);
 							//申请解散
 							roomLogic.dissolveRoom(avatar,roomId,type);
 						} else{

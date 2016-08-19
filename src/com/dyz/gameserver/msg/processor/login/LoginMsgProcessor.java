@@ -9,6 +9,7 @@ import com.dyz.gameserver.manager.GameSessionManager;
 import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
+import com.dyz.gameserver.msg.response.hu.HuPaiResponse;
 import com.dyz.gameserver.msg.response.login.LoginResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.LoginVO;
@@ -50,6 +51,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 				Avatar tempAva = new Avatar();
 				AvatarVO tempAvaVo = new AvatarVO();
 				tempAvaVo.setAccount(account);
+				tempAvaVo.setIP(loginVO.getIP());
 				tempAva.avatarVO = tempAvaVo;
 
 				loginAction(gameSession,tempAva);
@@ -65,6 +67,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 				avatar = new Avatar();
 				AvatarVO avatarVO = new AvatarVO();
 				avatarVO.setAccount(account);
+				avatarVO.setIP(loginVO.getIP());
 				avatar.avatarVO = avatarVO;
 				//把session放入到GameSessionManager
 				GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
@@ -75,6 +78,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 				GameServerContext.remove_offLine_Character(avatar);
 				GameServerContext.add_onLine_Character(avatar);
 				avatar.avatarVO.setIsOnLine(true);
+				avatar.avatarVO.setIP(loginVO.getIP());
 				TimeUitl.stopAndDestroyTimer(avatar);
 				avatar.setSession(gameSession);
 				System.out.println("用户回来了，断线重连，中止计时器");
@@ -108,11 +112,23 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 	 * @param avatar
      */
 	public void returnBackAction(Avatar avatar){
+		
+		
 		if(avatar.avatarVO.getRoomId() != 0){
 			RoomLogic roomLogic = RoomManager.getInstance().getRoom(avatar.avatarVO.getRoomId());
 			if(roomLogic !=null){
-				//如果用户是在玩游戏的时候断线，且返回时房间还未被解散，则需要返回游戏房间其他用户信息，牌组信息
+				//如果用户是在玩游戏/在房间的时候断线，且返回时房间还未被解散，则需要返回游戏房间其他用户信息，牌组信息
 				roomLogic.returnBackAction(avatar);
+				try {
+					Thread.sleep(1000);
+					if(avatar.overOff){
+						//在某一句结算时断线，重连时返回结算信息
+						System.out.println("overOff");
+						avatar.getSession().sendMsg(new HuPaiResponse(1,avatar.oneSettlementInfo));
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 			else{
 				//如果是在游戏时断线,但是返回的时候，游戏房间已经被解散，则移除该用户的房间信息

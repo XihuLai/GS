@@ -7,7 +7,6 @@ import com.dyz.gameserver.logic.RoomLogic;
 import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
-import net.sf.json.JSONObject;
 
 /**
  * Created by kevin on 2016/7/5.

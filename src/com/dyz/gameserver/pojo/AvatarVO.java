@@ -49,6 +49,11 @@ public class AvatarVO {
      */
     private boolean hasMopaiChupai = false;
     /**
+     * 划水麻将  胡牌的类型(1:普通小胡(点炮/自摸)    2:大胡(点炮/自摸))
+     * 放弃操作，摸牌，出牌，都需要重置
+     */
+    private int huType = 0;
+    /**
      * 牌数组
      * /碰 1  杠2  胡3  吃4
      */
@@ -58,8 +63,7 @@ public class AvatarVO {
      */
     private HuReturnObjectVO  huReturnObjectVO;
     
-    
-
+    private String IP;
 
     
    public HuReturnObjectVO getHuReturnObjectVO() {
@@ -162,5 +166,22 @@ public class AvatarVO {
 	public void setHasMopaiChupai(boolean hasMopaiChupai) {
 		this.hasMopaiChupai = hasMopaiChupai;
 	}
-    
+
+	public int getHuType() {
+		return huType;
+	}
+
+	public void setHuType(int huType) {
+		this.huType = huType;
+	}
+
+	public String getIP() {
+		return IP;
+	}
+
+	public void setIP(String iP) {
+		IP = iP;
+	}
+	
+	
 }
