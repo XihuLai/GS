@@ -1812,14 +1812,14 @@ public class PlayCardsLogic {
     		json.put("gameRound", roundNum);//游戏轮数
     		//桌面剩余牌数
     		json.put("surplusCards", listCard.size() - nextCardindex);
-    		System.out.println(json.toString());
+    		//System.out.println(json.toString());
     		avatar.getSession().sendMsg(new ReturnOnLineResponse(1, json.toString()));
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			System.out.println(sb);
+			//System.out.println(sb);
 			avatar.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
 		}
     	else{
@@ -1840,8 +1840,8 @@ public class PlayCardsLogic {
     		int roundNum = RoomManager.getInstance().getRoom(avatar.getRoomVO().getRoomId()).getCount();
     		json.put("gameRound", roundNum);
     		//桌面剩余牌数
-    		json.put("surplusCards", listCard.size() - nextCardindex - 6);
-    		System.out.println(json.toString());
+    		json.put("surplusCards", listCard.size() - nextCardindex);
+    		//System.out.println(json.toString());
     		avatar.getSession().sendMsg(new ReturnOnLineResponse(1, json.toString()));
     	}
     	
