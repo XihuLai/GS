@@ -112,10 +112,16 @@ public class Naizi {
                             } else {
                                 // 如果 这张牌的下一张和再下一张都不为空的情况。可以组成一级牌
                                 if (temp_arr[i + 1] > 0 && temp_arr[i + 2] > 0) {
-                                    temp_arr[i]--;
-                                    temp_arr[i + 1]--;
-                                    temp_arr[i + 2]--;
-                                    i--;
+                                   if(temp_arr[i] >=2 && isjiang == false){
+                                       temp_arr[i] -= 2;
+                                       isjiang = true;
+                                       i--;
+                                   }else {
+                                       temp_arr[i]--;
+                                       temp_arr[i + 1]--;
+                                       temp_arr[i + 2]--;
+                                       i--;
+                                   }
                                 } else if (temp_arr[i + 1] > 0 && temp_arr[i + 2] == 0) {
                                     //如果这张牌的下一张不为空，再下一张为空，需要一张赖子
                                 	if(isjiang == false && temp_arr[i] >= 2){
@@ -293,7 +299,7 @@ public class Naizi {
     }
 
     public static void main(String[] args){
-        int [] test = new int[]{0,0,0,2,1,0,1,0,0,     0,0,0,2,2,1,0,0,0,     1,1,1,0,0,0,0,0,0,   0,0,0,0,2,0,0};
+        int [] test = new int[]{0,2,0,1,0,0,0,0,0,     1,1,1,0,0,0,0,0,0,     0,0,1,1,1,0,0,0,0,   0,0,0,0,2,0,0};
         getNeedHunNum(test);
     }
 }
