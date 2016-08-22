@@ -7,7 +7,9 @@ import com.dyz.gameserver.manager.GameSessionManager;
 import com.dyz.gameserver.msg.response.HeadResponse;
 import com.dyz.gameserver.sprite.tool.AsyncTaskQueue;
 import com.dyz.myBatis.model.Account;
+import com.dyz.myBatis.model.PrizeRule;
 import com.dyz.myBatis.services.AccountService;
+import com.dyz.myBatis.services.PrizeRuleService;
 
 import java.util.*;
 
@@ -26,20 +28,21 @@ public class TaskTimer {
                 System.out.println("时间=" + new Date() + " 执行了" + count + "次"); // 1次
                 List<Account> accounts = AccountService.getInstance().selectAll();
                 if(accounts != null) {
+                	int count = PrizeRuleService.getInstance().selectByPrimaryKey(1).getPrecount();
                     for (int i = 0; i < accounts.size(); i++) {
                         Avatar tempAva = GameServerContext.getAvatarFromOn(accounts.get(i).getUuid());
                         if(tempAva != null){
-                            tempAva.avatarVO.getAccount().setPrizecount(1);
+                            tempAva.avatarVO.getAccount().setPrizecount(count);
                             //当前用户在用，要不要通知增加了抽奖次数？
                         }else{
                             tempAva =  GameServerContext.getAvatarFromOff(accounts.get(i).getUuid());
                             if(tempAva != null){
-                                tempAva.avatarVO.getAccount().setPrizecount(1);
+                                tempAva.avatarVO.getAccount().setPrizecount(count);
                             }
                         }
                         Account temp = new Account();
                         temp.setId(accounts.get(i).getId());
-                        temp.setPrizecount(1);
+                        temp.setPrizecount(count);
                         AccountService.getInstance().updateByPrimaryKeySelective(temp);
                     }
                 }

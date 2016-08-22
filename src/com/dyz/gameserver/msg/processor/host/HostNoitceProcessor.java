@@ -15,8 +15,10 @@ import com.dyz.gameserver.msg.response.host.HostNoitceResponse;
 import com.dyz.gameserver.msg.response.roomcard.RoomCardChangerResponse;
 import com.dyz.myBatis.model.Account;
 import com.dyz.myBatis.model.NoticeTable;
+import com.dyz.myBatis.model.PrizeRule;
 import com.dyz.myBatis.services.AccountService;
 import com.dyz.myBatis.services.NoticeTableService;
+import com.dyz.myBatis.services.PrizeRuleService;
 
 /**
  * 
@@ -79,6 +81,14 @@ public class HostNoitceProcessor extends MsgProcessor implements
 	    			//system.out.println("sessionMap为空");
 	    		}
 	    	}
+	    	/*else if(type.equals("prizerule")){
+	    		PrizeRule PrizeRuleService.getInstance().selectByPrimaryKey(1);
+	    		//后台管理 修改抽奖规则之后发送给游戏端
+	    		
+	    		
+	    		
+	    	}*/
+	    	
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

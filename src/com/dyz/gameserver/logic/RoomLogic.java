@@ -551,6 +551,7 @@ public class RoomLogic {
 		for (Avatar avat : playerList) {
 			avatarVO = new AvatarVO();
 			avatarVO.setAccount(avat.avatarVO.getAccount());
+			avatarVO.setIP(avat.avatarVO.getIP());
 			avat.getSession().sendMsg(new DissolveRoomResponse(1, json.toString()));
 			gamesession = avat.getSession();
 			avat = new Avatar();
@@ -577,6 +578,7 @@ public class RoomLogic {
 			avatarVO = new AvatarVO();
 			avatarVO.setAccount(avat.avatarVO.getAccount());
 			gamesession = avat.getSession();
+			avatarVO.setIP(avat.avatarVO.getIP());
 			gamesession.sendMsg(new OutRoomResponse(1, json.toString()));
 			avat = new Avatar();
 			avat.avatarVO = avatarVO;
@@ -607,6 +609,7 @@ public class RoomLogic {
 		AvatarVO avatarVO;
 		GameSession gamesession;
 		avatarVO = new AvatarVO();
+		avatarVO.setIP(avatar.avatarVO.getIP());
 		avatarVO.setAccount(avatar.avatarVO.getAccount());
 		gamesession = avatar.getSession();
 		avatar = new Avatar();

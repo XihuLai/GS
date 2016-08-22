@@ -23,6 +23,7 @@ public class InitServers {
         AccountService.getInstance().initSetSession(sessionFactory);
         PrizeService.getInstance().initSetSession(sessionFactory);
         NoticeTableService.getInstance().initSetSession(sessionFactory);
+        PrizeRuleService.getInstance().initSetSession(sessionFactory);
 
         
         TaskTimer.showTimer();
