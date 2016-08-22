@@ -66,7 +66,7 @@ public class GameMsgDecoder extends CumulativeProtocolDecoder {
 					protocolDecoderOutput.write(message);
 					return true;
 				}else{
-					logger.info("数据包尚不完整");
+					//logger.info("数据包尚不完整");
 					iobuffer.reset();
 					return false;
 				}

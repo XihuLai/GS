@@ -301,8 +301,8 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkSelfGang(){
-     	System.out.println("杠了的牌==杠家id"+avatarVO.getAccount().getUuid()+"===="+resultRelation.get(2));
-     	System.out.println("碰了的牌==杠家id"+avatarVO.getAccount().getUuid()+"===="+resultRelation.get(1));
+     	//system.out.println("杠了的牌==杠家id"+avatarVO.getAccount().getUuid()+"===="+resultRelation.get(2));
+     	//system.out.println("碰了的牌==杠家id"+avatarVO.getAccount().getUuid()+"===="+resultRelation.get(1));
     	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
     	boolean flag = false;
     	if(!roomVO.isAddWordCard()){
@@ -373,7 +373,7 @@ public class Avatar implements GameObj {
     public boolean checkChi(int cardIndex){
     	boolean flag = false;
     	//只有长沙麻将有吃的打法
-    	System.out.println("判断吃否可以吃牌-----cardIndex:"+cardIndex);
+    	//system.out.println("判断吃否可以吃牌-----cardIndex:"+cardIndex);
     	/**
     	 * 这里检测吃的时候需要踢出掉碰 杠了的牌****
     	 */
@@ -527,9 +527,9 @@ public class Avatar implements GameObj {
         logger.info("Avatar用户{}断开服务器链接",avatarVO.getAccount().getNickname());
        // avatarVO.setPaiArray(null);
         if(session != null){
-            System.out.println("session 不为空");
+            //system.out.println("session 不为空");
         }else{
-            System.out.println("session 以经是空的了");
+            //system.out.println("session 以经是空的了");
         }
     }
     /**

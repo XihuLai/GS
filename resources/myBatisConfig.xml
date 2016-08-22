@@ -33,5 +33,6 @@
     <mappers>
         <mapper resource="com/dyz/myBatis/sqlMapper/AccountMapper.xml"/>
         <mapper resource="com/dyz/myBatis/sqlMapper/PrizeMapper.xml"/>
+        <mapper resource="com/dyz/myBatis/sqlMapper/NoticeTableMapper.xml"/>
     </mappers>
 </configuration>

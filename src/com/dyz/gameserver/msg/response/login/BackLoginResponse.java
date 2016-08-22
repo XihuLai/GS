@@ -14,7 +14,7 @@ public class BackLoginResponse extends ServerResponse{
 		try {
 			if(status>0){
 					output.writeUTF(JsonUtilTool.toJson(roomVO));
-					//System.out.println(JsonUtilTool.toJson(roomVO));
+					System.out.println(JsonUtilTool.toJson(roomVO));
 			}
 			else{
 				output.writeUTF(roomVO.toString());

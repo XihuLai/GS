@@ -22,15 +22,15 @@ public class PengMsgProcessor extends MsgProcessor implements
     @Override
     public void process(GameSession gameSession, ClientRequest request) throws Exception {
         RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
-        System.out.println("前端发送碰牌消息");
+        //system.out.println("前端发送碰牌消息");
         if(roomLogic != null){
             CardVO cardVO = JsonUtilTool.fromJson(request.getString(),CardVO.class);
            boolean isPeng =  roomLogic.pengCard(gameSession.getRole(Avatar.class),cardVO.getCardPoint());
            if(isPeng){
-        	   System.out.println("碰起");
+        	   //system.out.println("碰起");
            }
            else{
-        	   System.out.println("碰不起");
+        	   //system.out.println("碰不起");
            }
         }else{
             gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000005));

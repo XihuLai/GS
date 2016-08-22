@@ -8,9 +8,10 @@
     <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
     <result column="probability" property="probability" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="CHAR" />
+    <result column="notice" property="notice" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, index_id, prize_name, image_url, probability, status
+    id, index_id, prize_name, image_url, probability, status, notice
   </sql>
   <!-- 获取所有正常的奖品信息 -->
   <select id="selectAllPrizes" resultMap="BaseResultMap">
@@ -32,10 +33,10 @@
   </delete>
   <insert id="insert" parameterType="com.dyz.myBatis.model.Prize" >
     insert into prize (id, index_id, prize_name, 
-      image_url, probability, status
+      image_url, probability, status, notice
       )
     values (#{id,jdbcType=INTEGER}, #{indexId,jdbcType=INTEGER}, #{prizeName,jdbcType=VARCHAR}, 
-      #{imageUrl,jdbcType=VARCHAR}, #{probability,jdbcType=INTEGER}, #{status,jdbcType=CHAR}
+      #{imageUrl,jdbcType=VARCHAR}, #{probability,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, #{notice,jdbcType=VARCHAR}}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dyz.myBatis.model.Prize" >
@@ -59,6 +60,9 @@
       <if test="status != null" >
         status,
       </if>
+      <if test="notice != null" >
+        notice,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -78,6 +82,9 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=CHAR},
+      </if>
+       <if test="notice != null" >
+        #{notice,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -99,6 +106,9 @@
       <if test="status != null" >
         status = #{status,jdbcType=CHAR},
       </if>
+      <if test="notice != null" >
+        notice = #{notice,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -108,7 +118,8 @@
       prize_name = #{prizeName,jdbcType=VARCHAR},
       image_url = #{imageUrl,jdbcType=VARCHAR},
       probability = #{probability,jdbcType=INTEGER},
-      status = #{status,jdbcType=CHAR}
+      status = #{status,jdbcType=CHAR},
+      notice = #{notice,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

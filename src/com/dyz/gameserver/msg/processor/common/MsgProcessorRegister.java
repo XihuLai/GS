@@ -7,6 +7,7 @@ import com.dyz.gameserver.msg.processor.createroom.CreateRoomMsgProcssor;
 import com.dyz.gameserver.msg.processor.draw.DrawProcessor;
 import com.dyz.gameserver.msg.processor.gang.GangMsgProcessor;
 import com.dyz.gameserver.msg.processor.heartbeat.HeadMsgProcessor;
+import com.dyz.gameserver.msg.processor.host.HostNoitceProcessor;
 import com.dyz.gameserver.msg.processor.hu.HuPaiMsgProcessor;
 import com.dyz.gameserver.msg.processor.joinroom.JoinRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.LoginMsgProcessor;
@@ -70,7 +71,9 @@ public enum MsgProcessorRegister {
 	/**心跳协议*/
 	head(ConnectAPI.head,new HeadMsgProcessor()),
 	/**抽奖*/
-	draw(ConnectAPI.DRAw_REQUEST,new DrawProcessor());
+	draw(ConnectAPI.DRAw_REQUEST,new DrawProcessor()),
+	/**后台发送消息*/
+	hostSendMessage(ConnectAPI.HOST_SEND_REQUEST,new HostNoitceProcessor());
 	
 	private int msgCode;
 	private MsgProcessor processor;

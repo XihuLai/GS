@@ -56,50 +56,6 @@ public class Client {
 				out.write(loginSend.entireMsg().array());//
 				
 				serverCallBack(input);
-				
-				RoomVO testData = new RoomVO();
-				String xx = new BufferedReader(new InputStreamReader(System.in)).readLine();
-				/*String ssss;
-				System.out.print("请创建房间的规则 1：局数: \t");
-				ssss = new BufferedReader(new InputStreamReader(System.in)).readLine();
-				testData.setRoundNumber(Integer.parseInt(ssss));
-				System.out.print("请创建房间的规则 2：--》 1-自摸胡 ， 2-抢杠胡\t");
-				ssss = new BufferedReader(new InputStreamReader(System.in)).readLine();
-				testData.setZiMo(Integer.parseInt(ssss));
-				System.out.print("请创建房间的规则 3：--》3-是否红中癞子 \t");
-				ssss = new BufferedReader(new InputStreamReader(System.in)).readLine();
-				testData.setHong(Boolean.parseBoolean(ssss));
-				System.out.print("请创建房间的规则 2：--》4-可胡七小对 \t");
-				ssss = new BufferedReader(new InputStreamReader(System.in)).readLine();
-				testData.setSevenDouble(Boolean.parseBoolean(ssss));
-				System.out.print("请创建房间的规则 2：--》5-抓码数 \t");
-				ssss = new BufferedReader(new InputStreamReader(System.in)).readLine();
-				testData.setMa(Integer.parseInt(ssss));*/
-				testData.setHong(false);
-				testData.setMa(1);
-				testData.setName("test");
-				testData.setRoomId(1);
-				testData.setRoomType(2);
-				testData.setRoundNumber(2);
-				testData.setSevenDouble(false);
-				testData.setZiMo(1);
-
-				String aa = JsonUtilTool.toJson(testData);
-				//创建房间，不同操作不同的ConnectAPI.CREATEROOM_REQUEST值  消息处理方式
-				ClientSendRequest sendRequest = new ClientSendRequest(ConnectAPI.CREATEROOM_REQUEST);
-				sendRequest.output.writeUTF(aa);
-				out.write(sendRequest.entireMsg().array());
-
-				serverCallBack(input);
-				
-				String xxxx = new BufferedReader(new InputStreamReader(System.in)).readLine();
-				String ss = JsonUtilTool.toJson(asdf);
-				ClientSendRequest joinroom = new ClientSendRequest(ConnectAPI.JOIN_ROOM_REQUEST);
-				sendRequest.output.writeUTF(ss);
-				out.write(joinroom.entireMsg().array());
-
-				serverCallBack(input);
-
 
 
 				out.close();
