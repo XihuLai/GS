@@ -719,6 +719,7 @@ public class PlayCardsLogic {
     				 //更新摸牌人信息 2016-8-3
     				 pickAvatarIndex = playerList.indexOf(avatar);
     				 curAvatarIndex = playerList.indexOf(avatar);
+    				 currentCardPoint  = -2;
     			// }
     		 }
     		}else{
