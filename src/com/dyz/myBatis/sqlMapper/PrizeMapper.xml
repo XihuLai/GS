@@ -8,10 +8,11 @@
     <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
     <result column="probability" property="probability" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="CHAR" />
-    <result column="notice" property="notice" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="prizecount" property="prizecount" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, index_id, prize_name, image_url, probability, status, notice
+    id, index_id, prize_name, image_url, probability, status, type, prizecount
   </sql>
   <!-- 获取所有正常的奖品信息 -->
   <select id="selectAllPrizes" resultMap="BaseResultMap">
@@ -33,10 +34,11 @@
   </delete>
   <insert id="insert" parameterType="com.dyz.myBatis.model.Prize" >
     insert into prize (id, index_id, prize_name, 
-      image_url, probability, status, notice
+      image_url, probability, status, type, prizecount
       )
     values (#{id,jdbcType=INTEGER}, #{indexId,jdbcType=INTEGER}, #{prizeName,jdbcType=VARCHAR}, 
-      #{imageUrl,jdbcType=VARCHAR}, #{probability,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, #{notice,jdbcType=VARCHAR}}
+      #{imageUrl,jdbcType=VARCHAR}, #{probability,jdbcType=INTEGER}, #{status,jdbcType=CHAR},
+       #{type,jdbcType=VARCHAR}, #{prizecount,jdbcType=INTEGER}}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dyz.myBatis.model.Prize" >
@@ -60,8 +62,11 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="notice != null" >
-        notice,
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="prizecount != null" >
+        prizecount,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -83,8 +88,11 @@
       <if test="status != null" >
         #{status,jdbcType=CHAR},
       </if>
-       <if test="notice != null" >
-        #{notice,jdbcType=VARCHAR},
+       <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+       <if test="prizecount != null" >
+        #{prizecount,jdbcType=	INTEGER},
       </if>
     </trim>
   </insert>
@@ -106,8 +114,11 @@
       <if test="status != null" >
         status = #{status,jdbcType=CHAR},
       </if>
-      <if test="notice != null" >
-        notice = #{notice,jdbcType=VARCHAR},
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="prizecount != null" >
+        prizecount = #{prizecount,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -119,7 +130,8 @@
       image_url = #{imageUrl,jdbcType=VARCHAR},
       probability = #{probability,jdbcType=INTEGER},
       status = #{status,jdbcType=CHAR},
-      notice = #{notice,jdbcType=VARCHAR}
+      type = #{type,jdbcType=VARCHAR},
+      prizecount = #{prizecount,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -1614,20 +1614,49 @@ public class PlayCardsLogic {
      */
     public int checkSevenDouble(int[][] paiList){
         int result = 1;
-        for(int i=0;i<paiList[0].length;i++){
-            if(paiList[0][i] != 0){
-                if(paiList[0][i] != 2 && paiList[0][i] != 4){
-                    return 0;
-                }else{
-					if(paiList[1][i] != 0){
-						return 0;
-					}else {
-						if (paiList[0][i] == 4) {
-							result = 2;
-						}
-					}
-                }
-            }
+        if(roomVO.getHong()){
+        	//红中麻将另算
+        	int count = 0;//单拍个数
+        	for(int i=0;i<paiList[0].length;i++){
+        		if(paiList[0][i] != 0 && i !=31){
+        			if(paiList[0][i] != 2 && paiList[0][i] != 4){
+        				if(paiList[1][i] == 0){
+        					count++;
+        				}
+        				else{
+        					return 0;
+        				}
+        			}else{
+        				if(paiList[1][i] != 0){
+        					return 0;
+        				}else {
+        					if (paiList[0][i] == 4) {
+        						result = 2;
+        					}
+        				}
+        			}
+        		}
+        	}
+        	if(count != 0 && count != paiList[0][31]){
+        		return 0;
+        	}
+        }
+        else{
+        	for(int i=0;i<paiList[0].length;i++){
+        		if(paiList[0][i] != 0){
+        			if(paiList[0][i] != 2 && paiList[0][i] != 4){
+        				return 0;
+        			}else{
+        				if(paiList[1][i] != 0){
+        					return 0;
+        				}else {
+        					if (paiList[0][i] == 4) {
+        						result = 2;
+        					}
+        				}
+        			}
+        		}
+        	}
         }
         return result;
     }

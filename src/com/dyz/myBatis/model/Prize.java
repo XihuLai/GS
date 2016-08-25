@@ -13,16 +13,26 @@ public class Prize {
 
     private String status;
     
-    private String notice;
+    private Integer prizecount;
+    
+    private String type;
     
     
 
-    public String getNotice() {
-		return notice;
+	public Integer getPrizecount() {
+		return prizecount;
 	}
 
-	public void setNotice(String notice) {
-		this.notice = notice;
+	public void setPrizecount(Integer prizecount) {
+		this.prizecount = prizecount;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public Integer getId() {
