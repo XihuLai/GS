@@ -108,4 +108,8 @@ public class ConnectAPI {
 	public static int HOST_SEND_REQUEST = 0x158888;
 	public static int HOST_SEND_RESPONSE = 0x157777;
 
+	//app点+号返回充卡联系信息
+	public static int HOST_ADDROOMCARD_REQUEST = 0x156666;
+	public static int HOST_ADDROOMCARD_RESPONSE = 0x155555;
+	
 }

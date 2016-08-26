@@ -3,6 +3,7 @@ package com.dyz.gameserver.msg.processor.common;
 import com.context.ConnectAPI;
 import com.dyz.gameserver.msg.processor.chi.ChiMsgProcessor;
 import com.dyz.gameserver.msg.processor.chupai.ChuPaiMsgProcessor;
+import com.dyz.gameserver.msg.processor.contact.ContactMsgProcssor;
 import com.dyz.gameserver.msg.processor.createroom.CreateRoomMsgProcssor;
 import com.dyz.gameserver.msg.processor.draw.DrawProcessor;
 import com.dyz.gameserver.msg.processor.gang.GangMsgProcessor;
@@ -73,7 +74,9 @@ public enum MsgProcessorRegister {
 	/**抽奖*/
 	draw(ConnectAPI.DRAw_REQUEST,new DrawProcessor()),
 	/**后台发送消息*/
-	hostSendMessage(ConnectAPI.HOST_SEND_REQUEST,new HostNoitceProcessor());
+	hostSendMessage(ConnectAPI.HOST_SEND_REQUEST,new HostNoitceProcessor()),
+	/**前段请求发布的充卡联系人信息*/
+	contactMessage(ConnectAPI.HOST_ADDROOMCARD_REQUEST,new ContactMsgProcssor());
 	
 	private int msgCode;
 	private MsgProcessor processor;

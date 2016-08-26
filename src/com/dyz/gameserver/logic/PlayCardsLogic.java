@@ -254,23 +254,19 @@ public class PlayCardsLogic {
 	 */
     public void pickCard(){
       	clearAvatar();
-    	//判断握手信息是否为空，为空则发送，不为空则说明还有人回应我的消息，可能出现了丢包情况
-    	/*while(shakeHandsInfo.size() > 0){
-    		System.out.println("握手信息提醒：前段有消息未返回!");
-    	}*/
         //摸牌
         pickAvatarIndex = getNextAvatarIndex();
         //pickAvatarIndex = nextIndex;
         //本次摸得牌点数，下一张牌的点数，及本次摸的牌点数
         int tempPoint = getNextCardPoint();
-        currentCardPoint = tempPoint;
     	//System.out.println("摸牌："+tempPoint+"----上一家出牌"+putOffCardPoint+"--摸牌人索引:"+pickAvatarIndex);
-    	Avatar avatar = playerList.get(pickAvatarIndex);
-    	avatar.avatarVO.setHasMopaiChupai(true);//修改出牌 摸牌状态
-    	avatar.qiangHu = true;
-    	avatar.canHu = true;
-    	avatar.avatarVO.setHuType(0);//重置划水麻将胡牌格式
         if(tempPoint != -1) {
+        	currentCardPoint = tempPoint;
+        	Avatar avatar = playerList.get(pickAvatarIndex);
+        	avatar.avatarVO.setHasMopaiChupai(true);//修改出牌 摸牌状态
+        	avatar.qiangHu = true;
+        	avatar.canHu = true;
+        	avatar.avatarVO.setHuType(0);//重置划水麻将胡牌格式
             //记录摸牌信息
         	 //avatar.canHu = true;
             for(int i=0;i<playerList.size();i++){
