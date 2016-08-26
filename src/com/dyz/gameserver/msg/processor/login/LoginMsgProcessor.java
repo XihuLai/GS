@@ -40,7 +40,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			account = new Account();
 			account.setOpenid(loginVO.getOpenId());
 			//uuid由id+10000构成
-			account.setUuid(AccountService.getInstance().selectMaxId()+10000);
+			account.setUuid(AccountService.getInstance().selectMaxId()+100000);
 			account.setRoomcard(3);
 			account.setHeadicon(loginVO.getHeadIcon());
 			account.setNickname(loginVO.getNickName());
@@ -52,7 +52,6 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			account.setCreatetime(new Date());
 			account.setActualcard(3);
 			account.setTotalcard(3);
-			account.setStatus("0");
 
 			if(AccountService.getInstance().createAccount(account) == 0){
 				gameSession.sendMsg(new LoginResponse(0,null));

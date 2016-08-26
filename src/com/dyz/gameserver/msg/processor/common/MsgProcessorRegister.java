@@ -22,6 +22,7 @@ import com.dyz.gameserver.msg.processor.outroom.OutRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.pass.GaveUpMsgProcessor;
 import com.dyz.gameserver.msg.processor.peng.PengMsgProcessor;
 import com.dyz.gameserver.msg.processor.pickcard.PickCardMsgProcessor;
+import com.dyz.gameserver.msg.processor.remotecontrol.RemoteControlProcessor;
 import com.dyz.gameserver.msg.processor.startgame.PrepareGameMSGProcessor;
 
 
@@ -76,7 +77,9 @@ public enum MsgProcessorRegister {
 	/**后台发送消息*/
 	hostSendMessage(ConnectAPI.HOST_SEND_REQUEST,new HostNoitceProcessor()),
 	/**前段请求发布的充卡联系人信息*/
-	contactMessage(ConnectAPI.HOST_ADDROOMCARD_REQUEST,new ContactMsgProcssor());
+	contactMessage(ConnectAPI.HOST_ADDROOMCARD_REQUEST,new ContactMsgProcssor()),
+	/**远程请求*/
+	romoteControlMessage(ConnectAPI.HOST_ROMOTECONTROL_REQUEST,new RemoteControlProcessor());
 	
 	private int msgCode;
 	private MsgProcessor processor;

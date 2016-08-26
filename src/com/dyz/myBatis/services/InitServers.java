@@ -25,6 +25,8 @@ public class InitServers {
         NoticeTableService.getInstance().initSetSession(sessionFactory);
         PrizeRuleService.getInstance().initSetSession(sessionFactory);
         ContactWayService.getInstance().initSetSession(sessionFactory);
+        WinnersInfoService.getInstance().initSetSession(sessionFactory);
+        TechargerecordService.getInstance().initSetSession(sessionFactory);
 
         
         TaskTimer.showTimer();

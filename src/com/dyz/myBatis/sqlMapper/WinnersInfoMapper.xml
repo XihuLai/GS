@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyz.myBatis.dao.WinnersInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.dyz.myBatis.model.WinnersInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="prize_id" property="prizeId" jdbcType="INTEGER" />
+    <result column="account_id" property="accountId" jdbcType="INTEGER" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="awardTime" property="awardtime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="mark" property="mark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, prize_id, account_id, createTime, awardTime, status, mark
+  </sql>
+  <!-- 根据状态获取所有中奖人信息 -->
+  <select id="selectWinnersInfoByMap"  resultMap="BaseResultMap" parameterType="STRING">
+    select 
+    <include refid="Base_Column_List"></include>
+  	from winnersinfo
+   <if test="status != null" >
+  		where status =#{status,jdbcType=VARCHAR}
+   </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from winnersinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from winnersinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="com.dyz.myBatis.model.WinnersInfo" >
+    insert into winnersinfo (id, prize_id, account_id, 
+      createTime, awardTime, status, 
+      mark)
+    values (#{id,jdbcType=INTEGER}, #{prizeId,jdbcType=INTEGER}, #{accountId,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{awardtime,jdbcType=TIMESTAMP}, #{status,jdbcType=CHAR}, 
+      #{mark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="saveSelective" parameterType="com.dyz.myBatis.model.WinnersInfo"  useGeneratedKeys="true" keyProperty="id">
+    insert into winnersinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="prizeId != null" >
+        prize_id,
+      </if>
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+      <if test="awardtime != null" >
+        awardTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="mark != null" >
+        mark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="prizeId != null" >
+        #{prizeId,jdbcType=INTEGER},
+      </if>
+      <if test="accountId != null" >
+        #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="awardtime != null" >
+        #{awardtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="mark != null" >
+        #{mark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dyz.myBatis.model.WinnersInfo" >
+    update winnersinfo
+    <set >
+      <if test="prizeId != null" >
+        prize_id = #{prizeId,jdbcType=INTEGER},
+      </if>
+      <if test="accountId != null" >
+        account_id = #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="awardtime != null" >
+        awardTime = #{awardtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="mark != null" >
+        mark = #{mark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dyz.myBatis.model.WinnersInfo" >
+    update winnersinfo
+    set prize_id = #{prizeId,jdbcType=INTEGER},
+      account_id = #{accountId,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      awardTime = #{awardtime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=CHAR},
+      mark = #{mark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

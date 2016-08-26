@@ -111,5 +111,7 @@ public class ConnectAPI {
 	//app点+号返回充卡联系信息
 	public static int HOST_ADDROOMCARD_REQUEST = 0x156666;
 	public static int HOST_ADDROOMCARD_RESPONSE = 0x155555;
+	//远程请求
+	public static int HOST_ROMOTECONTROL_REQUEST = 0x999999;
 	
 }

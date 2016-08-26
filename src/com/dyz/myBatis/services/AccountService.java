@@ -31,14 +31,14 @@ public class AccountService {
      * @param account
      * @throws SQLException
      */
-    public void updateAccount(Account account) {
+    /*public void updateAccount(Account account) {
         try {
             int index = accMap.updateByPrimaryKey(account);
             System.out.println("===index====> "+index);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-    }
+    }*/
     /**
      *
      * @param account
@@ -59,7 +59,7 @@ public class AccountService {
      * @throws SQLException
      */
     public int createAccount(Account account) throws SQLException{
-        int index = accMap.insert(account);
+        int index = accMap.insertSelective(account);
         System.out.println("-account insert index->>" + index);
         return index;
     }
