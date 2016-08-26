@@ -10,6 +10,7 @@ import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.draw.DrawResponse;
 import com.dyz.myBatis.model.Prize;
+import com.dyz.myBatis.services.AccountService;
 import com.dyz.myBatis.services.PrizeService;
 import com.dyz.persist.util.GlobalUtil;
 import com.dyz.persist.util.PrizeProbability;
@@ -31,14 +32,17 @@ INotAuthProcessor  {
 			Avatar avatar = gameSession.getRole(Avatar.class);
 			if (avatar != null) {
 				if(type.equals("0")){
-					//获取所有奖品信息
+					//返回获取所有奖品信息
 					prizesInformation(gameSession);
 				}
 				else if(type.equals("1")){
 					//随机获取奖品id
-					if(avatar.avatarVO.getAccount().getPrizecount() > 0) {
+					if(avatar.avatarVO.getAccount().getPrizecount() > 0 && avatar.avatarVO.getAccount().getIsGame().equals("1")) {
 						getPrizeInfo(gameSession);
 						avatar.avatarVO.getAccount().setPrizecount(avatar.avatarVO.getAccount().getPrizecount()-1);
+						//修改表中抽奖次数
+						AccountService.getInstance().updatePrizeCount(avatar.avatarVO.getAccount().getPrizecount()-1);
+						
 					}else{
 						avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000020));
 					}
@@ -56,14 +60,7 @@ INotAuthProcessor  {
 	 * 返回所有的抽奖奖品信息
 	 */
 	public void  prizesInformation(GameSession gameSession){
-		//type      0：获取奖品信息    1：获取随机获得奖品id   
-		//PrizeService.getInstance().selectByPrimaryKey(1);
 		JSONObject json  = new JSONObject();
-		try {
-			List<Prize>  list = PrizeService.getInstance().selectAllPrizes();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		json.put("data", PrizeService.getInstance().selectAllPrizes());
 		json.put("type", "0");
 		gameSession.sendMsg(new DrawResponse(1,json));

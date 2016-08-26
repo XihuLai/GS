@@ -98,4 +98,15 @@ public interface AccountMapper {
      * @return int
      */
     int selectMaxId();
+    /**
+     * 获取所有前一天玩过游戏的玩家
+     */
+    List<Account> selectIsGames();
+    /**
+     * 获取所有玩家
+     * @return
+     */
+    List<Account> selectAllAccounts();
+    //修改抽奖次数
+    int updatePrizeCount(Integer prizecount);
 }

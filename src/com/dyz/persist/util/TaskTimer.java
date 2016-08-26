@@ -1,5 +1,11 @@
 package com.dyz.persist.util;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.context.GameServerContext;
@@ -7,11 +13,8 @@ import com.dyz.gameserver.manager.GameSessionManager;
 import com.dyz.gameserver.msg.response.HeadResponse;
 import com.dyz.gameserver.sprite.tool.AsyncTaskQueue;
 import com.dyz.myBatis.model.Account;
-import com.dyz.myBatis.model.PrizeRule;
 import com.dyz.myBatis.services.AccountService;
 import com.dyz.myBatis.services.PrizeRuleService;
-
-import java.util.*;
 
 /**
  * Created by kevin on 2016/8/15.
@@ -26,9 +29,12 @@ public class TaskTimer {
             public void run() {
                 ++count;
                 System.out.println("时间=" + new Date() + " 执行了" + count + "次"); // 1次
-                List<Account> accounts = AccountService.getInstance().selectAll();
+                //修改所有玩家的抽奖次数
+                int prizecount = PrizeRuleService.getInstance().selectByPrimaryKey(1).getPrecount();
+                int count =  AccountService.getInstance().updatePrizeCount(prizecount);
+                System.out.println("修改抽奖次数的人数："+count);
+                /*List<Account> accounts = AccountService.getInstance().selectAll();
                 if(accounts != null) {
-                	int count = PrizeRuleService.getInstance().selectByPrimaryKey(1).getPrecount();
                     for (int i = 0; i < accounts.size(); i++) {
                         Avatar tempAva = GameServerContext.getAvatarFromOn(accounts.get(i).getUuid());
                         if(tempAva != null){
@@ -43,9 +49,11 @@ public class TaskTimer {
                         Account temp = new Account();
                         temp.setId(accounts.get(i).getId());
                         temp.setPrizecount(count);
+                        temp.setIsGame("0");;
+                        //修改抽奖次数和玩游戏状态  isGame
                         AccountService.getInstance().updateByPrimaryKeySelective(temp);
                     }
-                }
+                }*/
             }
         };
 

@@ -22,7 +22,7 @@ public static String Error_000016 = "杠牌出错";
 public static String Error_000017 = "你已经在房间，不能加入新房间";
 public static String Error_000018 = "你输入的房间号不存在!";
 public static String Error_000019 = "参数传递错误!";
-public static String Error_000020 = "你的抽奖次数已经用完了!";
+public static String Error_000020 = "你的抽奖次数已经用完了或今天你还未进行过游戏!";
 
 
 

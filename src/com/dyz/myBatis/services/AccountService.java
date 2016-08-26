@@ -1,13 +1,14 @@
 package com.dyz.myBatis.services;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSessionFactory;
+
 import com.dyz.myBatis.dao.AccountMapper;
 import com.dyz.myBatis.daoImp.AccountDaoImp;
 import com.dyz.myBatis.model.Account;
 import com.dyz.myBatis.model.AccountExample;
-import org.apache.ibatis.session.SqlSessionFactory;
-
-import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Created by kevin on 2016/6/21.
@@ -82,7 +83,7 @@ public class AccountService {
     public List<Account> selectAll(){
         List<Account> accounts = null;
         try {
-            accounts = accMap.selectByExample(new AccountExample());
+            accounts = accMap.selectAllAccounts();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -104,5 +105,25 @@ public class AccountService {
     public Account selectByPrimaryKey(Integer id){
     	
     	return accMap.selectByPrimaryKey(id);
+    }
+    
+    /**
+     * 获取所有前一天玩过游戏的玩家
+     */
+    public  List<Account> selectIsGames(){
+    	
+		return accMap.selectIsGames();
+    }
+    /**
+     * 获取所有游戏的玩家
+     */
+    public  List<Account> selectAllAccounts(){
+    	
+		return accMap.selectAllAccounts();
+    }
+    
+    public int updatePrizeCount(Integer prizecount){
+    	
+    	return accMap.updatePrizeCount(prizecount);
     }
 }

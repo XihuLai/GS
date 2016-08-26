@@ -36,10 +36,19 @@ public class Account {
     private String status;
     
     private int prizecount;
+    //玩家当天是否玩过游戏
+    private String isGame;
     
     
-    
-    public Integer getManagerUpId() {
+    public String getIsGame() {
+		return isGame;
+	}
+
+	public void setIsGame(String isGame) {
+		this.isGame = isGame;
+	}
+
+	public Integer getManagerUpId() {
 		return managerUpId;
 	}
 

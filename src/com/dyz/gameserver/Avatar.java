@@ -175,7 +175,7 @@ public class Avatar implements GameObj {
         int number = avatarVO.getAccount().getRoomcard();
         number += value;
         avatarVO.getAccount().setRoomcard(number);
-        AccountService.getInstance().updateAccount(avatarVO.getAccount());
+        AccountService.getInstance().updateByPrimaryKeySelective(avatarVO.getAccount());
     }
     /**
      * 获取玩家session

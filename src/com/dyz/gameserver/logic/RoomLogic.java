@@ -20,6 +20,8 @@ import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.HuReturnObjectVO;
 import com.dyz.gameserver.pojo.RoomVO;
+import com.dyz.myBatis.model.Account;
+import com.dyz.myBatis.services.AccountService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -451,10 +453,21 @@ public class RoomLogic {
 	        	
 	        }*/
 	        //playCardsLogic.updateSurplusCardCount(count);
+	        Avatar avatar;
+	        Account account ;
 	        for(int i=0;i<playerList.size();i++){
 	        	//清除各种数据  1：本局胡牌时返回信息组成对象 ，
-	        	playerList.get(i).avatarVO.setHuReturnObjectVO(new HuReturnObjectVO());
-	            playerList.get(i).getSession().sendMsg(new StartGameResponse(1,playerList.get(i).avatarVO.getPaiArray(),playerList.indexOf(playCardsLogic.bankerAvatar)));
+	        	avatar = playerList.get(i);
+	        	avatar.avatarVO.setHuReturnObjectVO(new HuReturnObjectVO());
+	            avatar.getSession().sendMsg(new StartGameResponse(1,avatar.avatarVO.getPaiArray(),playerList.indexOf(playCardsLogic.bankerAvatar)));
+	            //修改玩家是否玩一局游戏的状态
+	            account = new Account();
+	            if(avatar.avatarVO.getAccount().getIsGame().equals("0")){
+	            	account.setId(avatar.avatarVO.getAccount().getId());
+	            	account.setIsGame("1");
+	            	AccountService.getInstance().updateByPrimaryKeySelective(account);
+	            	avatar.avatarVO.getAccount().setIsGame("1");
+	            }
 	        }
         }
     }

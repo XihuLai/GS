@@ -213,4 +213,34 @@ public class AccountDaoImp implements AccountMapper {
 		 AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
 		return mapper.selectMaxId();
 	}
+
+	@Override
+	public List<Account> selectIsGames() {
+		 SqlSession sqlSession = sqlSessionFactory.openSession();
+		 AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
+		return mapper.selectIsGames();
+	}
+
+	@Override
+	public List<Account> selectAllAccounts() {
+		 SqlSession sqlSession = sqlSessionFactory.openSession();
+		 AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
+		return mapper.selectAllAccounts();
+	}
+
+	@Override
+	public int updatePrizeCount(Integer prizecount) {
+		 int flag = 0;
+	        SqlSession sqlSession = sqlSessionFactory.openSession();
+	        try {
+	            AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
+	            flag = mapper.updatePrizeCount(prizecount);
+	            sqlSession.commit();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }finally {
+	            sqlSession.close();
+	        }
+		return flag;
+	}
 }
