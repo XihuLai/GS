@@ -24,7 +24,6 @@ import com.dyz.persist.util.PrizeProbability;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 抽奖处理类
@@ -47,8 +46,12 @@ INotAuthProcessor  {
 				}
 				else if(type.equals("1") && account.getPrizecount() >=1){
 					//随机获取奖品id
-					if(account.getPrizecount() > 0 && account.getIsGame().equals("1")) {
-						getPrizeInfo(gameSession,account);
+					if(account.getPrizecount() > 0 ) {
+						if(account.getIsGame().equals("1")){
+							getPrizeInfo(gameSession, account);
+						}else{
+							avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000021));
+						}
 					}else{
 						avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000020));
 					}
