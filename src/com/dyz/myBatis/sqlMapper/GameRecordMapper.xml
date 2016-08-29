@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.weipai.mapper.GameRecordMapper" >
-  <resultMap id="BaseResultMap" type="com.weipai.model.GameRecord" >
+<mapper namespace="com.dyz.myBatis.dao.GameRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.dyz.myBatis.model.GameRecord" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="game_id" property="gameId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="CHAR" />
@@ -28,7 +28,7 @@
     delete from gamerecord
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.weipai.model.GameRecord" >
+  <insert id="insert" parameterType="com.dyz.myBatis.model.GameRecord" >
     insert into gamerecord (id, game_id, type, 
       cardIndex, acountindex_id, curentTime, 
       playerList_one, playerList_two, playerList_three, 
@@ -38,7 +38,7 @@
       #{playerlistOne,jdbcType=VARCHAR}, #{playerlistTwo,jdbcType=VARCHAR}, #{playerlistThree,jdbcType=VARCHAR}, 
       #{playerlistFour,jdbcType=VARCHAR}, #{status,jdbcType=CHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.weipai.model.GameRecord" >
+  <insert id="insertSelective" parameterType="com.dyz.myBatis.model.GameRecord" >
     insert into gamerecord
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -111,7 +111,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.weipai.model.GameRecord" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.dyz.myBatis.model.GameRecord" >
     update gamerecord
     <set >
       <if test="gameId != null" >
@@ -147,7 +147,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.weipai.model.GameRecord" >
+  <update id="updateByPrimaryKey" parameterType="com.dyz.myBatis.model.GameRecord" >
     update gamerecord
     set game_id = #{gameId,jdbcType=INTEGER},
       type = #{type,jdbcType=CHAR},

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.weipai.mapper.GaameAccountIndexMapper" >
-  <resultMap id="BaseResultMap" type="com.weipai.model.GaameAccountIndex" >
+<mapper namespace="com.dyz.myBatis.dao.GameAccountIndexMapper" >
+  <resultMap id="BaseResultMap" type="com.dyz.myBatis.model.GameAccountIndex" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="game_id" property="gameId" jdbcType="INTEGER" />
     <result column="account_id" property="accountId" jdbcType="INTEGER" />
@@ -21,13 +21,13 @@
     delete from gameaccountindex
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.weipai.model.GaameAccountIndex" >
+  <insert id="insert" parameterType="com.dyz.myBatis.model.GameAccountIndex" >
     insert into gameaccountindex (id, game_id, account_id, 
       accountIndex, cardList)
     values (#{id,jdbcType=INTEGER}, #{gameId,jdbcType=INTEGER}, #{accountId,jdbcType=INTEGER}, 
       #{accountindex,jdbcType=INTEGER}, #{cardlist,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.weipai.model.GaameAccountIndex" >
+  <insert id="insertSelective" parameterType="com.dyz.myBatis.model.GameAccountIndex" >
     insert into gameaccountindex
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,7 +64,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.weipai.model.GaameAccountIndex" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.dyz.myBatis.model.GameAccountIndex" >
     update gameaccountindex
     <set >
       <if test="gameId != null" >
@@ -82,7 +82,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.weipai.model.GaameAccountIndex" >
+  <update id="updateByPrimaryKey" parameterType="com.dyz.myBatis.model.GameAccountIndex" >
     update gameaccountindex
     set game_id = #{gameId,jdbcType=INTEGER},
       account_id = #{accountId,jdbcType=INTEGER},

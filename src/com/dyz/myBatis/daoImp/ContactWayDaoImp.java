@@ -3,7 +3,6 @@ package com.dyz.myBatis.daoImp;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.dyz.myBatis.dao.AccountMapper;
 import com.dyz.myBatis.dao.ContactWayMapper;
 import com.dyz.myBatis.model.ContactWay;
 
@@ -43,8 +42,18 @@ public class ContactWayDaoImp implements ContactWayMapper {
 
 	@Override
 	public ContactWay selectByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		ContactWay contactWay = null;
+	        SqlSession sqlSession = sqlSessionFactory.openSession();
+	        try {
+	        	ContactWayMapper mapper = sqlSession.getMapper(ContactWayMapper.class);
+	        	contactWay = mapper.selectByPrimaryKey(id);
+	            sqlSession.commit();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }finally {
+	            sqlSession.close();
+	        }
+	        return contactWay;
 	}
 
 	@Override

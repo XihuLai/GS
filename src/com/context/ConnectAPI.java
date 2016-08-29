@@ -111,6 +111,11 @@ public class ConnectAPI {
 	//app点+号返回充卡联系信息
 	public static int HOST_ADDROOMCARD_REQUEST = 0x156666;
 	public static int HOST_ADDROOMCARD_RESPONSE = 0x155555;
+	
+	//每天充值抽奖信息之后，通知在线玩家
+	public static int HOST_UPDATEDRAW_RESPONSE = 0x010111;
+		
+		
 	//远程请求
 	public static int HOST_ROMOTECONTROL_REQUEST = 0x999999;
 	

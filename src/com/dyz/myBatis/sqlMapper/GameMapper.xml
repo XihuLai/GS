@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.weipai.mapper.GameMapper" >
-  <resultMap id="BaseResultMap" type="com.weipai.model.Game" >
+<mapper namespace="com.dyz.myBatis.dao.GameMapper" >
+  <resultMap id="BaseResultMap" type="com.dyz.myBatis.model.Game" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
     <result column="endtTime" property="endttime" jdbcType="TIMESTAMP" />
@@ -21,13 +21,13 @@
     delete from game
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.weipai.model.Game" >
+  <insert id="insert" parameterType="com.dyz.myBatis.model.Game" >
     insert into game (id, createTime, endtTime, 
       room_id, status)
     values (#{id,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{endttime,jdbcType=TIMESTAMP}, 
       #{roomId,jdbcType=INTEGER}, #{status,jdbcType=CHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.weipai.model.Game" >
+  <insert id="insertSelective" parameterType="com.dyz.myBatis.model.Game" >
     insert into game
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,7 +64,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.weipai.model.Game" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.dyz.myBatis.model.Game" >
     update game
     <set >
       <if test="createtime != null" >
@@ -82,7 +82,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.weipai.model.Game" >
+  <update id="updateByPrimaryKey" parameterType="com.dyz.myBatis.model.Game" >
     update game
     set createTime = #{createtime,jdbcType=TIMESTAMP},
       endtTime = #{endttime,jdbcType=TIMESTAMP},

@@ -37,5 +37,6 @@
         <mapper resource="com/dyz/myBatis/sqlMapper/PrizeRuleMapper.xml"/>
         <mapper resource="com/dyz/myBatis/sqlMapper/WinnersInfoMapper.xml"/>
         <mapper resource="com/dyz/myBatis/sqlMapper/TechargerecordMapper.xml"/>
+        <mapper resource="com/dyz/myBatis/sqlMapper/ContactWayMapper.xml"/>
     </mappers>
 </configuration>

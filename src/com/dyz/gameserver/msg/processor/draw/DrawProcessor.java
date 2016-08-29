@@ -40,7 +40,7 @@ INotAuthProcessor  {
 			String type = request.getString();//传入类型 0：获取所有奖品信息    1：获取随机获得奖品id    
 			Avatar avatar = gameSession.getRole(Avatar.class);
 			if (avatar != null) {
-				Account account = avatar.avatarVO.getAccount();
+				Account account = AccountService.getInstance().selectByPrimaryKey(avatar.avatarVO.getAccount().getId());
 				if(type.equals("0")){
 					//返回获取所有奖品信息
 					prizesInformation(gameSession);

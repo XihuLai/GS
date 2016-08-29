@@ -2,7 +2,11 @@ package com.dyz.persist.util;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,6 +15,7 @@ import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.context.GameServerContext;
 import com.dyz.gameserver.manager.GameSessionManager;
 import com.dyz.gameserver.msg.response.HeadResponse;
+import com.dyz.gameserver.msg.response.updateDrawInfo.UpdateDrawInfoResponse;
 import com.dyz.gameserver.sprite.tool.AsyncTaskQueue;
 import com.dyz.myBatis.model.Account;
 import com.dyz.myBatis.services.AccountService;
@@ -33,9 +38,15 @@ public class TaskTimer {
                 int prizecount = PrizeRuleService.getInstance().selectByPrimaryKey(1).getPrecount();
                 int count =  AccountService.getInstance().updatePrizeCount(prizecount);
                 System.out.println("修改抽奖次数的人数："+count);
-                /*List<Account> accounts = AccountService.getInstance().selectAll();
-                if(accounts != null) {
-                    for (int i = 0; i < accounts.size(); i++) {
+                //List<Account> accounts = AccountService.getInstance().selectAll();
+                Map<String, GameSession> gamessions = GameSessionManager.getInstance().sessionMap;
+                if(!gamessions.isEmpty()){
+                	for (Entry<String, GameSession> set :gamessions.entrySet()) {
+                		set.getValue().sendMsg(new UpdateDrawInfoResponse(1, prizecount+""));
+                		set.getValue().getRole(Avatar.class).avatarVO.getAccount().setPrizecount(prizecount);
+                		set.getValue().getRole(Avatar.class).avatarVO.getAccount().setIsGame("0");
+					}
+                  /*  for (int i = 0; i < accounts.size(); i++) {
                         Avatar tempAva = GameServerContext.getAvatarFromOn(accounts.get(i).getUuid());
                         if(tempAva != null){
                             tempAva.avatarVO.getAccount().setPrizecount(count);
@@ -49,11 +60,9 @@ public class TaskTimer {
                         Account temp = new Account();
                         temp.setId(accounts.get(i).getId());
                         temp.setPrizecount(count);
-                        temp.setIsGame("0");;
-                        //修改抽奖次数和玩游戏状态  isGame
-                        AccountService.getInstance().updateByPrimaryKeySelective(temp);
-                    }
-                }*/
+                        temp.setIsGame("0");
+                    }*/
+                }
             }
         };
 

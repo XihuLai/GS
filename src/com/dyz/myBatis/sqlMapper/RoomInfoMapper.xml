@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.weipai.mapper.RoomInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.weipai.model.RoomInfo" >
+<mapper namespace="com.dyz.myBatis.dao.RoomInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.dyz.myBatis.model.RoomInfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="gameType" property="gametype" jdbcType="CHAR" />
     <result column="isHong" property="ishong" jdbcType="CHAR" />
@@ -26,7 +26,7 @@
     delete from roominfo
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.weipai.model.RoomInfo" useGeneratedKeys="true"  keyColumn="id">
+  <insert id="insert" parameterType="com.dyz.myBatis.model.RoomInfo" useGeneratedKeys="true"  keyColumn="id">
     insert into roominfo (id, gameType, isHong, 
       roomid, sevenDouble, ma, 
       zimo, xiayu, addWordCard, 
@@ -36,7 +36,7 @@
       #{zimo,jdbcType=CHAR}, #{xiayu,jdbcType=INTEGER}, #{addwordcard,jdbcType=CHAR}, 
       #{name,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.weipai.model.RoomInfo" >
+  <insert id="insertSelective" parameterType="com.dyz.myBatis.model.RoomInfo" >
     insert into roominfo
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -103,7 +103,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.weipai.model.RoomInfo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.dyz.myBatis.model.RoomInfo" >
     update roominfo
     <set >
       <if test="gametype != null" >
@@ -136,7 +136,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.weipai.model.RoomInfo" >
+  <update id="updateByPrimaryKey" parameterType="com.dyz.myBatis.model.RoomInfo" >
     update roominfo
     set gameType = #{gametype,jdbcType=CHAR},
       isHong = #{ishong,jdbcType=CHAR},
