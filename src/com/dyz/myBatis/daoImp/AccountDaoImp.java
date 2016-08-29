@@ -86,7 +86,18 @@ public class AccountDaoImp implements AccountMapper {
      */
     @Override
     public int insertSelective(Account record) {
-        return 0;
+    	 int flag = 0;
+         SqlSession sqlSession = sqlSessionFactory.openSession();
+         try {
+             AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
+             flag = mapper.insertSelective(record);
+             sqlSession.commit();
+         } catch (Exception e) {
+             e.printStackTrace();
+         }finally {
+             sqlSession.close();
+         }
+         return flag;
     }
 
     /**

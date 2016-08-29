@@ -226,7 +226,7 @@
        <if test="managerUpId != null">
         manager_up_id,
       </if>
-      <if test="actualCard != null">
+      <if test="actualcard != null">
         actualCard,
       </if>
       <if test="totalcard != null">

@@ -103,6 +103,7 @@ public class TaskTimer {
         Date date = calendar.getTime();
         Timer timer = new Timer();
         System.out.println(date);
-        timer.schedule(task, date,1000);
+        //20秒一次心跳包
+        timer.schedule(task, date,20000);
     }
 }

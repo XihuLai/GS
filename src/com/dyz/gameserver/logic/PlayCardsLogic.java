@@ -756,12 +756,6 @@ public class PlayCardsLogic {
     			 }
     			 if(gangAvatar.contains(avatar)){
     				 gangAvatar.remove(avatar);
-    				 //存储杠牌的信息，
-    				 avatar.putResultRelation(2,cardPoint+"");
-    				 avatar.avatarVO.getPaiArray()[1][cardPoint] = 2;
-    				 avatar.getPaiArray()[1][cardPoint] = 2;
-    				 
-    				 avatar.setCardListStatus(cardPoint,2);//杠牌标记2
     				 //判断杠的类型，自杠，还是点杠
     				 String str;
     				 int type;
@@ -786,6 +780,12 @@ public class PlayCardsLogic {
     							 return false;
     						 }
     						 else{
+    							 //存储杠牌的信息，
+    		    				 avatar.putResultRelation(2,cardPoint+"");
+    		    				 avatar.avatarVO.getPaiArray()[1][cardPoint] = 2;
+    		    				 avatar.getPaiArray()[1][cardPoint] = 2;
+    		    				 
+    		    				 avatar.setCardListStatus(cardPoint,2);//杠牌标记2
     							 if(roomVO.getRoomType() == 1){
     								 //转转麻将
     								 str = "0:"+cardPoint+":"+Rule.Gang_ming; 
@@ -801,7 +801,7 @@ public class PlayCardsLogic {
     								 type = 0;
     								 score = 1;
     								 recordType ="5";
-    								 endStatisticstype = "guolugang";
+    								 endStatisticstype = "minggang";
     							 }
     							 else{
     								 //长沙麻将
@@ -815,6 +815,12 @@ public class PlayCardsLogic {
     						 }
     					 }
     					 else{
+    						 //存储杠牌的信息，
+    	    				 avatar.putResultRelation(2,cardPoint+"");
+    	    				 avatar.avatarVO.getPaiArray()[1][cardPoint] = 2;
+    	    				 avatar.getPaiArray()[1][cardPoint] = 2;
+    	    				 
+    	    				 avatar.setCardListStatus(cardPoint,2);//杠牌标记2
     						 //暗杠
     						 if(roomVO.getRoomType() == 1){
     							 //转转麻将
@@ -858,6 +864,12 @@ public class PlayCardsLogic {
     					 flag = true;
     				 }
     				 else{
+    					 //存储杠牌的信息，
+        				 avatar.putResultRelation(2,cardPoint+"");
+        				 avatar.avatarVO.getPaiArray()[1][cardPoint] = 2;
+        				 avatar.getPaiArray()[1][cardPoint] = 2;
+        				 
+        				 avatar.setCardListStatus(cardPoint,2);//杠牌标记2
     					 //点杠(分在明杠里面)（划水麻将里面的放杠）
     					 //把出的牌从出牌玩家的chupais中移除掉
         				 playerList.get(curAvatarIndex).avatarVO.removeLastChupais();

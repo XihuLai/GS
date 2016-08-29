@@ -52,6 +52,8 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			account.setCreatetime(new Date());
 			account.setActualcard(3);
 			account.setTotalcard(3);
+			account.setStatus("0");
+			account.setIsGame("0");
 
 			if(AccountService.getInstance().createAccount(account) == 0){
 				gameSession.sendMsg(new LoginResponse(0,null));

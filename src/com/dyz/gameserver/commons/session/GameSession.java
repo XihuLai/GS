@@ -125,7 +125,7 @@ public class GameSession implements GameObj {
 	public void close(){
 		//System.out.println("关闭SESSION -- > "+session.getRemoteAddress()+getAddress());
 		if(session != null ) {
-			session.close(false);
+			session.close(false);// 2016-8-29短线时不关闭用户session，等
 			//关闭session的时候(掉线) 如果只其一个用户还在房间，则踢出用户并解散房间，并向其他玩家发送消息
 			//GameSession playerObj = (GameSession) session.getAttribute(KEY_PLAYER_SESSION);
 			Avatar avatar = getRole(Avatar.class);
