@@ -38,5 +38,10 @@
         <mapper resource="com/dyz/myBatis/sqlMapper/WinnersInfoMapper.xml"/>
         <mapper resource="com/dyz/myBatis/sqlMapper/TechargerecordMapper.xml"/>
         <mapper resource="com/dyz/myBatis/sqlMapper/ContactWayMapper.xml"/>
+        <mapper resource="com/dyz/myBatis/sqlMapper/StandingsMapper.xml"/>
+        <mapper resource="com/dyz/myBatis/sqlMapper/StandingsDetailMapper.xml"/>
+        <mapper resource="com/dyz/myBatis/sqlMapper/RoomInfoMapper.xml"/>
+        <mapper resource="com/dyz/myBatis/sqlMapper/StandingsRelationMapper.xml"/>
+        <mapper resource="com/dyz/myBatis/sqlMapper/StandingsAccountRelationMapper.xml"/>
     </mappers>
 </configuration>

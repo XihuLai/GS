@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import com.dyz.gameserver.pojo.HuReturnObjectVO;
 import com.dyz.myBatis.dao.AccountMapper;
 import com.dyz.myBatis.daoImp.AccountDaoImp;
 import com.dyz.myBatis.model.Account;
@@ -107,6 +108,10 @@ public class AccountService {
     	return accMap.selectByPrimaryKey(id);
     }
     
+    public Account selectByUUid(int parseInt) {
+		return accMap.selectByUuid(parseInt);
+	}
+    
     /**
      * 获取所有前一天玩过游戏的玩家
      */
@@ -126,4 +131,5 @@ public class AccountService {
     	
     	return accMap.updatePrizeCount(prizecount);
     }
+
 }

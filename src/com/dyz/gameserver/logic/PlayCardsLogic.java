@@ -23,12 +23,23 @@ import com.dyz.gameserver.msg.response.peng.PengResponse;
 import com.dyz.gameserver.msg.response.pickcard.OtherPickCardResponse;
 import com.dyz.gameserver.msg.response.pickcard.PickCardResponse;
 import com.dyz.gameserver.pojo.*;
+import com.dyz.myBatis.model.Standings;
+import com.dyz.myBatis.model.StandingsAccountRelation;
+import com.dyz.myBatis.model.StandingsDetail;
+import com.dyz.myBatis.model.StandingsRelation;
+import com.dyz.myBatis.services.AccountService;
+import com.dyz.myBatis.services.StandingsAccountRelationService;
+import com.dyz.myBatis.services.StandingsDetailService;
+import com.dyz.myBatis.services.StandingsRelationService;
+import com.dyz.myBatis.services.StandingsService;
+import com.dyz.persist.util.DateUtil;
 import com.dyz.persist.util.HuPaiType;
 import com.dyz.persist.util.JsonUtilTool;
 import com.dyz.persist.util.Naizi;
 import com.dyz.persist.util.NormalHuPai;
 import com.dyz.persist.util.StringUtil;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -134,6 +145,8 @@ public class PlayCardsLogic {
 	int followNumber = 0;
 	//是否被跟庄，最后结算的时候用
 	boolean isFollow = false;
+	//战绩存取每一局的id
+	List<Integer> standingsDetailsIds = new ArrayList<Integer>();
     /**
      * 和前段握手，判断是否丢包的情况，丢包则继续发送信息
      *Integer为用户uuid
@@ -694,7 +707,7 @@ public class PlayCardsLogic {
     			 if(penAvatar.contains(avatar)){
     				 //把出的牌从出牌玩家的chupais中移除掉
     				 playerList.get(curAvatarIndex).avatarVO.removeLastChupais();
-    				 
+    				 penAvatar.remove(avatar);
     				 //更新牌组
     				 flag = avatar.putCardInList(cardIndex);
     				 avatar.setCardListStatus(cardIndex,1);
@@ -1114,10 +1127,19 @@ public class PlayCardsLogic {
      * 不能多次调用，多次调用，总分会多增加出最近一局的分数
      */
     public void settlementData(String  type){
+    	if(!type.equals("0")){
+    		allMas = null; 
+    	}
     	JSONArray array = new JSONArray();
     	JSONObject json = new JSONObject();
+    	StandingsDetail standingsDetail = new StandingsDetail();
+    	StringBuffer content = new StringBuffer();
     	for (Avatar avatar : playerList) {
     		HuReturnObjectVO   huReturnObjectVO = avatar.avatarVO.getHuReturnObjectVO();
+    		//生成战绩内容
+    		content.append(avatar.avatarVO.getAccount().getNickname()+":"+huReturnObjectVO.getTotalScore()+",");
+    		
+    		//统计本局分数
     		huReturnObjectVO.setNickname(avatar.avatarVO.getAccount().getNickname());
     		huReturnObjectVO.setPaiArray(avatar.avatarVO.getPaiArray()[0]);
     		huReturnObjectVO.setUuid(avatar.getUuId());
@@ -1131,9 +1153,27 @@ public class PlayCardsLogic {
     	json.put("allMas", allMas);
     	json.put("type", type);
     	json.put("validMas", HuPaiType.getInstance().getValidMa());
+    	//生成战绩content
+    	standingsDetail.setContent(content.toString());
+    	try {
+    		standingsDetail.setCreatetime(DateUtil.toChangeDate(new Date(), DateUtil.maskC));
+    		int id = StandingsDetailService.getInstance().saveSelective(standingsDetail);
+    		if(id >0){
+    			standingsDetailsIds.add(standingsDetail.getId());
+    		}
+    		else{
+    			System.out.println("分局战绩录入失败："+new Date());
+    		}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+    	
+    	
     	int count = 10;
     	for (Avatar avatar : playerList) {
+    		//发送消息
     		avatar.getSession().sendMsg(new HuPaiResponse(1,json.toString()));
+    		
     		
     		avatar.overOff = true;
     		avatar.oneSettlementInfo = json.toString();
@@ -1151,6 +1191,10 @@ public class PlayCardsLogic {
 		}
     	//房间局数用完，返回本局胡牌信息的同时返回整个房间这几局的胡，杠等统计信息
 	  if(count <= 0){
+		  	//总房间战绩
+		  	Standings standings  = new Standings();
+		  	StringBuffer sb = new StringBuffer();
+		  	//standings.setContent(content);
 			Map<String, Map<String, Integer>> endStatistics = roomVO.getEndStatistics();
 			Map<String,Integer> map = new HashMap<String, Integer>();
 			Set<Entry<String, Map<String, Integer>>> set= endStatistics.entrySet();
@@ -1160,6 +1204,7 @@ public class PlayCardsLogic {
 			for (Entry<String, Map<String, Integer>>  param : set) {
 				obj = new FinalGameEndItemVo();
 				obj.setUuid(Integer.parseInt(param.getKey()));
+				sb.append(AccountService.getInstance().selectByUUid(Integer.parseInt(param.getKey())).getNickname());
 				map = param.getValue();
 				for (Entry<String, Integer> entry : map.entrySet()) {
 					switch (entry.getKey()) {
@@ -1180,6 +1225,7 @@ public class PlayCardsLogic {
 						break;
 					case "scores":
 						obj.setScores(entry.getValue());
+						sb.append(":"+entry.getValue()+",");
 						break;
 					default:
 						break;
@@ -1189,6 +1235,35 @@ public class PlayCardsLogic {
 			}
 			js.put("totalInfo", list);
 			//system.out.println("这个房间次数用完：返回数据=="+js.toJSONString());
+			//战绩记录存储
+			standings.setContent(sb.toString());
+			try {
+				standings.setCreatetime(DateUtil.toChangeDate(new Date(), DateUtil.maskC));
+				standings.setRoomid(roomVO.getId());
+				int i = StandingsService.getInstance().saveSelective(standings);
+				if(i> 0){
+					//存储 房间战绩和每局战绩关联信息
+					StandingsRelation standingsRelation;
+					for (Integer standingsDetailsId : standingsDetailsIds) {
+						standingsRelation = new StandingsRelation();
+						standingsRelation.setStandingsId(standings.getId());
+						standingsRelation.setStandingsdetailId(standingsDetailsId);
+						StandingsRelationService.getInstance().saveSelective(standingsRelation);
+					}
+					//存储 房间战绩和每个玩家关联信息
+					StandingsAccountRelation standingsAccountRelation;
+					for (Avatar avatar : playerList) {
+						standingsAccountRelation = new StandingsAccountRelation();
+						standingsAccountRelation.setStandingsId(standings.getId());
+						standingsAccountRelation.setAccountId(avatar.avatarVO.getAccount().getId());
+						StandingsAccountRelationService.getInstance().saveSelective(standingsAccountRelation);
+					}
+				}
+				System.out.println("整个房间战绩"+i);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			//发送消息
 			for (Avatar avatar : playerList) {
 				avatar.getSession().sendMsg(new HuPaiAllResponse(1,js.toString()));
 			}

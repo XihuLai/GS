@@ -1,8 +1,10 @@
 package com.dyz.myBatis.daoImp;
 
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.dyz.myBatis.dao.RoomInfoMapper;
+import com.dyz.myBatis.dao.StandingsMapper;
 import com.dyz.myBatis.model.RoomInfo;
 
 public class RoomInfoDaoImp implements RoomInfoMapper {
@@ -17,13 +19,33 @@ public class RoomInfoDaoImp implements RoomInfoMapper {
 		}
 		@Override
 		public int insert(RoomInfo record) {
-			// TODO Auto-generated method stub
-			return 0;
+			int flag = 0;
+	        SqlSession sqlSession = sqlSessionFactory.openSession();
+	        try {
+	            RoomInfoMapper mapper = sqlSession.getMapper(RoomInfoMapper.class);
+	            flag = mapper.insert(record);
+	            sqlSession.commit();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }finally {
+	            sqlSession.close();
+	        }
+	        return flag;
 		}
 		@Override
 		public int insertSelective(RoomInfo record) {
-			// TODO Auto-generated method stub
-			return 0;
+			int flag = 0;
+	        SqlSession sqlSession = sqlSessionFactory.openSession();
+	        try {
+	            RoomInfoMapper mapper = sqlSession.getMapper(RoomInfoMapper.class);
+	            flag = mapper.insertSelective(record);
+	            sqlSession.commit();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }finally {
+	            sqlSession.close();
+	        }
+	        return flag;
 		}
 		@Override
 		public RoomInfo selectByPrimaryKey(Integer id) {

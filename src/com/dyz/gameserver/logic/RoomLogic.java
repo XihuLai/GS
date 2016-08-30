@@ -46,6 +46,10 @@ public class RoomLogic {
      */
     private boolean dissolve = true;
     /**
+     * 是否已经解散房间
+     */
+    private  boolean hasDissolve = false; 
+    /**
      *记录拒绝解散房间的人数，两个人及以上就不解散房间
      */
     private int refuse = 0 ;
@@ -67,7 +71,7 @@ public class RoomLogic {
     }
 
     /**
-     * 创建房间,默认进入装备状态
+     * 创建房间,默认进入准备状态
      * @param avatar
      */
     public void CreateRoom(Avatar avatar){
@@ -283,8 +287,9 @@ public class RoomLogic {
     			}
     		}
     		
-    		if(onlineCount <= dissolveCount+1){
+    		if(onlineCount <= dissolveCount+1 && !hasDissolve ){
     			RoomManager.getInstance().getRoom(avatar.getRoomVO().getRoomId()).count = 0;
+    			hasDissolve = true;
     			//先结算信息，里面同时调用了解散房间的信息
     			playCardsLogic.settlementData("2");
     			/*json = new JSONObject();
@@ -561,6 +566,7 @@ public class RoomLogic {
 		GameSession gamesession;
 		JSONObject json  = new JSONObject();
 		json.put("type","3");
+		hasDissolve = false;
 		for (Avatar avat : playerList) {
 			avatarVO = new AvatarVO();
 			avatarVO.setAccount(avat.avatarVO.getAccount());
@@ -587,6 +593,7 @@ public class RoomLogic {
 	public void exitRoomDetail(JSONObject json){
 		AvatarVO avatarVO;
 		GameSession gamesession;
+		hasDissolve = false;
 		for (Avatar avat : playerList) {
 			avatarVO = new AvatarVO();
 			avatarVO.setAccount(avat.avatarVO.getAccount());

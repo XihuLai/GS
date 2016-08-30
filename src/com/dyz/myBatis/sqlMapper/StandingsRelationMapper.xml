@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyz.myBatis.dao.StandingsRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.dyz.myBatis.model.StandingsRelation" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="standings_id" property="standingsId" jdbcType="INTEGER" />
+    <result column="standingsDetail_id" property="standingsdetailId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, standings_id, standingsDetail_id
+  </sql>
+  <!-- 根据房间id取得，其对应的每局战绩 -->
+  <select id="selectDetailIdsByStandingsId" resultType="INTEGER" parameterType="java.lang.Integer">
+  	select 
+    	standingsDetail_id
+    from standingsrelation
+    where standings_id = #{standingsId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from standingsrelation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from standingsrelation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="com.dyz.myBatis.model.StandingsRelation" useGeneratedKeys="true" keyProperty="id">
+    insert into standingsrelation (id, standings_id, standingsDetail_id)
+    values (#{id,jdbcType=INTEGER}, #{standingsId,jdbcType=INTEGER}, #{standingsdetailId,jdbcType=INTEGER})
+  </insert>
+  <insert id="saveSelective" parameterType="com.dyz.myBatis.model.StandingsRelation"  useGeneratedKeys="true" keyProperty="id">
+    insert into standingsrelation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="standingsId != null" >
+        standings_id,
+      </if>
+      <if test="standingsdetailId != null" >
+        standingsDetail_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="standingsId != null" >
+        #{standingsId,jdbcType=INTEGER},
+      </if>
+      <if test="standingsdetailId != null" >
+        #{standingsdetailId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dyz.myBatis.model.StandingsRelation" >
+    update standingsrelation
+    <set >
+      <if test="standingsId != null" >
+        standings_id = #{standingsId,jdbcType=INTEGER},
+      </if>
+      <if test="standingsdetailId != null" >
+        standingsDetail_id = #{standingsdetailId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dyz.myBatis.model.StandingsRelation" >
+    update standingsrelation
+    set standings_id = #{standingsId,jdbcType=INTEGER},
+      standingsDetail_id = #{standingsdetailId,jdbcType=INTEGER},
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

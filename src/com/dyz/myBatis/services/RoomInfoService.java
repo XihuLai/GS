@@ -1,15 +1,10 @@
 package com.dyz.myBatis.services;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.myBatis.dao.RoomInfoMapper;
 import com.dyz.myBatis.daoImp.RoomInfoDaoImp;
-import com.dyz.myBatis.model.GameAccountIndex;
 import com.dyz.myBatis.model.RoomInfo;
 
 public class RoomInfoService {
@@ -31,7 +26,7 @@ public class RoomInfoService {
 	     * @param roomInfo
 	     * @return
 	     */
-	    public int createRoomInfo(RoomVO roomVO) throws SQLException{
+	    public int createRoomInfo(RoomVO roomVO){
 	    	//创建信息的同事创建其关联表
 	        RoomInfo room = new RoomInfo();
 	        room.setIshong(roomVO.getHong()?"1":"0");
@@ -45,17 +40,18 @@ public class RoomInfoService {
 	        room.setAddwordcard(roomVO.isAddWordCard()?"1":"0");
 
 	    	//创建RoomInfo表
-	        int index = roomInfoMap.insert(room);
+	        int index = roomInfoMap.insertSelective(room);
+	        roomVO.setId(room.getId());
 	        //创建表 gameaccountindex记录某个游戏记录中4个玩家对应的索引
-	        GameAccountIndex gameAccountIndex;
+	        //GameAccountIndex gameAccountIndex;
 	        //gameAccountIndex.setAccountId(accountId);
-	        List<AvatarVO> avatarVos = roomVO.getPlayerList();
-	        for (int i = 0 ; i<avatarVos.size();i++) {
-	        	gameAccountIndex = new GameAccountIndex();
-	        	int [] pai = avatarVos.get(i).getPaiArray()[0];
+	       // List<AvatarVO> avatarVos = roomVO.getPlayerList();
+	       // for (int i = 0 ; i<avatarVos.size();i++) {
+	        //	gameAccountIndex = new GameAccountIndex();
+	        	//int [] pai = avatarVos.get(i).getPaiArray()[0];
 	        	//gameAccountIndex.setAccountId(avatarVo.getAccount().getId());
-	        	gameAccountIndex.setAccountindex(i);
-			}
+	        //	gameAccountIndex.setAccountindex(i);
+			//}
 	        
 	        
 	        //gameaccountindex记录某个游戏记录中4个玩家对应的索引

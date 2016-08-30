@@ -13,6 +13,10 @@ public class RoomVO {
      */
     private int roomId;
     /**
+     * 数据库表ID
+     */
+    private int id;
+    /**
      * 房间的使用总次数
      */
     private int roundNumber;
@@ -224,7 +228,19 @@ public class RoomVO {
         result.name = name;
         result.playerList = playerList;
         result.endStatistics = endStatistics;
+        result.id = id;
         return result;
     }
 
+
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+    
 }

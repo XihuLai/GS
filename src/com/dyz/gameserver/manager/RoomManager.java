@@ -6,6 +6,7 @@ import java.util.Map;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.logic.RoomLogic;
 import com.dyz.gameserver.pojo.RoomVO;
+import com.dyz.myBatis.services.RoomInfoService;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -36,6 +37,8 @@ public class RoomManager {
         roomVO.setRoomId(roomId);
         RoomLogic roomLogic = new RoomLogic(roomVO);
         roomLogic.CreateRoom(avatar);
+        //表中录入房间信息
+        RoomInfoService.getInstance().createRoomInfo(roomVO);
         //这里需要统计创建房间个数****
         roomList.put(roomId,roomLogic);
     }

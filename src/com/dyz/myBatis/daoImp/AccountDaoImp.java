@@ -254,4 +254,20 @@ public class AccountDaoImp implements AccountMapper {
 	        }
 		return flag;
 	}
+
+	@Override
+	public Account selectByUuid(Integer id) {
+		 Account result = null;
+         SqlSession sqlSession = sqlSessionFactory.openSession();
+         try {
+             AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
+             result = mapper.selectByUuid(id);
+             sqlSession.commit();
+         } catch (Exception e) {
+             e.printStackTrace();
+         }finally {
+             sqlSession.close();
+         }
+        return result;
+	}
 }

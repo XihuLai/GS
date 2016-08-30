@@ -33,7 +33,7 @@
     delete from winnersinfo
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="save" parameterType="com.dyz.myBatis.model.WinnersInfo" >
+  <insert id="save" parameterType="com.dyz.myBatis.model.WinnersInfo"  useGeneratedKeys="true" keyProperty="id" >
     insert into winnersinfo (id, prize_id, account_id, 
       createTime, awardTime, status, 
       mark)

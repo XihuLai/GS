@@ -27,6 +27,11 @@ public class InitServers {
         ContactWayService.getInstance().initSetSession(sessionFactory);
         WinnersInfoService.getInstance().initSetSession(sessionFactory);
         TechargerecordService.getInstance().initSetSession(sessionFactory);
+        StandingsService.getInstance().initSetSession(sessionFactory);
+        StandingsDetailService.getInstance().initSetSession(sessionFactory);
+        RoomInfoService.getInstance().initSetSession(sessionFactory);
+        StandingsRelationService.getInstance().initSetSession(sessionFactory);
+        StandingsAccountRelationService.getInstance().initSetSession(sessionFactory);
 
         
         TaskTimer.showTimer();

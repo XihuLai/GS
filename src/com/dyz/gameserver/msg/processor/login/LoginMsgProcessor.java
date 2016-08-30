@@ -1,8 +1,6 @@
 package com.dyz.gameserver.msg.processor.login;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.message.ClientRequest;

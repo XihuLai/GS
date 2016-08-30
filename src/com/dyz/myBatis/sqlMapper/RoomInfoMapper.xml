@@ -26,7 +26,7 @@
     delete from roominfo
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.dyz.myBatis.model.RoomInfo" useGeneratedKeys="true"  keyColumn="id">
+  <insert id="insert" parameterType="com.dyz.myBatis.model.RoomInfo" keyProperty="id" useGeneratedKeys="true"  >
     insert into roominfo (id, gameType, isHong, 
       roomid, sevenDouble, ma, 
       zimo, xiayu, addWordCard, 
@@ -36,7 +36,7 @@
       #{zimo,jdbcType=CHAR}, #{xiayu,jdbcType=INTEGER}, #{addwordcard,jdbcType=CHAR}, 
       #{name,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.dyz.myBatis.model.RoomInfo" >
+  <insert id="insertSelective" parameterType="com.dyz.myBatis.model.RoomInfo"  keyProperty="id" useGeneratedKeys="true">
     insert into roominfo
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
