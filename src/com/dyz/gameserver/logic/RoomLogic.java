@@ -61,6 +61,8 @@ public class RoomLogic {
      * 是否添加字牌
      */
     private boolean addWordCard = false;
+  //战绩存取每一局的id
+  	List<Integer> standingsDetailsIds = new ArrayList<Integer>();
     /**
      * 房间使用次数
      */
@@ -641,4 +643,13 @@ public class RoomLogic {
 		GameServerContext.add_onLine_Character(avatar);
 		//
 	}
+
+	public List<Integer> getStandingsDetailsIds() {
+		return standingsDetailsIds;
+	}
+
+	public void setStandingsDetailsIds(List<Integer> standingsDetailsIds) {
+		this.standingsDetailsIds = standingsDetailsIds;
+	}
+	
 }

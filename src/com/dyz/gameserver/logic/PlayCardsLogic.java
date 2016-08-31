@@ -145,8 +145,6 @@ public class PlayCardsLogic {
 	int followNumber = 0;
 	//是否被跟庄，最后结算的时候用
 	boolean isFollow = false;
-	//战绩存取每一局的id
-	List<Integer> standingsDetailsIds = new ArrayList<Integer>();
     /**
      * 和前段握手，判断是否丢包的情况，丢包则继续发送信息
      *Integer为用户uuid
@@ -1159,7 +1157,8 @@ public class PlayCardsLogic {
     		standingsDetail.setCreatetime(DateUtil.toChangeDate(new Date(), DateUtil.maskC));
     		int id = StandingsDetailService.getInstance().saveSelective(standingsDetail);
     		if(id >0){
-    			standingsDetailsIds.add(standingsDetail.getId());
+    			 RoomLogic roomLogic = RoomManager.getInstance().getRoom(roomVO.getRoomId());
+    			 roomLogic.getStandingsDetailsIds().add(standingsDetail.getId());
     		}
     		else{
     			System.out.println("分局战绩录入失败："+new Date());
@@ -1244,6 +1243,7 @@ public class PlayCardsLogic {
 				if(i> 0){
 					//存储 房间战绩和每局战绩关联信息
 					StandingsRelation standingsRelation;
+	    			 List<Integer> standingsDetailsIds =RoomManager.getInstance().getRoom(roomVO.getRoomId()).getStandingsDetailsIds();
 					for (Integer standingsDetailsId : standingsDetailsIds) {
 						standingsRelation = new StandingsRelation();
 						standingsRelation.setStandingsId(standings.getId());

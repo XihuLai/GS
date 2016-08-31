@@ -50,7 +50,6 @@ INotAuthProcessor {
 	            		Standings standings;
 	            		for (Integer i : ids) {
 	            			standings = StandingsService.getInstance().selectByPrimaryKey(i);
-	            			standings.setCreatetime(DateUtil.toChangeDate(standings.getCreatetime(), DateUtil.maskC));
 	            			array.add(standings);
 						}
 	            		gameSession.sendMsg(new StandingsResponse(1, array.toJSONString()));
@@ -62,7 +61,6 @@ INotAuthProcessor {
 	            		ids = StandingsRelationService.getInstance().selectDetailIdsByStandingsId(Integer.parseInt(id));
 	            		for (Integer i : ids) {
 	            			standingsDetail = StandingsDetailService.getInstance().selectByPrimaryKey(i);
-	            			standingsDetail.setCreatetime(DateUtil.toChangeDate(standingsDetail.getCreatetime(), DateUtil.maskC));
 	            			array.add(standingsDetail);
 						}
 	            		gameSession.sendMsg(new StandingsDetailResponse(1, array.toJSONString()));
