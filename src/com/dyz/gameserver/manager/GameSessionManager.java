@@ -11,7 +11,9 @@ import java.util.*;
 public class GameSessionManager {
 
     public Map<String,GameSession> sessionMap = new HashMap<String,GameSession>();
-
+    
+    public static int topOnlineAccountCount = 0;
+    
     private static GameSessionManager gameSessionManager;
 
     public GameSessionManager(){
@@ -42,6 +44,9 @@ public class GameSessionManager {
         }else{
         	System.out.println("denglu");
             sessionMap.put("uuid_"+useId,gameSession);
+            if(sessionMap.size() > topOnlineAccountCount){
+            	topOnlineAccountCount = sessionMap.size();
+            }
         }
         return !result;
     }

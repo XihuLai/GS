@@ -12,9 +12,11 @@ import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.standings.StandingsDetailResponse;
 import com.dyz.gameserver.msg.response.standings.StandingsResponse;
+import com.dyz.myBatis.model.RoomInfo;
 import com.dyz.myBatis.model.Standings;
 import com.dyz.myBatis.model.StandingsAccountRelation;
 import com.dyz.myBatis.model.StandingsDetail;
+import com.dyz.myBatis.services.RoomInfoService;
 import com.dyz.myBatis.services.StandingsAccountRelationService;
 import com.dyz.myBatis.services.StandingsDetailService;
 import com.dyz.myBatis.services.StandingsRelationService;
@@ -44,13 +46,16 @@ INotAuthProcessor {
 	            	JSONArray  array;
 	            	if(id.equals("0")){
 	            		array = new JSONArray();
+	            		JSONObject json =new JSONObject();
 	            		//房间战绩
 	            		int accountId = avatar.avatarVO.getAccount().getId();
 	            		ids = StandingsAccountRelationService.getInstance().selectNearestStandingsIdByAccountId(accountId);
 	            		Standings standings;
 	            		for (Integer i : ids) {
 	            			standings = StandingsService.getInstance().selectByPrimaryKey(i);
-	            			array.add(standings);
+	            			json.put("roomId",RoomInfoService.getInstance().selectByPrimaryKey(standings.getRoomid()).getRoomid());
+	            			json.put("data", standings);
+	            			array.add(json);
 						}
 	            		gameSession.sendMsg(new StandingsResponse(1, array.toJSONString()));
 	            	}

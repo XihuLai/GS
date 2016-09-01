@@ -107,6 +107,9 @@ public class ConnectAPI {
 	//后台广告链接通知/后台充卡链接通知  公用request  不公用response
 	public static int HOST_SEND_REQUEST = 0x158888;
 	public static int HOST_SEND_RESPONSE = 0x157777;
+	//后台管理官登录获取主页面 信息
+	public static int HOST_INDEXINFOS_REQUEST = 0x154444;
+	public static int HOST_INDEXINFOS_RESPONSE = 0x153333;
 
 	//app点+号返回充卡联系信息
 	public static int HOST_ADDROOMCARD_REQUEST = 0x156666;

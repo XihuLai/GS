@@ -1,5 +1,7 @@
 package com.dyz.myBatis.services;
 
+import java.util.Date;
+
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.dyz.gameserver.pojo.RoomVO;
@@ -38,7 +40,8 @@ public class RoomInfoService {
 	        room.setZimo(roomVO.getZiMo()==0?"0":"1");
 	        room.setName(roomVO.getName());
 	        room.setAddwordcard(roomVO.isAddWordCard()?"1":"0");
-
+	        room.setCreateTime(new Date());
+	        room.setCardNumb(roomVO.getRoundNumber()/4);
 	    	//创建RoomInfo表
 	        int index = roomInfoMap.insertSelective(room);
 	        roomVO.setId(room.getId());
@@ -59,6 +62,15 @@ public class RoomInfoService {
 	        System.out.println("-RoomInfo insert index->>" + index);
 	        return index;
 	    }
-
 	    
+	    public RoomInfo selectByPrimaryKey(Integer id){
+			return roomInfoMap.selectByPrimaryKey(id);
+	    }
+	    
+	    public int selectCount(){
+	    	return roomInfoMap.selectCount();
+	    }
+	    public int selectTodayCount(Date date){
+	    	return roomInfoMap.selectTodayCount(date);
+	    }
 }

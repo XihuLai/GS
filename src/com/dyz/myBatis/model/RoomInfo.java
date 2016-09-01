@@ -1,5 +1,7 @@
 package com.dyz.myBatis.model;
 
+import java.util.Date;
+
 public class RoomInfo {
     private Integer id;
 
@@ -20,8 +22,30 @@ public class RoomInfo {
     private String addwordcard;
 
     private String name;
+    
+    private Date createTime;
 
-    public Integer getId() {
+    private int cardNumb;//创建房间 消耗房卡数量
+    
+    
+    
+    public int getCardNumb() {
+		return cardNumb;
+	}
+
+	public void setCardNumb(int cardNumb) {
+		this.cardNumb = cardNumb;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Integer getId() {
         return id;
     }
 

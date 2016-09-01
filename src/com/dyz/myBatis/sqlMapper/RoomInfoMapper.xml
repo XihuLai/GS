@@ -12,15 +12,27 @@
     <result column="xiayu" property="xiayu" jdbcType="INTEGER" />
     <result column="addWordCard" property="addwordcard" jdbcType="CHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result  column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+    <result column="cardNumb" property="cardNumb" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, gameType, isHong, roomid, sevenDouble, ma, zimo, xiayu, addWordCard, name
+    id, gameType, isHong, roomid, sevenDouble, ma, zimo, xiayu, addWordCard, name, createTime, cardNumb
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from roominfo
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 统计房间总数 -->
+  <select id="selectCount" resultType="INTEGER">
+  	select count(id)
+  	from roominfo
+  </select>
+   <!-- 统计今天创建房间总数 -->
+  <select id="selectTodayCount" resultType="INTEGER" parameterType="DATE">
+  	select count(id)
+  	from roominfo where createTime  &gt; #{createTime,jdbcType=TIMESTAMP}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from roominfo
@@ -30,11 +42,11 @@
     insert into roominfo (id, gameType, isHong, 
       roomid, sevenDouble, ma, 
       zimo, xiayu, addWordCard, 
-      name)
+      name, createTime, cardNumb)
     values (#{id,jdbcType=INTEGER}, #{gametype,jdbcType=CHAR}, #{ishong,jdbcType=CHAR}, 
       #{roomid,jdbcType=INTEGER}, #{sevendouble,jdbcType=CHAR}, #{ma,jdbcType=INTEGER}, 
       #{zimo,jdbcType=CHAR}, #{xiayu,jdbcType=INTEGER}, #{addwordcard,jdbcType=CHAR}, 
-      #{name,jdbcType=VARCHAR})
+      #{name,jdbcType=VARCHAR},  #{createTime,jdbcType=TIMESTAMP},  #{cardNumb,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.dyz.myBatis.model.RoomInfo"  keyProperty="id" useGeneratedKeys="true">
     insert into roominfo
@@ -69,6 +81,12 @@
       <if test="name != null" >
         name,
       </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="cardNumb != null" >
+        cardNumb,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -100,6 +118,12 @@
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="cardNumb != null" >
+        #{cardNumb,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -133,6 +157,12 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="cardNumb != null" >
+        cardNumb = #{cardNumb,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -146,7 +176,9 @@
       zimo = #{zimo,jdbcType=CHAR},
       xiayu = #{xiayu,jdbcType=INTEGER},
       addWordCard = #{addwordcard,jdbcType=CHAR},
-      name = #{name,jdbcType=VARCHAR}
+      name = #{name,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      cardNumb = #{cardNumb,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

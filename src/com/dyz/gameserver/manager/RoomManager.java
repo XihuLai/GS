@@ -99,4 +99,11 @@ public class RoomManager {
         }
         return  true;
     }
+
+	public int getRoomsCount() {
+		return roomList.size();
+	}
+	
+	
+    
 }

@@ -9,6 +9,7 @@ import com.dyz.gameserver.msg.processor.draw.DrawProcessor;
 import com.dyz.gameserver.msg.processor.gang.GangMsgProcessor;
 import com.dyz.gameserver.msg.processor.heartbeat.HeadMsgProcessor;
 import com.dyz.gameserver.msg.processor.host.HostNoitceProcessor;
+import com.dyz.gameserver.msg.processor.host.IndexInfosProcessor;
 import com.dyz.gameserver.msg.processor.hu.HuPaiMsgProcessor;
 import com.dyz.gameserver.msg.processor.joinroom.JoinRoomMsgProcessor;
 import com.dyz.gameserver.msg.processor.login.LoginMsgProcessor;
@@ -77,6 +78,8 @@ public enum MsgProcessorRegister {
 	draw(ConnectAPI.DRAw_REQUEST,new DrawProcessor()),
 	/**后台发送消息*/
 	hostSendMessage(ConnectAPI.HOST_SEND_REQUEST,new HostNoitceProcessor()),
+	/**后台发送消息获取首页所有信息(当前在线任务，当前房间数量等等)*/
+	indexInfosMessage(ConnectAPI.HOST_INDEXINFOS_REQUEST,new IndexInfosProcessor()),
 	/**前段请求发布的充卡联系人信息*/
 	contactMessage(ConnectAPI.HOST_ADDROOMCARD_REQUEST,new ContactMsgProcssor()),
 	/**远程请求*/

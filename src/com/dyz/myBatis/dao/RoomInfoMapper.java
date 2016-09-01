@@ -1,5 +1,7 @@
 package com.dyz.myBatis.dao;
 
+import java.util.Date;
+
 import com.dyz.myBatis.model.RoomInfo;
 
 public interface RoomInfoMapper {
@@ -14,4 +16,8 @@ public interface RoomInfoMapper {
     int updateByPrimaryKeySelective(RoomInfo record);
 
     int updateByPrimaryKey(RoomInfo record);
+    
+    int selectCount();
+    
+    int selectTodayCount(Date date);
 }
