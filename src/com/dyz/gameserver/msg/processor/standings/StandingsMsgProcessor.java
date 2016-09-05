@@ -46,12 +46,13 @@ INotAuthProcessor {
 	            	JSONArray  array;
 	            	if(id.equals("0")){
 	            		array = new JSONArray();
-	            		JSONObject json =new JSONObject();
+	            		JSONObject json;
 	            		//房间战绩
 	            		int accountId = avatar.avatarVO.getAccount().getId();
 	            		ids = StandingsAccountRelationService.getInstance().selectNearestStandingsIdByAccountId(accountId);
 	            		Standings standings;
 	            		for (Integer i : ids) {
+	            			json =new JSONObject();
 	            			standings = StandingsService.getInstance().selectByPrimaryKey(i);
 	            			json.put("roomId",RoomInfoService.getInstance().selectByPrimaryKey(standings.getRoomid()).getRoomid());
 	            			json.put("data", standings);

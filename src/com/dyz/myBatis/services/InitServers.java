@@ -32,6 +32,7 @@ public class InitServers {
         RoomInfoService.getInstance().initSetSession(sessionFactory);
         StandingsRelationService.getInstance().initSetSession(sessionFactory);
         StandingsAccountRelationService.getInstance().initSetSession(sessionFactory);
+        PlayRecordService.getInstance().initSetSession(sessionFactory);
 
         
         TaskTimer.showTimer();

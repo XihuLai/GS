@@ -1,0 +1,79 @@
+package com.dyz.myBatis.daoImp;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import com.dyz.myBatis.dao.PlayRecordMapper;
+import com.dyz.myBatis.model.PlayRecord;
+
+public class PlayRecordImp implements PlayRecordMapper {
+
+	 private SqlSessionFactory sqlSessionFactory;
+	    public PlayRecordImp(SqlSessionFactory sqlSessionFactory){
+	        this.sqlSessionFactory = sqlSessionFactory;
+	    }
+
+	@Override
+	public int deleteByPrimaryKey(Integer id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int save(PlayRecord record) {
+		int flag = 0;
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            PlayRecordMapper mapper = sqlSession.getMapper(PlayRecordMapper.class);
+            flag = mapper.save(record);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            sqlSession.close();
+        }
+        return flag;
+	}
+
+	@Override
+	public int updateByPrimaryKey(PlayRecord record) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int saveSelective(PlayRecord record) {
+		int flag = 0;
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            PlayRecordMapper mapper = sqlSession.getMapper(PlayRecordMapper.class);
+            flag = mapper.saveSelective(record);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            sqlSession.close();
+        }
+        return flag;
+	}
+
+	@Override
+	public PlayRecord selectByPrimaryKey(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int updateByPrimaryKeySelective(PlayRecord record) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int updateByPrimaryKeyWithBLOBs(PlayRecord record) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+}

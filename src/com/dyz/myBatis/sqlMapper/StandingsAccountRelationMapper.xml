@@ -15,7 +15,7 @@
     standings_id
     from standingsaccountrelation
     where account_id =#{accountId,jdbcType=INTEGER}
-    order by id ASC limit 0,10 
+    order by id DESC limit 0,10 
   </select>
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

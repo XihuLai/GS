@@ -14,6 +14,7 @@ public class NormalHuPai {
     
     public static void main(String[] args){
     	int[] pai = new int[]{0,0,0,3,1,0,1,1,1, 0, 0, 0,0,0,0,0,0,0,0,0,1,2,0,1,1,1,1};
+    	//int [] pai = new int[]{0,0,0,0,0,0,1,1,1,     0,0,2,0,3,1,1,1,0,     0,0,1,1,1,0,0,0,0,   0,0,0,0,0,0,0};
     	NormalHuPai normalHuPai = new NormalHuPai();
     	boolean flag = normalHuPai.isZZHuPai(pai);
     	System.out.println(flag);

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dyz.myBatis.dao.PlayRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.dyz.myBatis.model.PlayRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="standingsDetail_id" property="standingsdetailId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.dyz.myBatis.model.PlayRecord" extends="BaseResultMap" >
+    <result column="playrecord" property="playrecord" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, standingsDetail_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    playrecord
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from playrecord
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from playrecord
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="com.dyz.myBatis.model.PlayRecord" >
+    insert into playrecord (id, standingsDetail_id, playrecord
+      )
+    values (#{id,jdbcType=INTEGER}, #{standingsdetailId,jdbcType=INTEGER}, #{playrecord,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="saveSelective" parameterType="com.dyz.myBatis.model.PlayRecord" >
+    insert into playrecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="standingsdetailId != null" >
+        standingsDetail_id,
+      </if>
+      <if test="playrecord != null" >
+        playrecord,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="standingsdetailId != null" >
+        #{standingsdetailId,jdbcType=INTEGER},
+      </if>
+      <if test="playrecord != null" >
+        #{playrecord,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dyz.myBatis.model.PlayRecord" >
+    update playrecord
+    <set >
+      <if test="standingsdetailId != null" >
+        standingsDetail_id = #{standingsdetailId,jdbcType=INTEGER},
+      </if>
+      <if test="playrecord != null" >
+        playrecord = #{playrecord,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dyz.myBatis.model.PlayRecord" >
+    update playrecord
+    set standingsDetail_id = #{standingsdetailId,jdbcType=INTEGER},
+      playrecord = #{playrecord,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dyz.myBatis.model.PlayRecord" >
+    update playrecord
+    set standingsDetail_id = #{standingsdetailId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
