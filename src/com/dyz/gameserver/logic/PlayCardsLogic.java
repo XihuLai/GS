@@ -1,8 +1,18 @@
 package com.dyz.gameserver.logic;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.support.odps.udf.JSONTuple;
 import com.context.ErrorCode;
 import com.context.Rule;
 import com.dyz.gameserver.Avatar;
@@ -22,7 +32,14 @@ import com.dyz.gameserver.msg.response.login.OtherBackLoginResonse;
 import com.dyz.gameserver.msg.response.peng.PengResponse;
 import com.dyz.gameserver.msg.response.pickcard.OtherPickCardResponse;
 import com.dyz.gameserver.msg.response.pickcard.PickCardResponse;
-import com.dyz.gameserver.pojo.*;
+import com.dyz.gameserver.pojo.AvatarVO;
+import com.dyz.gameserver.pojo.CardVO;
+import com.dyz.gameserver.pojo.FinalGameEndItemVo;
+import com.dyz.gameserver.pojo.HuReturnObjectVO;
+import com.dyz.gameserver.pojo.PlayBehaviedVO;
+import com.dyz.gameserver.pojo.PlayRecordGameVO;
+import com.dyz.gameserver.pojo.PlayRecordItemVO;
+import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.myBatis.model.Account;
 import com.dyz.myBatis.model.PlayRecord;
 import com.dyz.myBatis.model.Standings;
@@ -37,14 +54,9 @@ import com.dyz.myBatis.services.StandingsRelationService;
 import com.dyz.myBatis.services.StandingsService;
 import com.dyz.persist.util.DateUtil;
 import com.dyz.persist.util.HuPaiType;
-import com.dyz.persist.util.JsonUtilTool;
 import com.dyz.persist.util.Naizi;
 import com.dyz.persist.util.NormalHuPai;
 import com.dyz.persist.util.StringUtil;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.*;
-import java.util.Map.Entry;
 
 
 /**
@@ -1388,7 +1400,6 @@ public class PlayCardsLogic {
     	   bankerAvatar.getSession().sendMsg(new ReturnInfoResponse(1, "gang:"+bankerAvatar.gangIndex.get(0)+","));
     	   bankerAvatar.huAvatarDetailInfo.add(bankerAvatar.gangIndex.get(0)+":"+2);
        }
-       
        //游戏回放
        PlayRecordInit();
     }
@@ -1408,9 +1419,9 @@ public class PlayCardsLogic {
   		   playRecordItemVO.setAccountIndex(i);
   		   playRecordItemVO.setAccountName(account.getNickname());
   		   sb = new StringBuffer();
-  		   int [] str = playerList.get(i).getSinglePaiArray();
+  		   int [] str = playerList.get(i).getPaiArray()[0];
   		   for (int j = 0; j < str.length; j++) {
-  			   sb.append(str[i]+",");
+  			   sb.append(str[j]+",");
   		   }
   		   playRecordItemVO.setCardList(sb.substring(0,sb.length()-1));
   		   playRecordItemVO.setHeadIcon(account.getHeadicon());
@@ -1436,7 +1447,7 @@ public class PlayCardsLogic {
     	behaviedvo.setCardIndex(cardIndex+"");
     	behaviedvo.setRecordindex(playRecordGame.behavieList.size());
     	behaviedvo.setType(type);
-    	behaviedvo.setGangType(type);
+    	behaviedvo.setGangType(gangType);
     	playRecordGame.behavieList.add(behaviedvo);
     	
     }
@@ -1447,20 +1458,23 @@ public class PlayCardsLogic {
      */
     public void PlayRecordInitUpdateScore(int standingsDetailId){
     	
-    	for (int i = 0; i < playerList.size(); i++) {
-    		playRecordGame.playerItems.get(i).setSocre(playerList.get(i).avatarVO.getScores());
-		}
-    	//playRecordGame.standingsDetailId = standingsDetailId;
-    	//信息录入数据库表中
-    	//String playRecordContent = JsonUtilTool.toJson(playRecordGame);
-    	String playRecordContent = JSONObject.toJSONString(playRecordGame);
-    	System.out.println(playRecordContent);
-    	PlayRecord playRecord = new PlayRecord();
-    	playRecord.setPlayrecord(playRecordContent);
-    	playRecord.setStandingsdetailId(standingsDetailId);
-    	PlayRecordService.getInstance().saveSelective(playRecord);
-    	//录入表之后重置 记录
-    	playRecordGame = new PlayRecordGameVO();
+    	if(!playRecordGame.playerItems.isEmpty()){
+    		//没有发牌就解散房间
+    		for (int i = 0; i < playerList.size(); i++) {
+    			playRecordGame.playerItems.get(i).setSocre(playerList.get(i).avatarVO.getScores());
+    		}
+    		//playRecordGame.standingsDetailId = standingsDetailId;
+    		//信息录入数据库表中
+    		//String playRecordContent = JsonUtilTool.toJson(playRecordGame);
+    		String playRecordContent = JSONObject.toJSONString(playRecordGame);
+    		//System.out.println(playRecordContent);
+    		PlayRecord playRecord = new PlayRecord();
+    		playRecord.setPlayrecord(playRecordContent);
+    		playRecord.setStandingsdetailId(standingsDetailId);
+    		PlayRecordService.getInstance().saveSelective(playRecord);
+    		//录入表之后重置 记录
+    		playRecordGame = new PlayRecordGameVO();
+    	}
     	
     }
     
