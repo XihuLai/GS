@@ -22,6 +22,16 @@
     from playrecord
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <!-- 根据某局游戏的id得到整个对象 -->
+  <select id="selectByStandingsDetailId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+   select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from playrecord
+    where standingsDetail_id = #{standingsdetailId,jdbcType=INTEGER}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from playrecord
     where id = #{id,jdbcType=INTEGER}

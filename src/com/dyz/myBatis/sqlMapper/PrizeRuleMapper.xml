@@ -5,9 +5,10 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="precount" property="precount" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="CHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, content, precount
+    id, content, precount, status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -20,9 +21,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.dyz.myBatis.model.PrizeRule" >
-    insert into prizerule (id, content, precount
+    insert into prizerule (id, content, precount, status
       )
-    values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{precount,jdbcType=INTEGER}
+    values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{precount,jdbcType=INTEGER}, #{status,jdbcType=CHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.dyz.myBatis.model.PrizeRule" >
@@ -37,6 +38,9 @@
       <if test="precount != null" >
         precount,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -47,6 +51,9 @@
       </if>
       <if test="precount != null" >
         #{precount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
@@ -59,13 +66,17 @@
       <if test="precount != null" >
         precount = #{precount,jdbcType=INTEGER},
       </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dyz.myBatis.model.PrizeRule" >
     update prizerule
     set content = #{content,jdbcType=VARCHAR},
-      precount = #{precount,jdbcType=INTEGER}
+      precount = #{precount,jdbcType=INTEGER},
+      status = #{status,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

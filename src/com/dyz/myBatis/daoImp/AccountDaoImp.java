@@ -1,5 +1,6 @@
 package com.dyz.myBatis.daoImp;
 
+import com.alibaba.fastjson.JSONObject;
 import com.dyz.myBatis.dao.AccountMapper;
 import com.dyz.myBatis.model.Account;
 import com.dyz.myBatis.model.AccountExample;
@@ -65,12 +66,17 @@ public class AccountDaoImp implements AccountMapper {
     public int insert(Account record) {
         int flag = 0;
         SqlSession sqlSession = sqlSessionFactory.openSession();
+        AccountMapper mapper = null;
         try {
-            AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
+            mapper = sqlSession.getMapper(AccountMapper.class);
             flag = mapper.insert(record);
             sqlSession.commit();
         } catch (Exception e) {
             e.printStackTrace();
+            //昵称出问题
+            record.setNickname(filterNickName(record.getNickname()));
+            flag = mapper.insert(record);
+            sqlSession.commit();
         }finally {
             sqlSession.close();
         }
@@ -88,12 +94,21 @@ public class AccountDaoImp implements AccountMapper {
     public int insertSelective(Account record) {
     	 int flag = 0;
          SqlSession sqlSession = sqlSessionFactory.openSession();
+         AccountMapper mapper = null;
          try {
-             AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
+             mapper = sqlSession.getMapper(AccountMapper.class);
+             //踢出掉微信昵称里面的奇怪字符
+           /*  if(record.getNickname().contains("\\")){
+            	 record.setNickname(record.getNickname().replaceAll("\\", ""));
+             }*/
              flag = mapper.insertSelective(record);
              sqlSession.commit();
          } catch (Exception e) {
              e.printStackTrace();
+             //昵称出问题
+             record.setNickname(filterNickName(record.getNickname()));
+             flag = mapper.insertSelective(record);
+             sqlSession.commit();
          }finally {
              sqlSession.close();
          }
@@ -183,12 +198,17 @@ public class AccountDaoImp implements AccountMapper {
     public int updateByPrimaryKeySelective(Account record) {
         int flag = 0;
         SqlSession sqlSession = sqlSessionFactory.openSession();
+        AccountMapper mapper = null;
         try{
-            AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
+            mapper = sqlSession.getMapper(AccountMapper.class);
             flag = mapper.updateByPrimaryKeySelective(record);
             sqlSession.commit();
         }catch (Exception e) {
             e.printStackTrace();
+            //昵称出问题
+            record.setNickname(filterNickName(record.getNickname()));
+            flag = mapper.updateByPrimaryKeySelective(record);
+            sqlSession.commit();
         }finally {
             sqlSession.close();
         }
@@ -206,12 +226,16 @@ public class AccountDaoImp implements AccountMapper {
     public int updateByPrimaryKey(Account record) {
         int flag = 0;
         SqlSession sqlSession = sqlSessionFactory.openSession();
+        AccountMapper mapper = null;
         try {
-            AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
+            mapper = sqlSession.getMapper(AccountMapper.class);
             flag = mapper.updateByPrimaryKey(record);
             sqlSession.commit();
         } catch (Exception e) {
             e.printStackTrace();
+            record.setNickname(filterNickName(record.getNickname()));
+            flag = mapper.updateByPrimaryKey(record);
+            sqlSession.commit();
         }finally {
             sqlSession.close();
         }
@@ -269,5 +293,16 @@ public class AccountDaoImp implements AccountMapper {
              sqlSession.close();
          }
         return result;
+	}
+
+	/**
+	 * 
+	 * @param nickname
+	 * @return String
+	 */
+	public String filterNickName(String nickname){
+		String reg = "[^\u4e00-\u9fa5]";
+		nickname = nickname.replaceAll(reg, "&");
+		return nickname;
 	}
 }

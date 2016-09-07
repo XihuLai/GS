@@ -13,7 +13,7 @@ import com.dyz.persist.util.GlobalUtil;
 import net.sf.json.JSONObject;
 
 /**
- * 
+ * 退出房间
  * @author luck
  *
  */

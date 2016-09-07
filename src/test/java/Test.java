@@ -80,6 +80,5 @@ public class Test {
 		array.add(gggg);
 		json.put("avatarList", array);
 		System.out.println(json.toString());*/
-		
 	}
 }

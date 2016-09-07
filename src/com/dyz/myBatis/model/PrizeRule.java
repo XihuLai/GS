@@ -6,8 +6,21 @@ public class PrizeRule {
     private String content;
 
     private Integer precount;
+    
+    private String status;
+    
+    
+    
 
-    public Integer getId() {
+    public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Integer getId() {
         return id;
     }
 

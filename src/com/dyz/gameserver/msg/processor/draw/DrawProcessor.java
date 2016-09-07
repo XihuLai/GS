@@ -15,6 +15,7 @@ import com.dyz.myBatis.model.Prize;
 import com.dyz.myBatis.model.Techargerecord;
 import com.dyz.myBatis.model.WinnersInfo;
 import com.dyz.myBatis.services.AccountService;
+import com.dyz.myBatis.services.PrizeRuleService;
 import com.dyz.myBatis.services.PrizeService;
 import com.dyz.myBatis.services.TechargerecordService;
 import com.dyz.myBatis.services.WinnersInfoService;
@@ -70,8 +71,16 @@ INotAuthProcessor  {
 	 */
 	public void  prizesInformation(GameSession gameSession){
 		JSONObject json  = new JSONObject();
-		json.put("data", PrizeService.getInstance().selectAllPrizes());
-		json.put("type", "0");
+		//判断后台时候开启了抽奖功能
+		String status = PrizeRuleService.getInstance().selectByPrimaryKey(1).getStatus();
+		
+		if(status.equals("0")){
+			json.put("data", PrizeService.getInstance().selectAllPrizes());
+			json.put("type", "0");
+		}
+		else{
+			json.put("type", "2");
+		}
 		gameSession.sendMsg(new DrawResponse(1,json));
 	}
 	/**

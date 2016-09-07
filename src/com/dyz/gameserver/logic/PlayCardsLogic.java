@@ -293,7 +293,7 @@ public class PlayCardsLogic {
     	//System.out.println("摸牌："+tempPoint+"----上一家出牌"+putOffCardPoint+"--摸牌人索引:"+pickAvatarIndex);
         if(tempPoint != -1) {
         	//回放记录
-        	PlayRecordOperation(pickAvatarIndex,tempPoint,2,-1);
+        	PlayRecordOperation(pickAvatarIndex,tempPoint,2,-1,null);
         	
         	currentCardPoint = tempPoint;
         	Avatar avatar = playerList.get(pickAvatarIndex);
@@ -566,7 +566,7 @@ public class PlayCardsLogic {
         putOffCardPoint = cardPoint;
         //system.out.println("出牌点数"+putOffCardPoint+"---出牌人索引:"+playerList.indexOf(avatar));
         curAvatarIndex = playerList.indexOf(avatar);
-    	PlayRecordOperation(curAvatarIndex,cardPoint,1,-1);
+    	PlayRecordOperation(curAvatarIndex,cardPoint,1,-1,null);
         avatar.pullCardFormList(putOffCardPoint);
         for(int i=0;i<playerList.size();i++){
             //不能返回给自己
@@ -729,7 +729,7 @@ public class PlayCardsLogic {
     			 }
     			 if(penAvatar.contains(avatar)){
     				//回放记录
-    		        PlayRecordOperation(playerList.indexOf(avatar),cardIndex,4,-1);
+    		        PlayRecordOperation(playerList.indexOf(avatar),cardIndex,4,-1,null);
     				 //把出的牌从出牌玩家的chupais中移除掉
     				 playerList.get(curAvatarIndex).avatarVO.removeLastChupais();
     				 penAvatar.remove(avatar);
@@ -957,7 +957,7 @@ public class PlayCardsLogic {
     				 
     				 avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("gang", str);
     				 //回放记录
-	    		     PlayRecordOperation(avatarIndex,cardPoint,5,playRecordType);
+	    		     PlayRecordOperation(avatarIndex,cardPoint,5,playRecordType,null);
     				 
     				 
     				 clearArrayAndSetQuest();
@@ -1052,6 +1052,7 @@ public class PlayCardsLogic {
     			}
     		}
     		allMas = sb.toString();
+    		PlayRecordOperation(playerList.indexOf(avatar),-1,8,-1,allMas);
     	}
     	else if(avatar.getRoomVO().getMa() >= 1 && huCount > 1){
     		//多响   点炮玩家抓码   出牌人的索引  curAvatarIndex
@@ -1071,9 +1072,8 @@ public class PlayCardsLogic {
     			}
     			allMas = sb.toString();
     		}
+    		PlayRecordOperation(pickAvatarIndex,-1,8,-1,allMas);
         }
-    	//system.out.println("抓的码"+allMas);
-    	
      if(huAvatar.size() > 0) {	
    		 if(huAvatar.contains(avatar)){
     			//if(playerList.get(pickAvatarIndex).getUuId() != avatar.getUuId()){
@@ -1125,7 +1125,7 @@ public class PlayCardsLogic {
     			}
    		 	}
    		 	//游戏回放
-   		 	PlayRecordOperation(playerList.indexOf(avatar),cardIndex,playRecordType,-1);
+   		 	PlayRecordOperation(playerList.indexOf(avatar),cardIndex,playRecordType,-1,null);
    	 	}
     	if(huAvatar.size()==0 && numb == 1 ){
     		numb++;
@@ -1409,7 +1409,10 @@ public class PlayCardsLogic {
      */
     public void PlayRecordInit(){
     	 playRecordGame = new PlayRecordGameVO();
-         playRecordGame.roomvo = roomVO;
+    	 RoomVO roomVo = roomVO.clone();
+    	 roomVo.setEndStatistics(new HashMap<String, Map<String,Integer>>());
+    	 roomVo.setPlayerList(new ArrayList<>());
+         playRecordGame.roomvo = roomVo;
          PlayRecordItemVO playRecordItemVO;
          Account account;
          StringBuffer sb;
@@ -1436,10 +1439,10 @@ public class PlayCardsLogic {
      * 
      * @param curAvatarIndex  操作玩家索引
      * @param cardIndex 操作相关牌索引
-     * @param type 操作相关步骤  1出牌，2摸牌，3吃，4碰，5杠，6胡(自摸/点炮),7抢胡......
+     * @param type 操作相关步骤  1出牌，2摸牌，3吃，4碰，5杠，6胡(自摸/点炮),7抢胡,8抓码......
      * @param gangType  type不为杠时 传入 -1
      */
-    public void PlayRecordOperation(Integer curAvatarIndex , Integer cardIndex,Integer type,Integer gangType){
+    public void PlayRecordOperation(Integer curAvatarIndex , Integer cardIndex,Integer type,Integer gangType,String ma){
     	
     	System.out.println("记录操作"+type);
     	PlayBehaviedVO behaviedvo = new PlayBehaviedVO();
@@ -1448,6 +1451,9 @@ public class PlayCardsLogic {
     	behaviedvo.setRecordindex(playRecordGame.behavieList.size());
     	behaviedvo.setType(type);
     	behaviedvo.setGangType(gangType);
+    	if(StringUtil.isNotEmpty(ma)){
+    		behaviedvo.setMa(ma);
+    	}
     	playRecordGame.behavieList.add(behaviedvo);
     	
     }

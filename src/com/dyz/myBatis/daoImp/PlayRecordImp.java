@@ -15,8 +15,18 @@ public class PlayRecordImp implements PlayRecordMapper {
 
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
+		int flag = 0;
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            PlayRecordMapper mapper = sqlSession.getMapper(PlayRecordMapper.class);
+            flag = mapper.deleteByPrimaryKey(id);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            sqlSession.close();
+        }
+        return flag;
 	}
 
 	@Override
@@ -59,8 +69,18 @@ public class PlayRecordImp implements PlayRecordMapper {
 
 	@Override
 	public PlayRecord selectByPrimaryKey(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		PlayRecord flag = null;
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            PlayRecordMapper mapper = sqlSession.getMapper(PlayRecordMapper.class);
+            flag = mapper.selectByPrimaryKey(id);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            sqlSession.close();
+        }
+        return flag;
 	}
 
 	@Override
@@ -73,6 +93,22 @@ public class PlayRecordImp implements PlayRecordMapper {
 	public int updateByPrimaryKeyWithBLOBs(PlayRecord record) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public PlayRecord selectByStandingsDetailId(Integer id) {
+		PlayRecord flag = null;
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            PlayRecordMapper mapper = sqlSession.getMapper(PlayRecordMapper.class);
+            flag = mapper.selectByStandingsDetailId(id);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            sqlSession.close();
+        }
+        return flag;
 	}
 
 

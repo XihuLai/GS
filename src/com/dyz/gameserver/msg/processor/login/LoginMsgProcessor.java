@@ -3,6 +3,7 @@ package com.dyz.gameserver.msg.processor.login;
 import java.util.Date;
 
 import com.dyz.gameserver.Avatar;
+import com.dyz.gameserver.commons.initial.Params;
 import com.dyz.gameserver.commons.message.ClientRequest;
 import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.context.GameServerContext;
@@ -31,7 +32,6 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 		String message = request.getString();
 		LoginVO loginVO = JsonUtilTool.fromJson(message,LoginVO.class);
 		Account account = AccountService.getInstance().selectAccount(loginVO.getOpenId());
-
 		if(account==null){
 			//创建新用户并登录
 			//gameSession.sendMsg(new LoginResponse1004(false));
@@ -39,17 +39,17 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			account.setOpenid(loginVO.getOpenId());
 			//uuid由id+10000构成
 			account.setUuid(AccountService.getInstance().selectMaxId()+100000);
-			account.setRoomcard(3);
+			account.setRoomcard(Params.initialRoomCard);
 			account.setHeadicon(loginVO.getHeadIcon());
 			account.setNickname(loginVO.getNickName());
 			account.setCity(loginVO.getCity());
 			account.setProvince(loginVO.getProvince());
 			account.setSex(loginVO.getSex());
 			account.setUnionid(loginVO.getUnionid());
-			account.setPrizecount(1);
+			account.setPrizecount(Params.initialPrizeCount);
 			account.setCreatetime(new Date());
-			account.setActualcard(3);
-			account.setTotalcard(3);
+			account.setActualcard(Params.initialRoomCard);
+			account.setTotalcard(Params.initialRoomCard);
 			account.setStatus("0");
 			account.setIsGame("0");
 
@@ -83,6 +83,17 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			//如果玩家是掉线的，则直接从缓存(GameServerContext)中取掉线玩家的信息
 			Avatar avatar = GameServerContext.getAvatarFromOff(account.getUuid());
 			if(avatar == null) {
+				//判断微信昵称是否修改过，若修改过昵称，则更新数据库信息
+				if(!loginVO.getNickName().equals(account.getNickname())){
+					account.setNickname(loginVO.getNickName());
+					int i = AccountService.getInstance().updateByPrimaryKeySelective(account);
+					if(i > 0){
+						System.out.println("微信昵称更新成功");
+					}
+					else{
+						System.out.println("微信昵称更新失败");
+					}
+				}
 				//断线超过时间后，自动退出
 				avatar = new Avatar();
 				AvatarVO avatarVO = new AvatarVO();

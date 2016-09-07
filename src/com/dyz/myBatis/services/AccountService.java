@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.dyz.gameserver.pojo.HuReturnObjectVO;
 import com.dyz.myBatis.dao.AccountMapper;
 import com.dyz.myBatis.daoImp.AccountDaoImp;
 import com.dyz.myBatis.model.Account;
@@ -45,12 +44,14 @@ public class AccountService {
      * @param account
      * @throws SQLException
      */
-    public void updateByPrimaryKeySelective(Account account){
+    public int updateByPrimaryKeySelective(Account account){
+    	   int index = 0;
         try{
-            int index = accMap.updateByPrimaryKeySelective(account);
+            index = accMap.updateByPrimaryKeySelective(account);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+		return index;
     }
 
     /**

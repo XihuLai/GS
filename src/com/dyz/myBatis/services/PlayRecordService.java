@@ -33,4 +33,10 @@ public class PlayRecordService {
 	         System.out.println("-account insert index->>" + index);
 	         return index;
 	    }
+	    
+	    
+	    public PlayRecord selectByStandingsDetailId(Integer id) {
+	    	PlayRecord playrecord = playRecordMapper.selectByStandingsDetailId(id);
+	        return playrecord;
+		}
 }

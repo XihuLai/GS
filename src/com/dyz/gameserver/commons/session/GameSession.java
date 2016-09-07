@@ -127,6 +127,7 @@ public class GameSession implements GameObj {
 		if(session != null ) {
 			session.close(false);// 2016-8-29短线时不关闭用户session，等
 			//关闭session的时候(掉线) 如果只其一个用户还在房间，则踢出用户并解散房间，并向其他玩家发送消息
+			//只要房主在房间里(在线/掉线) 都不能自动解散房间
 			//GameSession playerObj = (GameSession) session.getAttribute(KEY_PLAYER_SESSION);
 			Avatar avatar = getRole(Avatar.class);
 			if(avatar != null){
@@ -153,14 +154,15 @@ public class GameSession implements GameObj {
 								}
 							}
 						}
-						else{
+						/*else{
+							//只要房主在房间里(在线/掉线) 都不能自动解散房间
 							RoomManager.getInstance().destroyRoom(avatar.getRoomVO());
-							//房间只有一个人且掉线，则踢出用户并解散房间
+							//房间只有一个人(房主除外)且掉线，则踢出用户并解散房间
 							avatar.avatarVO.setRoomId(0);
 							avatar.setRoomVO(new RoomVO());
 							//avatar.destroyObj();
 							roomLogic = null;
-						}
+						}*/
 						//所有断线玩家  移除session
 					}
 				}

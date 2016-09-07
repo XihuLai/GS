@@ -14,7 +14,7 @@ import com.dyz.gameserver.commons.message.ServerResponse;
 public class DrawResponse extends ServerResponse {
 	
 	public DrawResponse(int status, JSONObject json) {
-		//type   0：获取奖品信息    1：获取随机获得奖品id   
+		//type   0：获取奖品信息    1：获取随机获得奖品id    2:抽奖功能尚未开启
 		super(status, ConnectAPI.DRAw_RESPONSE);
 		  if(status > 0){
 			  try {

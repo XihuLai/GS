@@ -505,7 +505,7 @@
   <!-- 获取最大的id -->
   <select id="selectMaxId" resultType="INTEGER">
     select 
-   	MAX(id)
+   	COALESCE(MAX(id),0)
     from account
   </select>
 </mapper>

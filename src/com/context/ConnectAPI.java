@@ -123,6 +123,10 @@ public class ConnectAPI {
 	public static int MSG_STANDINGS_RESPONSE = 0x002002;//返回房间战绩
 	public static int MSG_STANDINGSDETAIL_RESPONSE = 0x002003;//返回具体某个房间对应的详细每局战绩
 	
+	//游戏回放请求
+	public static int PLAYRECORD_REQUEST = 0x003001;
+	public static int PLAYRECORD_RESPONSE = 0x003002;
+	
 		
 	//远程请求
 	public static int HOST_ROMOTECONTROL_REQUEST = 0x999999;
