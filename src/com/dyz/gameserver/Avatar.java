@@ -250,6 +250,11 @@ public class Avatar implements GameObj {
 //    	System.out.println("杠了的牌="+cardIndex+"====="+resultRelation.get(2));
 //    	System.out.println("碰了的牌="+cardIndex+"====="+resultRelation.get(1));
     	boolean flag = false;
+    	 try {
+ 			Thread.sleep(200);
+ 		} catch (InterruptedException e) {
+ 			e.printStackTrace();
+ 		}
         if(avatarVO.getPaiArray()[0][cardIndex] >= 2 ){
         	if(resultRelation.get(1) == null ){
         		flag = true;

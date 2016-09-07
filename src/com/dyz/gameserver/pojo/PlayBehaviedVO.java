@@ -1,5 +1,7 @@
 package com.dyz.gameserver.pojo;
 
+import java.util.List;
+
 /**
  * 打牌操作
  * @author luck
@@ -13,8 +15,11 @@ public class PlayBehaviedVO {
 	public int recordindex;//	int(11)	记录序号
 	//public long currentTime;//	datestamp	当前操作时间，存时间戳（long）	
 	//public int status;//	char(1)	0: 正常  1:删除/注销 	
-	public int gangType;//杠的类型，1-别人点杠，2-自己暗杠，3-自己摸起来杠
+	public int gangType;//杠的类型，1-别人点杠，2-自己暗杠，3-自己摸起来杠   4:-抢杠
 	public String ma;//抓的码   格式(1:2:3:5:6:8)
+	public List<Integer> valideMa;//有效码
+	
+	
 	/*public int getId() {
 		return id;
 	}
@@ -22,7 +27,12 @@ public class PlayBehaviedVO {
 		this.id = id;
 	}*/
 	
-	
+	public List<Integer> getValideMa() {
+		return valideMa;
+	}
+	public void setValideMa(List<Integer> valideMa) {
+		this.valideMa = valideMa;
+	}
 	public int getType() {
 		return type;
 	}

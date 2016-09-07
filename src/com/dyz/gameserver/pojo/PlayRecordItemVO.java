@@ -15,6 +15,7 @@ public class PlayRecordItemVO {
 	public int socre;//分数
 	public int sex;//性别
 	public int gameRound;//当前局数
+	public int Uuid;//用户uuid
 	//public int gold;//当前金币
 	/*public int getId() {
 		return id;
@@ -25,6 +26,12 @@ public class PlayRecordItemVO {
 	
 	public String getAccountName() {
 		return accountName;
+	}
+	public int getUuid() {
+		return Uuid;
+	}
+	public void setUuid(int uuid) {
+		Uuid = uuid;
 	}
 	public int getGameRound() {
 		return gameRound;

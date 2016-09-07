@@ -57,6 +57,7 @@ import com.dyz.persist.util.HuPaiType;
 import com.dyz.persist.util.Naizi;
 import com.dyz.persist.util.NormalHuPai;
 import com.dyz.persist.util.StringUtil;
+import com.sdicons.json.validator.impl.predicates.Array;
 
 
 /**
@@ -293,7 +294,7 @@ public class PlayCardsLogic {
     	//System.out.println("摸牌："+tempPoint+"----上一家出牌"+putOffCardPoint+"--摸牌人索引:"+pickAvatarIndex);
         if(tempPoint != -1) {
         	//回放记录
-        	PlayRecordOperation(pickAvatarIndex,tempPoint,2,-1,null);
+        	PlayRecordOperation(pickAvatarIndex,tempPoint,2,-1,null,null);
         	
         	currentCardPoint = tempPoint;
         	Avatar avatar = playerList.get(pickAvatarIndex);
@@ -339,6 +340,7 @@ public class PlayCardsLogic {
         }
         else{
         	//System.out.println("流局");
+            PlayRecordOperation(pickAvatarIndex,-1,9,-1,null,null);
         	//流局处理，直接算分
         	settlementData("1");
         }
@@ -371,6 +373,8 @@ public class PlayCardsLogic {
 					//System.out.println("摸牌玩家------index"+pickAvatarIndex+"名字"+playerList.get(i).avatarVO.getAccount().getNickname());
 				}
             }
+            //记录摸牌信息
+            PlayRecordOperation(pickAvatarIndex,currentCardPoint,2,-1,null,null);
             
             //判断自己摸上来的牌自己是否可以胡
             StringBuffer sb = new StringBuffer();
@@ -399,6 +403,8 @@ public class PlayCardsLogic {
         else{
         	//流局
         	//system.out.println("流局");
+        	  //记录摸牌信息
+            PlayRecordOperation(pickAvatarIndex,-1,9,-1,null,null);
         	settlementData("1");
         }
     }
@@ -556,6 +562,7 @@ public class PlayCardsLogic {
 				}
 			}
 		}
+		System.err.println("出牌："+cardPoint);
     	avatar.avatarVO.setHuType(0);//重置划水麻将胡牌格式
     	//出牌信息放入到缓存中，掉线重连的时候，返回房间信息需要
         avatar.avatarVO.updateChupais(cardPoint);
@@ -566,7 +573,7 @@ public class PlayCardsLogic {
         putOffCardPoint = cardPoint;
         //system.out.println("出牌点数"+putOffCardPoint+"---出牌人索引:"+playerList.indexOf(avatar));
         curAvatarIndex = playerList.indexOf(avatar);
-    	PlayRecordOperation(curAvatarIndex,cardPoint,1,-1,null);
+    	PlayRecordOperation(curAvatarIndex,cardPoint,1,-1,null,null);
         avatar.pullCardFormList(putOffCardPoint);
         for(int i=0;i<playerList.size();i++){
             //不能返回给自己
@@ -597,7 +604,7 @@ public class PlayCardsLogic {
         			}
         			if (ava.checkPeng(putOffCardPoint)) {
         				penAvatar.add(ava);
-        				sb.append("peng,");
+        				sb.append("peng:"+putOffCardPoint+",");
         			}
 //        			if ( roomVO.getRoomType() == 3  && ava.checkChi(putOffCardPoint) && getNextAvatarIndex() == i){
 //        				//(长沙麻将)只有下一家才能吃
@@ -729,7 +736,7 @@ public class PlayCardsLogic {
     			 }
     			 if(penAvatar.contains(avatar)){
     				//回放记录
-    		        PlayRecordOperation(playerList.indexOf(avatar),cardIndex,4,-1,null);
+    		        PlayRecordOperation(playerList.indexOf(avatar),cardIndex,4,-1,null,null);
     				 //把出的牌从出牌玩家的chupais中移除掉
     				 playerList.get(curAvatarIndex).avatarVO.removeLastChupais();
     				 penAvatar.remove(avatar);
@@ -818,6 +825,8 @@ public class PlayCardsLogic {
     							 //如果抢胡了，则更新上家出牌的点数为  杠的牌
     							 putOffCardPoint = cardPoint;
     							 gangAvatar.add(avatar);
+    							 //回放记录
+    			    		     PlayRecordOperation(avatarIndex,cardPoint,5,4,null,null);
     							 return false;
     						 }
     						 else{
@@ -957,7 +966,7 @@ public class PlayCardsLogic {
     				 
     				 avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("gang", str);
     				 //回放记录
-	    		     PlayRecordOperation(avatarIndex,cardPoint,5,playRecordType,null);
+	    		     PlayRecordOperation(avatarIndex,cardPoint,5,playRecordType,null,null);
     				 
     				 
     				 clearArrayAndSetQuest();
@@ -1052,7 +1061,6 @@ public class PlayCardsLogic {
     			}
     		}
     		allMas = sb.toString();
-    		PlayRecordOperation(playerList.indexOf(avatar),-1,8,-1,allMas);
     	}
     	else if(avatar.getRoomVO().getMa() >= 1 && huCount > 1){
     		//多响   点炮玩家抓码   出牌人的索引  curAvatarIndex
@@ -1072,7 +1080,6 @@ public class PlayCardsLogic {
     			}
     			allMas = sb.toString();
     		}
-    		PlayRecordOperation(pickAvatarIndex,-1,8,-1,allMas);
         }
      if(huAvatar.size() > 0) {	
    		 if(huAvatar.contains(avatar)){
@@ -1125,7 +1132,7 @@ public class PlayCardsLogic {
     			}
    		 	}
    		 	//游戏回放
-   		 	PlayRecordOperation(playerList.indexOf(avatar),cardIndex,playRecordType,-1,null);
+   		 	PlayRecordOperation(playerList.indexOf(avatar),cardIndex,playRecordType,-1,null,null);
    	 	}
     	if(huAvatar.size()==0 && numb == 1 ){
     		numb++;
@@ -1189,6 +1196,15 @@ public class PlayCardsLogic {
     		roomVO.updateEndStatistics(avatar.getUuId()+"", "scores", huReturnObjectVO.getTotalScore());
     		//修改存储的分数(断线重连需要)
     		avatar.avatarVO.supdateScores(huReturnObjectVO.getTotalScore());
+    		//游戏回放 中码消息
+    		if(avatar.avatarVO.isMain()){
+    			if(type.equals("2")){
+    				PlayRecordOperation(playerList.indexOf(avatar),-1,8,-1,allMas,null);
+    			}
+    			else{
+    				PlayRecordOperation(playerList.indexOf(avatar),-1,8,-1,allMas,HuPaiType.getInstance().getValidMa());
+    			}
+    		}
 		}
     	json.put("avatarList", array);
     	json.put("allMas", allMas);
@@ -1201,7 +1217,6 @@ public class PlayCardsLogic {
     	}
     	//生成战绩content
     	standingsDetail.setContent(content.toString());
-    	
     	try {
     		standingsDetail.setCreatetime(DateUtil.toChangeDate(new Date(), DateUtil.maskC));
     		int id = StandingsDetailService.getInstance().saveSelective(standingsDetail);
@@ -1384,7 +1399,7 @@ public class PlayCardsLogic {
         bankerAvatar.putCardInList(listCard.get(nextCardindex));
         nextCardindex++;
         
-        //检测一下庄家有没有天胡/杠 
+        //检测一下庄家有没有天胡
        if(checkHu(bankerAvatar,nextCardindex-1)){
     	   //检查有没有天胡/有则把相关联的信息放入缓存中
     	   huAvatar.add(bankerAvatar);
@@ -1430,6 +1445,7 @@ public class PlayCardsLogic {
   		   playRecordItemVO.setHeadIcon(account.getHeadicon());
   		   playRecordItemVO.setSex(account.getSex());
   		   playRecordItemVO.setGameRound(roomVO.getCurrentRound());
+  		   playRecordItemVO.setUuid(account.getUuid());
   		   playRecordGame.playerItems.add(playRecordItemVO);
   		}
     }
@@ -1439,10 +1455,11 @@ public class PlayCardsLogic {
      * 
      * @param curAvatarIndex  操作玩家索引
      * @param cardIndex 操作相关牌索引
-     * @param type 操作相关步骤  1出牌，2摸牌，3吃，4碰，5杠，6胡(自摸/点炮),7抢胡,8抓码......
+     * @param type 操作相关步骤  1出牌，2摸牌，3吃，4碰，5杠，6胡(自摸/点炮),7抢胡,8抓码,9:流局.....
      * @param gangType  type不为杠时 传入 -1
+     * @param ma  不是抓码操作时 为null
      */
-    public void PlayRecordOperation(Integer curAvatarIndex , Integer cardIndex,Integer type,Integer gangType,String ma){
+    public void PlayRecordOperation(Integer curAvatarIndex , Integer cardIndex,Integer type,Integer gangType,String ma,List<Integer> valideMa){
     	
     	System.out.println("记录操作"+type);
     	PlayBehaviedVO behaviedvo = new PlayBehaviedVO();
@@ -1453,6 +1470,7 @@ public class PlayCardsLogic {
     	behaviedvo.setGangType(gangType);
     	if(StringUtil.isNotEmpty(ma)){
     		behaviedvo.setMa(ma);
+    		behaviedvo.setValideMa(valideMa);
     	}
     	playRecordGame.behavieList.add(behaviedvo);
     	
