@@ -14,9 +14,12 @@ import com.dyz.myBatis.services.RoomInfoService;
 public class RoomManager {
 
     Map<Integer,RoomLogic> roomList;
+	//创建/加入房间之后存 玩家uuid和房间id
+	private Map<Integer,Integer> uuidAndRoomId;
 
     public RoomManager(){
         roomList = new HashMap<Integer, RoomLogic>();
+        uuidAndRoomId = new HashMap<Integer,Integer>();
     }
 
     private static RoomManager roomManager;
@@ -39,8 +42,8 @@ public class RoomManager {
         roomLogic.CreateRoom(avatar);
         //表中录入房间信息
         RoomInfoService.getInstance().createRoomInfo(roomVO);
-        //这里需要统计创建房间个数****
         roomList.put(roomId,roomLogic);
+        addUuidAndRoomId(avatar.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
     }
     /**
      * 销毁房间/通知房间里面的玩家退出房间
@@ -103,7 +106,28 @@ public class RoomManager {
 	public int getRoomsCount() {
 		return roomList.size();
 	}
+	/**
+	 * 存玩家id和房间roomid
+	 * @param uuid  玩家uuid
+	 * @param roomid  房间id
+	 */
+	public void addUuidAndRoomId(Integer uuid,Integer roomid){
+		uuidAndRoomId.put(uuid, roomid);
+	}
+	/**
+	 * 移除缓存的房间id和房间roomid
+	 * 解散房间，退出房间和断线超时时调用
+	 * @param uuid  玩家uuid
+	 * @param roomid  房间id
+	 */
+	public void removeUuidAndRoomId(Integer uuid,Integer roomid){
+		if(uuidAndRoomId.get(uuid) != null){
+			uuidAndRoomId.put(uuid, roomid);
+		}
+	}
 	
-	
+	public Map<Integer, Integer> getUuidAndRoomId(){
+		return uuidAndRoomId;
+	}
     
 }

@@ -1,14 +1,14 @@
 package com.dyz.myBatis.daoImp;
 
-import com.alibaba.fastjson.JSONObject;
-import com.dyz.myBatis.dao.AccountMapper;
-import com.dyz.myBatis.model.Account;
-import com.dyz.myBatis.model.AccountExample;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import java.util.List;
+import com.dyz.myBatis.dao.AccountMapper;
+import com.dyz.myBatis.model.Account;
+import com.dyz.myBatis.model.AccountExample;
 
 /**
  * Created by kevin on 2016/6/21.
@@ -73,10 +73,16 @@ public class AccountDaoImp implements AccountMapper {
             sqlSession.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            //昵称出问题
-            record.setNickname(filterNickName(record.getNickname()));
-            flag = mapper.insert(record);
-            sqlSession.commit();
+            try {
+             	record.setNickname(filterNickName(record.getNickname()));
+             	flag = mapper.insert(record);
+             	sqlSession.commit();
+ 			} catch (Exception e2) {
+ 			    e.printStackTrace();
+ 			    record.setNickname("???????");
+ 			    flag = mapper.insert(record);
+             	sqlSession.commit();
+ 			}
         }finally {
             sqlSession.close();
         }
@@ -97,18 +103,21 @@ public class AccountDaoImp implements AccountMapper {
          AccountMapper mapper = null;
          try {
              mapper = sqlSession.getMapper(AccountMapper.class);
-             //踢出掉微信昵称里面的奇怪字符
-           /*  if(record.getNickname().contains("\\")){
-            	 record.setNickname(record.getNickname().replaceAll("\\", ""));
-             }*/
              flag = mapper.insertSelective(record);
              sqlSession.commit();
          } catch (Exception e) {
              e.printStackTrace();
              //昵称出问题
-             record.setNickname(filterNickName(record.getNickname()));
-             flag = mapper.insertSelective(record);
-             sqlSession.commit();
+             try {
+             	record.setNickname(filterNickName(record.getNickname()));
+             	flag = mapper.insertSelective(record);
+             	sqlSession.commit();
+ 			} catch (Exception e2) {
+ 			    e.printStackTrace();
+ 			    record.setNickname("???????");
+ 			    flag = mapper.insertSelective(record);
+             	sqlSession.commit();
+ 			}
          }finally {
              sqlSession.close();
          }
@@ -206,9 +215,16 @@ public class AccountDaoImp implements AccountMapper {
         }catch (Exception e) {
             e.printStackTrace();
             //昵称出问题
-            record.setNickname(filterNickName(record.getNickname()));
-            flag = mapper.updateByPrimaryKeySelective(record);
-            sqlSession.commit();
+            try {
+            	record.setNickname(filterNickName(record.getNickname()));
+            	flag = mapper.updateByPrimaryKeySelective(record);
+            	sqlSession.commit();
+			} catch (Exception e2) {
+			    e.printStackTrace();
+			    record.setNickname("???????");
+			    flag = mapper.updateByPrimaryKeySelective(record);
+            	sqlSession.commit();
+			}
         }finally {
             sqlSession.close();
         }
@@ -233,9 +249,16 @@ public class AccountDaoImp implements AccountMapper {
             sqlSession.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            record.setNickname(filterNickName(record.getNickname()));
-            flag = mapper.updateByPrimaryKey(record);
-            sqlSession.commit();
+            try {
+            	record.setNickname(filterNickName(record.getNickname()));
+            	flag = mapper.updateByPrimaryKey(record);
+            	sqlSession.commit();
+			} catch (Exception e2) {
+			    e.printStackTrace();
+			    record.setNickname("???????");
+			    flag = mapper.updateByPrimaryKey(record);
+            	sqlSession.commit();
+			}
         }finally {
             sqlSession.close();
         }
@@ -302,7 +325,7 @@ public class AccountDaoImp implements AccountMapper {
 	 */
 	public String filterNickName(String nickname){
 		String reg = "[^\u4e00-\u9fa5]";
-		nickname = nickname.replaceAll(reg, "&");
+		nickname = nickname.replaceAll(reg, "?");
 		return nickname;
 	}
 }

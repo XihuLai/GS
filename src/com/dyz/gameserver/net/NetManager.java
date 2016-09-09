@@ -27,7 +27,7 @@ public class NetManager {
      */
 	public  void startListner(IoHandler iohandler,int listenPort) throws Exception{
 		acceptor = new NioSocketAcceptor();
-		acceptor.setBacklog(10);
+		acceptor.setBacklog(50);
 		acceptor.setReuseAddress(true);
 		acceptor.setHandler(iohandler);
 

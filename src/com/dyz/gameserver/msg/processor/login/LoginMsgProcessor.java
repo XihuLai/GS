@@ -1,6 +1,7 @@
 package com.dyz.gameserver.msg.processor.login;
 
 import java.util.Date;
+import java.util.List;
 
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.initial.Params;
@@ -27,7 +28,7 @@ import com.dyz.persist.util.TimeUitl;
 public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor{
 
 	@Override
-	public synchronized void process(GameSession gameSession, ClientRequest request)
+	public  void process(GameSession gameSession, ClientRequest request)
 			throws Exception {
 		String message = request.getString();
 		LoginVO loginVO = JsonUtilTool.fromJson(message,LoginVO.class);
@@ -81,41 +82,83 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			}
 		}else{
 			//如果玩家是掉线的，则直接从缓存(GameServerContext)中取掉线玩家的信息
-			Avatar avatar = GameServerContext.getAvatarFromOff(account.getUuid());
-			if(avatar == null) {
-				//判断微信昵称是否修改过，若修改过昵称，则更新数据库信息
-				if(!loginVO.getNickName().equals(account.getNickname())){
-					account.setNickname(loginVO.getNickName());
-					int i = AccountService.getInstance().updateByPrimaryKeySelective(account);
-					if(i > 0){
-						System.out.println("微信昵称更新成功");
-					}
-					else{
-						System.out.println("微信昵称更新失败");
+			//判断用户是否已经进行断线处理(如果前端断线时间过短，后台则可能还未来得及把用户信息放入到离线map里面，就已经登录了，所以取出来就会是空)
+			Avatar avatar;
+			Avatar avatarOn = GameServerContext.getAvatarFromOn(account.getUuid());
+			Avatar avatarOff = GameServerContext.getAvatarFromOff(account.getUuid());
+			if(avatarOff == null && avatarOn == null) {
+				int uuid = account.getUuid();
+				if(RoomManager.getInstance().getUuidAndRoomId().get(uuid) != null){
+					//说明玩家在房间中，则返回房间信息
+					RoomLogic roomLogic = RoomManager.getInstance().getRoom(RoomManager.getInstance().getUuidAndRoomId().get(uuid));
+					List<Avatar> avatars = roomLogic.getPlayerList();
+					for (int i = 0; i < avatars.size(); i++) {
+						if(avatars.get(i).avatarVO.getAccount().getUuid() == uuid){
+							avatar = avatars.get(i);
+							//断线重连
+							GameServerContext.remove_offLine_Character(avatar);
+							GameServerContext.add_onLine_Character(avatar);
+							avatar.avatarVO.setIsOnLine(true);
+							avatar.avatarVO.setAccount(account);
+							avatar.avatarVO.setIP(loginVO.getIP());
+							TimeUitl.stopAndDestroyTimer(avatar);
+							avatar.setSession(gameSession);
+							//system.out.println("用户回来了，断线重连，中止计时器");
+							//返回用户断线前的房间信息******
+							gameSession.setLogin(true);
+							gameSession.setRole(avatar);
+							returnBackAction(avatar);
+							//把session放入到GameSessionManager
+							GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
+							//公告发送给玩家
+							Thread.sleep(3000);
+							NoticeTable notice = null;
+							try {
+								 notice = NoticeTableService.getInstance().selectRecentlyObject();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							String content = notice.getContent();
+							gameSession.sendMsg(new HostNoitceResponse(1, content));
+						}
 					}
 				}
-				//断线超过时间后，自动退出
-				avatar = new Avatar();
-				AvatarVO avatarVO = new AvatarVO();
-				avatarVO.setAccount(account);
-				avatarVO.setIP(loginVO.getIP());
-				avatar.avatarVO = avatarVO;
-				//把session放入到GameSessionManager
-				GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
-				loginAction(gameSession,avatar);
-				Thread.sleep(3000);
-				//公告发送给玩家
-				NoticeTable notice = null;
-				try {
-					 notice = NoticeTableService.getInstance().selectRecentlyObject();
-				} catch (Exception e) {
-					e.printStackTrace();
+				else{
+					//判断微信昵称是否修改过，若修改过昵称，则更新数据库信息
+					if(!loginVO.getNickName().equals(account.getNickname())){
+						account.setNickname(loginVO.getNickName());
+						int i = AccountService.getInstance().updateByPrimaryKeySelective(account);
+						if(i > 0){
+							System.out.println("微信昵称更新成功");
+						}
+						else{
+							System.out.println("微信昵称更新失败");
+						}
+					}
+					//断线超过时间后，自动退出
+					avatar = new Avatar();
+					AvatarVO avatarVO = new AvatarVO();
+					avatarVO.setAccount(account);
+					avatarVO.setIP(loginVO.getIP());
+					avatar.avatarVO = avatarVO;
+					//把session放入到GameSessionManager
+					GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
+					loginAction(gameSession,avatar);
+					Thread.sleep(3000);
+					//公告发送给玩家
+					NoticeTable notice = null;
+					try {
+						notice = NoticeTableService.getInstance().selectRecentlyObject();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					String content = notice.getContent();
+					gameSession.sendMsg(new HostNoitceResponse(1, content));
 				}
-				String content = notice.getContent();
-				gameSession.sendMsg(new HostNoitceResponse(1, content));
 				//system.out.println("GameSessionManager getVauleSize -- >" +GameSessionManager.getInstance().getVauleSize());
 			}else{
 				//断线重连
+				avatar = avatarOff != null?avatarOff:avatarOn;
 				GameServerContext.remove_offLine_Character(avatar);
 				GameServerContext.add_onLine_Character(avatar);
 				avatar.avatarVO.setIsOnLine(true);

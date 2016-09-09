@@ -59,31 +59,6 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 		logger.info("a session closed ip:{}",session.getRemoteAddress());
 		GameSession gameSession = GameSession.getInstance(session);
 		if(gameSession!=null){
-			//解散房间
-			//每次有人退出房间/退出游戏就检测看房间还剩余几人，若只剩余一个，则解散房间
-			/*RoomVO roomvo = gameSession.getRole(Avatar.class).getRoomVO();
-			if( roomvo != null){
-				Avatar ava = gameSession.getRole(Avatar.class);
-				if(roomvo.getPlayerList().size() <= 2){
-					System.out.println("解散房间：房间号："+gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
-					gameSession.getRole(Avatar.class).setRoomVO(new RoomVO());
-				}
-				else{
-					//int avatarIndex = roomvo.getPlayerList().indexOf(ava);
-					roomvo.getPlayerList().remove(ava.avatarVO);
-					RoomLogic roomLogic = RoomManager.getInstance().getRoom(roomvo.getRoomId());
-					if(roomLogic != null) {
-						for (int i = 0; i < roomLogic.getPlayerList().size(); i++) {
-							if(roomLogic.getPlayerList().get(i).getUuId() == ava.getUuId()){
-								roomLogic.getPlayerList().remove(ava);
-								i--;
-							}else {
-								roomLogic.getPlayerList().get(i).getSession().sendMsg(new ServerResponse(101, 1));
-							}
-						}
-					}
-				}
-			}*/
 			gameSession.close();
 		}
 

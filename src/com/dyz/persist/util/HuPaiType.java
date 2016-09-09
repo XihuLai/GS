@@ -171,6 +171,7 @@ public class HuPaiType {
 	 */
 	private  void zhuanZhuan(Avatar  avatarShu , Avatar avatar , int cardIndex, List<Avatar> playerList,
 			List<Integer> mas , int count,String type,boolean hongzhong){
+		map = new HashMap<Integer,Integer>();
 		sb = new StringBuffer();
 		int score = 0;
 		String str; 
@@ -385,7 +386,7 @@ public class HuPaiType {
 				validMa.add(entry.getKey());
 			}
 		}
-		//system.out.println("有效码："+validMa);
+		System.out.println("有效码："+validMa);
 	}
 	/**
 	 * 处理抓到的码点数，成0-3之间的数

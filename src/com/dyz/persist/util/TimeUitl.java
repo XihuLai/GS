@@ -25,7 +25,7 @@ public class TimeUitl {
     public static  void delayDestroy(GameObj gobj,int delayTime){
         final Timer timer = new Timer();
         gameObjMap.put(gobj,timer);
-        getGameObjMapSize();
+        //getGameObjMapSize();
         TimerTask tt=new TimerTask() {
             @Override
             public void run() {
@@ -53,14 +53,14 @@ public class TimeUitl {
         Timer timer = getTimer(obj);
         if(timer != null){
             gameObjMap.remove(obj);
-            getGameObjMapSize();
+           // getGameObjMapSize();
             timer.cancel();
             timer = null;
         }
     }
 
     public static void getGameObjMapSize(){
-       System.out.println("计时器 gameObjMap.size() = "+gameObjMap.size());
+       //System.out.println("计时器 gameObjMap.size() = "+gameObjMap.size());
     }
 
     /**

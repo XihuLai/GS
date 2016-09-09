@@ -29,6 +29,7 @@ public class LogoutMsgProcessor extends MsgProcessor{
 		GameSession session = GameSessionManager.getInstance().sessionMap.get("uuid_"+uuid);
 		if(session.equals(gameSession)){
 			//session存在 清除session
+			System.out.println(account.getUuid()+"：退出游戏：");
 			GameSessionManager.getInstance().removeGameSession(avatar);
 			GameServerContext.remove_offLine_Character(avatar);
 			GameServerContext.remove_onLine_Character(avatar);

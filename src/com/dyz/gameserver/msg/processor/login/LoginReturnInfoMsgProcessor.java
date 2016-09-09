@@ -10,6 +10,12 @@ import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 
+
+/**
+ * 断线重连之后 打牌进行到了什么步骤（该谁出牌，打牌，杠牌/碰牌/胡牌）
+ * @author luck
+ *
+ */
 public class LoginReturnInfoMsgProcessor extends MsgProcessor implements
 INotAuthProcessor {
 

@@ -91,25 +91,33 @@ public class RoomLogic {
      * 进入房间,默认进入准备状态
      * @param avatar
      */
-    public boolean intoRoom(Avatar avatar){
-        if(playerList.size() == 4){
-			try {
-				avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000011));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return false;
-        }else {
-            avatar.avatarVO.setMain(false);
-            //avatar.avatarVO.setIsReady(true);
-            avatar.avatarVO.setIsReady(false);
-            avatar.avatarVO.setRoomId(roomVO.getRoomId());//房间号也放入avatarvo中
-            avatar.setRoomVO(roomVO);
-            noticJoinMess(avatar);//通知房间里面的其他几个玩家
-            playerList.add(avatar);
-            roomVO.getPlayerList().add(avatar.avatarVO);
-            avatar.getSession().sendMsg(new JoinRoomResponse(1, roomVO));
-           /* if(playerList.size() == 4){
+    public  boolean intoRoom(Avatar avatar){
+    	synchronized(roomVO){
+    		if(playerList.size() == 4){
+    			try {
+    				avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000011));
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    			return false;
+    		}else {
+    			avatar.avatarVO.setMain(false);
+    			//avatar.avatarVO.setIsReady(true);
+    			avatar.avatarVO.setIsReady(false);
+    			avatar.avatarVO.setRoomId(roomVO.getRoomId());//房间号也放入avatarvo中
+    			avatar.setRoomVO(roomVO);
+    			noticJoinMess(avatar);//通知房间里面的其他几个玩家
+    			playerList.add(avatar);
+    			roomVO.getPlayerList().add(avatar.avatarVO);
+    			RoomManager.getInstance().addUuidAndRoomId(avatar.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
+    			avatar.getSession().sendMsg(new JoinRoomResponse(1, roomVO));
+    			try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			/* if(playerList.size() == 4){
             	//当人数4个时自动开始游戏
                 //checkCanBeStartGame();当最后一个人加入时，不需要检测其他玩家是否准备(一局结束后开始才需要检测玩家是否准备)
                 Timer timer = new Timer();
@@ -127,8 +135,9 @@ public class RoomLogic {
                 };
                 timer.schedule(tt, 1000);
             }*/
-            return true;
-        }
+    			return true;
+    		}
+    	}
     }
     /**
      * 当有人加入房间且总人数不够4个时，对其他玩家进行通知
@@ -582,6 +591,7 @@ public class RoomLogic {
 			avat.setSession(gamesession);
 			avat.avatarVO.setIsOnLine(true);
 			GameServerContext.add_onLine_Character(avat);
+			RoomManager.getInstance().removeUuidAndRoomId(avat.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
 		}
 		playerList.clear();
 		roomVO.getPlayerList().clear();
@@ -609,6 +619,7 @@ public class RoomLogic {
 			avat.setSession(gamesession);
 			avat.avatarVO.setIsOnLine(true);
 			GameServerContext.add_onLine_Character(avat);
+			RoomManager.getInstance().removeUuidAndRoomId(avat.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
 		}
 		playerList.clear();
 		roomVO.getPlayerList().clear();
@@ -641,6 +652,7 @@ public class RoomLogic {
 		avatar.setSession(gamesession);
 		avatar.avatarVO.setIsOnLine(true);
 		GameServerContext.add_onLine_Character(avatar);
+		RoomManager.getInstance().removeUuidAndRoomId(avatar.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
 		//
 	}
 

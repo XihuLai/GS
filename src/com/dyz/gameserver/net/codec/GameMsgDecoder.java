@@ -34,7 +34,7 @@ public class GameMsgDecoder extends CumulativeProtocolDecoder {
 	//	logger.info("服务端消息的解码");
 		synchronized(iobuffer){
 			if(iobuffer.remaining()<(MsgProtocol.flagSize+MsgProtocol.lengthSize+MsgProtocol.msgCodeSize)){//数据不完整
-				logger.info("数据包长度不足");
+				//logger.info("数据包长度不足");
 				return false;
 			}
 			iobuffer.mark();
@@ -43,7 +43,7 @@ public class GameMsgDecoder extends CumulativeProtocolDecoder {
 				int length = iobuffer.getInt();//读取长度字段
 				//System.out.println("消息length："+length+"---"+session.getId());
 				if(length<=0 || length>MsgProtocol.maxPackLength){//长度字段异常
-					logger.info("数据包长度异常");
+					//logger.info("数据包长度异常");
 					return false;
 				}
 				if(iobuffer.remaining()>=length){//

@@ -40,9 +40,9 @@ public class GameSessionManager {
         //Avatar avatar = gameSession.getRole(Avatar.class);
         boolean result = checkSessionIsHava(useId);
         if(result){
-            System.out.println("这个用户已登录了");
+           // System.out.println("这个用户已登录了");
         }else{
-        	System.out.println("denglu");
+        	//System.out.println("denglu");
             sessionMap.put("uuid_"+useId,gameSession);
             if(sessionMap.size() > topOnlineAccountCount){
             	topOnlineAccountCount = sessionMap.size();
@@ -69,7 +69,7 @@ public class GameSessionManager {
      * @param avatar
      */
     public void removeGameSession(Avatar avatar){
-        System.out.println("removeForMap");
+        //System.out.println("removeForMap");
         GameSession gameSession =  sessionMap.remove("uuid_"+avatar.getUuId());
         if(gameSession != null){
         	//gameSession.destroyObj();
