@@ -2,6 +2,7 @@ package com.dyz.gameserver.manager;
 
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.session.GameSession;
+import com.dyz.gameserver.context.GameServerContext;
 
 import java.util.*;
 
@@ -63,16 +64,25 @@ public class GameSessionManager {
     public GameSession getGameSessionFromHashMap(Avatar avatar){
         return sessionMap.get("uuid_"+avatar.getUuId());
     }
-
+    /**
+     *
+     * @param String
+     * @return
+     */
+    public GameSession getAvatarByUuid(String uuid){
+        return sessionMap.get(uuid);
+    }
     /**
      *
      * @param avatar
      */
     public void removeGameSession(Avatar avatar){
         //System.out.println("removeForMap");
-        GameSession gameSession =  sessionMap.remove("uuid_"+avatar.getUuId());
+        GameSession gameSession =  sessionMap.get("uuid_"+avatar.getUuId());
         if(gameSession != null){
-        	//gameSession.destroyObj();
+        	GameServerContext.add_offLine_Character(avatar);
+        	GameServerContext.remove_onLine_Character(avatar);
+        	sessionMap.remove("uuid_"+avatar.getUuId());
         }
     }
 

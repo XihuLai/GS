@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -32,6 +33,7 @@ import com.dyz.gameserver.msg.response.login.OtherBackLoginResonse;
 import com.dyz.gameserver.msg.response.peng.PengResponse;
 import com.dyz.gameserver.msg.response.pickcard.OtherPickCardResponse;
 import com.dyz.gameserver.msg.response.pickcard.PickCardResponse;
+import com.dyz.gameserver.msg.response.roomcard.RoomCardChangerResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.FinalGameEndItemVo;
@@ -118,7 +120,7 @@ public class PlayCardsLogic {
     /**
      * 当前玩家摸的牌的点数
      */
-    private int currentCardPoint;
+    private int currentCardPoint = -2;
     /**
      * 4家玩家信息集合
      */
@@ -846,6 +848,7 @@ public class PlayCardsLogic {
     							 //如果抢胡了，则更新上家出牌的点数为  杠的牌
     							 putOffCardPoint = cardPoint;
     							 gangAvatar.add(avatar);
+    							 avatar.gangQuest = true;
     							 //回放记录
     			    		     PlayRecordOperation(avatarIndex,cardPoint,5,4,null,null);
     							 return false;
@@ -1038,11 +1041,11 @@ public class PlayCardsLogic {
             		 ava.gangQuest = true;
 				}
              }
-             try {
+             /*try {
             	 playerList.get(avatarIndex).getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000016));
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
          }
     	 
 		return flag;
@@ -1193,9 +1196,16 @@ public class PlayCardsLogic {
     
     /**
      * 胡牌/流局/解散房间后返回结算数据信息
-     * 不能多次调用，多次调用，总分会多增加出最近一局的分数
+     * 不能多次调用，多次调用，总分会多增加出最近一局的分数    第一局结束扣房卡
      */
     public void settlementData(String  type){
+    	
+    	int totalCount = roomVO.getRoundNumber();
+    	int useCount = RoomManager.getInstance().getRoom(roomVO.getRoomId()).getCount();
+    	if(totalCount == (useCount +1) && !type.equals("2")){
+    		//第一局结束扣房卡
+    		deductRoomCard();
+    	}
     	JSONArray array = new JSONArray();
     	JSONObject json = new JSONObject();
     	if(!type.equals("0")){
@@ -1203,6 +1213,7 @@ public class PlayCardsLogic {
     	}
     	StandingsDetail standingsDetail = new StandingsDetail();
     	StringBuffer content = new StringBuffer();
+    	StringBuffer score = new StringBuffer();
     	for (Avatar avatar : playerList) {
     		HuReturnObjectVO   huReturnObjectVO = avatar.avatarVO.getHuReturnObjectVO();
     		//生成战绩内容
@@ -1215,6 +1226,7 @@ public class PlayCardsLogic {
     		array.add(huReturnObjectVO);
     		//在整个房间信息中修改总分数(房间次数用完之后的总分数)
     		roomVO.updateEndStatistics(avatar.getUuId()+"", "scores", huReturnObjectVO.getTotalScore());
+    		score.append(avatar.getUuId()+":"+ roomVO.getEndStatistics().get(avatar.getUuId()+"").get("scores")+",");
     		//修改存储的分数(断线重连需要)
     		avatar.avatarVO.supdateScores(huReturnObjectVO.getTotalScore());
     		//游戏回放 中码消息
@@ -1236,6 +1248,7 @@ public class PlayCardsLogic {
     	else{
     		json.put("validMas", HuPaiType.getInstance().getValidMa());
     	}
+    	json.put("currentScore", score.toString());
     	//生成战绩content
     	standingsDetail.setContent(content.toString());
     	try {
@@ -1719,7 +1732,7 @@ public class PlayCardsLogic {
     				flag =   Naizi.testHuiPai(paiList.clone());
     			}
     			else{
-    				flag = normalHuPai.checkZZHu(paiList);
+    				flag = normalHuPai.checkZZHu(paiList.clone());
     			}
     		}
 		return flag;
@@ -1784,7 +1797,7 @@ public class PlayCardsLogic {
     	}*/
     	//判断是否可以普通胡的时候，需要检测 风牌是否都是成对或成三
     	if(!flag){
-    		flag = normalHuPai.checkHSHu(paiList,roomVO.isAddWordCard());
+    		flag = normalHuPai.checkHSHu(paiList.clone(),roomVO.isAddWordCard());
     		if(flag){
     			//system.out.println("普通胡");
     			avatar.avatarVO.setHuType(1);//划水麻将小胡
@@ -2162,5 +2175,21 @@ public class PlayCardsLogic {
     	else{
     		return false;
     	}
+    }
+    /**
+     * 第一局结束扣房卡
+     */
+    public void deductRoomCard(){
+    	int currentCard = 0;
+    	if(roomVO.getRoundNumber() == 4){
+    		currentCard = -1;
+    	}
+    	else{
+    		currentCard = 0 - roomVO.getRoundNumber()/8;
+    	}
+    	Avatar zhuangAvatar = playerList.get(0);
+    	zhuangAvatar.updateRoomCard(currentCard);//开始游戏，减去房主的房卡,同时更新缓存里面对象的房卡(已经在此方法中修改)
+    	int roomCard = zhuangAvatar.avatarVO.getAccount().getRoomcard();
+    	zhuangAvatar.getSession().sendMsg(new RoomCardChangerResponse(1,roomCard));
     }
 }

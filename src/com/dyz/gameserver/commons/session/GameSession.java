@@ -131,10 +131,11 @@ public class GameSession implements GameObj {
 			//GameSession playerObj = (GameSession) session.getAttribute(KEY_PLAYER_SESSION);
 			Avatar avatar = getRole(Avatar.class);
 			if(avatar != null){
+				GameSessionManager.getInstance().removeGameSession(avatar);
 				//判断用户是否已经进行断线处理(如果前端断线时间过短，后台则可能还未来得及调用断线操作，就已经登录了)
 				//avatar.destroy();因为有断线重联功能，所以在这里不能清除角色数据
 				//把用户从在线列表中移除，并加入到离线列表
-				GameServerContext.add_offLine_Character(avatar);
+				//GameServerContext.add_offLine_Character(avatar);
 				avatar.avatarVO.setIsOnLine(false);
 				//把用户数据保留半个小时
 				TimeUitl.delayDestroy(avatar,60*30*1000);
@@ -167,7 +168,7 @@ public class GameSession implements GameObj {
 					}
 				}
 				//把session从GameSessionManager移除
-				GameSessionManager.getInstance().removeGameSession(avatar);
+				//GameSessionManager.getInstance().removeGameSession(avatar);
 			}
 			//session.getService().dispose(false);
 			//System.out.println("关闭SESSION -- >  session.close(false);");

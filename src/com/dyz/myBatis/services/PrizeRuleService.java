@@ -1,6 +1,5 @@
 package com.dyz.myBatis.services;
 
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.dyz.myBatis.dao.PrizeRuleMapper;

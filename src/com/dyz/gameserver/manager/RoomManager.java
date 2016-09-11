@@ -51,12 +51,12 @@ public class RoomManager {
      */
     public void destroyRoom(RoomVO roomVO){
     	
-    	if(roomList.get(roomVO.getRoomId()) != null){
-    		roomList.remove(roomVO.getRoomId());
+    	//if(roomList.get(roomVO.getRoomId()) != null){
+    	roomList.remove(roomVO.getRoomId());
 //    		for (Avatar avatar : avatars) {
 //    			//avatar.getSession().sendMsg(new OutRoomResponse(1, roomVO));
 //			}
-    	}
+    	//}
     }
 
     /**

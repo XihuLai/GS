@@ -18,6 +18,7 @@ import com.dyz.gameserver.msg.response.hu.HuPaiResponse;
 import com.dyz.gameserver.msg.response.login.LoginResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.LoginVO;
+import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.myBatis.model.Account;
 import com.dyz.myBatis.model.NoticeTable;
 import com.dyz.myBatis.services.AccountService;
@@ -83,13 +84,23 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 		}else{
 			//如果玩家是掉线的，则直接从缓存(GameServerContext)中取掉线玩家的信息
 			//判断用户是否已经进行断线处理(如果前端断线时间过短，后台则可能还未来得及把用户信息放入到离线map里面，就已经登录了，所以取出来就会是空)
-			Avatar avatar;
-			Avatar avatarOn = GameServerContext.getAvatarFromOn(account.getUuid());
-			Avatar avatarOff = GameServerContext.getAvatarFromOff(account.getUuid());
-			if(avatarOff == null && avatarOn == null) {
-				int uuid = account.getUuid();
+			Avatar avatar = GameServerContext.getAvatarFromOn(account.getUuid());
+			if(avatar == null){
+				avatar =  GameServerContext.getAvatarFromOff(account.getUuid());
+			}
+			if(avatar == null){
+				GameSession gamesession = GameSessionManager.getInstance().getAvatarByUuid("uuid_"+account.getUuid());
+				if(gamesession != null){
+					avatar =  gamesession.getRole(Avatar.class);
+				}
+			}
+			if(avatar == null) {
+				/*int uuid = account.getUuid();
 				if(RoomManager.getInstance().getUuidAndRoomId().get(uuid) != null){
 					//说明玩家在房间中，则返回房间信息
+					String key = "uuid_"+account.getUuid();
+					GameSession gamesession = GameSessionManager.getInstance().sessionMap.get(key);
+					
 					RoomLogic roomLogic = RoomManager.getInstance().getRoom(RoomManager.getInstance().getUuidAndRoomId().get(uuid));
 					List<Avatar> avatars = roomLogic.getPlayerList();
 					for (int i = 0; i < avatars.size(); i++) {
@@ -123,7 +134,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 						}
 					}
 				}
-				else{
+				else{*/
 					//判断微信昵称是否修改过，若修改过昵称，则更新数据库信息
 					if(!loginVO.getNickName().equals(account.getNickname())){
 						account.setNickname(loginVO.getNickName());
@@ -154,13 +165,12 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 					}
 					String content = notice.getContent();
 					gameSession.sendMsg(new HostNoitceResponse(1, content));
-				}
+				//}
 				//system.out.println("GameSessionManager getVauleSize -- >" +GameSessionManager.getInstance().getVauleSize());
 			}else{
 				//断线重连
-				avatar = avatarOff != null?avatarOff:avatarOn;
-				GameServerContext.remove_offLine_Character(avatar);
 				GameServerContext.add_onLine_Character(avatar);
+				GameServerContext.remove_offLine_Character(avatar);
 				avatar.avatarVO.setIsOnLine(true);
 				avatar.avatarVO.setAccount(account);
 				avatar.avatarVO.setIP(loginVO.getIP());

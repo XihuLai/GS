@@ -435,12 +435,20 @@ public class RoomLogic {
 	        	playCardsLogic.bankerAvatar = avatar;
 	        }
 	        else{
-	        	//第一局 减房卡
-	        	int currentCard = 0 - roomVO.getRoundNumber()/4;
+	        	/*
+	        	 *修改为 第一局结束 才扣房卡
+	        	 * //第一局 减房卡
+	        	int currentCard = 0;
+	        	if(roomVO.getRoundNumber() == 4){
+	        		currentCard = -1;
+	        	}
+	        	else{
+	        		currentCard = 0 - roomVO.getRoundNumber()/8;
+	        	}
 	        	createAvator.updateRoomCard(currentCard);//开始游戏，减去房主的房卡,同时更新缓存里面对象的房卡(已经在此方法中修改)
 	        	
 	        	int roomCard = createAvator.avatarVO.getAccount().getRoomcard();
-	        	createAvator.getSession().sendMsg(new RoomCardChangerResponse(1,roomCard));
+	        	createAvator.getSession().sendMsg(new RoomCardChangerResponse(1,roomCard));*/
 	        	playCardsLogic = new PlayCardsLogic();
 	        }
 	        playCardsLogic.setPlayerList(playerList);
@@ -593,10 +601,8 @@ public class RoomLogic {
 			GameServerContext.add_onLine_Character(avat);
 			RoomManager.getInstance().removeUuidAndRoomId(avat.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
 		}
-		playerList.clear();
-		roomVO.getPlayerList().clear();
 		RoomManager.getInstance().destroyRoom(roomVO);
-		roomVO = null;
+		destory();
 	}
 	/**
 	 * 房主退出房间，及解散房间，详细清除数据,销毁房间逻辑
@@ -621,10 +627,8 @@ public class RoomLogic {
 			GameServerContext.add_onLine_Character(avat);
 			RoomManager.getInstance().removeUuidAndRoomId(avat.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
 		}
-		playerList.clear();
-		roomVO.getPlayerList().clear();
 		RoomManager.getInstance().destroyRoom(roomVO);
-		roomVO = null;
+		destory();
 	}
 	/**
 	 * 房主外的玩家退出房间，详细清除单个数据
@@ -654,6 +658,8 @@ public class RoomLogic {
 		GameServerContext.add_onLine_Character(avatar);
 		RoomManager.getInstance().removeUuidAndRoomId(avatar.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
 		//
+		
+		
 	}
 
 	public List<Integer> getStandingsDetailsIds() {
@@ -664,4 +670,7 @@ public class RoomLogic {
 		this.standingsDetailsIds = standingsDetailsIds;
 	}
 	
+	public void destory(){
+		new RoomLogic(new RoomVO());
+	}
 }
