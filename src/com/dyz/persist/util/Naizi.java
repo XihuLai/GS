@@ -2,9 +2,7 @@ package com.dyz.persist.util;
 
 import com.dyz.gameserver.pojo.CheckObjectVO;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -80,11 +78,11 @@ public class Naizi {
     static int Jiang = 0;
 
     private static int  getNumWithJiang(int[] temp_arr){
-        int result = 0;
+        int result = 999999;
         Jiang = 0;
         shengCard.clear();
         if(checkCanbeGroup(temp_arr.clone())){
-
+                result = 0;
         }else{
             Set<Integer> ints =  shengCard.keySet();
             ints.size();
@@ -92,7 +90,14 @@ public class Naizi {
                 int key = ints.iterator().next();
                 CheckObjectVO objectVO = shengCard.get(key);
                 if(objectVO.isJiang == 0){
-                    result = getJiangNumber(objectVO.paiArray.clone());
+                    for(int i=0;i<9;i++){
+                        if(objectVO.paiArray[i] >0) {
+                            int tempInt = getJiangNumber(objectVO.paiArray.clone(), i);
+                            if(tempInt < result){
+                                result = tempInt;
+                            }
+                        }
+                    }
                 }else{
                     //System.out.println("getNumWithJiang ===>  ");
                     result = getNumber(objectVO.paiArray.clone());
@@ -104,77 +109,52 @@ public class Naizi {
        // for(int a = 0;a<temp_arr.length;a++){
             //system.out.print(temp_arr[a]+",");
        // }
-        //System.out.println();
+       // System.out.println();
         return  result;
 
     }
     private static boolean isjiang;
-    private static int getJiangNumber(int[] temp_arr){
+    private static int getJiangNumber(int[] temp_arr,int index){
         int result = 0;
-        for(int i=0;i<9;i++) {
-            if (temp_arr[i] > 0) {
-                if (temp_arr[i] == 2) {
-                    temp_arr[i] = 0;
-                    result++;
-                    if (checkCanbeGroup(temp_arr)) {
-                        return result;             //   如果剩余的牌组合成功，胡牌
+        if(temp_arr[index] >= 2){
+            temp_arr[index] -= 2;
+        }else if(temp_arr[index] == 1){
+            temp_arr[index] = 0;
+            result++;
+        }
+        for(int i=0;i<9;i++){
+            if(temp_arr[i]>0){
+                if(i<7){
+                    if(temp_arr[i+1] == 0 && temp_arr[i+2] == 0){
+                        result += 3-temp_arr[i];
+                        temp_arr[i] = 0;
                     }
-                    temp_arr[i] += 2;
-                    result--;
-                } else {
-                    if (i < 7) {
-                        if (temp_arr[i + 1] == 0 && temp_arr[i + 2] == 0)             //   如果后面有连续两张牌
-                        {
-                            result++;
+                    else if(temp_arr[i+1] > 0 && temp_arr[i+2] == 0){
+                        temp_arr[i]--;
+                        temp_arr[i+1]--;
+                        result++;
+                        i--;
+                    }
+                    else if(temp_arr[i+1] == 0 && temp_arr[i+2] > 0){
+                        temp_arr[i]--;
+                        temp_arr[i+2]--;
+                        result++;
+                        i--;
+                    }
+                }else{
+                    if(i == 8) {
+                        if (temp_arr[i + 1] == 0) {
+                            result += 3 - temp_arr[i];
                             temp_arr[i] = 0;
-                            isjiang = true;
-                            if (checkCanbeGroup(temp_arr)) {
-                                return result;             //   如果剩余的牌组合成功，胡牌
-                            }
-                            temp_arr[i] = 1;
-                            isjiang = false;
-                            result--;
-                        } else if (temp_arr[i + 1] > 0 && temp_arr[i + 2] == 0) {
+                        } else if (temp_arr[i + 1] > 0) {
                             result++;
                             temp_arr[i]--;
                             temp_arr[i + 1]--;
-                            if (checkCanbeGroup(temp_arr)) {
-                                return result;
-                            }
-                            temp_arr[i]++;
-                            temp_arr[i + 1]++;
-                            result--;
-                        } else if (temp_arr[i + 1] == 0 && temp_arr[i + 2] > 0) {
-                            result++;
-                            temp_arr[i]--;
-                            temp_arr[i + 2]--;
-                            if (checkCanbeGroup(temp_arr)) {
-                                return result;
-                            }
-                            temp_arr[i]++;
-                            temp_arr[i + 2]++;
-                            result--;
+                            i--;
                         }
-                    } else {
-                        if (temp_arr[i] == 1 && isjiang == false) {
-                            temp_arr[i] = 0;
-                            isjiang = true;
-                            result++;
-                            if (checkCanbeGroup(temp_arr)) {
-                                return result;
-                            }
-                            isjiang = false;
-                            temp_arr[i] = 1;
-                            result--;
-                        } else {
-                            temp_arr[i] = 0;
-                            result += 2;
-                            if (checkCanbeGroup(temp_arr)) {
-                                return result;
-                            }
-                            temp_arr[i] = 1;
-                            result -= 2;
-                        }
+                    }else{
+                        result += 3 - temp_arr[i];
+                        temp_arr[i] = 0;
                     }
                 }
             }
@@ -245,8 +225,8 @@ public class Naizi {
        /*System.out.println("无法全部组合");
         for(int a = 0;a<temp_arr.length;a++){
             System.out.print(temp_arr[a]+",");
-        }
-        System.out.println("");*/
+        }*/
+        //System.out.println("");
         return false;
     }
     //   检查剩余牌数
@@ -311,20 +291,21 @@ public class Naizi {
             }
         }
 
-       /* System.out.print("getNumber ===>  "+result+"  ==>> ");
-        for(int a = 0;a<temp_arr.length;a++){
+       //System.out.print("getNumber ===>  "+result+"  ==>> ");
+        /*for(int a = 0;a<temp_arr.length;a++){
             //system.out.print(temp_arr[a]+",");
-        }
-        System.out.println();*/
+        }*/
+        //System.out.println();
+
         return result;
     }
 
     public static void main(String[] args){
-        List<int[]> tempList = new ArrayList<>();
-        tempList.add(new int[]{0,0,0,0,0,0,0,0,0,     0,2,2,0,1,0,1,0,0,     0,1,1,1,0,3,0,0,0,   0,0,0,0,2,0,0});
-        tempList.add(new int[]{0,0,1,1,1,0,0,0,0,     3,2,0,1,1,1,2,0,0,     0,0,0,0,0,0,0,0,0,   0,0,0,0,1,0,0});
-        tempList.add(new int[]{0,0,0,0,0,0,1,1,1,     0,0,2,0,3,1,1,1,0,     0,0,1,1,1,0,0,0,0,   0,0,0,0,0,0,0});
-        tempList.add(new int[]{0,1,0,1,0,0,0,2,0,     0,1,1,0,0,0,1,1,1,     0,0,0,0,0,3,0,0,0,   0,0,0,0,2,0,0});
+       /* List<int[]> tempList = new ArrayList<>();
+      tempList.add(new int[]{0,2,1,1,0,1,0,0,0,     1,1,1,0,0,0,0,0,0,     0,0,0,1,1,1,1,1,1,   0,0,0,0,0,0,0});
+       tempList.add(new int[]{1,0,0,0,0,0,0,1,0,     1,2,1,1,0,0,0,0,0,     1,0,1,0,0,0,1,1,0,   0,0,0,0,3,0,0});
+       tempList.add(new int[]{0,0,0,0,0,0,1,1,1,     0,0,2,0,3,1,1,1,0,     0,0,1,1,1,0,0,0,0,   0,0,0,0,0,0,0});
+      tempList.add(new int[]{0,1,0,1,0,0,0,2,0,     0,1,1,0,0,0,1,1,1,     0,0,0,0,0,3,0,0,0,   0,0,0,0,2,0,0});
 
        // int [] test = new int[]{0,1,0,1,0,0,0,2,0,     0,1,1,0,0,0,1,1,1,     0,0,0,0,0,3,0,0,0,   0,0,0,0,2,0,0};
         for(int i=0;i<tempList.size();i++){
@@ -338,7 +319,7 @@ public class Naizi {
                 }
                 System.out.println();
             }
-        }
+        }*/
        // getNeedHunNum(test);
     }
 }
