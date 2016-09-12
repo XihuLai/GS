@@ -1304,6 +1304,7 @@ public class PlayCardsLogic {
 				list.add(obj);
 			}
 			js.put("totalInfo", list);
+		  	js.put("theowner",playerList.get(0).getUuId());
 			//system.out.println("这个房间次数用完：返回数据=="+js.toJSONString());
 			//战绩记录存储
 			standings.setContent(sb.toString());
