@@ -13,7 +13,6 @@ import com.dyz.gameserver.msg.response.login.BackLoginResponse;
 import com.dyz.gameserver.msg.response.login.OtherBackLoginResonse;
 import com.dyz.gameserver.msg.response.outroom.DissolveRoomResponse;
 import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
-import com.dyz.gameserver.msg.response.roomcard.RoomCardChangerResponse;
 import com.dyz.gameserver.msg.response.startgame.PrepareGameResponse;
 import com.dyz.gameserver.msg.response.startgame.StartGameResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
@@ -451,6 +450,8 @@ public class RoomLogic {
 	        	createAvator.getSession().sendMsg(new RoomCardChangerResponse(1,roomCard));*/
 	        	playCardsLogic = new PlayCardsLogic();
 	        }
+
+			 playCardsLogic.setCreateRoomRoleId(createAvator.getUuId());
 	        playCardsLogic.setPlayerList(playerList);
 	        playCardsLogic.initCard(roomVO);
 	        //system.out.println("下局开始时人数："+playerList.size());
