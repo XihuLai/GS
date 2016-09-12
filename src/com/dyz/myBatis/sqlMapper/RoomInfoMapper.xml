@@ -24,6 +24,13 @@
     from roominfo
     where id = #{id,jdbcType=INTEGER}
   </select>
+   <select id="selectRoomId"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select 
+  	id
+    <include refid="Base_Column_List" />
+    from roominfo
+    where roomid = #{roomid,jdbcType=INTEGER}
+  </select>
   <!-- 统计房间总数 -->
   <select id="selectCount" resultType="INTEGER">
   	select count(id)

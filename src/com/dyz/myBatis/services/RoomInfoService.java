@@ -66,7 +66,9 @@ public class RoomInfoService {
 	    public RoomInfo selectByPrimaryKey(Integer id){
 			return roomInfoMap.selectByPrimaryKey(id);
 	    }
-	    
+	    public RoomInfo selectRoomId(Integer roomId){
+	    	return roomInfoMap.selectRoomId(roomId);
+	    }
 	    public int selectCount(){
 	    	return roomInfoMap.selectCount();
 	    }

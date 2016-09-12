@@ -120,6 +120,7 @@ public class ConnectAPI {
 		
 	//战绩
 	public static int MSG_STANDINGS_REQUEST = 0x002001;//请求
+	public static int MSG_STANDINGSSEAREH_REQUEST = 0x002004;//请求房间战绩
 	public static int MSG_STANDINGS_RESPONSE = 0x002002;//返回房间战绩
 	public static int MSG_STANDINGSDETAIL_RESPONSE = 0x002003;//返回具体某个房间对应的详细每局战绩
 	

@@ -1,5 +1,6 @@
 package com.dyz.myBatis.dao;
 
+import com.dyz.myBatis.model.RoomInfo;
 import com.dyz.myBatis.model.Standings;
 
 public interface StandingsMapper {
@@ -10,6 +11,8 @@ public interface StandingsMapper {
     int saveSelective(Standings record);
 
     Standings selectByPrimaryKey(Integer id);
+
+    Standings selectByRoomId(Integer roomId);
 
     int updateByPrimaryKeySelective(Standings record);
 

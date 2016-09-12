@@ -26,6 +26,7 @@ import com.dyz.gameserver.msg.processor.pickcard.PickCardMsgProcessor;
 import com.dyz.gameserver.msg.processor.playrecord.PlayRecordMsgProcessor;
 import com.dyz.gameserver.msg.processor.remotecontrol.RemoteControlProcessor;
 import com.dyz.gameserver.msg.processor.standings.StandingsMsgProcessor;
+import com.dyz.gameserver.msg.processor.standings.StandingsMsgProcessorSearch;
 import com.dyz.gameserver.msg.processor.startgame.PrepareGameMSGProcessor;
 import com.dyz.gameserver.msg.response.playrecord.playrecordResponse;
 
@@ -88,6 +89,8 @@ public enum MsgProcessorRegister {
 	romoteControlMessage(ConnectAPI.HOST_ROMOTECONTROL_REQUEST,new RemoteControlProcessor()),
 	/**战绩请求*/
 	standingsMessage(ConnectAPI.MSG_STANDINGS_REQUEST,new StandingsMsgProcessor()),
+	/**room战绩请求*/
+	standingsMessageRoom(ConnectAPI.MSG_STANDINGSSEAREH_REQUEST,new StandingsMsgProcessorSearch()),
 	/**游戏回放*/
 	PlayRecordMessage(ConnectAPI.PLAYRECORD_REQUEST,new PlayRecordMsgProcessor());
 	

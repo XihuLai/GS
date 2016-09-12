@@ -4,7 +4,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.dyz.myBatis.dao.AccountMapper;
+import com.dyz.myBatis.dao.RoomInfoMapper;
 import com.dyz.myBatis.dao.StandingsMapper;
+import com.dyz.myBatis.model.RoomInfo;
 import com.dyz.myBatis.model.Standings;
 
 public class StandingsDaoImp implements StandingsMapper {
@@ -77,5 +79,21 @@ public class StandingsDaoImp implements StandingsMapper {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	@Override
+	public Standings selectByRoomId(Integer roomId) {
+		 Standings standings = null;
+	        SqlSession sqlSession = sqlSessionFactory.openSession();
+	        try {
+	            StandingsMapper mapper = sqlSession.getMapper(StandingsMapper.class);
+	            standings = mapper.selectByRoomId(roomId);
+	            sqlSession.commit();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }finally {
+	            sqlSession.close();
+	        }
+	        return standings;
+	}
+
 
 }

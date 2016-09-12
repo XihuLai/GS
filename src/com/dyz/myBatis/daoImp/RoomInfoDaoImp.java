@@ -104,6 +104,22 @@ public class RoomInfoDaoImp implements RoomInfoMapper {
 	        }
 	        return roomCount;
 		}
+		@Override
+		public RoomInfo selectRoomId(Integer roomid) {
+			RoomInfo roomCount = null;
+	        SqlSession sqlSession = sqlSessionFactory.openSession();
+	        try {
+	            RoomInfoMapper mapper = sqlSession.getMapper(RoomInfoMapper.class);
+	            roomCount = mapper.selectRoomId(roomid);
+	            sqlSession.commit();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }finally {
+	            sqlSession.close();
+	        }
+	        return roomCount;
+		}
+		
 
 	
 

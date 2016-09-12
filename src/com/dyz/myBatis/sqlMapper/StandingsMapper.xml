@@ -16,6 +16,12 @@
     from standings
     where id = #{id,jdbcType=INTEGER}
   </select>
+   <select id="selectByRoomId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from standings
+    where roomid = #{roomid,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from standings
     where id = #{id,jdbcType=INTEGER}

@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.dyz.myBatis.dao.StandingsMapper;
 import com.dyz.myBatis.daoImp.StandingsDaoImp;
+import com.dyz.myBatis.model.RoomInfo;
 import com.dyz.myBatis.model.Standings;
 
 /**
@@ -31,9 +32,12 @@ public class StandingsService {
 	         return index;
 	    }
 	    
-	    
 	    public Standings selectByPrimaryKey(Integer id){
 	    	Standings obj = standingsMapper.selectByPrimaryKey(id);
+	         return obj;
+	    }
+	    public Standings selectByRoomId(Integer roomId){
+	    	Standings obj = standingsMapper.selectByRoomId(roomId);
 	         return obj;
 	    }
 }

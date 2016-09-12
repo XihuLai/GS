@@ -12,6 +12,8 @@ public interface RoomInfoMapper {
     int insertSelective(RoomInfo record);
 
     RoomInfo selectByPrimaryKey(Integer id);
+    
+    RoomInfo selectRoomId(Integer roomid);
 
     int updateByPrimaryKeySelective(RoomInfo record);
 
