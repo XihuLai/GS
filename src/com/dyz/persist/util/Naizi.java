@@ -142,7 +142,7 @@ public class Naizi {
                         i--;
                     }
                 }else{
-                    if(i == 8) {
+                    if(i == 7) {
                         if (temp_arr[i + 1] == 0) {
                             result += 3 - temp_arr[i];
                             temp_arr[i] = 0;
