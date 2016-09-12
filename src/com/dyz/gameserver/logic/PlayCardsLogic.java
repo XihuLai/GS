@@ -160,6 +160,13 @@ public class PlayCardsLogic {
 	public List<Avatar> getPlayerList() {
 		return playerList;
 	}
+	/**
+	 * 房主ID
+	 */
+	private int theOwner;
+	public void setCreateRoomRoleId(int value){
+		theOwner = value;
+	}
 
 	public void setPlayerList(List<Avatar> playerList) {
 		this.playerList = playerList;
@@ -1304,7 +1311,7 @@ public class PlayCardsLogic {
 				list.add(obj);
 			}
 			js.put("totalInfo", list);
-		  	js.put("theowner",playerList.get(0).getUuId());
+		  	js.put("theowner",theOwner);
 			//system.out.println("这个房间次数用完：返回数据=="+js.toJSONString());
 			//战绩记录存储
 			standings.setContent(sb.toString());
