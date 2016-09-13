@@ -2,14 +2,16 @@ package com.dyz.persist.util;
 
 import com.dyz.gameserver.pojo.CheckObjectVO;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Created by kevin on 2016/6/29.
  */
 public class Naizi {
-    private static HashMap<Integer,CheckObjectVO> shengCard = new HashMap<>();
+    private static HashMap<Integer,List<CheckObjectVO>> shengCard = new HashMap<>();
     public static  boolean testHuiPai(int [][] paiList ){
         int[] pai =GlobalUtil.CloneIntList(paiList[0]);
         for(int i=0;i<paiList[0].length;i++){
@@ -88,24 +90,29 @@ public class Naizi {
             ints.size();
             if(ints.iterator().hasNext()){
                 int key = ints.iterator().next();
-                CheckObjectVO objectVO = shengCard.get(key);
-                if(objectVO.isJiang == 0){
-                    for(int i=0;i<9;i++){
-                        if(objectVO.paiArray[i] >0) {
-                            int tempInt = getJiangNumber(objectVO.paiArray.clone(), i);
-                            if(tempInt < result){
-                                result = tempInt;
+                List<CheckObjectVO> objectVOList = shengCard.get(key);
+                for(int k = 0;k<objectVOList.size();k++) {
+                    CheckObjectVO objectVO = objectVOList.get(k);
+                    if (objectVO.isJiang == 0) {
+                        for (int i = 0; i < 9; i++) {
+                            if (objectVO.paiArray[i] > 0) {
+                                int tempInt = getJiangNumber(objectVO.paiArray.clone(), i);
+                                if (tempInt < result) {
+                                    result = tempInt;
+                                }
                             }
                         }
+                    } else {
+                        int tempInt = getNumber(objectVO.paiArray.clone());
+                        if (tempInt < result) {
+                            result = tempInt;
+                        }
                     }
-                }else{
-                    //System.out.println("getNumWithJiang ===>  ");
-                    result = getNumber(objectVO.paiArray.clone());
                 }
             }
         }
 
-        //System.out.print("getNumWithJiang ===>  "+result+"  ==>> ");
+       // System.out.println("getNumWithJiang ===>  "+result+"  ==>> ");
        // for(int a = 0;a<temp_arr.length;a++){
             //system.out.print(temp_arr[a]+",");
        // }
@@ -164,13 +171,20 @@ public class Naizi {
 
     private static boolean checkCanbeGroup(int[] temp_arr){
         int resultNum = Remain(temp_arr);
-        if (Remain(temp_arr) == 0) {
+        if (resultNum == 0) {
             return true;           //   递归退出条件：如果没有剩牌，则胡牌返回。
         }else{
             CheckObjectVO objectVO = new CheckObjectVO();
             objectVO.isJiang = Jiang;
             objectVO.paiArray = temp_arr.clone();
-            shengCard.put(resultNum,objectVO);
+            List<CheckObjectVO> tempList = shengCard.get(resultNum);
+            if(tempList == null){
+                tempList = new ArrayList<>();
+                tempList.add(objectVO);
+                shengCard.put(resultNum,tempList);
+            }else{
+                tempList.add(objectVO);
+            }
         }
         for (int i = 0;  i < temp_arr.length; i++) {//   找到有牌的地方，i就是当前牌,   PAI[i]是个数
             //   跟踪信息
@@ -291,7 +305,7 @@ public class Naizi {
             }
         }
 
-       //System.out.print("getNumber ===>  "+result+"  ==>> ");
+       //System.out.println("getNumber ===>  "+result+"  ==>> ");
         /*for(int a = 0;a<temp_arr.length;a++){
             //system.out.print(temp_arr[a]+",");
         }*/
@@ -301,11 +315,11 @@ public class Naizi {
     }
 
     public static void main(String[] args){
-       /* List<int[]> tempList = new ArrayList<>();
-      tempList.add(new int[]{0,2,1,1,0,1,0,0,0,     1,1,1,0,0,0,0,0,0,     0,0,0,1,1,1,1,1,1,   0,0,0,0,0,0,0});
-       tempList.add(new int[]{1,0,0,0,0,0,0,1,0,     1,2,1,1,0,0,0,0,0,     1,0,1,0,0,0,1,1,0,   0,0,0,0,3,0,0});
-       tempList.add(new int[]{0,0,0,0,0,0,1,1,1,     0,0,2,0,3,1,1,1,0,     0,0,1,1,1,0,0,0,0,   0,0,0,0,0,0,0});
-      tempList.add(new int[]{0,1,0,1,0,0,0,2,0,     0,1,1,0,0,0,1,1,1,     0,0,0,0,0,3,0,0,0,   0,0,0,0,2,0,0});
+        List<int[]> tempList = new ArrayList<>();
+      tempList.add(new int[]{0,0,0,0,0,0,0,0,0,     0,0,0,0,0,1,1,0,0,     2,0,0,1,1,1,1,0,1,   0,0,0,0,2,0,0});
+       //tempList.add(new int[]{1,0,0,0,0,0,0,1,0,     1,2,1,1,0,0,0,0,0,     1,0,1,0,0,0,1,1,0,   0,0,0,0,3,0,0});
+      // tempList.add(new int[]{0,0,0,0,0,0,1,1,1,     0,0,2,0,3,1,1,1,0,     0,0,1,1,1,0,0,0,0,   0,0,0,0,0,0,0});
+      //tempList.add(new int[]{0,1,0,1,0,0,0,2,0,     0,1,1,0,0,0,1,1,1,     0,0,0,0,0,3,0,0,0,   0,0,0,0,2,0,0});
 
        // int [] test = new int[]{0,1,0,1,0,0,0,2,0,     0,1,1,0,0,0,1,1,1,     0,0,0,0,0,3,0,0,0,   0,0,0,0,2,0,0};
         for(int i=0;i<tempList.size();i++){
@@ -319,7 +333,7 @@ public class Naizi {
                 }
                 System.out.println();
             }
-        }*/
+        }
        // getNeedHunNum(test);
     }
 }
