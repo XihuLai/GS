@@ -6,7 +6,7 @@ import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.context.GameServerContext;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.login.BreakLineResponse;
-import com.dyz.myBatis.model.Game;
+import com.dyz.persist.util.TimeUitl;
 
 import java.io.IOException;
 import java.util.*;
@@ -51,14 +51,25 @@ public class GameSessionManager {
             try {
 				sessionMap.get("uuid_"+useId).sendMsg(new ErrorResponse(ErrorCode.Error_000022));
 				sessionMap.get("uuid_"+useId).sendMsg(new BreakLineResponse(1));
-				Thread.sleep(3000);
+				Thread.sleep(300);
+                sessionMap.get("uuid_"+useId).close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-            sessionMap.get("uuid_"+useId).close();
+
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            Avatar avatar = gameSession.getRole(Avatar.class);
+            GameServerContext.add_onLine_Character(avatar);
+            GameServerContext.remove_offLine_Character(avatar);
+            TimeUitl.stopAndDestroyTimer(avatar);
         	sessionMap.put("uuid_"+useId,gameSession);
         	if(sessionMap.size() > topOnlineAccountCount){
                 topOnlineAccountCount = sessionMap.size();
@@ -87,7 +98,7 @@ public class GameSessionManager {
     }
     /**
      *
-     * @param String
+     * @param
      * @return
      */
     public GameSession getAvatarByUuid(String uuid){
