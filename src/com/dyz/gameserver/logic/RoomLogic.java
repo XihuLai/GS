@@ -24,6 +24,7 @@ import com.dyz.myBatis.services.AccountService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -100,6 +101,13 @@ public class RoomLogic {
     			}
     			return false;
     		}else {
+    			for (int i = 0; i < playerList.size(); i++) {
+    				if(avatar.getUuId() == playerList.get(i).getUuId() ){
+    					//如果用户在本房间中，则直接返回房间信息
+    					returnBackAction(avatar);
+    					return true;
+    				}
+				}
     			avatar.avatarVO.setMain(false);
     			//avatar.avatarVO.setIsReady(true);
     			avatar.avatarVO.setIsReady(false);
@@ -111,11 +119,12 @@ public class RoomLogic {
     			RoomManager.getInstance().addUuidAndRoomId(avatar.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
     			avatar.getSession().sendMsg(new JoinRoomResponse(1, roomVO));
     			try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+    				Thread.sleep(500);
+    			} catch (InterruptedException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    			return true;
     			/* if(playerList.size() == 4){
             	//当人数4个时自动开始游戏
                 //checkCanBeStartGame();当最后一个人加入时，不需要检测其他玩家是否准备(一局结束后开始才需要检测玩家是否准备)
@@ -134,7 +143,6 @@ public class RoomLogic {
                 };
                 timer.schedule(tt, 1000);
             }*/
-    			return true;
     		}
     	}
     }

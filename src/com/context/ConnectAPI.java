@@ -103,6 +103,8 @@ public class ConnectAPI {
 	public static  int DRAw_RESPONSE = 0x999999;
 	//被跟庄通知
 	public static int Game_FollowBanker_Notice = 0x100016;
+	//通知前端进行断线操作
+	public static int BREAK_LINE_RESPONSE = 0x211211;
 	
 	//后台广告链接通知/后台充卡链接通知  公用request  不公用response
 	public static int HOST_SEND_REQUEST = 0x158888;

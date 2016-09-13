@@ -180,8 +180,8 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 				//返回用户断线前的房间信息******
 				gameSession.setLogin(true);
 				gameSession.setRole(avatar);
-				returnBackAction(avatar);
-				//把session放入到GameSessionManager
+				returnBackAction(gameSession ,avatar);
+				//把session放入到GameSessionManager,并且移除以前的session
 				GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
 				//公告发送给玩家
 				Thread.sleep(3000);
@@ -217,7 +217,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 	 * @param
 	 * @param avatar
      */
-	public void returnBackAction(Avatar avatar){
+	public void returnBackAction(GameSession gameSession ,Avatar avatar){
 		
 		
 		if(avatar.avatarVO.getRoomId() != 0){

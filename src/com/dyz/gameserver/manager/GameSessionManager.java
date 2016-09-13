@@ -1,9 +1,14 @@
 package com.dyz.gameserver.manager;
 
+import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.context.GameServerContext;
+import com.dyz.gameserver.msg.response.ErrorResponse;
+import com.dyz.gameserver.msg.response.login.BreakLineResponse;
+import com.dyz.myBatis.model.Game;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -40,8 +45,24 @@ public class GameSessionManager {
     public boolean putGameSessionInHashMap(GameSession gameSession,int useId){
         //Avatar avatar = gameSession.getRole(Avatar.class);
         boolean result = checkSessionIsHava(useId);
+        System.out.println(" result ==> "+result);
         if(result){
-           // System.out.println("这个用户已登录了");
+           System.out.println("这个用户已登录了,更新session"); 
+            try {
+				sessionMap.get("uuid_"+useId).sendMsg(new ErrorResponse(ErrorCode.Error_000022));
+				sessionMap.get("uuid_"+useId).sendMsg(new BreakLineResponse(1));
+				Thread.sleep(3000);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+            sessionMap.get("uuid_"+useId).close();
+        	sessionMap.put("uuid_"+useId,gameSession);
+        	if(sessionMap.size() > topOnlineAccountCount){
+                topOnlineAccountCount = sessionMap.size();
+            }
         }else{
         	//System.out.println("denglu");
             sessionMap.put("uuid_"+useId,gameSession);
