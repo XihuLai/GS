@@ -1433,13 +1433,13 @@ public class PlayCardsLogic {
         nextCardindex++;
         
         //检测一下庄家有没有天胡
-       if(checkHu(bankerAvatar,nextCardindex-1)){
+       if(checkHu(bankerAvatar,listCard.get(nextCardindex-1))){
     	   //检查有没有天胡/有则把相关联的信息放入缓存中
     	   huAvatar.add(bankerAvatar);
     	   pickAvatarIndex = 0;//第一个摸牌人就是庄家
     	   //发送消息
     	   bankerAvatar.getSession().sendMsg(new HuPaiResponse(1,"hu,"));
-    	   bankerAvatar.huAvatarDetailInfo.add(nextCardindex-1+":"+0);
+    	   bankerAvatar.huAvatarDetailInfo.add(listCard.get(nextCardindex-1)+":"+0);
        }
        //检测庄家起手有没的杠  长沙麻将叫做大四喜
        if(bankerAvatar.checkSelfGang()){
