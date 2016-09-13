@@ -13,6 +13,7 @@ import java.util.Set;
 
 import com.context.Rule;
 import com.dyz.gameserver.Avatar;
+import com.dyz.gameserver.logic.PlayCardsLogic;
 
 /**
  * 判断胡牌类型
@@ -62,20 +63,22 @@ public class HuPaiType {
      * Map：key-->1：表示信息    2:表示次数
      * count 为1表示单胡  2表示多响
      */
-	public  void getHuType(Avatar avatarShu , Avatar avatar , int roomType ,int cardIndex,
+	public  List<Integer> getHuType(Avatar avatarShu , Avatar avatar , int roomType ,int cardIndex,
 			List<Avatar> playerList,List<Integer> mas,int count,String type,boolean hongzhong){
 		 //区分转转麻将，划水麻将，长沙麻将
 		 if(roomType == 1){
 			 //转转麻将没有大小胡之分
-			 zhuanZhuan(avatarShu , avatar , cardIndex,playerList,mas,count,type,hongzhong);
+			 return zhuanZhuan(avatarShu , avatar , cardIndex,playerList,mas,count,type,hongzhong);
 		 }
 		 else if(roomType == 2){
 			 //划水麻将
 			  huaShui(avatarShu , avatar, cardIndex,playerList,count);
+			  return new ArrayList<>();
 		 }
 		 else{
 			 //长沙麻将
 			 changSha(avatarShu,  avatar ,cardIndex);
+			  return new ArrayList<>();
 		 }
 	}
 	/**
@@ -169,7 +172,7 @@ public class HuPaiType {
 	 * @param count
 	 *  type  qiangganghu
 	 */
-	private  void zhuanZhuan(Avatar  avatarShu , Avatar avatar , int cardIndex, List<Avatar> playerList,
+	private  List<Integer> zhuanZhuan(Avatar  avatarShu , Avatar avatar , int cardIndex, List<Avatar> playerList,
 			List<Integer> mas , int count,String type,boolean hongzhong){
 		map = new HashMap<Integer,Integer>();
 		sb = new StringBuffer();
@@ -387,6 +390,7 @@ public class HuPaiType {
 			}
 		}
 		System.out.println("有效码："+validMa);
+		return validMa;
 	}
 	/**
 	 * 处理抓到的码点数，成0-3之间的数

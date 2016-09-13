@@ -77,6 +77,10 @@ public class PlayCardsLogic {
      */
     List<Integer> mas = new ArrayList<Integer>();
     /**
+     * 存抓的有效码
+     */
+    List<Integer> validMa = new ArrayList<Integer>();
+    /**
      * 下张牌的索引
      */
     private int nextCardindex = 0;
@@ -1108,7 +1112,15 @@ public class PlayCardsLogic {
     	    			penAvatar.clear();
     	    			chiAvatar.clear();;
     					//两个人之间建立关联，游戏结束算账用 
-    					HuPaiType.getInstance().getHuType(playerList.get(curAvatarIndex), avatar,roomVO.getRoomType(),cardIndex ,playerList,mas,huCount,type,roomVO.getHong());
+    	    			if(!validMa.isEmpty()){
+    	    				List<Integer> newValidMa = HuPaiType.getInstance().getHuType(playerList.get(curAvatarIndex), avatar,roomVO.getRoomType(),cardIndex ,playerList,mas,huCount,type,roomVO.getHong());
+    	    				for (Integer j : newValidMa) {
+    	    					validMa.add(j);
+							}
+    	    			}
+    	    			else{
+    	    				validMa = HuPaiType.getInstance().getHuType(playerList.get(curAvatarIndex), avatar,roomVO.getRoomType(),cardIndex ,playerList,mas,huCount,type,roomVO.getHong());
+    	    			}
     					//整个房间统计每一局游戏 杠，胡的总次数
     					roomVO.updateEndStatistics(avatar.getUuId()+"", "jiepao", 1);
     					roomVO.updateEndStatistics(playerList.get(curAvatarIndex).getUuId()+"", "dianpao", 1);
@@ -1128,7 +1140,15 @@ public class PlayCardsLogic {
         			penAvatar.clear();
         			chiAvatar.clear();;
     				//两个人之间建立关联，游戏结束算账用   自摸不会出现抢胡的情况
-    				HuPaiType.getInstance().getHuType(avatar, avatar,roomVO.getRoomType(),cardIndex,playerList,mas,huCount,"",roomVO.getHong());
+        			if(!validMa.isEmpty()){
+	    				List<Integer> newValidMa = HuPaiType.getInstance().getHuType(playerList.get(curAvatarIndex), avatar,roomVO.getRoomType(),cardIndex ,playerList,mas,huCount,type,roomVO.getHong());
+	    				for (Integer j : newValidMa) {
+	    					validMa.add(j);
+						}
+	    			}
+        			else{
+        				validMa = HuPaiType.getInstance().getHuType(avatar, avatar,roomVO.getRoomType(),cardIndex,playerList,mas,huCount,"",roomVO.getHong());
+        			}
     				roomVO.updateEndStatistics(avatar.getUuId()+"", "zimo", 1);
     				flag = true;
     			}
@@ -1224,7 +1244,7 @@ public class PlayCardsLogic {
     		json.put("validMas", new ArrayList<>());
     	}
     	else{
-    		json.put("validMas", HuPaiType.getInstance().getValidMa());
+    		json.put("validMas", validMa);
     	}
     	json.put("currentScore", score.toString());
     	//生成战绩content

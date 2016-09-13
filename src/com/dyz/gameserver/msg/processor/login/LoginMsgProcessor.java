@@ -140,7 +140,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 						account.setNickname(loginVO.getNickName());
 						int i = AccountService.getInstance().updateByPrimaryKeySelective(account);
 						if(i > 0){
-							System.out.println("微信昵称更新成功");
+							//System.out.println("微信昵称更新成功");
 						}
 						else{
 							System.out.println("微信昵称更新失败");
@@ -196,6 +196,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 				
 			}
 		}
+		System.out.println(account.getUuid()+"  :登录游戏");
 	}
 
 	/**

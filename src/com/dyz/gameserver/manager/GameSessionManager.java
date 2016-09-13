@@ -6,6 +6,8 @@ import com.dyz.gameserver.commons.session.GameSession;
 import com.dyz.gameserver.context.GameServerContext;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.login.BreakLineResponse;
+import com.dyz.gameserver.msg.response.login.OtherBackLoginResonse;
+import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.persist.util.TimeUitl;
 
 import java.io.IOException;
@@ -45,13 +47,13 @@ public class GameSessionManager {
     public boolean putGameSessionInHashMap(GameSession gameSession,int useId){
         //Avatar avatar = gameSession.getRole(Avatar.class);
         boolean result = checkSessionIsHava(useId);
-        System.out.println(" result ==> "+result);
+        //System.out.println(" result ==> "+result);
         if(result){
-           System.out.println("这个用户已登录了,更新session"); 
+           //System.out.println("这个用户已登录了,更新session"); 
             try {
 				sessionMap.get("uuid_"+useId).sendMsg(new ErrorResponse(ErrorCode.Error_000022));
 				sessionMap.get("uuid_"+useId).sendMsg(new BreakLineResponse(1));
-				Thread.sleep(300);
+				Thread.sleep(1000);
                 sessionMap.get("uuid_"+useId).close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -71,6 +73,14 @@ public class GameSessionManager {
             GameServerContext.remove_offLine_Character(avatar);
             TimeUitl.stopAndDestroyTimer(avatar);
         	sessionMap.put("uuid_"+useId,gameSession);
+        	//如果玩家在房间中 则需要给其他玩家发送在线消息
+        	List<Avatar> playerList = RoomManager.getInstance().getRoom(avatar.getRoomVO().getRoomId()).getPlayerList();
+        	for (int i = 0; i < playerList.size(); i++) {
+        		if(playerList.get(i).getUuId() != avatar.getUuId()){
+        			//给其他三个玩家返回重连用户信息
+        			playerList.get(i).getSession().sendMsg(new OtherBackLoginResonse(1, avatar.getUuId()+""));
+        		}
+        	}
         	if(sessionMap.size() > topOnlineAccountCount){
                 topOnlineAccountCount = sessionMap.size();
             }
