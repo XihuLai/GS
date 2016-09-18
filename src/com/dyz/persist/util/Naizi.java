@@ -112,7 +112,7 @@ public class Naizi {
             }
         }
 
-       // System.out.println("getNumWithJiang ===>  "+result+"  ==>> ");
+        System.out.println("getNumWithJiang ===>  "+result+"  ==>> ");
        // for(int a = 0;a<temp_arr.length;a++){
             //system.out.print(temp_arr[a]+",");
        // }
@@ -260,52 +260,57 @@ public class Naizi {
                     temp_arr[i] -= 3;
                     i--;
                 }else {
-                    if (i < 7) {
-                        if (temp_arr[i + 1] > 0 && temp_arr[i + 2] > 0) {
-                            temp_arr[i]--;
-                            temp_arr[i + 1]--;
-                            temp_arr[i + 2]--;
-                            i--;
-                        } else if (temp_arr[i + 1] > 0 && temp_arr[i + 2] == 0) {
-                            temp_arr[i]--;
-                            temp_arr[i + 1]--;
-                            result++;
-                            i--;
-                        } else if (temp_arr[i + 1] == 0 && temp_arr[i + 2] > 0) {
-                            temp_arr[i]--;
-                            temp_arr[i + 2]--;
-                            result++;
-                            i--;
-                        } else if (temp_arr[i + 1] == 0 && temp_arr[i + 2] == 0) {
-                            if (temp_arr[i] == 2) {
-                                temp_arr[i] = 0;
-                                result++;
-                            } else {
-                                temp_arr[i] = 0;
-                                result += 2;
-                            }
-                        }
-                    } else {
-                        if (i == 7) {
-                            if (temp_arr[i] > 0 && temp_arr[i + 1] > 0) {
+                    if(temp_arr[i]==2){
+                        temp_arr[i] = 0;
+                        result++;
+                    }else {
+                        if (i < 7) {
+                            if (temp_arr[i + 1] > 0 && temp_arr[i + 2] > 0) {
+                                temp_arr[i]--;
+                                temp_arr[i + 1]--;
+                                temp_arr[i + 2]--;
+                                i--;
+                            } else if (temp_arr[i + 1] > 0 && temp_arr[i + 2] == 0) {
                                 temp_arr[i]--;
                                 temp_arr[i + 1]--;
                                 result++;
                                 i--;
-                            } else if (temp_arr[i] > 0 && temp_arr[i + 1] == 0) {
+                            } else if (temp_arr[i + 1] == 0 && temp_arr[i + 2] > 0) {
+                                temp_arr[i]--;
+                                temp_arr[i + 2]--;
+                                result++;
+                                i--;
+                            } else if (temp_arr[i + 1] == 0 && temp_arr[i + 2] == 0) {
+                                if (temp_arr[i] == 2) {
+                                    temp_arr[i] = 0;
+                                    result++;
+                                } else {
+                                    temp_arr[i] = 0;
+                                    result += 2;
+                                }
+                            }
+                        } else {
+                            if (i == 7) {
+                                if (temp_arr[i] > 0 && temp_arr[i + 1] > 0) {
+                                    temp_arr[i]--;
+                                    temp_arr[i + 1]--;
+                                    result++;
+                                    i--;
+                                } else if (temp_arr[i] > 0 && temp_arr[i + 1] == 0) {
+                                    result = result + 3 - temp_arr[i];
+                                    temp_arr[i] = 0;
+                                }
+                            } else {
                                 result = result + 3 - temp_arr[i];
                                 temp_arr[i] = 0;
                             }
-                        } else {
-                            result = result + 3 - temp_arr[i];
-                            temp_arr[i] = 0;
                         }
                     }
                 }
             }
         }
 
-       //System.out.println("getNumber ===>  "+result+"  ==>> ");
+       System.out.println("getNumber ===>  "+result+"  ==>> ");
         /*for(int a = 0;a<temp_arr.length;a++){
             //system.out.print(temp_arr[a]+",");
         }*/
@@ -316,7 +321,7 @@ public class Naizi {
 
     public static void main(String[] args){
         List<int[]> tempList = new ArrayList<>();
-      tempList.add(new int[]{0,0,0,0,0,0,0,0,0,     0,0,0,0,0,1,1,0,0,     2,0,0,1,1,1,1,0,1,   0,0,0,0,2,0,0});
+      tempList.add(new int[]{3,1,1,1,3,0,0,0,0,     0,0,0,0,0,0,0,0,0,     0,0,0,0,0,1,1,1,0,   0,0,0,0,1,0,0});
        //tempList.add(new int[]{1,0,0,0,0,0,0,1,0,     1,2,1,1,0,0,0,0,0,     1,0,1,0,0,0,1,1,0,   0,0,0,0,3,0,0});
       // tempList.add(new int[]{0,0,0,0,0,0,1,1,1,     0,0,2,0,3,1,1,1,0,     0,0,1,1,1,0,0,0,0,   0,0,0,0,0,0,0});
       //tempList.add(new int[]{0,1,0,1,0,0,0,2,0,     0,1,1,0,0,0,1,1,1,     0,0,0,0,0,3,0,0,0,   0,0,0,0,2,0,0});
