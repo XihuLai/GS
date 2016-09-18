@@ -45,7 +45,7 @@ public class PlayCardsLogic {
      */
     private int curAvatarIndex;
     /**
-     * 当前摸牌人的索引
+     * 当前摸牌人的索引(初始值为庄家索引)
      */
     private int pickAvatarIndex;
     /**
@@ -151,6 +151,10 @@ public class PlayCardsLogic {
     private Map<Integer , ResponseMsg>  shakeHandsInfo= new  HashMap<Integer,ResponseMsg>();
     
     
+    
+	public void setPickAvatarIndex(int pickAvatarIndex) {
+		this.pickAvatarIndex = pickAvatarIndex;
+	}
 	public Map<Integer , ResponseMsg> getShakeHandsInf() {
 		return shakeHandsInfo;
 	}
