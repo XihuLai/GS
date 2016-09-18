@@ -2149,7 +2149,7 @@ public class PlayCardsLogic {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			System.out.println(sb);
+			//System.out.println(sb);
 			avatar.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
 		}
     	else{
