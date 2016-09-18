@@ -306,12 +306,9 @@ public class PlayCardsLogic {
             for(int i=0;i<playerList.size();i++){
                 if(i != pickAvatarIndex){
                     playerList.get(i).getSession().sendMsg(new OtherPickCardResponse(1,pickAvatarIndex));
-                }/*else {
-                	avatar.getSession().sendMsg(new PickCardResponse(1, tempPoint));
-					//摸牌之后就重置可否胡别人牌的标签
-					//playerList.get(i).canHu = true;
-					//System.out.println("摸牌玩家------index"+pickAvatarIndex+"名字"+playerList.get(i).avatarVO.getAccount().getNickname());
-				}*/
+                }else {
+                	playerList.get(i).gangIndex.clear();//每次摸牌就先清除缓存里面的可以杠的牌下标
+				}
             }
             //判断自己摸上来的牌自己是否可以胡
             StringBuffer sb = new StringBuffer();
@@ -365,6 +362,7 @@ public class PlayCardsLogic {
                 if(i != pickAvatarIndex){
                     playerList.get(i).getSession().sendMsg(new OtherPickCardResponse(1,pickAvatarIndex));
                 }else {
+                	playerList.get(i).gangIndex.clear();//每次出牌就先清除缓存里面的可以杠的牌下标
 					playerList.get(i).getSession().sendMsg(new PickCardResponse(1, tempPoint));
 					//摸牌之后就重置可否胡别人牌的标签
 					playerList.get(i).canHu = true;
@@ -459,6 +457,7 @@ public class PlayCardsLogic {
     			}
     			if(gangAvatar.contains(avatar)){
     				gangAvatar.remove(avatar);
+    				avatar.gangIndex.clear();
     			}
     			if(penAvatar.contains(avatar)){
     				penAvatar.remove(avatar);

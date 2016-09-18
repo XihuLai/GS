@@ -110,7 +110,7 @@ public class Naizi {
             }
         }
 
-        System.out.println("getNumWithJiang ===>  "+result+"  ==>> ");
+        //System.out.println("getNumWithJiang ===>  "+result+"  ==>> ");
        // for(int a = 0;a<temp_arr.length;a++){
             //system.out.print(temp_arr[a]+",");
        // }
@@ -188,7 +188,7 @@ public class Naizi {
                 }
             }
         }
-        System.out.println("getNorNumber======>>   "+result);
+        //System.out.println("getNorNumber======>>   "+result);
         return result;
     }
 
@@ -325,11 +325,11 @@ public class Naizi {
             }
         }
         //   无法全部组合
-      System.out.println("无法全部组合");
+     /* System.out.println("无法全部组合");
         for(int a = 0;a<temp_arr.length;a++){
             System.out.print(temp_arr[a]+",");
         }
-        System.out.println("");
+        System.out.println("");*/
         return false;
     }
 
@@ -400,7 +400,7 @@ public class Naizi {
             }
         }
 
-       System.out.println("getNumber ===>  "+result+"  ==>> ");
+      // System.out.println("getNumber ===>  "+result+"  ==>> ");
         /*for(int a = 0;a<temp_arr.length;a++){
             System.out.print(temp_arr[a]+",");
         }

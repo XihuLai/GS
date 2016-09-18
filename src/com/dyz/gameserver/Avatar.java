@@ -277,6 +277,7 @@ public class Avatar implements GameObj {
      */
     public boolean checkGang(int cardIndex){
     	boolean flag = false;
+    	gangIndex.clear();//每次出牌就先清除缓存里面的可以杠的牌下标
         if(avatarVO.getPaiArray()[0][cardIndex] == 3){
         	if(resultRelation.get(1) ==null){
         		gangIndex.add(cardIndex);
@@ -305,6 +306,7 @@ public class Avatar implements GameObj {
     public boolean checkSelfGang(){
      	//system.out.println("杠了的牌==杠家id"+avatarVO.getAccount().getUuid()+"===="+resultRelation.get(2));
      	//system.out.println("碰了的牌==杠家id"+avatarVO.getAccount().getUuid()+"===="+resultRelation.get(1));
+    	gangIndex.clear();//先清除缓存里面的可以杠的牌下标
     	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
     	boolean flag = false;
     	if(!roomVO.isAddWordCard()){
