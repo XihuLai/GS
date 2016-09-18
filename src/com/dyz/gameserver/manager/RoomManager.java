@@ -46,7 +46,7 @@ public class RoomManager {
         addUuidAndRoomId(avatar.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
     }
     /**
-     * 销毁房间/通知房间里面的玩家退出房间
+     * 移除房间
      * @param avatar
      */
     public void destroyRoom(RoomVO roomVO){

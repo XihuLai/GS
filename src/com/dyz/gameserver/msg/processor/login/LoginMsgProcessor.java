@@ -1,7 +1,6 @@
 package com.dyz.gameserver.msg.processor.login;
 
 import java.util.Date;
-import java.util.List;
 
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.initial.Params;
@@ -18,7 +17,6 @@ import com.dyz.gameserver.msg.response.hu.HuPaiResponse;
 import com.dyz.gameserver.msg.response.login.LoginResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.LoginVO;
-import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.myBatis.model.Account;
 import com.dyz.myBatis.model.NoticeTable;
 import com.dyz.myBatis.services.AccountService;
@@ -36,10 +34,8 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 		Account account = AccountService.getInstance().selectAccount(loginVO.getOpenId());
 		if(account==null){
 			//创建新用户并登录
-			//gameSession.sendMsg(new LoginResponse1004(false));
 			account = new Account();
 			account.setOpenid(loginVO.getOpenId());
-			//uuid由id+10000构成
 			account.setUuid(AccountService.getInstance().selectMaxId()+100000);
 			account.setRoomcard(Params.initialRoomCard);
 			account.setHeadicon(loginVO.getHeadIcon());
@@ -57,7 +53,6 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 
 			if(AccountService.getInstance().createAccount(account) == 0){
 				gameSession.sendMsg(new LoginResponse(0,null));
-				//system.out.println("创建新用户失败");
 				TimeUitl.delayDestroy(gameSession,1000);
 			}else{
 				Avatar tempAva = new Avatar();
@@ -67,7 +62,6 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 				tempAva.avatarVO = tempAvaVo;
 
 				loginAction(gameSession,tempAva);
-				//system.out.println("创建新用户并登录");
 				//把session放入到GameSessionManager
 				GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,tempAva.getUuId());
 				//公告发送给玩家
@@ -95,56 +89,10 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 				}
 			}
 			if(avatar == null) {
-				/*int uuid = account.getUuid();
-				if(RoomManager.getInstance().getUuidAndRoomId().get(uuid) != null){
-					//说明玩家在房间中，则返回房间信息
-					String key = "uuid_"+account.getUuid();
-					GameSession gamesession = GameSessionManager.getInstance().sessionMap.get(key);
-					
-					RoomLogic roomLogic = RoomManager.getInstance().getRoom(RoomManager.getInstance().getUuidAndRoomId().get(uuid));
-					List<Avatar> avatars = roomLogic.getPlayerList();
-					for (int i = 0; i < avatars.size(); i++) {
-						if(avatars.get(i).avatarVO.getAccount().getUuid() == uuid){
-							avatar = avatars.get(i);
-							//断线重连
-							GameServerContext.remove_offLine_Character(avatar);
-							GameServerContext.add_onLine_Character(avatar);
-							avatar.avatarVO.setIsOnLine(true);
-							avatar.avatarVO.setAccount(account);
-							avatar.avatarVO.setIP(loginVO.getIP());
-							TimeUitl.stopAndDestroyTimer(avatar);
-							avatar.setSession(gameSession);
-							//system.out.println("用户回来了，断线重连，中止计时器");
-							//返回用户断线前的房间信息******
-							gameSession.setLogin(true);
-							gameSession.setRole(avatar);
-							returnBackAction(avatar);
-							//把session放入到GameSessionManager
-							GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
-							//公告发送给玩家
-							Thread.sleep(3000);
-							NoticeTable notice = null;
-							try {
-								 notice = NoticeTableService.getInstance().selectRecentlyObject();
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-							String content = notice.getContent();
-							gameSession.sendMsg(new HostNoitceResponse(1, content));
-						}
-					}
-				}
-				else{*/
 					//判断微信昵称是否修改过，若修改过昵称，则更新数据库信息
 					if(!loginVO.getNickName().equals(account.getNickname())){
 						account.setNickname(loginVO.getNickName());
-						int i = AccountService.getInstance().updateByPrimaryKeySelective(account);
-						if(i > 0){
-							//System.out.println("微信昵称更新成功");
-						}
-						else{
-							System.out.println("微信昵称更新失败");
-						}
+						AccountService.getInstance().updateByPrimaryKeySelective(account);
 					}
 					//断线超过时间后，自动退出
 					avatar = new Avatar();
@@ -165,8 +113,6 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 					}
 					String content = notice.getContent();
 					gameSession.sendMsg(new HostNoitceResponse(1, content));
-				//}
-				//system.out.println("GameSessionManager getVauleSize -- >" +GameSessionManager.getInstance().getVauleSize());
 			}else{
 				//断线重连
 				GameServerContext.add_onLine_Character(avatar);
@@ -230,7 +176,6 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 					Thread.sleep(1000);
 					if(avatar.overOff){
 						//在某一句结算时断线，重连时返回结算信息
-						//system.out.println("overOff");
 						avatar.getSession().sendMsg(new HuPaiResponse(1,avatar.oneSettlementInfo));
 					}
 				} catch (InterruptedException e) {

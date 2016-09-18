@@ -612,7 +612,7 @@ public class RoomLogic {
 			RoomManager.getInstance().removeUuidAndRoomId(avat.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
 		}
 		RoomManager.getInstance().destroyRoom(roomVO);
-		destory();
+		roomVO = null;
 	}
 	/**
 	 * 房主退出房间，及解散房间，详细清除数据,销毁房间逻辑
@@ -638,7 +638,7 @@ public class RoomLogic {
 			RoomManager.getInstance().removeUuidAndRoomId(avat.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
 		}
 		RoomManager.getInstance().destroyRoom(roomVO);
-		destory();
+		roomVO = null;
 	}
 	/**
 	 * 房主外的玩家退出房间，详细清除单个数据
@@ -678,9 +678,5 @@ public class RoomLogic {
 
 	public void setStandingsDetailsIds(List<Integer> standingsDetailsIds) {
 		this.standingsDetailsIds = standingsDetailsIds;
-	}
-	
-	public void destory(){
-		new RoomLogic(new RoomVO());
 	}
 }

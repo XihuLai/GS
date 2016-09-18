@@ -279,6 +279,7 @@ public class Avatar implements GameObj {
     	boolean flag = false;
         if(avatarVO.getPaiArray()[0][cardIndex] == 3){
         	if(resultRelation.get(1) ==null){
+        		gangIndex.add(cardIndex);
         		flag = true;
         	}else{
         		String strs [] = resultRelation.get(1).split(",");
@@ -288,6 +289,7 @@ public class Avatar implements GameObj {
 						i = strs.length;
 					}
 					else{
+						gangIndex.add(cardIndex);
 						flag  =  true;
 					}
 				}
@@ -525,11 +527,8 @@ public class Avatar implements GameObj {
     public void destroyObj() {
     	//统计在线用户****
         logger.info("Avatar用户{}断开服务器链接",avatarVO.getAccount().getNickname());
-       // avatarVO.setPaiArray(null);
         if(session != null){
-            //system.out.println("session 不为空");
-        }else{
-            //system.out.println("session 以经是空的了");
+        	session.clearAllInfo();
         }
     }
     /**
