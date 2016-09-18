@@ -2,10 +2,7 @@ package com.dyz.persist.util;
 
 import com.dyz.gameserver.pojo.CheckObjectVO;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by kevin on 2016/6/29.
@@ -56,17 +53,17 @@ public class Naizi {
                 index++;
             }
         }
-        needNum = getNumWithJiang(wan_arr.clone())+ getNumber(tiao_arr.clone()) + getNumber(tong_arr.clone());
+        needNum = getNumWithJiang(wan_arr.clone())+ getNorNumber(tiao_arr.clone()) + getNorNumber(tong_arr.clone());
         if(needNum <= zhong){
         	return true;
         }
         else {
-        	needNum = getNumber(wan_arr.clone()) +getNumWithJiang(tiao_arr.clone()) + getNumber(tong_arr.clone());
+        	needNum = getNorNumber(wan_arr.clone()) +getNumWithJiang(tiao_arr.clone()) + getNorNumber(tong_arr.clone());
         	if(needNum <= zhong){
         		return true;
         	}
         	else{
-        		needNum = getNumber(wan_arr.clone()) + getNumber(tiao_arr.clone())+getNumWithJiang(tong_arr.clone()) ;
+        		needNum = getNorNumber(wan_arr.clone()) + getNorNumber(tiao_arr.clone())+getNumWithJiang(tong_arr.clone()) ;
         		if(needNum <= zhong){
         			return true;
         		}
@@ -91,6 +88,7 @@ public class Naizi {
             if(ints.iterator().hasNext()){
                 int key = ints.iterator().next();
                 List<CheckObjectVO> objectVOList = shengCard.get(key);
+                objectVOList = deleteSameItemForList(objectVOList);
                 for(int k = 0;k<objectVOList.size();k++) {
                     CheckObjectVO objectVO = objectVOList.get(k);
                     if (objectVO.isJiang == 0) {
@@ -169,6 +167,31 @@ public class Naizi {
         return result;
     }
 
+    private static int getNorNumber(int[] temp_arr){
+        int result = 99999;
+        shengCard.clear();
+        if(checkNormalGroup(temp_arr.clone())){
+            result = 0;
+        }else{
+            Set<Integer> ints =  shengCard.keySet();
+            ints.size();
+            if(ints.iterator().hasNext()) {
+                int key = ints.iterator().next();
+                List<CheckObjectVO> objectVOList = shengCard.get(key);
+                objectVOList = deleteSameItemForList(objectVOList);
+                for (int k = 0; k < objectVOList.size(); k++) {
+                    CheckObjectVO objectVO = objectVOList.get(k);
+                    int tempInt = getNumber(objectVO.paiArray.clone());
+                    if (tempInt < result) {
+                        result = tempInt;
+                    }
+                }
+            }
+        }
+        System.out.println("getNorNumber======>>   "+result);
+        return result;
+    }
+
     private static boolean checkCanbeGroup(int[] temp_arr){
         int resultNum = Remain(temp_arr);
         if (resultNum == 0) {
@@ -236,13 +259,80 @@ public class Naizi {
             }
         }
         //   无法全部组合
-       /*System.out.println("无法全部组合");
+      /* System.out.println("无法全部组合");
         for(int a = 0;a<temp_arr.length;a++){
             System.out.print(temp_arr[a]+",");
-        }*/
-        //System.out.println("");
+        }
+        System.out.println("");*/
         return false;
     }
+
+    private static boolean checkNormalGroup(int[] temp_arr){
+        int resultNum = Remain(temp_arr);
+        if (resultNum == 0) {
+            return true;           //   递归退出条件：如果没有剩牌，则胡牌返回。
+        }else{
+            CheckObjectVO objectVO = new CheckObjectVO();
+            objectVO.isJiang = Jiang;
+            objectVO.paiArray = temp_arr.clone();
+            List<CheckObjectVO> tempList = shengCard.get(resultNum);
+            if(tempList == null){
+                tempList = new ArrayList<>();
+                tempList.add(objectVO);
+                shengCard.put(resultNum,tempList);
+            }else{
+                tempList.add(objectVO);
+            }
+        }
+        for (int i = 0;  i < temp_arr.length; i++) {//   找到有牌的地方，i就是当前牌,   PAI[i]是个数
+            //   跟踪信息
+            //   4张组合(杠子)
+            if(temp_arr[i] != 0){
+                if (temp_arr[i] == 4)                               //   如果当前牌数等于4张
+                {
+                    temp_arr[i] = 0;                                     //   除开全部4张牌
+                    if (checkCanbeGroup(temp_arr)) {
+                        return true;             //   如果剩余的牌组合成功，和牌
+                    }
+                    temp_arr[i] = 4;                                     //   否则，取消4张组合
+                }
+                //   3张组合(大对)
+                if (temp_arr[i] >= 3)                               //   如果当前牌不少于3张
+                {
+                    temp_arr[i] -= 3;                                   //   减去3张牌
+                    if (checkCanbeGroup(temp_arr)) {
+                        return true;             //   如果剩余的牌组合成功，胡牌
+                    }
+                    temp_arr[i] += 3;                                   //   取消3张组合
+                }
+                if   ( i> 27){
+                    return   false;               //   “东南西北中发白”没有顺牌组合，不胡
+                }
+                //   顺牌组合，注意是从前往后组合！
+                //   排除数值为8和9的牌
+                if (i<7 && temp_arr[i+1]!=0 && temp_arr[i+2]!=0)             //   如果后面有连续两张牌
+                {
+                    temp_arr[i]--;
+                    temp_arr[i + 1]--;
+                    temp_arr[i + 2]--;                                     //   各牌数减1
+                    if (checkCanbeGroup(temp_arr)) {
+                        return true;             //   如果剩余的牌组合成功，胡牌
+                    }
+                    temp_arr[i]++;
+                    temp_arr[i + 1]++;
+                    temp_arr[i + 2]++;                                     //   恢复各牌数
+                }
+            }
+        }
+        //   无法全部组合
+      System.out.println("无法全部组合");
+        for(int a = 0;a<temp_arr.length;a++){
+            System.out.print(temp_arr[a]+",");
+        }
+        System.out.println("");
+        return false;
+    }
+
     //   检查剩余牌数
     static int Remain(int[] paiList) {
         int sum = 0;
@@ -312,16 +402,16 @@ public class Naizi {
 
        System.out.println("getNumber ===>  "+result+"  ==>> ");
         /*for(int a = 0;a<temp_arr.length;a++){
-            //system.out.print(temp_arr[a]+",");
-        }*/
-        //System.out.println();
+            System.out.print(temp_arr[a]+",");
+        }
+        System.out.println();*/
 
         return result;
     }
 
     public static void main(String[] args){
         List<int[]> tempList = new ArrayList<>();
-      tempList.add(new int[]{3,1,1,1,3,0,0,0,0,     0,0,0,0,0,0,0,0,0,     0,0,0,0,0,1,1,1,0,   0,0,0,0,1,0,0});
+      tempList.add(new int[]{2,1,2,0,0,0,0,0,0,     2,0,0,3,0,0,0,0,0,     0,0,1,1,1,0,0,0,0,   0,0,0,0,1,0,0});
        //tempList.add(new int[]{1,0,0,0,0,0,0,1,0,     1,2,1,1,0,0,0,0,0,     1,0,1,0,0,0,1,1,0,   0,0,0,0,3,0,0});
       // tempList.add(new int[]{0,0,0,0,0,0,1,1,1,     0,0,2,0,3,1,1,1,0,     0,0,1,1,1,0,0,0,0,   0,0,0,0,0,0,0});
       //tempList.add(new int[]{0,1,0,1,0,0,0,2,0,     0,1,1,0,0,0,1,1,1,     0,0,0,0,0,3,0,0,0,   0,0,0,0,2,0,0});
@@ -340,5 +430,18 @@ public class Naizi {
             }
         }
        // getNeedHunNum(test);
+    }
+
+    private static List<CheckObjectVO> deleteSameItemForList(List<CheckObjectVO> tempList){
+        HashMap<String,CheckObjectVO> tempMap = new HashMap<>();
+        List<CheckObjectVO> result = new ArrayList<>();
+        for(int i=0;i<tempList.size();i++){
+           tempMap.put(tempList.get(i).ToString(),tempList.get(i));
+        }
+        Object[] temp =  tempMap.values().toArray();
+        for (int i=0;i<temp.length;i++){
+            result.add((CheckObjectVO)temp[i]);
+        }
+        return result;
     }
 }
