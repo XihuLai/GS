@@ -34,8 +34,6 @@ public class TimeUitl {
                 if(gobj instanceof Avatar){
                     System.out.println("用户掉线超时，删除用户数据 UserId "+ ((Avatar) gobj).getUuId());
                     GameServerContext.remove_offLine_Character((Avatar) gobj);
-                    //清除 对象所有数据
-                    
                 }else{
                     System.out.println("到点啦！移除 gameSession");
                 }

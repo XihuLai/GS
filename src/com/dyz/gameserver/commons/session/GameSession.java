@@ -1,21 +1,20 @@
 package com.dyz.gameserver.commons.session;
 
-import com.dyz.gameserver.Avatar;
-import com.dyz.gameserver.commons.message.ResponseMsg;
-import com.dyz.gameserver.context.GameServerContext;
-import com.dyz.gameserver.logic.RoomLogic;
-import com.dyz.gameserver.manager.GameSessionManager;
-import com.dyz.gameserver.manager.RoomManager;
-import com.dyz.gameserver.msg.response.offline.OffLineResponse;
-import com.dyz.gameserver.pojo.RoomVO;
-import com.dyz.gameserver.sprite.base.GameObj;
-import com.dyz.persist.util.TimeUitl;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+
 import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.session.AttributeKey;
 import org.apache.mina.core.session.IoSession;
 
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
+import com.dyz.gameserver.Avatar;
+import com.dyz.gameserver.commons.message.ResponseMsg;
+import com.dyz.gameserver.logic.RoomLogic;
+import com.dyz.gameserver.manager.GameSessionManager;
+import com.dyz.gameserver.manager.RoomManager;
+import com.dyz.gameserver.msg.response.offline.OffLineResponse;
+import com.dyz.gameserver.sprite.base.GameObj;
+import com.dyz.persist.util.TimeUitl;
 /**
  * 游戏中的session回话，封装了mina的session
  * @author dyz
@@ -123,19 +122,11 @@ public class GameSession implements GameObj {
 	 * 关闭SESSION
 	 */
 	public void close(){
-		//System.out.println("关闭SESSION -- > "+session.getRemoteAddress()+getAddress());
 		if(session != null ) {
 			session.close(false);// 2016-8-29短线时不关闭用户session，等
-			//关闭session的时候(掉线) 如果只其一个用户还在房间，则踢出用户并解散房间，并向其他玩家发送消息
-			//只要房主在房间里(在线/掉线) 都不能自动解散房间
-			//GameSession playerObj = (GameSession) session.getAttribute(KEY_PLAYER_SESSION);
 			Avatar avatar = getRole(Avatar.class);
 			if(avatar != null){
 				GameSessionManager.getInstance().removeGameSession(avatar);
-				//判断用户是否已经进行断线处理(如果前端断线时间过短，后台则可能还未来得及调用断线操作，就已经登录了)
-				//avatar.destroy();因为有断线重联功能，所以在这里不能清除角色数据
-				//把用户从在线列表中移除，并加入到离线列表
-				//GameServerContext.add_offLine_Character(avatar);
 				avatar.avatarVO.setIsOnLine(false);
 				//把用户数据保留半个小时
 				TimeUitl.delayDestroy(avatar,60*30*1000);
@@ -149,32 +140,25 @@ public class GameSession implements GameObj {
 									//发送离线通知
 									ava.getSession().sendMsg(new OffLineResponse(1,avatar.getUuId()+""));
 									//同意解散房间人数 设置为0,有人掉线就取消解散房间
-									//system.out.println("有人掉线就取消解散房间");
 									roomLogic.setDissolveCount(1);
 									roomLogic.setDissolve(true);
 								}
 							}
 						}
-						/*else{
-							//只要房主在房间里(在线/掉线) 都不能自动解散房间
-							RoomManager.getInstance().destroyRoom(avatar.getRoomVO());
-							//房间只有一个人(房主除外)且掉线，则踢出用户并解散房间
-							avatar.avatarVO.setRoomId(0);
-							avatar.setRoomVO(new RoomVO());
-							//avatar.destroyObj();
-							roomLogic = null;
-						}*/
-						//所有断线玩家  移除session
 					}
 				}
-				//把session从GameSessionManager移除
-				//GameSessionManager.getInstance().removeGameSession(avatar);
 			}
-			//session.getService().dispose(false);
-			//System.out.println("关闭SESSION -- >  session.close(false);");
 		}
 	}
-
+    /**
+     * 用户断线超过30秒后  断开session，至于用户信息.......
+     */
+	public void clearAllInfo(){
+		session.close(false);
+		
+	}
+	
+	
 	@Override
 	public void destroyObj() {
 		close();

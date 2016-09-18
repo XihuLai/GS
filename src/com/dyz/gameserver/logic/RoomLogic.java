@@ -440,6 +440,8 @@ public class RoomLogic {
 	        	Avatar avatar = playCardsLogic.bankerAvatar;
 	        	playCardsLogic = new PlayCardsLogic();
 	        	playCardsLogic.bankerAvatar = avatar;
+	        	//摸牌玩家索引初始值为庄家索引
+	        	playCardsLogic.setPickAvatarIndex(playerList.indexOf(avatar));
 	        }
 	        else{
 	        	/*
@@ -494,9 +496,8 @@ public class RoomLogic {
 	        	avatar.avatarVO.setHuReturnObjectVO(new HuReturnObjectVO());
 	            avatar.getSession().sendMsg(new StartGameResponse(1,avatar.avatarVO.getPaiArray(),playerList.indexOf(playCardsLogic.bankerAvatar)));
 	            //修改玩家是否玩一局游戏的状态
-	            account = new Account();
-	            if(avatar.avatarVO.getAccount().getIsGame().equals("0")){
-	            	account.setId(avatar.avatarVO.getAccount().getId());
+	            account = AccountService.getInstance().selectByPrimaryKey(avatar.avatarVO.getAccount().getId());
+	            if(account.getIsGame().equals("0")){
 	            	account.setIsGame("1");
 	            	AccountService.getInstance().updateByPrimaryKeySelective(account);
 	            	avatar.avatarVO.getAccount().setIsGame("1");
@@ -611,7 +612,7 @@ public class RoomLogic {
 			RoomManager.getInstance().removeUuidAndRoomId(avat.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
 		}
 		RoomManager.getInstance().destroyRoom(roomVO);
-		destory();
+		roomVO = null;
 	}
 	/**
 	 * 房主退出房间，及解散房间，详细清除数据,销毁房间逻辑
@@ -637,7 +638,7 @@ public class RoomLogic {
 			RoomManager.getInstance().removeUuidAndRoomId(avat.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
 		}
 		RoomManager.getInstance().destroyRoom(roomVO);
-		destory();
+		roomVO = null;
 	}
 	/**
 	 * 房主外的玩家退出房间，详细清除单个数据
@@ -677,9 +678,5 @@ public class RoomLogic {
 
 	public void setStandingsDetailsIds(List<Integer> standingsDetailsIds) {
 		this.standingsDetailsIds = standingsDetailsIds;
-	}
-	
-	public void destory(){
-		new RoomLogic(new RoomVO());
 	}
 }

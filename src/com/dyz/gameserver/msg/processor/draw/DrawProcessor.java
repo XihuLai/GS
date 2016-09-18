@@ -35,7 +35,7 @@ public class DrawProcessor extends MsgProcessor implements
 INotAuthProcessor  {
 
 	@Override
-	public void process(GameSession gameSession, ClientRequest request) throws Exception {
+	public synchronized void process(GameSession gameSession, ClientRequest request) throws Exception {
 		if(GlobalUtil.checkIsLogin(gameSession)) {
 			String type = request.getString();//传入类型 0：获取所有奖品信息    1：获取随机获得奖品id    
 			Avatar avatar = gameSession.getRole(Avatar.class);
@@ -113,18 +113,18 @@ INotAuthProcessor  {
 		winnersInfo.setStatus("0");
 		//如果抽中了房卡，自动给其充入账号里面
 		Prize prize =  PrizeService.getInstance().selectByPrimaryKey(prizeId);
+		Account accountSql = new Account();
+		int prizecount = account.getPrizecount()-1;
+		accountSql.setId(account.getId());
+		accountSql.setPrizecount(prizecount);
 		if(prize.getType().equals("0")){
 			int awardRoomCard = prize.getPrizecount();
 			//自动给玩家充值,修改用户信息，并通知APP端
 			int roomCard = account.getRoomcard() + awardRoomCard;
 			int totalRoomCard = account.getTotalcard()+awardRoomCard;
-			int prizecount = account.getPrizecount()-1;
-			Account a = new Account();
-			a.setId(account.getId());
-			a.setRoomcard(roomCard);
-			a.setTotalcard(totalRoomCard);
-			a.setPrizecount(prizecount);
-			AccountService.getInstance().updateByPrimaryKeySelective(a);
+			accountSql.setRoomcard(roomCard);
+			accountSql.setTotalcard(totalRoomCard);
+			AccountService.getInstance().updateByPrimaryKeySelective(accountSql);
 			//修改缓存中的信息
 			account.setRoomcard(roomCard);
 			account.setTotalcard(totalRoomCard);
@@ -152,7 +152,15 @@ INotAuthProcessor  {
 			}
 			winnersInfo.setStatus("1");
 		}
+		else{
+			account.setPrizecount(prizecount);
+			AccountService.getInstance().updateByPrimaryKeySelective(accountSql);
+		}
 		WinnersInfoService.getInstance().saveSelective(winnersInfo);
-		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e2) {
+			e2.printStackTrace();
+		}
 	}
 }
