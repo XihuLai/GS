@@ -1484,7 +1484,7 @@ public class PlayCardsLogic {
     	 playRecordGame = new PlayRecordGameVO();
     	 RoomVO roomVo = roomVO.clone();
     	 roomVo.setEndStatistics(new HashMap<String, Map<String,Integer>>());
-    	 roomVo.setPlayerList(new ArrayList<>());
+    	 roomVo.setPlayerList(new ArrayList<AvatarVO>());
          playRecordGame.roomvo = roomVo;
          PlayRecordItemVO playRecordItemVO;
          Account account;

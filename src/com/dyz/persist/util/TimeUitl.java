@@ -22,7 +22,7 @@ public class TimeUitl {
      * @param gobj
      * @param delayTime
      */
-    public static  void delayDestroy(GameObj gobj,int delayTime){
+    public static  void delayDestroy(final GameObj gobj,int delayTime){
         final Timer timer = new Timer();
         gameObjMap.put(gobj,timer);
         //getGameObjMapSize();
