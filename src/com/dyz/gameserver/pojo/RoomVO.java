@@ -29,7 +29,7 @@ public class RoomVO {
      */
     private boolean hong;
     /**
-     * 房间模式，1-转转麻将。2-划水麻将。3-长沙麻将
+     * 房间模式，1-转转麻将。2-划水麻将。3-长沙麻将.4-鄂尔多斯，呼和浩特，集宁玩法。5-推到胡。6-包头玩法
      */
     private int roomType;
     /**
@@ -42,7 +42,7 @@ public class RoomVO {
     private int ma;
     /**
      *是否自摸胡，还是可以抢杠胡
-     *0 可抢杠胡(默认)   1自摸胡
+     *0 可抢杠胡(默认)   1自摸胡     2只能自摸糊
      */
     private int ziMo;
     /**
@@ -52,9 +52,57 @@ public class RoomVO {
     /**
      * 是否要字牌
      */
-    private boolean addWordCard;
+    private boolean addWordCard = true;
+    /**
+     * 是否要花牌   added
+     */
+    private boolean addFlowerCard = false;
 
     /**
+     * 是否一口香   added
+     */
+    private boolean yikouxiangCard;
+    /**
+     * 跑啦蹲分数  added
+     */
+    private int pldscore;
+    /**
+     * 缺够边坎钓  added
+     */
+    private boolean qgbkd;
+
+	/**
+     * 坎五万 added
+     */
+    private boolean kan5;
+
+
+	
+
+
+	public boolean isKan5() {
+		return kan5;
+	}
+
+
+	public void setKan5(boolean kan5) {
+		this.kan5 = kan5;
+	}
+
+
+
+
+	public int getPldscore() {
+		return pldscore;
+	}
+
+
+	public void setPldscore(int pldscore) {
+		this.pldscore = pldscore;
+	}
+
+
+	/**
      * 房间名
      */
     public String name;
@@ -229,9 +277,28 @@ public class RoomVO {
         result.playerList = playerList;
         result.endStatistics = endStatistics;
         result.id = id;
+        result.addFlowerCard = addFlowerCard;
+        result.yikouxiangCard = yikouxiangCard;
         return result;
     }
+    
+    public boolean isAddFlowerCard() {
+		return addFlowerCard;
+	}
 
+
+	public void setAddFlowerCard(boolean addFlowerCard) {
+		this.addFlowerCard = addFlowerCard;
+	}
+	
+	public boolean isYikouxiangCard() {
+		return yikouxiangCard;
+	}
+
+
+	public void setYikouxiangCard(boolean yikouxiangCard) {
+		this.yikouxiangCard = yikouxiangCard;
+	}
 
 	public int getId() {
 		return id;
@@ -241,6 +308,14 @@ public class RoomVO {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+    public boolean isQgbkd() {
+		return qgbkd;
+	}
 
+
+	public void setQgbkd(boolean qgbkd) {
+		this.qgbkd = qgbkd;
+	}
     
 }
