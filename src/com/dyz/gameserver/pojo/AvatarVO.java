@@ -26,14 +26,26 @@ public class AvatarVO {
      * 是否是庄家
      */
     private boolean isMain = false;
-    /**
+    /*
+     * 是否跑
+     */
+    private boolean isRun;
+    
+
+	/*
+     * 是否拉或者蹲
+     */
+    private boolean isDunorla;
+
+
+	/**
      * 是否在线
      */
     private boolean isOnLine = false;
     /**
      * 当前分数，起始分1000
      */
-    private int scores = 1000;
+    private int scores = 100000;
     /**
      * 打了的牌的字符串  1,2,3,4,5,6,1,3,5 格式
      */
@@ -182,6 +194,23 @@ public class AvatarVO {
 	public void setIP(String iP) {
 		IP = iP;
 	}
+
+	public boolean isRun() {
+		return isRun;
+	}
+
+	public void setRun(boolean isRun) {
+		this.isRun = isRun;
+	}
+
+	public boolean isDunorla() {
+		return isDunorla;
+	}
+
+	public void setDunorla(boolean isDunorla) {
+		this.isDunorla = isDunorla;
+	}
+	
 	
 	
 }
