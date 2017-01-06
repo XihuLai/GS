@@ -2,6 +2,7 @@ package com.dyz.gameserver.logic;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.context.ConnectAPI;
 import com.context.ErrorCode;
 import com.context.Rule;
 import com.dyz.gameserver.Avatar;
@@ -21,6 +22,7 @@ import com.dyz.gameserver.msg.response.login.OtherBackLoginResonse;
 import com.dyz.gameserver.msg.response.peng.PengResponse;
 import com.dyz.gameserver.msg.response.pickcard.OtherPickCardResponse;
 import com.dyz.gameserver.msg.response.pickcard.PickCardResponse;
+import com.dyz.gameserver.msg.response.pickcard.PickFlowerCardResponse;
 import com.dyz.gameserver.msg.response.roomcard.RoomCardChangerResponse;
 import com.dyz.gameserver.pojo.*;
 import com.dyz.myBatis.model.*;
@@ -192,32 +194,42 @@ public class PlayCardsLogic {
 	 */
 	public void initCard(RoomVO value) {
 		roomVO = value;
-		if(roomVO.getRoomType() == 1){
-			//转转麻将
-			paiCount = 27;
-			if(roomVO.getHong()){
-				paiCount = 34;
-			}
-		}else if(roomVO.getRoomType() == 2){
-			//划水麻将
-			if(roomVO.isAddWordCard()) {
-				paiCount = 34;
-			}else{
-				paiCount = 27;
-			}
-		}else if(roomVO.getRoomType() == 3){
-			//长沙麻将
-			paiCount = 27;
+		paiCount = 34;
+//		if(roomVO.getRoomType() == 1){//房间型号1，2，3暂时废弃，只留4，5，6，7，8
+//			//转转麻将
+//			paiCount = 27;
+//			if(roomVO.getHong()){
+//				paiCount = 34;
+//			}
+//		}else if(roomVO.getRoomType() == 2){
+//			//划水麻将
+//			if(roomVO.isAddWordCard()) {
+//				paiCount = 34;
+//			}else{
+//				paiCount = 27;
+//			}
+//		}else if(roomVO.getRoomType() == 3){
+//			//长沙麻将
+//			paiCount = 27;
+//		}else 
+	    if(roomVO.isAddFlowerCard()){
+			paiCount += 8;
 		}
 		listCard = new ArrayList<Integer>();
 		for (int i = 0; i < paiCount; i++) {
 			for (int k = 0; k < 4; k++) {
-				if(roomVO.getHong() && i == 27) {
-					listCard.add(31);
-				}else if(roomVO.getHong() && i >= 28){
-					break;
-				}else{
+				if(i < 27) {
 					listCard.add(i);
+				}else if(i > 26 && i< 34){
+					if(roomVO.isAddWordCard())
+						listCard.add(i);
+					else{
+						break;
+					}
+				}
+				else {
+					listCard.add(i);
+					break;
 				}
 			}
 		}
@@ -284,7 +296,7 @@ public class PlayCardsLogic {
         //本次摸得牌点数，下一张牌的点数，及本次摸的牌点数
         int tempPoint = getNextCardPoint();
     	//System.out.println("摸牌："+tempPoint+"----上一家出牌"+putOffCardPoint+"--摸牌人索引:"+pickAvatarIndex);
-        if(tempPoint != -1) {
+        if(tempPoint != -1&&tempPoint<34) {//所摸的不是财神牌
         	//回放记录
         	PlayRecordOperation(pickAvatarIndex,tempPoint,2,-1,null,null);
         	
@@ -332,6 +344,20 @@ public class PlayCardsLogic {
 				avatar.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
             }
             
+        }else if(tempPoint != -1&&tempPoint<34) {//所摸的是花牌的处理
+        	PlayRecordOperation(pickAvatarIndex,tempPoint,2,-1,null,null);//回放记录
+        	Avatar avatar = playerList.get(pickAvatarIndex);
+        	avatar.putCardInList(tempPoint);//放入牌组
+        	for(int i=0;i<playerList.size();i++){//通知所有玩家摸到一张花牌
+                if(i != pickAvatarIndex){
+                    playerList.get(i).getSession().sendMsg(new PickFlowerCardResponse(1,pickAvatarIndex,tempPoint));//提醒其他玩家抓到花牌
+                }else {
+                	avatar.getSession().sendMsg(new PickCardResponse(1, tempPoint));//返回摸到的牌，客户端对花牌做额外的处理
+				}
+            }
+        	pickAvatarIndex = getPreAvatarIndex();//当前摸牌人归位
+        	pickCard();//继续摸牌处理
+        	return;
         }
         else{
         	//System.out.println("流局");
@@ -415,7 +441,17 @@ public class PlayCardsLogic {
         }
         return nextIndex;
     }
-
+    /**
+     * 获取上一位摸牌人的索引
+     * @return
+     */
+    public int getPreAvatarIndex(){
+        int nextIndex = curAvatarIndex - 1;
+        if(nextIndex <= 0){
+            nextIndex = 4;
+        }
+        return nextIndex;
+    }
     /**
      * 玩家选择放弃操作
      * @param avatar
@@ -1219,7 +1255,7 @@ public class PlayCardsLogic {
     	int useCount = RoomManager.getInstance().getRoom(roomVO.getRoomId()).getCount();
     	if(totalCount == (useCount +1) && !type.equals("2")){
     		//第一局结束扣房卡
-    		deductRoomCard();
+//    		deductRoomCard();//因为测试所以注释这行
     	}
     	JSONArray array = new JSONArray();
     	JSONObject json = new JSONObject();
@@ -1440,13 +1476,28 @@ public class PlayCardsLogic {
                         bankerAvatar = playerList.get(k);
                     }
                 }
-                playerList.get(k).putCardInList(listCard.get(nextCardindex));
+                //处理抓到花牌的逻辑
+                int curCard = listCard.get(nextCardindex);
+                playerList.get(k).putCardInList(curCard);//放到牌组里面
+                while(curCard>33){//是花牌则重新发张
+                nextCardindex++;
+                curCard = listCard.get(nextCardindex);
+                playerList.get(k).putCardInList(curCard);//放到牌组里面
+            	}
+                
                 playerList.get(k).oneSettlementInfo = "";
                 playerList.get(k).overOff = false;
                 nextCardindex++;
             }
         }
-        bankerAvatar.putCardInList(listCard.get(nextCardindex));
+      //处理抓到花牌的逻辑
+        int curCard = listCard.get(nextCardindex);
+        bankerAvatar.putCardInList(curCard);//放到牌组里面
+        while(curCard>33){//是花牌则重新发张
+        nextCardindex++;
+        curCard = listCard.get(nextCardindex);
+        bankerAvatar.putCardInList(curCard);//放到牌组里面
+    	}
         nextCardindex++;
         
         //检测一下庄家有没有天胡
@@ -1499,6 +1550,7 @@ public class PlayCardsLogic {
   		   for (int j = 0; j < str.length; j++) {
   			   sb.append(str[j]+",");
   		   }
+  		   System.out.println(account.getUuid()+"的牌为:"+sb.substring(0,sb.length()-1));
   		   playRecordItemVO.setCardList(sb.substring(0,sb.length()-1));
   		   playRecordItemVO.setHeadIcon(account.getHeadicon());
   		   playRecordItemVO.setSex(account.getSex());
