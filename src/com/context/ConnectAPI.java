@@ -78,6 +78,10 @@ public class ConnectAPI {
 	public static int GAVEUP_REQUEST = 0x100015;
 	//有吃碰杠胡需要操作的返回信息/一个房间次数用完之后返回全局信息
 	public static int RETURN_INFO_RESPONSE =  0x100000;
+
+	//听牌
+	public static int TINGPAI_REQUEST = 0x200001;
+	public static int TINGPAI_RESPONSE = 0x200002;
 	
 	//游戏错误码返回
 	public static int ERROR_RESPONSE = 0xffff09;

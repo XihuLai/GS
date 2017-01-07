@@ -45,6 +45,9 @@ public class Avatar implements GameObj {
      * 存储某一句游戏断线时 结算信息
      */
     public String oneSettlementInfo;
+
+	//听牌标志
+	private boolean bTing = false;
     
     //当自己摸牌时检测自己是否有杠的牌。把杠的牌放入到整个list里面，然后在转入给前端
     public List<Integer> gangIndex = new  ArrayList<Integer>();
@@ -542,4 +545,6 @@ public class Avatar implements GameObj {
         return new int[]{0, 2, 2, 2, 4, 1, 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     }
 
+	public void setbTing(boolean b) {bTing = b;}
+	public boolean getbTing() {return bTing;}
 }
