@@ -27,7 +27,7 @@ public class TingPaiMsgProcessor extends MsgProcessor implements
             boolean bt = (boolean)json.get("ting");
             p.setbTing(bt);
         }else{
-            gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000005));
+            gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000023));
         }
 
     }

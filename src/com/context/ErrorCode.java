@@ -25,6 +25,7 @@ public static String Error_000019 = "参数传递错误!";
 public static String Error_000020 = "你的抽奖次数不足!";
 public static String Error_000021 = "今天你还未进行过游戏!";
 public static String Error_000022 = "你的账号在其他设备登录!";
+public static String Error_000023 = "听牌请求信息不对!";
 
 
 
