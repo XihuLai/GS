@@ -75,8 +75,69 @@ public class RoomVO {
      * 坎五万 added
      */
     private boolean kan5;
+    
+    private boolean pengpeng;//是否碰碰胡
+    
+    private boolean hunyise;//是否混一色
+    
+    private boolean canchi;//是否能吃
+    
+    private int huangzhuang;//荒庄所剩牌数
+
+    private boolean mustting;//是否带听
+    
+    
+    public boolean isPengpeng() {
+		return pengpeng;
+	}
 
 
+	public void setPengpeng(boolean pengpeng) {
+		this.pengpeng = pengpeng;
+	}
+
+
+	public boolean isHunyise() {
+		return hunyise;
+	}
+
+
+	public void setHunyise(boolean hunyise) {
+		this.hunyise = hunyise;
+	}
+
+
+	public boolean isCanchi() {
+		return canchi;
+	}
+
+
+	public void setCanchi(boolean canchi) {
+		this.canchi = canchi;
+	}
+
+
+	public int getHuangzhuang() {
+		return huangzhuang;
+	}
+
+
+	public void setHuangzhuang(int huangzhuang) {
+		this.huangzhuang = huangzhuang;
+	}
+
+
+	public boolean isMustting() {
+		return mustting;
+	}
+
+
+	public void setMustting(boolean mustting) {
+		this.mustting = mustting;
+	}
+
+
+	
 	
 
 
