@@ -11,6 +11,8 @@ import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.pojo.RoomVO;
 
+import net.sf.json.JSONObject;
+
 /**
  *准备/开始游戏，当所有人都准备好后直接开始游戏
  * @author luck
@@ -31,6 +33,13 @@ public class PrepareGameMSGProcessor extends MsgProcessor implements
 			if(roomLogic != null){
 				Avatar avatar = gameSession.getRole(Avatar.class);
 				if(avatar != null){
+					JSONObject json = JSONObject.fromObject(request.getString());
+					boolean brun = (boolean)json.get("run");
+					boolean bdunla = (boolean)json.get("dunla");
+
+					avatar.avatarVO.setRun(brun);
+					avatar.avatarVO.setDunorla(bdunla);
+
 					//检查其他玩家是否都已经是准备好了,准备好了顺带开始游戏，
 					roomLogic.readyGame(avatar);
 				}

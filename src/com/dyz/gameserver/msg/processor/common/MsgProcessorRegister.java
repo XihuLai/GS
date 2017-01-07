@@ -28,6 +28,8 @@ import com.dyz.gameserver.msg.processor.remotecontrol.RemoteControlProcessor;
 import com.dyz.gameserver.msg.processor.standings.StandingsMsgProcessor;
 import com.dyz.gameserver.msg.processor.standings.StandingsMsgProcessorSearch;
 import com.dyz.gameserver.msg.processor.startgame.PrepareGameMSGProcessor;
+import com.dyz.gameserver.msg.processor.ting.TingPaiMsgProcessor;
+
 
 
 /**
@@ -66,6 +68,8 @@ public enum MsgProcessorRegister {
 	gaveUp(ConnectAPI.GAVEUP_REQUEST,new GaveUpMsgProcessor()),
 	/*胡牌**/
 	hupai(ConnectAPI.HUPAI_REQUEST,new HuPaiMsgProcessor()),
+	/*听牌*/
+	tingpai(ConnectAPI.TINGPAI_REQUEST,new TingPaiMsgProcessor()),
 	/**与前段握手*/
 	successRerunMsg(ConnectAPI.SUCCESS_RETURN_MSG_RESPONSE,new SuccessReturnMsgProcessor()),
 	/**游戏开始前准备*/
