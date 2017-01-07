@@ -2534,7 +2534,7 @@ public class PlayCardsLogic {
 				continue;
 			}
 			pt[0][i]++;
-			rv = checkSevenDouble(pt.clone()) > 2;
+			rv = checkSevenDouble(pt.clone()) > 0;
 			rv = rv || checkThirteen(pt.clone()) == 1;
 			rv = rv || normalHuPai.checkHu(pt);
 		}
