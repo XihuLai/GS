@@ -12,7 +12,17 @@ public class NormalHuPai {
     
     
     
-    public static void main(String[] args){
+    public int getJIANG() {
+		return JIANG;
+	}
+
+
+	public void setJIANG(int jIANG) {
+		JIANG = jIANG;
+	}
+
+
+	public static void main(String[] args){
     	int[] pai = new int[]{0,0,0,3,0,0,1,1,1,    0, 1, 1,1,0,0,0,0,0,    0,0,2,0,0,0,1,1,1};
     	//int [] pai = new int[]{0,0,0,0,0,0,1,1,1,     0,0,2,0,3,1,1,1,0,     0,0,1,1,1,0,0,0,0,   0,0,0,0,0,0,0};
     	NormalHuPai normalHuPai = new NormalHuPai();
@@ -255,7 +265,7 @@ public class NormalHuPai {
 
     
     public boolean isHuPai(int[] paiList){
-    	if (Remain(paiList) == 0) {
+    	if (Remain(paiList) == 0&&JIANG==1) {
             return true;           //   递归退出条件：如果没有剩牌，则胡牌返回。
         }
         for (int i = 0;  i < paiList.length; i++) {//   找到有牌的地方，i就是当前牌,   PAI[i]是个数
