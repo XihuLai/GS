@@ -2520,4 +2520,43 @@ public class PlayCardsLogic {
     	int roomCard = zhuangAvatar.avatarVO.getAccount().getRoomcard();
     	zhuangAvatar.getSession().sendMsg(new RoomCardChangerResponse(1,roomCard));
     }
+
+	private boolean checkSelfTing(int[][] paiList, boolean bclone) {
+		boolean rv = false;
+		int[][] pt;
+		for(int i = 0; i < 34; ++i) {
+			if (bclone) {
+				pt = paiList.clone();
+			} else {
+				pt = paiList;
+			}
+			if (pt[0][i] > 3) {
+				continue;
+			}
+			pt[0][i]++;
+			rv = checkSevenDouble(pt.clone()) > 2;
+			rv = rv || checkThirteen(pt.clone()) == 1;
+			rv = rv || normalHuPai.checkHu(pt);
+		}
+		return rv;
+	}
+
+	private boolean checkOtherTing(int[][] paiList,Integer cardIndex) {
+		boolean rv = false;
+		for(int i = 0; i < 34; ++i) {
+			if (paiList[0][i] == 0 || i == cardIndex) {
+				continue;
+			}
+
+			int[][] pt = paiList.clone();
+			pt[0][i]--;
+			pt[0][cardIndex]++;
+
+			rv = rv || checkSelfTing(pt, false);
+			if (rv) {
+				break;
+			}
+		}
+		return rv;
+	}
 }
