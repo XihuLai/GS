@@ -839,7 +839,7 @@ public class PlayCardsLogic {
     					 if(strs != null && strs.contains(cardPoint+"")){
     						 playRecordType = 3;
     						 //明杠（划水麻将里面的过路杠）
-    						 if(avatar.getRoomVO().getZiMo() == 0 && checkQiangHu(avatar,cardPoint) ){
+    						 if(avatar.getRoomVO().getZiMo() == 0){
     							 //如果是抢杠胡，则判断其他玩家有胡牌的情况，有则给予提示 //判断其他三家是否能抢杠胡。
     							 //如果抢胡了，则更新上家出牌的点数为  杠的牌
     							 putOffCardPoint = cardPoint;
@@ -1687,10 +1687,34 @@ public class PlayCardsLogic {
             playerList.get(i).cleanPaiData();
         }
     }
+    private boolean checkHu(Avatar avatar,Integer cardIndex){
+        //根据不同的游戏类型进行不用的判断
+       boolean flag = false;
+     //处理胡牌的逻辑
+       avatar.putCardInList(cardIndex);
+       int [][] paiList =  avatar.getPaiArray();
+   			//可七小队
+   			int isSeven = checkSevenDouble(paiList.clone());
+               if(isSeven == 0){
+                   //System.out.println("没有七小对");
+            	   if(checkThirteen(paiList.clone())==1){
+            		   flag = true;
+            	   }else{//常规胡法
+            		   if(normalHuPai.checkHu(paiList.clone())){
+            			   flag = true;
+            		   }
+            		   
+            	   }
+               }else{
+            	   return true;
+               }
+               avatar.pullCardFormList(cardIndex);
+               return flag;
+       }
+    
     private Map<String,Integer> checkHu2(Avatar avatar,Integer cardIndex){
         //根据不同的游戏类型进行不用的判断
        Map<String,Integer> result = new HashMap<String,Integer>();
-       boolean flag = false;
      //处理胡牌的逻辑
        int [][] paiList =  avatar.getPaiArray();
    			//可七小队
@@ -1912,185 +1936,7 @@ public class PlayCardsLogic {
     	return result;
     	
     }
-    
-    /**
-     * 检测胡牌算法，其中包含七小对，普通胡牌
-     * @param avatar
-     * @return
-     */
-    private boolean checkHu(Avatar avatar,Integer cardIndex){
-        //根据不同的游戏类型进行不用的判断
-        if(roomVO.getRoomType() == 1){
-        	//转转麻将
-        	return checkHuZZhuan(avatar);
-        }
-        else if(roomVO.getRoomType() == 2){
-        	//划水麻将
-        	return checkHuHShui(avatar,cardIndex);
-        }
-        else{
-        	//长沙麻将
-        	return checkHuChangsha(avatar);
-        }
-        
-        
-        
-       /* if(roomVO.getSevenDouble() && !roomVO.getHong()) {
-        	//有癞子时，直接进行癞子的胡牌判断，不需要进行单独的判断
-            int isSeven = checkSevenDouble(paiList);
-            if(isSeven == 0){
-                System.out.println("没有七小对");
-                if(isHuPai(paiList)){
-                  System.out.print("胡牌");
-                //cleanPlayListCardData();
-                }else{
-                    System.out.println("checkHu 没有胡牌");
-                }
-            }else{
 
-                if(isSeven == 1){
-                    System.out.println("七对");
-                }else{
-                    System.out.println("龙七对");
-                }
-                //cleanPlayListCardData();
-                return true;
-            }
-        }
-        if(roomVO.getRoomType() == 1 && roomVO.getHong()){
-        	//转转麻将，可以选择红中
-            //红中当癞子
-             return  Naizi.testHuiPai(paiList);
-        }
-        else{
-        	 return isHuPai(paiList);
-        }*/
-    }
-
-    /**
-     * 判断转转麻将是否胡牌
-     * @param avatar
-     * @return
-     * 1:是否自摸胡  /1- 自摸胡，2- 可以抢杠胡
-		2:是否抢杠胡  /1- 自摸胡，2- 可以抢杠胡
-		3:是否红中赖子
-		4:是否抓码
-       	5:是否可胡七小对  
-     */
-    public boolean checkHuZZhuan(Avatar avatar){
-    	int [][] paiList =  avatar.getPaiArray();
-    	//不需要移除掉碰，杠了的牌组，在判断是否胡的时候就应判断了
-    	//paiList  = cleanGangAndPeng(paiList,avatar);
-    	boolean flag =  false;
-    	//if(roomVO.getZiMo() == 2 || roomVO.getZiMo() == 0){
-    		//可以抢杠胡（只有可抢杠胡的时候才判断其他人有没有胡牌）
-    		if(roomVO.getSevenDouble() && !flag){
-    			//可七小队
-    			int isSeven = checkSevenDouble(paiList.clone());
-                if(isSeven == 0){
-                    //System.out.println("没有七小对");
-                }else{
-                    if(isSeven == 1){
-                      //  System.out.println("七对");
-                    }else{
-                       // System.out.println("龙七对");
-                    }
-                    flag = true;
-                }
-    		}
-    		if(!flag){
-    			if(roomVO.getHong()){
-    				//有癞子
-    				flag =   Naizi.testHuiPai(paiList.clone());
-    			}
-    			else{
-    				flag = normalHuPai.checkZZHu(paiList.clone());
-    			}
-    		}
-		return flag;
-    }
-    /**
-     * 判断划水麻将是否胡牌
-     * @param avatar
-     * @return
-     */
-    public boolean checkHuHShui(Avatar avatar,Integer cardIndex){
-    	int [][] paiList =  avatar.getPaiArray();
-    	boolean flag =  false;
-    	if(roomVO.getSevenDouble() && !flag){
-    		//可七小队
-    		int isSeven = checkSevenDouble(paiList.clone());
-    		if(isSeven == 0){
-    			//system.out.println("没有七小对");
-    		}else{
-    			if(isSeven == 1){
-    				//system.out.println("七对");
-    			}else{
-    				//system.out.println("龙七对");
-    			}
-    			if(pickAvatarIndex == playerList.indexOf(avatar)){
-    				//自摸七小队
-    				avatar.huAvatarDetailInfo.add(cardIndex+":"+7);
-    			}
-    			else{
-    				//点炮七小队
-    				avatar.huAvatarDetailInfo.add(cardIndex+":"+6);
-    			}
-    			avatar.avatarVO.setHuType(2);//划水麻将大胡
-    			flag = true;
-    		}
-    	}
-    	/*if(!flag){
-    		*//**
-    		 * 1111 、11 、11 、11、 11 、11 （这种也算胡）
-					1111、1111、11、11、11（这种也算对胡）
-					1111 1111 1111 11(也算对胡）
-    		 *//*//特殊算法
-    		if(!flag){
-    			int twoCard = 0;
-    			int fourCard = 0;
-    			//1111 、11 、11 、11、 11 、11 
-    			for (int i = 0; i < paiList[0].length; i++) {
-    				if(paiList[0][i] ==2){
-    					twoCard++;
-    				}
-    				else if(paiList[0][i] ==4){
-    					fourCard ++;
-    				}
-    			}
-    			if((twoCard == 5 && fourCard == 1) || 
-    					(twoCard == 3 && fourCard == 2) || 
-    					(twoCard == 1 && fourCard == 3)){
-    				avatar.avatarVO.setHuType(1);//划水麻将小胡
-    				System.out.println("特殊算法胡");
-    				flag = true;
-    			}
-    		}
-    	}*/
-    	//判断是否可以普通胡的时候，需要检测 风牌是否都是成对或成三
-    	if(!flag){
-    		flag = normalHuPai.checkHSHu(paiList.clone(),roomVO.isAddWordCard());
-    		if(flag){
-    			//system.out.println("普通胡");
-    			avatar.avatarVO.setHuType(1);//划水麻将小胡
-    		}
-    	}
-		return flag;
-    	
-    }
-    /**
-     * 判断长沙麻将是否胡牌
-     * @param avatar
-     * @return
-     */
-    public boolean checkHuChangsha(Avatar avatar){
-    	if(roomVO.getRoomType() == 3) {
-            //判读有没有起手胡
-            checkQiShouFu();
-        }
-		return false;
-    	
-    }
     
     /**
      * 最后胡牌的检测胡牌的时候在牌组中提出条碰，杠的牌组再进行验证
@@ -2203,57 +2049,7 @@ public class PlayCardsLogic {
     	shakeHandsInfo.remove(avatar.getUuId());
     	
     }
-    /**
-     * 在可以抢杠胡的情况下，判断其他人有没胡的情况
-     * @return boolean
-     */
-    public boolean checkQiangHu(Avatar avatar ,int cardPoint){
-    	boolean flag = false;
-    	
-    	for (Avatar ava : playerList) {
-			if(ava.getUuId() != avatar.getUuId() && ava.qiangHu){
-				//判断其他三家有没抢胡的情况
-				ava.putCardInList(cardPoint);
-				//存抢胡信息（划水麻将才有，转转麻将当做普通点炮）(转转麻将被抢胡了 减6分)
-				if(roomVO.getRoomType() == 2){//划水麻将
-					if(checkHuHShui(ava, cardPoint)){
-						huAvatar.add(ava);
-						//向玩家发送消息
-						ava.getSession().sendMsg(new ReturnInfoResponse(1, "qianghu:"+cardPoint));
-						ava.avatarVO.setHuType(2);//划水麻将抢杠胡为大胡
-						flag = true;
-						
-					}
-				}
-				else if(roomVO.getRoomType() == 1){//转转麻将
-					//在后面的胡牌信息里面修改的分数
-					if(checkHuZZhuan(ava)){
-						huAvatar.add(ava);
-						//向玩家发送消息
-						ava.getSession().sendMsg(new ReturnInfoResponse(1, "qianghu:"+cardPoint));
-						flag = true;
-					}
-				}
-				else if(roomVO.getRoomType() == 3 ){//长沙麻将
-					//在后面的胡牌信息里面修改的分数
-					if(checkHuChangsha(ava)){
-						huAvatar.add(ava);
-						//向玩家发送消息
-						ava.getSession().sendMsg(new ReturnInfoResponse(1, "qianghu:"+cardPoint));
-						flag = true;
-					}
-				}
-				ava.pullCardFormList(cardPoint);
-			}
-		}
-    	if(flag){
-    		qianghu = true;
-    		//有人可以抢杠胡的时候，出牌玩家的索引为当前杠牌玩家
-    		//curAvatarIndex = playerList.indexOf(avatar);//2016-8-9  22:34修改
-    		//avatar.pullCardFormList(cardPoint);
-    	}
-		return flag;
-    }
+    
     /**
      * 玩家玩游戏时断线重连
      * @param avatar
