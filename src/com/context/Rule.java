@@ -1,5 +1,8 @@
 package com.context;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 胡牌规则
  * @author luck
@@ -54,6 +57,15 @@ public class Rule {
     //划水麻将
     public static String Gang_ming_guolu = "gang_guolu";//过路杠
     public static String Gang_fang = "fanggang";//放杠
+    
+    public static Map<String,Integer> scoreMap = new HashMap<String,Integer>();
+    
+    static{
+    	scoreMap.put(Gang_ming, 1);//明杠1分
+    	scoreMap.put(Gang_an, 2);//明杠2分
+    	scoreMap.put(Gang_dian, 1);//点杠算1分
+    	
+    }
     
 }
 

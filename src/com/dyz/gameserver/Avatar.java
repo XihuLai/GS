@@ -36,7 +36,7 @@ public class Avatar implements GameObj {
     //当前玩家能否吃
     public boolean canHu = true;
     
-    public boolean qiangHu = true;
+//    public boolean qiangHu = true;
     /**
      * 是否是一局结算时掉线
      */
