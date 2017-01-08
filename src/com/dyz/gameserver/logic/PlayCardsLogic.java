@@ -666,22 +666,24 @@ public class PlayCardsLogic {
 			}
 			return false;
 		}
+		if(huAvatar.contains(avatar)){
+			 huAvatar.remove(avatar);
+		 }
+		 if(gangAvatar.contains(avatar)){
+			 gangAvatar.remove(avatar);
+		 }
+		 if(penAvatar.contains(avatar)){
+			 penAvatar.remove(avatar);
+		 }
     	//if((huAvatar.size() == 0 || huAvatar.contains(avatar))  && penAvatar.size() >= 1)) {
-    	if((penAvatar.size() >= 1 && huAvatar.size() == 0) ||
-    			( huAvatar.contains(avatar) && huAvatar.size() ==1 && penAvatar.size() ==1)) {
+    	if((penAvatar.size() == 0 && huAvatar.size() == 0)||//没有胡牌和碰牌
+    			( huAvatar.contains(avatar) && huAvatar.size() ==1 && penAvatar.size() ==0)||//只有自己胡没有人碰
+    			(penAvatar.contains(avatar) && penAvatar.size() ==1 && huAvatar.size() ==0)||//没人胡只有自己碰
+    			(huAvatar.contains(avatar) && penAvatar.contains(avatar) && penAvatar.size() ==1 && huAvatar.size() ==1)) {//只有自己胡只有自己碰
     		    avatar.avatarVO.setHasMopaiChupai(true);//修改出牌 摸牌状态
-    			 if(huAvatar.contains(avatar)){
-    				 huAvatar.remove(avatar);
-    			 }
-    			 if(gangAvatar.contains(avatar)){
-    				 gangAvatar.remove(avatar);
-    			 }
-    			 if(penAvatar.contains(avatar)){
-    				 penAvatar.remove(avatar);
-    			 }
     			 if(chiAvatar.contains(avatar)){
     				//回放记录
-    		        PlayRecordOperation(playerList.indexOf(avatar),cardIndex,4,-1,null,null);
+    		        PlayRecordOperation(playerList.indexOf(avatar),cardIndex,3,-1,null,null);
     				 //把出的牌从出牌玩家的chupais中移除掉
     				 playerList.get(curAvatarIndex).avatarVO.removeLastChupais();
     				 chiAvatar.remove(avatar);
@@ -711,9 +713,9 @@ public class PlayCardsLogic {
     			// }
     		 }
     		}else{
-             if(penAvatar.size() > 0) {
-            	 for (Avatar ava : penAvatar) {
-            		 ava.pengQuest = true;
+             if(chiAvatar.size() > 0) {
+            	 for (Avatar ava : chiAvatar) {
+            		 ava.chiQuest = true;
 				}
              }
            }
@@ -743,16 +745,17 @@ public class PlayCardsLogic {
 			}
 			return false;
 		}
+		if(huAvatar.contains(avatar)){
+			 huAvatar.remove(avatar);
+		 }
+		 if(gangAvatar.contains(avatar)){
+			 gangAvatar.remove(avatar);
+		 }
+		 chiAvatar.clear();
     	//if((huAvatar.size() == 0 || huAvatar.contains(avatar))  && penAvatar.size() >= 1)) {
     	if((penAvatar.size() >= 1 && huAvatar.size() == 0) ||
     			( huAvatar.contains(avatar) && huAvatar.size() ==1 && penAvatar.size() ==1)) {
     		    avatar.avatarVO.setHasMopaiChupai(true);//修改出牌 摸牌状态
-    			 if(huAvatar.contains(avatar)){
-    				 huAvatar.remove(avatar);
-    			 }
-    			 if(gangAvatar.contains(avatar)){
-    				 gangAvatar.remove(avatar);
-    			 }
     			 if(penAvatar.contains(avatar)){
     				//回放记录
     		        PlayRecordOperation(playerList.indexOf(avatar),cardIndex,4,-1,null,null);
@@ -804,20 +807,16 @@ public class PlayCardsLogic {
 			}
 		}
     	int avatarIndex = playerList.indexOf(avatar);
+    	if(huAvatar.contains(avatar)){
+			 huAvatar.remove(avatar);
+		 }
+    	penAvatar.clear();
+    	chiAvatar.clear();
     	//if(gangAvatar.size() > 0 && huAvatar.size() == 0) {//2016-8-1
     	//if(gangAvatar.size() > 0  && huAvatar.size() == 0 || (huAvatar.size() == 1 && huAvatar.contains(avatar) )) {//2016-8-1
     	if(gangAvatar.size() > 0) {
     		 if((huAvatar.contains(avatar) && huAvatar.size() == 1 ) || huAvatar.size() == 0){
     			 avatar.avatarVO.setHasMopaiChupai(true);//修改出牌 摸牌状态
-    			 if(huAvatar.contains(avatar)){
-    				 huAvatar.remove(avatar);
-    			 }
-    			 if(penAvatar.contains(avatar)){
-    				 penAvatar.remove(avatar);
-    			 }
-    			 if(chiAvatar.contains(avatar)){
-    				 chiAvatar.remove(avatar);
-    			 }
     			 if(gangAvatar.contains(avatar)){
     				 gangAvatar.remove(avatar);
     				 //判断杠的类型，自杠，还是点杠
@@ -839,7 +838,7 @@ public class PlayCardsLogic {
     					 if(strs != null && strs.contains(cardPoint+"")){
     						 playRecordType = 3;
     						 //明杠（划水麻将里面的过路杠）
-    						 if(avatar.getRoomVO().getZiMo() == 0){
+    						 if(avatar.getRoomVO().getZiMo() == 0  ){
     							 //如果是抢杠胡，则判断其他玩家有胡牌的情况，有则给予提示 //判断其他三家是否能抢杠胡。
     							 //如果抢胡了，则更新上家出牌的点数为  杠的牌
     							 putOffCardPoint = cardPoint;
