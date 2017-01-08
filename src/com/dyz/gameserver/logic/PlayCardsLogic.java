@@ -1494,6 +1494,19 @@ public class PlayCardsLogic {
     	  // bankerAvatar.huAvatarDetailInfo.add(bankerAvatar.gangIndex.get(0)+":"+2);
 		   //bankerAvatar.gangIndex.clear();
        }
+     //检测庄家起手有没的杠 
+       if(bankerAvatar.checkSelfGang()){
+    	   gangAvatar.add(bankerAvatar);
+    	   //发送消息
+		   StringBuffer sb = new StringBuffer();
+		   sb.append("gang");
+		   for (int i : bankerAvatar.gangIndex) {
+			   sb.append(":"+i);
+		   }
+		   sb.append(",");
+
+    	   bankerAvatar.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
+       }
        //游戏回放
        PlayRecordInit();
     }
