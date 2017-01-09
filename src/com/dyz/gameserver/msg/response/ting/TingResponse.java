@@ -16,10 +16,11 @@ public class TingResponse  extends ServerResponse {
      * @param status
      * @param msgCode
      */
-    public TingResponse(int status, boolean bset) {
+    public TingResponse(int status, boolean bset, int idx) {
         super(status, ConnectAPI.TINGPAI_RESPONSE);
         JSONObject json = new JSONObject();
         json.put("ting_settled", bset);
+        json.put("avatarIndex", idx);
         if (status > 0) {
             try {
                 output.writeUTF(json.toString());
