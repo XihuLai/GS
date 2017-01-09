@@ -411,9 +411,11 @@ public class RoomLogic {
     		}
     		avatar.avatarVO.setIsReady(true);
     		int avatarIndex = playerList.indexOf(avatar);
+			boolean isRun = avatar.avatarVO.isRun();
+			boolean isDunLa = avatar.avatarVO.isDunorla();
     		//成功则返回
     		for (Avatar ava : playerList) {
-    			ava.getSession().sendMsg(new PrepareGameResponse(1,avatarIndex));
+    			ava.getSession().sendMsg(new PrepareGameResponse(1,avatarIndex, isRun, isDunLa));
     		}
             checkCanBeStartGame();
     }
