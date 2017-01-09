@@ -998,7 +998,7 @@ public class PlayCardsLogic {
 			score+=huResult.get(Rule.CaiShen);
 		//特色选项
 		if(huResult.containsKey(Rule.Hu_quemen)&&roomVO.isQgbkd())//缺门
-			score+=1;
+			score+=huResult.get(Rule.Hu_quemen);
 		if(huResult.containsKey(Rule.Hu_gouzhang)&&roomVO.isQgbkd())//够张
 			score+=1;
 		if(huResult.containsKey(Rule.Hu_biankandiao)&&!huResult.containsKey(Rule.Hu_kanwuwan)&&roomVO.isQgbkd())//边砍钓
@@ -1400,35 +1400,39 @@ public class PlayCardsLogic {
     private void dealingTheCards() {
     	nextCardindex = 0;
         bankerAvatar = null;
-        for (int i = 0; i < 13; i++) {
+		Avatar av;
+		for (int i = 0; i < 13; i++) {
             for (int k = 0; k < playerList.size(); k++) {
+				av = playerList.get(k);
                 if (bankerAvatar == null) {
-                    if (playerList.get(k).avatarVO.isMain()) {
-                        bankerAvatar = playerList.get(k);
+                    if (av.avatarVO.isMain()) {
+                        bankerAvatar = av;
                     }
                 }
                 //处理抓到花牌的逻辑
                 int curCard = listCard.get(nextCardindex);
-                playerList.get(k).putCardInList(curCard);//放到牌组里面
-                while(curCard>33){//是花牌则重新发张
-                nextCardindex++;
-                curCard = listCard.get(nextCardindex);
-                playerList.get(k).putCardInList(curCard);//放到牌组里面
-            	}
+                av.putCardInList(curCard);//放到牌组里面
+				while(curCard>33){//是花牌则重新发张
+					setFlowerCardOwnerInfo(av, curCard);
+					nextCardindex++;
+					curCard = listCard.get(nextCardindex);
+					av.putCardInList(curCard);//放到牌组里面
+				}
                 
-                playerList.get(k).oneSettlementInfo = "";
-                playerList.get(k).overOff = false;
+                av.oneSettlementInfo = "";
+                av.overOff = false;
                 nextCardindex++;
             }
         }
       //处理抓到花牌的逻辑
         int curCard = listCard.get(nextCardindex);
         bankerAvatar.putCardInList(curCard);//放到牌组里面
-        while(curCard>33){//是花牌则重新发张
-        nextCardindex++;
-        curCard = listCard.get(nextCardindex);
-        bankerAvatar.putCardInList(curCard);//放到牌组里面
-    	}
+		while(curCard>33){//是花牌则重新发张
+			setFlowerCardOwnerInfo(bankerAvatar, curCard);
+			nextCardindex++;
+			curCard = listCard.get(nextCardindex);
+			bankerAvatar.putCardInList(curCard);//放到牌组里面
+		}
         nextCardindex++;
         
         //检测一下庄家有没有天胡
@@ -2330,5 +2334,27 @@ public class PlayCardsLogic {
 			}
 		}
 		return rv;
+	}
+	
+	//dist＝0 表示庄，接下来1，2，3
+	private int getDistToMain(Avatar avatar) {
+		int indexMain = 0;
+		for(Avatar av:playerList){
+			if(av.avatarVO.isMain()){
+				indexMain = playerList.indexOf(av);//庄家序号
+				break;
+			}
+		}
+		int indexCur = playerList.indexOf(avatar);//自家序号
+		int dis = indexCur - indexMain;
+		if(dis<0)
+			dis = dis+4;
+		return dis;
+	}
+
+	private void setFlowerCardOwnerInfo(Avatar av, int curCard) {
+		for (int j = 0; j < playerList.size(); ++j) {
+			playerList.get(j).getPaiArray()[0][curCard] = getDistToMain(av) + 1; //设置花牌是哪家获得
+		}
 	}
 }
