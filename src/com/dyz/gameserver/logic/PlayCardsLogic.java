@@ -881,21 +881,191 @@ public class PlayCardsLogic {
     
     public int calculateScore(Avatar avatar , int cardIndex,int dian){
     	int score = 0;
+    	int totalScore = 0;
     	String recordType = "";//胡牌的分类
     	
-    	score+=1;//基本胡牌分数
-		if(avatar.getUuId()==bankerAvatar.getUuId())//庄家胡
-			score+=1;
-		if(followBanke)//为连庄
-			score+=1;
-		if(dian == -1)//为自摸
-			score+=1;
-		Map<String,Integer> huResult = checkHu2(avatar , cardIndex);//算好所有的名堂
+//    	score+=1;//基本胡牌分数
+//		if(avatar.getUuId()==bankerAvatar.getUuId())//庄家胡
+//			score+=1;
+
 		
-		//减少点炮的分数
-			 playerList.get(curAvatarIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*score);
-			 //增加胡家的分数
-			 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, score);
+    	int pldscore = roomVO.getPldscore();
+		Map<String,Integer> huResult = checkHu2(avatar , cardIndex);//算好所有的名堂
+		int roomType = roomVO.getRoomType();
+		if(roomType==4||roomType==5||roomType==6||roomType==7){//鄂尔多斯，呼和浩特和集宁玩法
+			int roomScore = 5;
+				if(roomType==7)	
+					roomScore = 9;
+			if(huResult.containsKey(Rule.Hu_menqing))//门清
+				score+=1;
+			if(huResult.containsKey(Rule.CaiShen))//财神
+				score+=huResult.get(Rule.CaiShen);
+			//特色选项
+			if(huResult.containsKey(Rule.Hu_quemen))//缺门
+				score+=1;
+			if(huResult.containsKey(Rule.Hu_gouzhang))//够张
+				score+=1;
+			if(huResult.containsKey(Rule.Hu_kanwuwan)&&roomVO.isKan5())//坎五万
+				score+=roomScore;
+			if(huResult.containsKey(Rule.Hu_biankandiao)&&!huResult.containsKey(Rule.Hu_kanwuwan))//边砍钓
+				score+=1;
+			//处理胡牌方法
+			if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==1)//清一色
+				score+=roomScore;
+			if(huResult.containsKey(Rule.Hu_qxd))//七小对
+				score+=roomScore;
+			if(huResult.containsKey(Rule.Hu_yitiaolong))//一条龙
+				score+=roomScore;
+			if(huResult.containsKey(Rule.Hu_pengpeng)&&roomVO.isPengpeng())//碰碰胡
+				score+=roomScore;
+			if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==2&&roomVO.isHunyise())//混一色
+				score+=roomScore;
+			if(huResult.containsKey(Rule.Hu_haohuaqxd))//豪华七对
+				score+=(roomScore*2);
+			if(huResult.containsKey(Rule.Hu_shisanyao))//缺门
+				score+=13;
+			
+			
+				
+				boolean dunorla = avatar.avatarVO.isDunorla();
+				boolean pao = avatar.avatarVO.isRun();
+				for(Avatar player:playerList){//分别处理四个用户的赢输牌的分数
+					int calscore = 0;
+					if(player.getUuId()!=avatar.getUuId()){//如果不是当前用户
+				//处理跑拉蹲分数		
+				if(dunorla)
+					calscore+=pldscore;
+				if(pao)
+					calscore+=pldscore;
+				boolean curdunorla = avatar.avatarVO.isDunorla();
+				boolean curpao = avatar.avatarVO.isRun();
+				if(curdunorla)
+					calscore+=pldscore;
+				if(curpao)
+					calscore+=pldscore;
+				
+				
+				if(followBanke){//为连庄
+					calscore+=1;
+					
+				}else{//为拉庄
+					if(player.avatarVO.isMain())//如果是被拉庄了，那么多出一分
+						calscore+=1;
+					
+				}
+				
+				if(dian == -1){//为自摸
+					recordType = "1";
+					//加分项逻辑
+					calscore+=2;//自摸加两分
+				}else{//为点炮
+					if(playerList.indexOf(player)!=dian){
+						continue;
+					}
+					if(roomType==7)
+						calscore = 3;
+					else
+						calscore+=1;//点炮加一分
+					
+				}
+				
+				totalScore+=score;
+				totalScore+=calscore;
+				
+				player.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*(score+calscore));
+					}else{//如果是当前用户
+						//增加胡家的分数
+						 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, totalScore);
+					}
+				}
+			
+			
+		}else if(roomType == 8){//包头
+			int roomScore = 5;
+			int multiscore = 1;
+		if(huResult.containsKey(Rule.Hu_menqing))//门清加倍
+			multiscore*=2;
+		if(huResult.containsKey(Rule.CaiShen))//财神
+			score+=huResult.get(Rule.CaiShen);
+		//特色选项
+		if(huResult.containsKey(Rule.Hu_quemen)&&roomVO.isQgbkd())//缺门
+			score+=huResult.get(Rule.Hu_quemen);
+		if(huResult.containsKey(Rule.Hu_gouzhang)&&roomVO.isQgbkd())//够张
+			score+=1;
+		if(huResult.containsKey(Rule.Hu_biankandiao)&&!huResult.containsKey(Rule.Hu_kanwuwan)&&roomVO.isQgbkd())//边砍钓
+			score+=1;
+		if(huResult.containsKey(Rule.Hu_kanwuwan)&&roomVO.isKan5())//坎五万
+			score+=roomScore;
+		//处理胡牌方法
+		if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==1)//清一色
+			score+=roomScore*2;
+		if(huResult.containsKey(Rule.Hu_qxd))//七小对
+			score+=roomScore*2;
+		if(huResult.containsKey(Rule.Hu_yitiaolong))//一条龙
+			score+=roomScore*2;
+		if(huResult.containsKey(Rule.Hu_pengpeng)&&roomVO.isPengpeng())//碰碰胡
+			score+=roomScore;
+		if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==2&&roomVO.isHunyise())//混一色
+			score+=roomScore;
+		if(huResult.containsKey(Rule.Hu_haohuaqxd))//豪华七对
+			score+=(roomScore*4);
+		if(huResult.containsKey(Rule.Hu_shisanyao))//缺门
+			score+=13;
+		
+		
+			
+			boolean dunorla = avatar.avatarVO.isDunorla();
+			boolean pao = avatar.avatarVO.isRun();
+			for(Avatar player:playerList){//分别处理四个用户的赢输牌的分数
+				int calscore = 0;
+				if(player.getUuId()!=avatar.getUuId()){//如果不是当前用户
+			//处理跑拉蹲分数		
+			if(dunorla)
+				calscore+=pldscore;
+			if(pao)
+				calscore+=pldscore;
+			boolean curdunorla = avatar.avatarVO.isDunorla();
+			boolean curpao = avatar.avatarVO.isRun();
+			if(curdunorla)
+				calscore+=pldscore;
+			if(curpao)
+				calscore+=pldscore;
+			
+			
+			if(followBanke){//为连庄
+				calscore+=1;
+				
+			}else{//为拉庄
+				if(player.avatarVO.isMain())//如果是被拉庄了，那么多出一分
+					calscore+=1;
+				
+			}
+			
+			if(dian == -1){//为自摸
+				recordType = "1";
+				//加分项逻辑
+				multiscore*=2;//自摸加倍
+			}else{//为点炮
+				if(playerList.indexOf(player)!=dian){
+					continue;
+				}
+				if(roomType==7)
+					calscore = 3;
+				else
+					calscore+=1;//点炮加一分
+				
+			}
+			calscore+=score;
+			calscore*=multiscore;
+			totalScore+=calscore;
+			player.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*calscore);
+				}else{//如果是当前用户
+					//增加胡家的分数
+					 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, totalScore);
+				}
+			}
+		}
+			 
     	return 0;
     }
     /**
@@ -1535,9 +1705,10 @@ public class PlayCardsLogic {
             		   result.put(Rule.Hu_hunyise, 1);
             	   if(checkLong(paiList.clone()))//检查是否一条龙
             		   result.put(Rule.Hu_yitiaolong, 1);
-            	   if(checkQuemen(paiList.clone()))
+            	   int quemen = checkQuemen(paiList.clone());
+            	   if(quemen>0)
             	   //检查是否缺够边坎钓
-            		   result.put(Rule.Hu_quemen, 1);
+            		   result.put(Rule.Hu_quemen, quemen);
             	   if(checkGouzhang(paiList.clone()))
             		   result.put(Rule.Hu_gouzhang, 1);
             	   if(cardIndex==4&&checkKan5(paiList.clone()))
@@ -1546,6 +1717,8 @@ public class PlayCardsLogic {
             		   result.put(Rule.Hu_biankandiao, 1);
             	   if(checkMenqing(paiList.clone(),cardIndex,avatar))
             		   result.put(Rule.Hu_menqing, 1);
+            	   if(checkPengPeng(paiList.clone(),avatar))
+            		   result.put(Rule.Hu_pengpeng, 1);
             	   int flowers = checkFlower(paiList.clone(),avatar);
             	   if(flowers>0)
             		   result.put(Rule.CaiShen, flowers);//查看里面花牌的张数
@@ -1557,7 +1730,18 @@ public class PlayCardsLogic {
        }
     private int checkFlower(int[][] paiList,Avatar avatar){//检查花牌张数
     	int[] pai =GlobalUtil.CloneIntList(paiList[0]);
-    	int flag = 1+getDistToMain(avatar);
+    	int indexMain = 0;
+    	for(Avatar avator:playerList){
+    		if(avator.avatarVO.isMain()){
+    			indexMain = playerList.indexOf(avator);//庄家序号
+    			break;
+    		}
+    	}
+    	int indexCur = playerList.indexOf(avatar);//自家序号
+    	int dis = indexCur - indexMain;
+    	if(dis<0)
+    		dis = dis+4;
+    	int flag = 1+dis;
     	int count = 0;
     	for(int i=27;i<pai.length;i++){
     		if(i>33&&pai[i]==flag){
@@ -1566,6 +1750,27 @@ public class PlayCardsLogic {
     	}
     	return count;
     }
+    
+    
+    private boolean checkPengPeng(int[][] paiList,Avatar avatar){
+    	boolean result = true;
+    	int[] pai =GlobalUtil.CloneIntList(paiList[0]);
+    	int jiang = 0;
+    	for(int i=0;i<pai.length;i++){
+    		if(i<34&&pai[i]==2){
+    			jiang++;
+    			if(jiang>1)
+    				return false;
+    		}else if(i<34&&(pai[i]>=3||pai[i]==0)){
+    			continue;
+    		}else{
+    			return false;
+    		}
+    	}
+    	return result;
+    }
+    
+    
     
     private boolean checkMenqing(int[][] paiList,Integer cardIndex,Avatar avatar){
     	boolean result = true;
@@ -1672,32 +1877,35 @@ public class PlayCardsLogic {
     	return result;
     }
     
-    private boolean checkQuemen(int[][] paiList){//检测是否缺门
-    	boolean result = true;
+    private int checkQuemen(int[][] paiList){//检测是否缺门
+//    	boolean result = true;
+    	int result = 3;
     	for(int i=0;i<9;i++){
     		if(paiList[0][i]>0){
-    			result = false;
+    			result --;
     			break;
     		}
     	}
-    	if(!result)
+//    	if(!result)
     	for(int i=9;i<18;i++){
     		if(paiList[0][i]>0){
-    			result = false;
+    			result --;
     			break;
     		}
-    	}else{
-    		return true;
     	}
-    	if(!result)
+//    	else{
+//    		return true;
+//    	}
+//    	if(!result)
     	for(int i=18;i<27;i++){
     		if(paiList[0][i]>0){
-    			result = false;
+    			result --;
     			break;
     		}
-    	}else{
-    		return true;
     	}
+//    	else{
+//    		return true;
+//    	}
     	return result;
     }
     
@@ -2118,7 +2326,7 @@ public class PlayCardsLogic {
 		}
 		return rv;
 	}
-
+	
 	//dist＝0 表示庄，接下来1，2，3
 	private int getDistToMain(Avatar avatar) {
 		int indexMain = 0;
@@ -2140,5 +2348,4 @@ public class PlayCardsLogic {
 			playerList.get(j).getPaiArray()[0][curCard] = getDistToMain(av) + 1; //设置花牌是哪家获得
 		}
 	}
-
 }
