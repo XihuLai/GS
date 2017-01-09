@@ -1230,35 +1230,39 @@ public class PlayCardsLogic {
     private void dealingTheCards() {
     	nextCardindex = 0;
         bankerAvatar = null;
-        for (int i = 0; i < 13; i++) {
+		Avatar av;
+		for (int i = 0; i < 13; i++) {
             for (int k = 0; k < playerList.size(); k++) {
+				av = playerList.get(k);
                 if (bankerAvatar == null) {
-                    if (playerList.get(k).avatarVO.isMain()) {
-                        bankerAvatar = playerList.get(k);
+                    if (av.avatarVO.isMain()) {
+                        bankerAvatar = av;
                     }
                 }
                 //处理抓到花牌的逻辑
                 int curCard = listCard.get(nextCardindex);
-                playerList.get(k).putCardInList(curCard);//放到牌组里面
-                while(curCard>33){//是花牌则重新发张
-                nextCardindex++;
-                curCard = listCard.get(nextCardindex);
-                playerList.get(k).putCardInList(curCard);//放到牌组里面
-            	}
+                av.putCardInList(curCard);//放到牌组里面
+				while(curCard>33){//是花牌则重新发张
+					setFlowerCardOwnerInfo(av, curCard);
+					nextCardindex++;
+					curCard = listCard.get(nextCardindex);
+					av.putCardInList(curCard);//放到牌组里面
+				}
                 
-                playerList.get(k).oneSettlementInfo = "";
-                playerList.get(k).overOff = false;
+                av.oneSettlementInfo = "";
+                av.overOff = false;
                 nextCardindex++;
             }
         }
       //处理抓到花牌的逻辑
         int curCard = listCard.get(nextCardindex);
         bankerAvatar.putCardInList(curCard);//放到牌组里面
-        while(curCard>33){//是花牌则重新发张
-        nextCardindex++;
-        curCard = listCard.get(nextCardindex);
-        bankerAvatar.putCardInList(curCard);//放到牌组里面
-    	}
+		while(curCard>33){//是花牌则重新发张
+			setFlowerCardOwnerInfo(bankerAvatar, curCard);
+			nextCardindex++;
+			curCard = listCard.get(nextCardindex);
+			bankerAvatar.putCardInList(curCard);//放到牌组里面
+		}
         nextCardindex++;
         
         //检测一下庄家有没有天胡
@@ -1549,7 +1553,7 @@ public class PlayCardsLogic {
             		   result.put(Rule.Hu_kanwuwan, 1);
             	   if(checkBkd(paiList.clone(),cardIndex))
             		   result.put(Rule.Hu_biankandiao, 1);
-            	   if(chcckMenqing(paiList.clone(),cardIndex,avatar))
+            	   if(checkMenqing(paiList.clone(),cardIndex,avatar))
             		   result.put(Rule.Hu_menqing, 1);
             	   int flowers = checkFlower(paiList.clone(),avatar);
             	   if(flowers>0)
@@ -1562,18 +1566,7 @@ public class PlayCardsLogic {
        }
     private int checkFlower(int[][] paiList,Avatar avatar){//检查花牌张数
     	int[] pai =GlobalUtil.CloneIntList(paiList[0]);
-    	int indexMain = 0;
-    	for(Avatar avator:playerList){
-    		if(avator.avatarVO.isMain()){
-    			indexMain = playerList.indexOf(avator);//庄家序号
-    			break;
-    		}
-    	}
-    	int indexCur = playerList.indexOf(avatar);//自家序号
-    	int dis = indexCur - indexMain;
-    	if(dis<0)
-    		dis = dis+4;
-    	int flag = 1+dis;
+    	int flag = 1+getDistToMain(avatar);
     	int count = 0;
     	for(int i=27;i<pai.length;i++){
     		if(i>33&&pai[i]==flag){
@@ -1583,9 +1576,7 @@ public class PlayCardsLogic {
     	return count;
     }
     
-    
-    
-    private boolean chcckMenqing(int[][] paiList,Integer cardIndex,Avatar avatar){
+    private boolean checkMenqing(int[][] paiList,Integer cardIndex,Avatar avatar){
     	boolean result = true;
     	int[] pai2 = GlobalUtil.CloneIntList(paiList[1]);
     	for(int i=0;i<pai2.length;i++){
@@ -2136,4 +2127,27 @@ public class PlayCardsLogic {
 		}
 		return rv;
 	}
+
+	//dist＝0 表示庄，接下来1，2，3
+	private int getDistToMain(Avatar avatar) {
+		int indexMain = 0;
+		for(Avatar av:playerList){
+			if(av.avatarVO.isMain()){
+				indexMain = playerList.indexOf(av);//庄家序号
+				break;
+			}
+		}
+		int indexCur = playerList.indexOf(avatar);//自家序号
+		int dis = indexCur - indexMain;
+		if(dis<0)
+			dis = dis+4;
+		return dis;
+	}
+
+	private void setFlowerCardOwnerInfo(Avatar av, int curCard) {
+		for (int j = 0; j < playerList.size(); ++j) {
+			playerList.get(j).getPaiArray()[0][curCard] = getDistToMain(av) + 1; //设置花牌是哪家获得
+		}
+	}
+
 }
