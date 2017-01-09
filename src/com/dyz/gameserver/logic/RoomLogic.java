@@ -15,6 +15,7 @@ import com.dyz.gameserver.msg.response.outroom.DissolveRoomResponse;
 import com.dyz.gameserver.msg.response.outroom.OutRoomResponse;
 import com.dyz.gameserver.msg.response.startgame.PrepareGameResponse;
 import com.dyz.gameserver.msg.response.startgame.StartGameResponse;
+import com.dyz.gameserver.msg.response.ting.TingResponse;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.HuReturnObjectVO;
@@ -670,8 +671,6 @@ public class RoomLogic {
 		GameServerContext.add_onLine_Character(avatar);
 		RoomManager.getInstance().removeUuidAndRoomId(avatar.avatarVO.getAccount().getUuid(), roomVO.getRoomId());
 		//
-		
-		
 	}
 
 	public List<Integer> getStandingsDetailsIds() {
@@ -680,5 +679,15 @@ public class RoomLogic {
 
 	public void setStandingsDetailsIds(List<Integer> standingsDetailsIds) {
 		this.standingsDetailsIds = standingsDetailsIds;
+	}
+
+	public void ting(Avatar av, boolean bt) {
+		av.setbTing(bt);
+		if (bt) {
+			int idx = playerList.indexOf(av);
+			for (int i = 0; i < playerList.size(); i++) {
+				playerList.get(i).getSession().sendMsg(new TingResponse(1, bt, idx));
+			}
+		}
 	}
 }
