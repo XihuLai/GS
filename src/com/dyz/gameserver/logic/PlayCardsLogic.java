@@ -891,9 +891,15 @@ public class PlayCardsLogic {
     public int calculateScore(Avatar avatar , int cardIndex,int dian){
     	int score = 0;
     	String recordType = "";//胡牌的分类
+    	
     	score+=1;//基本胡牌分数
-		if(avatar.getUuId()==bankerAvatar.getUuId())//庄家分数+1
+		if(avatar.getUuId()==bankerAvatar.getUuId())//庄家胡
 			score+=1;
+		if(followBanke)//为连庄
+			score+=1;
+		if(dian == -1)//为自摸
+			score+=1;
+		Map<String,Integer> huResult = checkHu2(avatar , cardIndex);//算好所有的名堂
 		
 		//减少点炮的分数
 			 playerList.get(curAvatarIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*score);
@@ -913,6 +919,8 @@ public class PlayCardsLogic {
     	//当胡家手上没有红中，则多抓一个码
     	int playRecordType = 6;
     	if(huAvatar.size() > 0) {	
+    		
+    		
    		 if(huAvatar.contains(avatar)){
     			//if(playerList.get(pickAvatarIndex).getUuId() != avatar.getUuId()){
     			if(pickAvatarIndex == curAvatarIndex){//点炮，那么点炮人的下家优先胡,摸牌的人刚刚出牌
@@ -1541,12 +1549,59 @@ public class PlayCardsLogic {
             		   result.put(Rule.Hu_kanwuwan, 1);
             	   if(checkBkd(paiList.clone(),cardIndex))
             		   result.put(Rule.Hu_biankandiao, 1);
+            	   if(chcckMenqing(paiList.clone(),cardIndex,avatar))
+            		   result.put(Rule.Hu_menqing, 1);
+            	   int flowers = checkFlower(paiList.clone(),avatar);
+            	   if(flowers>0)
+            		   result.put(Rule.CaiShen, flowers);//查看里面花牌的张数
             	   return result;//胡牌了返回结果
                }
                else
             	   return null;//没有胡牌直接返回空
        
        }
+    private int checkFlower(int[][] paiList,Avatar avatar){//检查花牌张数
+    	int[] pai =GlobalUtil.CloneIntList(paiList[0]);
+    	int indexMain = 0;
+    	for(Avatar avator:playerList){
+    		if(avator.avatarVO.isMain()){
+    			indexMain = playerList.indexOf(avator);//庄家序号
+    			break;
+    		}
+    	}
+    	int indexCur = playerList.indexOf(avatar);//自家序号
+    	int dis = indexCur - indexMain;
+    	if(dis<0)
+    		dis = dis+4;
+    	int flag = 1+dis;
+    	int count = 0;
+    	for(int i=27;i<pai.length;i++){
+    		if(i>33&&pai[i]==flag){
+    			count++;
+    		}
+    	}
+    	return count;
+    }
+    
+    
+    
+    private boolean chcckMenqing(int[][] paiList,Integer cardIndex,Avatar avatar){
+    	boolean result = true;
+    	int[] pai2 = GlobalUtil.CloneIntList(paiList[1]);
+    	for(int i=0;i<pai2.length;i++){
+    		if((pai2[i]==1||pai2[i]==4)&&i<34){//有吃牌或者碰牌
+    			result = false;
+    			return result;
+    		}
+    	}
+    		List mingang =avatar.avatarVO.getHuReturnObjectVO().getGangAndHuInfos().get("5");
+    		if(mingang!=null&&mingang.size()>0){//有明杠
+    			result = false;
+    			return result;
+    		}
+    	return result;
+    }
+    
     private boolean checkBkd(int[][] paiList,Integer cardIndex){
     	boolean result = false;
     	int[] pai =GlobalUtil.CloneIntList(paiList[0]);

@@ -58,6 +58,8 @@ public class Rule {
     public static String Gang_ming_guolu = "gang_guolu";//过路杠
     public static String Gang_fang = "fanggang";//放杠
     
+    public static String CaiShen = "flowers";//放杠
+    
     public static Map<String,Integer> scoreMap = new HashMap<String,Integer>();
     
     static{
