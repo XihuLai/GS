@@ -9,6 +9,7 @@ import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.msg.processor.common.MsgProcessor;
 import com.dyz.gameserver.msg.response.ErrorResponse;
+import com.dyz.gameserver.pojo.RoomVO;
 
 import net.sf.json.JSONObject;
 
@@ -20,12 +21,12 @@ public class TingPaiMsgProcessor extends MsgProcessor implements
         INotAuthProcessor {
     @Override
     public void process(GameSession gameSession, ClientRequest request) throws Exception {
-//        RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
+        RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
         Avatar p = gameSession.getRole(Avatar.class);
-        if(p != null){
+        if(p != null && roomLogic != null){
             JSONObject json = JSONObject.fromObject(request.getString());
             boolean bt = (boolean)json.get("ting");
-            p.setbTing(bt);
+            roomLogic.ting(p, bt);
         }else{
             gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000023));
         }
