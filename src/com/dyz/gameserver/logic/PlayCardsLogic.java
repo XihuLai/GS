@@ -2274,7 +2274,7 @@ public class PlayCardsLogic {
      */
     public void deductRoomCard(){
     	int currentCard = 0;
-    	if(roomVO.getRoundNumber() == 4){
+    	if(roomVO.getRoundNumber() == ConnectAPI.PLAYERS_NUMBER){
     		currentCard = -1;
     	}
     	else{
