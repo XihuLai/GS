@@ -1715,7 +1715,7 @@ public class PlayCardsLogic {
             		   result.put(Rule.Hu_kanwuwan, 1);
             	   if(checkBkd(paiList.clone(),cardIndex))
             		   result.put(Rule.Hu_biankandiao, 1);
-            	   if(chcckMenqing(paiList.clone(),cardIndex,avatar))
+            	   if(checkMenqing(paiList.clone(),cardIndex,avatar))
             		   result.put(Rule.Hu_menqing, 1);
             	   if(checkPengPeng(paiList.clone(),avatar))
             		   result.put(Rule.Hu_pengpeng, 1);
@@ -1774,7 +1774,7 @@ public class PlayCardsLogic {
 
     
     
-    private boolean chcckMenqing(int[][] paiList,Integer cardIndex,Avatar avatar){
+    private boolean checkMenqing(int[][] paiList,Integer cardIndex,Avatar avatar){
     	boolean result = true;
     	int[] pai2 = GlobalUtil.CloneIntList(paiList[1]);
     	for(int i=0;i<pai2.length;i++){
