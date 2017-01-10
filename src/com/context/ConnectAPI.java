@@ -5,7 +5,7 @@ public class ConnectAPI {
 	public ConnectAPI() {
 		// TODO Auto-generated constructor stub
 	}
-	public static int PLAYERS_NUMBER = 0x000004;
+	public static int PLAYERS_NUMBER = 0x000002;
 
 	public static int LOGIN_REQUEST = 0x000001;
 	public static int LOGIN_RESPONSE = 0x000002;
