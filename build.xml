@@ -27,7 +27,8 @@
         <mkdir dir="${build}"/>  
         <mkdir dir="${build}/WEB-INF"/>
         <mkdir dir="${build}/WEB-INF/classes"/>  
-        <mkdir dir="${build}/WEB-INF/classes/dbsqlmapper"/>  
+<!--        <mkdir dir="${build}/WEB-INF/classes/dbsqlmapper"/>  -->
+        <mkdir dir="${build}/WEB-INF/classes/com/dyz/myBatis/sqlMapper"/>
         <mkdir dir="${build}/WEB-INF/lib"/>  
     </target>  
     <target name="complie" depends="init">
@@ -48,8 +49,13 @@
         		<include name="*.xml"/>
         	</fileset>
         </copy>
-        <copy todir="${build}/WEB-INF/classes/dbsqlmapper/">
-        	<fileset dir="${sources}/dbsqlmapper/">
+<!--        <copy todir="${build}/WEB-INF/classes/dbsqlmapper/">-->
+<!--        	<fileset dir="${sources}/dbsqlmapper/">-->
+<!--        		<include name="**/*.xml"/>-->
+<!--        	</fileset>-->
+<!--        </copy>-->
+        <copy todir="${build}/WEB-INF/classes/com/dyz/myBatis/sqlMapper/">
+        	<fileset dir="${sources}/com/dyz/myBatis/sqlMapper/">
         		<include name="**/*.xml"/>
         	</fileset>
         </copy>

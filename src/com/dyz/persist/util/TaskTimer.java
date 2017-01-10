@@ -82,7 +82,8 @@ public class TaskTimer {
                 List<GameSession> gameSessionList = GameSessionManager.getInstance().getAllSession();
                 if(gameSessionList != null){
                     for(int i=0;i<gameSessionList.size();i++){
-                        gameSessionList.get(i).addTime(1);
+//                        gameSessionList.get(i).addTime(1);
+                        gameSessionList.get(i).addTime(0); //XHTEST
                         if(gameSessionList.get(i).getTime() > 15){
                             gameSessionList.get(i).destroyObj();
                             gameSessionList.get(i).sendMsg(new HeadResponse(1,"1"));
