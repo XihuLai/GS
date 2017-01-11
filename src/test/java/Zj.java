@@ -8,6 +8,7 @@ import com.dyz.persist.util.JsonUtilTool;
 
 //import org.json.JSONObject;
 import net.sf.json.JSONObject;
+import net.sf.json.JSONArray;
 
 import java.io.*;
 import java.net.Socket;
@@ -16,7 +17,7 @@ import java.util.Scanner;
 public class Zj {
     public static final String IP_ADDR = "localhost";//服务器地址
     public static final int PORT = 10122;//服务器端口号
-    public static int[][] pa;
+    public static int[][] pa = new int[2][42];
 
     public static void main(String[] args) {
         System.out.println("客户端启动...");
@@ -37,6 +38,8 @@ public class Zj {
 //				登录测试	            
                 String str = "121";//玩家121 ，123，124，125; 121 是庄家
 
+                System.out.println("121 登陆开始...");
+
                 LoginVO loginVO1 = new LoginVO();
                 loginVO1.setOpenId(str);
                 //登录操作，不同操作不同的ConnectAPI.CREATEROOM_REQUEST值    消息处理方式
@@ -45,6 +48,9 @@ public class Zj {
                 out.write(loginSend.entireMsg().array());//
                 serverCallBack(input);
 
+                System.out.println("121 登陆结束...");
+
+                System.out.println("121 创建房间开始...");
 
                 //创建房间测试
                 RoomVO roomVo = new RoomVO();
@@ -55,10 +61,16 @@ public class Zj {
                 out.write(createRoomSend.entireMsg().array());//
                 serverCallBack(input);//返回317824
 
+                System.out.println("121 创建房间结束...");
+
+                System.out.println("121 准备游戏开始...");
+
                 //游戏开始测试
                 ClientSendRequest gameStartSend = new ClientSendRequest(ConnectAPI.PrepareGame_MSG_REQUEST);
                 out.write(gameStartSend.entireMsg().array());//
                 serverCallBack(input);//返回317824
+                System.out.println("121 准备游戏结束...");
+
 
                 /*
                 0-8 ：1-9万
@@ -80,6 +92,8 @@ public class Zj {
                 //g 1 表示 杠牌 2万
                 //c 1 表示 吃牌 2万, 同时带上 2,3,表示三四万吃2万。c cardpoint onepoint twopoint
                 //h 1 表示 胡牌 2万
+                //i 1 表示 更新手里牌，入了张2万 （手动方便控制）
+                //d 1 表示 更新手里牌，去了张2万 （手动方便控制）
                 //m 表示 摸牌
                 //f 表示 放弃
                 //t 表示 听牌
@@ -150,7 +164,7 @@ public class Zj {
                             hco.setCardPoint(hp);
                             hco.setType("ss");
                             ClientSendRequest hq = new ClientSendRequest(ConnectAPI.HUPAI_REQUEST);
-                            pq.output.writeUTF(JsonUtilTool.toJson(hco));
+                            hq.output.writeUTF(JsonUtilTool.toJson(hco));
                             out.write(hq.entireMsg().array());
                             flag = true;
                             break;
@@ -164,6 +178,13 @@ public class Zj {
                             break;
                         case 'r':
                             serverCallBack(input);
+                            break;
+                        case 'i':
+                            updateCard(Integer.parseInt(ss[1]), false);
+                            break;
+                        case 'd':
+                            updateCard(Integer.parseInt(ss[1]), true);
+                            break;
                         default:
                             System.out.println("\t***输入指令错误***");
                             break;
@@ -205,8 +226,15 @@ public class Zj {
             if (ret.length() > 0) {
                 System.out.println("Got server response: " + "protocol code = " + code + " status = " + status);
                 if (ret.indexOf("paiArray") > -1) {
-                    JSONObject json = JSONObject.fromObject(cards);
-                    pa = (int[][]) json.get("paiArray");
+                    JSONObject json = JSONObject.fromObject(ret);
+                    JSONArray paiArray = (JSONArray) json.get("paiArray");
+                    JSONArray a1 = paiArray.getJSONArray(0);
+                    JSONArray a2 = paiArray.getJSONArray(1);
+                    for (int i = 0; i < a1.size(); i++) {
+                        pa[0][i] = (int)a1.get(i);
+                        pa[1][i] = (int)a2.get(i);
+                    }
+
                     System.out.println("起手牌");
                     Pai.printCards(pa);
                 } else {
@@ -226,6 +254,14 @@ public class Zj {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void updateCard(int cardIdx, boolean rm){
+        if (rm) {
+            pa[0][cardIdx]--;
+        } else {
+            pa[0][cardIdx]++;
         }
     }
 }  

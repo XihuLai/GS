@@ -8,6 +8,7 @@ import com.dyz.persist.util.JsonUtilTool;
 
 //import org.json.JSONObject;
 import net.sf.json.JSONObject;
+import net.sf.json.JSONArray;
 
 import java.io.*;
 import java.net.Socket;
@@ -16,13 +17,13 @@ import java.util.Scanner;
 public class Next3 {
     public static final String IP_ADDR = "localhost";//服务器地址
     public static final int PORT = 10122;//服务器端口号
-    public static int[][] pa;
+    public static int[][] pa = new int[2][42];
 
     public static void main(String[] args) {
         System.out.println("客户端启动...");
         System.out.println("当接收到服务器端字符为 \"OK\" 的时候, 客户端将终止\n");
         if (args.length != 1) {
-            System.out.println("闲家启动需带上*房间号*";
+            System.out.println("闲家启动需带上*房间号*");
             return;
         }
         while (true) {
@@ -79,6 +80,8 @@ public class Next3 {
                 //g 1 表示 杠牌 2万
                 //c 1 表示 吃牌 2万, 同时带上 2,3,表示三四万吃2万。c cardpoint onepoint twopoint
                 //h 1 表示 胡牌 2万
+                //i 1 表示 更新手里牌，入了张2万 （手动方便控制）
+                //d 1 表示 更新手里牌，去了张2万 （手动方便控制）
                 //m 表示 摸牌
                 //f 表示 放弃
                 //t 表示 听牌
@@ -149,7 +152,7 @@ public class Next3 {
                             hco.setCardPoint(hp);
                             hco.setType("ss");
                             ClientSendRequest hq = new ClientSendRequest(ConnectAPI.HUPAI_REQUEST);
-                            pq.output.writeUTF(JsonUtilTool.toJson(hco));
+                            hq.output.writeUTF(JsonUtilTool.toJson(hco));
                             out.write(hq.entireMsg().array());
                             flag = true;
                             break;
@@ -163,6 +166,13 @@ public class Next3 {
                             break;
                         case 'r':
                             serverCallBack(input);
+                            break;
+                        case 'i':
+                            updateCard(Integer.parseInt(ss[1]), false);
+                            break;
+                        case 'd':
+                            updateCard(Integer.parseInt(ss[1]), true);
+                            break;
                         default:
                             System.out.println("\t***输入指令错误***");
                             break;
@@ -204,8 +214,15 @@ public class Next3 {
             if (ret.length() > 0) {
                 System.out.println("Got server response: " + "protocol code = " + code + " status = " + status);
                 if (ret.indexOf("paiArray") > -1) {
-                    JSONObject json = JSONObject.fromObject(cards);
-                    pa = json.get("paiArray");
+                    JSONObject json = JSONObject.fromObject(ret);
+                    JSONArray paiArray = (JSONArray) json.get("paiArray");
+                    JSONArray a1 = paiArray.getJSONArray(0);
+                    JSONArray a2 = paiArray.getJSONArray(1);
+                    for (int i = 0; i < a1.size(); i++) {
+                        pa[0][i] = (int)a1.get(i);
+                        pa[1][i] = (int)a2.get(i);
+                    }
+
                     System.out.println("起手牌");
                     Pai.printCards(pa);
                 } else {
@@ -225,6 +242,14 @@ public class Next3 {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void updateCard(int cardIdx, boolean rm){
+        if (rm) {
+            pa[0][cardIdx]--;
+        } else {
+            pa[0][cardIdx]++;
         }
     }
 }  
