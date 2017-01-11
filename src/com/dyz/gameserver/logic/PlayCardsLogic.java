@@ -532,7 +532,7 @@ public class PlayCardsLogic {
                 playerList.get(i).getSession().sendMsg(new ChuPaiResponse(1, putOffCardPoint, curAvatarIndex));
                // //system.out.println("发送打牌消息----"+playerList.get(i).avatarVO.getAccount().getNickname());
             } else {
-				if (roomVO.isMustting() && checkSelfTing(avatar.getPaiArray(), true)) {
+				if (checkSelfTing(avatar.getPaiArray(), true)) {
 					avatar.getSession().sendMsg(new ReturnInfoResponse(1, "canting"));
 				}
 			}
