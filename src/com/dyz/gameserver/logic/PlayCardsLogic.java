@@ -521,7 +521,7 @@ public class PlayCardsLogic {
     	clearAvatar();
     	
         putOffCardPoint = cardPoint;
-        //system.out.println("出牌点数"+putOffCardPoint+"---出牌人索引:"+playerList.indexOf(avatar));
+        System.out.println("出牌点数"+putOffCardPoint+"---出牌人索引:"+playerList.indexOf(avatar)); //XHTEST
         curAvatarIndex = playerList.indexOf(avatar);
     	PlayRecordOperation(curAvatarIndex,cardPoint,1,-1,null,null);
         avatar.pullCardFormList(putOffCardPoint);

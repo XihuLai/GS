@@ -251,7 +251,6 @@ public class Avatar implements GameObj {
      */
     public boolean checkPeng(int cardIndex){
 //    	System.out.println("杠了的牌="+cardIndex+"====="+resultRelation.get(2));
-//    	System.out.println("碰了的牌="+cardIndex+"====="+resultRelation.get(1));
     	boolean flag = false;
         if(avatarVO.getPaiArray()[0][cardIndex] >= 2 ){
         	if(resultRelation.get(1) == null ){
@@ -270,6 +269,7 @@ public class Avatar implements GameObj {
 				}
         	}
         }
+        System.out.println(avatarVO.getAccount().getOpenid() + "碰" + flag); //XHTEST
         return flag;
     }
 
@@ -299,6 +299,8 @@ public class Avatar implements GameObj {
 				}
         	}
         }
+
+		System.out.println(avatarVO.getAccount().getOpenid() + "杠" + flag);
         return flag;
     }
     /**
@@ -370,6 +372,9 @@ public class Avatar implements GameObj {
     			}
     		}
     	}
+
+        System.out.println(avatarVO.getAccount().getOpenid() + "自杠" + flag); //XHTEST
+
         return flag;
     }
     /**
@@ -454,6 +459,9 @@ public class Avatar implements GameObj {
     		  } 
     		}
     	}
+
+        System.out.println(avatarVO.getAccount().getOpenid() + "吃" + flag); //XHTEST
+
         return flag;
     }
 

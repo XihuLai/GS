@@ -110,7 +110,7 @@ public class Next3 {
                     System.out.print("请输入指令:\t");
                     String s = in.nextLine();
                     if (s.length() == 0) {
-                        continue;
+                        s = "r";
                     }
                     s = s.trim();
                     String[] ss = s.split(" ");
@@ -235,28 +235,29 @@ public class Next3 {
             String ret = input.readUTF();
 
             if (ret.length() > 0) {
-                System.out.printf("Got server response: protocol code = 0x%06x, status = %d\n", code, status);
-                System.out.println("\tdata = " + ret);
+                if (code != ConnectAPI.headRESPONSE) {
+                    System.out.printf("Got server response: protocol code = 0x%06x, status = %d\n", code, status);
+                    System.out.println("\tdata = " + ret);
 
-                if (ret.indexOf("paiArray") > 0) {
-                    JSONObject json = JSONObject.fromObject(ret);
-                    JSONArray paiArray = (JSONArray) json.get("paiArray");
-                    if (paiArray != null && paiArray.size() == 2) {
-                        JSONArray a1 = paiArray.getJSONArray(0);
-                        JSONArray a2 = paiArray.getJSONArray(1);
-                        System.out.println("\tpai = " + a1);
-                        System.out.println("\tsize = " + a1.size());
+                    if (ret.indexOf("paiArray") > 0) {
+                        JSONObject json = JSONObject.fromObject(ret);
+                        JSONArray paiArray = (JSONArray) json.get("paiArray");
+                        if (paiArray != null && paiArray.size() == 2) {
+                            JSONArray a1 = paiArray.getJSONArray(0);
+                            JSONArray a2 = paiArray.getJSONArray(1);
 
-                        for (int i = 0; i < a1.size(); i++) {
-                            pa[0][i] = (int) a1.get(i);
-                            pa[1][i] = (int) a2.get(i);
+                            System.out.println("\tpai = " + a1);
+                            System.out.println("\tsize = " + a1.size());
+
+                            for (int i = 0; i < a1.size(); i++) {
+                                pa[0][i] = (int) a1.get(i);
+                                pa[1][i] = (int) a2.get(i);
+                            }
+
+                            System.out.println("起手牌");
+                            Pai.printCards(pa, avatarIndex);
                         }
-
-                        System.out.println("起手牌");
-                        Pai.printCards(pa, avatarIndex);
                     }
-                } else {
-//                    System.out.println("\tdata = " + ret);
                 }
             }
 
