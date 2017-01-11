@@ -7,12 +7,14 @@ import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.persist.util.JsonUtilTool;
 
 //import org.json.JSONObject;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONArray;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
+
+import net.sf.json.JSONObject;
+import net.sf.json.JSONArray;
+
 
 public class Next3 {
     public static final String IP_ADDR = "localhost";//服务器地址
@@ -39,6 +41,8 @@ public class Next3 {
                 //玩家121，123，124，125
                 String str = "125";
 
+                System.out.println("--125 登陆开始...");
+
                 LoginVO loginVO1 = new LoginVO();
                 loginVO1.setOpenId(str);
                 //登录操作，不同操作不同的ConnectAPI.CREATEROOM_REQUEST值    消息处理方式
@@ -46,6 +50,10 @@ public class Next3 {
                 loginSend.output.writeUTF(JsonUtilTool.toJson(loginVO1));
                 out.write(loginSend.entireMsg().array());//
                 serverCallBack(input);
+
+                System.out.println("--125 登陆结束...");
+
+                System.out.println("--125 加入房间开始, roomId = " + args[0]);
 
                 //加入房间测试
 				RoomVO roomVo = new RoomVO();
@@ -55,10 +63,16 @@ public class Next3 {
 				out.write(joinRoomSend.entireMsg().array());//
 				serverCallBack(input);//返回317824
 
+                System.out.println("--125 加入房间开始结束...");
+
+
+                System.out.println("--125 准备游戏开始...");
                 //游戏开始测试
                 ClientSendRequest gameStartSend = new ClientSendRequest(ConnectAPI.PrepareGame_MSG_REQUEST);
                 out.write(gameStartSend.entireMsg().array());//
                 serverCallBack(input);//返回317824
+
+                System.out.println("--125 准备游戏结束...");
 
                 /*
                 0-8 ：1-9万
@@ -72,7 +86,7 @@ public class Next3 {
 
                 Scanner in = new Scanner(System.in);
                 char c;
-                boolean flag = false;
+                boolean flag;
                 boolean bQuit = false;
 
                 //x 1 表示 出牌 2万
@@ -93,6 +107,7 @@ public class Next3 {
                     s = s.trim();
                     String[] ss = s.split(" ");
                     c = ss[0].charAt(0);
+                    flag = false;
 
                     switch (c) {
                         case 'x':
@@ -212,21 +227,25 @@ public class Next3 {
             String ret = input.readUTF();
 
             if (ret.length() > 0) {
-                System.out.println("Got server response: " + "protocol code = " + code + " status = " + status);
-                if (ret.indexOf("paiArray") > -1) {
+                System.out.printf("Got server response: protocol code = 0x%06x, status = %d\n", code, status);
+                System.out.println("\tdata = " + ret);
+
+                if (ret.indexOf("paiArray") > 0) {
                     JSONObject json = JSONObject.fromObject(ret);
                     JSONArray paiArray = (JSONArray) json.get("paiArray");
-                    JSONArray a1 = paiArray.getJSONArray(0);
-                    JSONArray a2 = paiArray.getJSONArray(1);
-                    for (int i = 0; i < a1.size(); i++) {
-                        pa[0][i] = (int)a1.get(i);
-                        pa[1][i] = (int)a2.get(i);
-                    }
+                    if (paiArray != null && paiArray.size() == 2) {
+                        JSONArray a1 = paiArray.getJSONArray(0);
+                        JSONArray a2 = paiArray.getJSONArray(1);
+                        for (int i = 0; i < a1.size(); i++) {
+                            pa[0][i] = (int) a1.get(i);
+                            pa[1][i] = (int) a2.get(i);
+                        }
 
-                    System.out.println("起手牌");
-                    Pai.printCards(pa);
+                        System.out.println("起手牌");
+                        Pai.printCards(pa);
+                    }
                 } else {
-                    System.out.println("\tdata = " + ret);
+//                    System.out.println("\tdata = " + ret);
                 }
             }
 
@@ -252,4 +271,5 @@ public class Next3 {
             pa[0][cardIdx]++;
         }
     }
+
 }  

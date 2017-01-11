@@ -95,6 +95,8 @@ public class RoomLogic {
      */
     public  boolean intoRoom(Avatar avatar){
     	synchronized(roomVO){
+            System.out.println("玩家人数 ：" + playerList.size());
+
     		if(playerList.size() == ConnectAPI.PLAYERS_NUMBER){
     			try {
     				avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000011));
