@@ -2014,9 +2014,10 @@ public class PlayCardsLogic {
     				break;
     			}
     		}else{
-    			if(paiList[0][i]>= 1)
+    			if(paiList[0][i]>= 1){
     			result = 0;
     			break;
+    			}
     		}
     	}
     	return result;
