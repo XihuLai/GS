@@ -256,26 +256,9 @@ public class PlayCardsLogic {
 	 * @param type     当type为""
 	 */
 	public boolean checkAvatarIsHuPai(Avatar avatar,int cardIndex,String type){
-		if(cardIndex != 100){
-			//传入的参数牌索引为100时表示天胡/或是摸牌，不需要再在添加到牌组中
-			//System.out.println("检测胡牌的时候------添加别人打的牌："+cardIndex);
-			avatar.putCardInList(cardIndex);
-		}
 		if(checkHu(avatar,cardIndex)){
-			//System.out.println("确实胡牌了");
-			//System.out.println(avatar.printPaiString() +"  avatar = "+avatar.avatarVO.getAccount().getNickname());
-			if(type.equals("chu")){
-				//System.out.println("检测胡牌成功的时候------移除别人打的牌："+cardIndex);
-				avatar.pullCardFormList(cardIndex);
-			}
-			
 			return true;
 		}else{
-			//System.out.println("没有胡牌");
-			if(type.equals("chu")){
-				//System.out.println("检测胡牌失败的时候------移除别人打的牌："+cardIndex);
-				avatar.pullCardFormList(cardIndex);
-			}
 			return false;
 		}
 	}
@@ -1647,7 +1630,7 @@ public class PlayCardsLogic {
         //根据不同的游戏类型进行不用的判断
        boolean flag = false;
      //处理胡牌的逻辑
-       if(cardIndex!=-1)
+       if(cardIndex!=-1&&cardIndex!=100)
        avatar.putCardInList(cardIndex);
        int [][] paiList =  avatar.getPaiArray();
    			//可七小队
@@ -1665,7 +1648,7 @@ public class PlayCardsLogic {
                }else{
             	   return true;
                }
-               if(cardIndex!=-1)
+               if(cardIndex!=-1&&cardIndex!=100)
                avatar.pullCardFormList(cardIndex);
                return flag;
        }
@@ -1715,7 +1698,7 @@ public class PlayCardsLogic {
             		   result.put(Rule.Hu_kanwuwan, 1);
             	   if(checkBkd(paiList.clone(),cardIndex))
             		   result.put(Rule.Hu_biankandiao, 1);
-            	   if(checkMenqing(paiList.clone(),cardIndex,avatar))
+            	   if(checkMenqing(paiList.clone(),avatar))
             		   result.put(Rule.Hu_menqing, 1);
             	   if(checkPengPeng(paiList.clone(),avatar))
             		   result.put(Rule.Hu_pengpeng, 1);
@@ -1774,7 +1757,7 @@ public class PlayCardsLogic {
 
     
     
-    private boolean checkMenqing(int[][] paiList,Integer cardIndex,Avatar avatar){
+    private boolean checkMenqing(int[][] paiList,Avatar avatar){
     	boolean result = true;
     	int[] pai2 = GlobalUtil.CloneIntList(paiList[1]);
     	for(int i=0;i<pai2.length;i++){
@@ -2274,7 +2257,7 @@ public class PlayCardsLogic {
      */
     public void deductRoomCard(){
     	int currentCard = 0;
-    	if(roomVO.getRoundNumber() == 4){
+    	if(roomVO.getRoundNumber() == ConnectAPI.PLAYERS_NUMBER){
     		currentCard = -1;
     	}
     	else{

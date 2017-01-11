@@ -1,6 +1,7 @@
 package com.dyz.gameserver.logic;
 
 import com.alibaba.fastjson.JSONObject;
+import com.context.ConnectAPI;
 import com.context.ErrorCode;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.session.GameSession;
@@ -94,7 +95,7 @@ public class RoomLogic {
      */
     public  boolean intoRoom(Avatar avatar){
     	synchronized(roomVO){
-    		if(playerList.size() == 4){
+    		if(playerList.size() == ConnectAPI.PLAYERS_NUMBER){
     			try {
     				avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000011));
     			} catch (IOException e) {
@@ -162,7 +163,7 @@ public class RoomLogic {
      */
     public void checkCanBeStartGame() throws IOException{
     	//system.out.println("检测是否可以开始游戏");
-    	if(playerList.size() == 4){
+    	if(playerList.size() == ConnectAPI.PLAYERS_NUMBER){
     		//房间里面4个人且都准备好了则开始游戏
     		List<AvatarVO> avatarVos = new ArrayList<>();
     		for(int i=0;i<playerList.size();i++){
@@ -528,7 +529,7 @@ public class RoomLogic {
 				hasReady++;
 			}
 		}
-    	if(hasReady == 4){
+    	if(hasReady == ConnectAPI.PLAYERS_NUMBER){
     		//如果四家人都准备好了
     		startGameRound();
     	}
