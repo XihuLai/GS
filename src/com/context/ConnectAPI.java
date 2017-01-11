@@ -72,7 +72,7 @@ public class ConnectAPI {
 	//其它人摸牌了
 	public static  int OTHER_PICKCARD_RESPONSE = 0x100014;
 	//其它人摸到花牌了
-	public static  int PICKFLOWERCARD_RESPONSE = 0x100013;
+	public static  int PICKFLOWERCARD_RESPONSE = 0x100017;
 
 	//放弃请求
 	public static int GAVEUP_REQUEST = 0x100015;
