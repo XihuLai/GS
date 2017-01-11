@@ -259,7 +259,7 @@ public class Next2 {
                         }
                     }
                 } else {
-                    serverCallBack(input);
+//                    serverCallBack(input);
                 }
             }
 

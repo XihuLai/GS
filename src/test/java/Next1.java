@@ -260,7 +260,7 @@ public class Next1 {
                         }
                     }
                 } else {
-                    serverCallBack(input);
+//                    serverCallBack(input);
                 }
             }
 
