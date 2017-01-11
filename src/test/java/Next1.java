@@ -259,6 +259,8 @@ public class Next1 {
                             Pai.printCards(pa, avatarIndex);
                         }
                     }
+                } else {
+                    serverCallBack(input);
                 }
             }
 

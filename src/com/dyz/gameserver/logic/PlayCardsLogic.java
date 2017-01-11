@@ -353,6 +353,8 @@ public class PlayCardsLogic {
      * @param avatar
      */
     public void pickCardAfterGang(Avatar avatar){
+
+        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "杠后摸牌");
     	
         //本次摸得牌点数，下一张牌的点数，及本次摸的牌点数
         int tempPoint = getNextCardPoint();
@@ -799,6 +801,9 @@ public class PlayCardsLogic {
                                 ava.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType,-1*score);
                             }
                         }
+
+                        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "自杠" + endStatisticstype + cardPoint);
+
                         flag = true;
                     }
                     else{//点杠
@@ -825,6 +830,8 @@ public class PlayCardsLogic {
                         avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, score);
                         //整个房间统计每一局游戏 杠，胡的总次数
                         roomVO.updateEndStatistics(avatar.getUuId()+"", endStatisticstype, 1);
+
+                        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "被点杠" + endStatisticstype + cardPoint);
                     }
 
                     avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("gang", str);

@@ -257,6 +257,8 @@ public class Next3 {
                             System.out.println("起手牌");
                             Pai.printCards(pa, avatarIndex);
                         }
+                    } else {
+                        serverCallBack(input);
                     }
                 }
             }

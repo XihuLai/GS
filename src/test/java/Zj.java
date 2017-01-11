@@ -257,6 +257,8 @@ public class Zj {
                             Pai.printCards(pa, avatarIndex);
                         }
                     }
+                } else {
+                    serverCallBack(input);
                 }
             }
 
