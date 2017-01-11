@@ -1779,30 +1779,30 @@ public class PlayCardsLogic {
     	int[] pai =GlobalUtil.CloneIntList(paiList[0]);
     	int flag = cardIndex/9;
     	//先判断边,分为左边和右边
-    	if(cardIndex-2>=flag*9&&paiList[0][cardIndex-1]>0&&paiList[0][cardIndex-2]>0){//右边
-    		paiList[0][cardIndex]--;
-    		paiList[0][cardIndex-1]--;
-    		paiList[0][cardIndex-2]--;
+    	if(cardIndex-2>=flag*9&&pai[cardIndex-1]>0&&pai[cardIndex-2]>0){//右边
+    		pai[cardIndex]--;
+    		pai[cardIndex-1]--;
+    		pai[cardIndex-2]--;
     		if(normalHuPai.isHuPai(pai))
     			return true;
-    	}else if(cardIndex+2<(flag+1)*9&&paiList[0][cardIndex+1]>0&&paiList[0][cardIndex+2]>0){//左边
-    		paiList[0][cardIndex]--;
-    		paiList[0][cardIndex+1]--;
-    		paiList[0][cardIndex+2]--;
+    	}else if(cardIndex+2<(flag+1)*9&&pai[cardIndex+1]>0&&pai[cardIndex+2]>0){//左边
+    		pai[cardIndex]--;
+    		pai[cardIndex+1]--;
+    		pai[cardIndex+2]--;
     		if(normalHuPai.isHuPai(pai))
     			return true;
     	}
     	//然后判断坎
-    	if(cardIndex-1>=flag*9&&cardIndex+1<(flag+1)*9&&paiList[0][cardIndex+1]>0&&paiList[0][cardIndex-1]>0){
-    		paiList[0][cardIndex]--;
-    		paiList[0][cardIndex+1]--;
-    		paiList[0][cardIndex-1]--;
+    	if(cardIndex-1>=flag*9&&cardIndex+1<(flag+1)*9&&pai[cardIndex+1]>0&&pai[cardIndex-1]>0){
+    		pai[cardIndex]--;
+    		pai[cardIndex+1]--;
+    		pai[cardIndex-1]--;
     		if(normalHuPai.isHuPai(pai))
     			return true;
     	}
     	//最后判断钓
-    	if(paiList[0][cardIndex]>=2){
-    		paiList[0][cardIndex]-=2;
+    	if(pai[cardIndex]>=2){
+    		pai[cardIndex]-=2;
     		normalHuPai.setJIANG(1);
     		if(normalHuPai.isHuPai(pai))
     			return true;
@@ -1815,49 +1815,39 @@ public class PlayCardsLogic {
     private boolean checkKan5(int[][] paiList){//判断视否坎五万
     	boolean result = false;
     	int[] pai =GlobalUtil.CloneIntList(paiList[0]);
-    	if(paiList[0][3] >= 1 && paiList[0][5] >= 1){
-    		paiList[0][3]--;
-    		paiList[0][5]--;
+    	if(pai[3] >= 1 && pai[5] >= 1){
+    		pai[3]--;
+    		pai[4]--;
+    		pai[5]--;
     		if(normalHuPai.isHuPai(pai))
     			return true;
     	}
-    	if(paiList[0][4] >= 2){
-    		paiList[0][4] -=2 ;
+    	if(pai[4] >= 2){
+    		pai[4] -=2 ;
     		normalHuPai.setJIANG(1);
     		if(normalHuPai.isHuPai(pai)){
     			normalHuPai.setJIANG(0);
     			return true;
     		}
+    		normalHuPai.setJIANG(0);
     	}
         return result;
     	
     }
     
     private boolean checkGouzhang(int[][] paiList){
-    	boolean result = true;
+    	boolean result = false;
     	int flag=0;
-    	for(int i=0;i<9;i++){
+    	for(int i=0;i<27;i++){
     		if(paiList[0][i]>0){
     			flag+=paiList[0][i];
     		}
-    	}
-    	if(flag<=8)
-    	for(int i=9;i<18;i++){
-    		if(paiList[0][i]>0){
-    			result = false;
-    			break;
+    		if(i%9==8&&flag>=8){
+    			return true;
+    		}else{
+    			flag = 0;
+    			continue;
     		}
-    	}else{
-    		return true;
-    	}
-    	if(flag<=8)
-    	for(int i=18;i<27;i++){
-    		if(paiList[0][i]>0){
-    			result = false;
-    			break;
-    		}
-    	}else{
-    		return true;
     	}
     	return result;
     }
@@ -1938,10 +1928,10 @@ public class PlayCardsLogic {
     					hunflag = curflag;
     					result = 2;
     					continue;
-    				}else if(i>26&&hunflag!=-1&&hunflag!=curflag){
-    					return 0;
-    				}else{
+    				}else if(i>26&&hunflag!=-1&&hunflag==curflag){
     					continue;
+    				}else{
+    					return 0;
     				}
     			}else{
     				continue;
@@ -2015,10 +2005,16 @@ public class PlayCardsLogic {
      */
     public int checkThirteen(int[][] paiList){
     	int result = 1;
-    	for(int i=0;i<paiList[0].length;i++){
-    		if(((i>26&&i<34)||(i%9==0||i%9==8))&&paiList[0][i]>= 1){
+    	for(int i=0;i<paiList[0].length&&i<34;i++){
+    		if(((i>26&&i<34)||(i%9==0||i%9==8))){
+    			if(paiList[0][i]>= 1)
     			continue;
+    			else{
+    				result = 0;
+    				break;
+    			}
     		}else{
+    			if(paiList[0][i]>= 1)
     			result = 0;
     			break;
     		}
@@ -2034,7 +2030,7 @@ public class PlayCardsLogic {
     public int checkSevenDouble(int[][] paiList){
         int result = 1;
         
-        	for(int i=0;i<paiList[0].length;i++){
+        	for(int i=0;i<paiList[0].length&&i<34;i++){
         		if(paiList[0][i] != 0){
         			if(paiList[0][i] != 2 && paiList[0][i] != 4){
         				return 0;
