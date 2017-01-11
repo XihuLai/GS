@@ -20,6 +20,8 @@ public class Next1 {
     public static final String IP_ADDR = "localhost";//服务器地址
     public static final int PORT = 10122;//服务器端口号
     public static int[][] pa = new int[2][42];
+    public static int avatarIndex = 2;
+
 
     public static void main(String[] args) {
         System.out.println("客户端启动...");
@@ -69,6 +71,10 @@ public class Next1 {
                 System.out.println("--123 准备游戏开始...");
                 //游戏开始测试
                 ClientSendRequest gameStartSend = new ClientSendRequest(ConnectAPI.PrepareGame_MSG_REQUEST);
+                JSONObject pldInfo = new JSONObject();
+                pldInfo.put("run", false);
+                pldInfo.put("dunla", false);
+                gameStartSend.output.writeUTF(pldInfo.toString());
                 out.write(gameStartSend.entireMsg().array());//
                 serverCallBack(input);//返回317824
 
@@ -104,6 +110,9 @@ public class Next1 {
                 while(!bQuit) {
                     System.out.print("请输入指令:\t");
                     String s = in.nextLine();
+                    if (s.length() == 0) {
+                        continue;
+                    }
                     s = s.trim();
                     String[] ss = s.split(" ");
                     c = ss[0].charAt(0);
@@ -111,7 +120,7 @@ public class Next1 {
 
                     switch (c) {
                         case 'x':
-                            int cardPoint = Integer.parseInt(ss[1]);
+                            int cardPoint = Pai.getCardPoint(ss[1]);
                             CardVO cardVO = new CardVO();
                             cardVO.setCardPoint(cardPoint);
                             ClientSendRequest rq = new ClientSendRequest(ConnectAPI.CHUPAI_REQUEST);
@@ -120,7 +129,7 @@ public class Next1 {
                             flag = true;
                             break;
                         case 'p':
-                            int pp = Integer.parseInt(ss[1]);
+                            int pp = Pai.getCardPoint(ss[1]);
                             CardVO pco = new CardVO();
                             pco.setCardPoint(pp);
                             ClientSendRequest pq = new ClientSendRequest(ConnectAPI.PENGPAI_REQUEST);
@@ -129,7 +138,7 @@ public class Next1 {
                             flag = true;
                             break;
                         case 'g':
-                            int gp = Integer.parseInt(ss[1]);
+                            int gp = Pai.getCardPoint(ss[1]);
                             JSONObject gj = new JSONObject();
                             gj.put("cardPoint", gp);
                             gj.put("gangType", 1); //sounds useless
@@ -139,9 +148,9 @@ public class Next1 {
                             flag = true;
                             break;
                         case 'c':
-                            int cp = Integer.parseInt(ss[1]);
-                            int p1 = Integer.parseInt(ss[2]);
-                            int p2 = Integer.parseInt(ss[3]);
+                            int cp = Pai.getCardPoint(ss[1]);
+                            int p1 = Pai.getCardPoint(ss[2]);
+                            int p2 = Pai.getCardPoint(ss[3]);
                             CardVO co = new CardVO();
                             co.setCardPoint(cp);
                             co.setOnePoint(p1);
@@ -162,7 +171,7 @@ public class Next1 {
                             flag = true;
                             break;
                         case 'h':
-                            int hp = Integer.parseInt(ss[1]);
+                            int hp = Pai.getCardPoint(ss[1]);;
                             CardVO hco = new CardVO();
                             hco.setCardPoint(hp);
                             hco.setType("ss");
@@ -183,13 +192,13 @@ public class Next1 {
                             serverCallBack(input);
                             break;
                         case 'i':
-                            updateCard(Integer.parseInt(ss[1]), false);
+                            updateCard(Pai.getCardPoint(ss[1]), false);
                             break;
                         case 'd':
-                            updateCard(Integer.parseInt(ss[1]), true);
+                            updateCard(Pai.getCardPoint(ss[1]), true);
                             break;
                         default:
-                            System.out.println("\t***输入指令错误***");
+                            System.out.println("\t***输入操作指令错误***");
                             break;
                     }
 
@@ -236,13 +245,16 @@ public class Next1 {
                     if (paiArray != null && paiArray.size() == 2) {
                         JSONArray a1 = paiArray.getJSONArray(0);
                         JSONArray a2 = paiArray.getJSONArray(1);
+                        System.out.println("\tpai = " + a1);
+                        System.out.println("\tsize = " + a1.size());
+
                         for (int i = 0; i < a1.size(); i++) {
                             pa[0][i] = (int) a1.get(i);
                             pa[1][i] = (int) a2.get(i);
                         }
 
                         System.out.println("起手牌");
-                        Pai.printCards(pa);
+                        Pai.printCards(pa, avatarIndex);
                     }
                 } else {
 //                    System.out.println("\tdata = " + ret);
@@ -270,6 +282,7 @@ public class Next1 {
         } else {
             pa[0][cardIdx]++;
         }
+        Pai.printCards(pa, avatarIndex);
     }
 
 }  
