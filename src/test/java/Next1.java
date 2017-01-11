@@ -6,15 +6,18 @@ import com.dyz.gameserver.pojo.LoginVO;
 import com.dyz.gameserver.pojo.RoomVO;
 import com.dyz.persist.util.JsonUtilTool;
 
-import org.json.JSONObject;
+//import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
+import net.sf.json.JSONObject;
+
 public class Next1 {
     public static final String IP_ADDR = "localhost";//服务器地址
     public static final int PORT = 10122;//服务器端口号
+    public static int[][] pa;
 
     public static void main(String[] args) {
         System.out.println("客户端启动...");
@@ -33,10 +36,6 @@ public class Next1 {
                 DataInputStream input = new DataInputStream(socket.getInputStream());
                 //向服务器端发送数据
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-                //ObjectOutputStream  out = new ObjectOutputStream (socket.getOutputStream());
-//	            System.out.print("请输入: \t");
-//	            String str = new BufferedReader(new InputStreamReader(System.in)).readLine();
-//				登录测试
                 //玩家121，123，124，125
                 String str = "123";
 
@@ -73,7 +72,7 @@ public class Next1 {
 
                 Scanner in = new Scanner(System.in);
                 char c;
-                boolean flag = false;
+                boolean flag;
                 boolean bQuit = false;
 
                 //x 1 表示 出牌 2万
@@ -92,6 +91,7 @@ public class Next1 {
                     s = s.trim();
                     String[] ss = s.split(" ");
                     c = ss[0].charAt(0);
+                    flag = false;
 
                     switch (c) {
                         case 'x':
@@ -177,69 +177,6 @@ public class Next1 {
                     bQuit = s.equals("quit");
                 }
 
-                //庄家出牌测试
-//				ClientSendRequest chupaiSend = new ClientSendRequest(ConnectAPI.CHUPAI_REQUEST);
-//				joinRoomSend.output.writeUTF(JsonUtilTool.toJson(roomVo));
-//				out.write(joinRoomSend.entireMsg().array());//
-//				serverCallBack(input);//返回317824
-
-
-//				String str2 = "123";//玩家2登录
-//
-//				LoginVO loginVO2 = new LoginVO();
-//				loginVO2.setOpenId(str2);
-//				//登录操作，不同操作不同的ConnectAPI.CREATEROOM_REQUEST值    消息处理方式
-//				ClientSendRequest loginSend2 = new ClientSendRequest(ConnectAPI.LOGIN_REQUEST);
-//				loginSend.output.writeUTF(JsonUtilTool.toJson(loginVO2));
-//				out.write(loginSend2.entireMsg().array());//
-//				
-//				serverCallBack(input);
-//				
-//				String str3 = "124";//玩家3登录
-//
-//				LoginVO loginVO3 = new LoginVO();
-//				loginVO3.setOpenId(str3);
-//				//登录操作，不同操作不同的ConnectAPI.CREATEROOM_REQUEST值    消息处理方式
-//				ClientSendRequest loginSend3 = new ClientSendRequest(ConnectAPI.LOGIN_REQUEST);
-//				loginSend.output.writeUTF(JsonUtilTool.toJson(loginVO3));
-//				out.write(loginSend3.entireMsg().array());//
-//				
-//				serverCallBack(input);
-//				
-//				
-//				String str4 = "122";//玩家4登录
-//
-//				LoginVO loginVO4 = new LoginVO();
-//				loginVO4.setOpenId(str4);
-//				//登录操作，不同操作不同的ConnectAPI.CREATEROOM_REQUEST值    消息处理方式
-//				ClientSendRequest loginSend4 = new ClientSendRequest(ConnectAPI.LOGIN_REQUEST);
-//				loginSend.output.writeUTF(JsonUtilTool.toJson(loginVO4));
-//				out.write(loginSend4.entireMsg().array());//
-//				
-//				serverCallBack(input);
-
-
-
-//				String xxxx = new BufferedReader(new InputStreamReader(System.in)).readLine();
-//				String asdf = "{\n" +
-//						"  \"hong\": true,\n" +
-//						"  \"ma\": 2,\n" +
-//						"  \"name\": \"\",\n" +
-//						"  \"roomId\": "+xxxx+",\n" +
-//						"  \"roomType\": 1,\n" +
-//						"  \"roundNumber\": 0,\n" +
-//						"  \"sevenDouble\": false,\n" +
-//						"  \"ziMo\": 0\n" +
-//						"}";
-//				String ss = JsonUtilTool.toJson(asdf);
-//				ClientSendRequest joinroom = new ClientSendRequest(ConnectAPI.JOIN_ROOM_REQUEST);
-//				joinroom.output.writeUTF(ss);
-//				out.write(joinroom.entireMsg().array());
-//
-//				serverCallBack(input);
-
-
-
                 out.close();
                 input.close();
             } catch (Exception e) {
@@ -260,22 +197,24 @@ public class Next1 {
 
     public static void serverCallBack(DataInputStream input){
         try {
-            System.out.println("Got server response: " );
             byte byte1 = input.readByte();
-//            System.out.println("flag = " + byte1);
             int len = input.readInt();
-//            System.out.println("length = " +len);
             int code = input.readInt();//msgCode
             int status = input.readInt();
-            System.out.println("protocol code = " + code + " status = " + status);
             String ret = input.readUTF();
-//			byte[] result = new byte[600];
-//			byte[] result2 = new byte[600];
-//			input.read(result);
-//			System.arraycopy(result,4,result2,0,591);
-//			System.out.println("服务器端返回过来的是: " + new String(result));
 
-            System.out.println("data = " + ret);
+            if (ret.length() > 0) {
+                System.out.println("Got server response: " + "protocol code = " + code + " status = " + status);
+                if (ret.indexOf("paiArray") > -1) {
+                    JSONObject json = JSONObject.fromObject(cards);
+                    pa = json.get("paiArray");
+                    System.out.println("起手牌");
+                    Pai.printCards(pa);
+                } else {
+                    System.out.println("\tdata = " + ret);
+                }
+            }
+
             // 如接收到 "OK" 则断开连接
             if ("OK".equals(ret)) {
                 System.out.println("客户端将关闭连接");
