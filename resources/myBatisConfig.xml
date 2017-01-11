@@ -23,10 +23,9 @@
             <transactionManager type="JDBC" />
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver" />
-<!--             <property name="url" value="jdbc:mysql://rdsnnamjmnnamjm.mysql.rds.aliyuncs.com:3306/majiang?zeroDateTimeBehavior=convertToNull" />-->
-<property name="url" value="jdbc:mysql://localhost:3306/majiang?zeroDateTimeBehavior=convertToNull" />
-                <property name="username" value="root" />
-                <property name="password" value="xh@sql!7" />
+             <property name="url" value="jdbc:mysql://localhost:3306/mahjong_hbe?zeroDateTimeBehavior=convertToNull" />
+                <property name="username" value="mahjong" />
+                <property name="password" value="a257joker" />
               
                 
                   <!-- 
