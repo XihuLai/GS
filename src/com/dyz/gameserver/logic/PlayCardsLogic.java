@@ -1998,9 +1998,9 @@ public class PlayCardsLogic {
      * @param paiList
      * @return
      */
+    private final static int[] idxs = {0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33};
 	public boolean checkThirteen(int[][] paiList){
 		boolean rv = true;
-		int[] idxs = {0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33};
         int i = 0;
 
         while (rv && i < idxs.length) {
