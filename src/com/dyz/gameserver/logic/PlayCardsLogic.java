@@ -879,18 +879,18 @@ public class PlayCardsLogic {
 			int roomScore = 5;
 				if(roomType==7)	
 					roomScore = 9;
-			if(huResult.containsKey(Rule.Hu_menqing))//门清
+			if(!huResult.containsKey(Rule.Hu_qxd)&&huResult.containsKey(Rule.Hu_menqing))//门清
 				score+=1;
-			if(huResult.containsKey(Rule.CaiShen))//财神
+			if(roomVO.isAddFlowerCard()&&huResult.containsKey(Rule.CaiShen))//财神
 				score+=huResult.get(Rule.CaiShen);
 			//特色选项
-			if(huResult.containsKey(Rule.Hu_quemen))//缺门
+			if(roomVO.isQgbkd()&&huResult.containsKey(Rule.Hu_quemen))//缺门
 				score+=1;
-			if(huResult.containsKey(Rule.Hu_gouzhang))//够张
+			if(roomVO.isQgbkd()&&huResult.containsKey(Rule.Hu_qingyise)&&!huResult.containsKey(Rule.Hu_yitiaolong)&&huResult.containsKey(Rule.Hu_gouzhang))//够张
 				score+=1;
 			if(huResult.containsKey(Rule.Hu_kanwuwan)&&roomVO.isKan5())//坎五万
 				score+=roomScore;
-			if(huResult.containsKey(Rule.Hu_biankandiao)&&!huResult.containsKey(Rule.Hu_kanwuwan))//边砍钓
+			if(roomVO.isQgbkd()&&!huResult.containsKey(Rule.Hu_qxd)&&huResult.containsKey(Rule.Hu_biankandiao)&&!huResult.containsKey(Rule.Hu_kanwuwan))//边砍钓
 				score+=1;
 			//处理胡牌方法
 			if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==1)//清一色
@@ -904,8 +904,8 @@ public class PlayCardsLogic {
 			if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==2&&roomVO.isHunyise())//混一色
 				score+=roomScore;
 			if(huResult.containsKey(Rule.Hu_haohuaqxd))//豪华七对
-				score+=(roomScore*2);
-			if(huResult.containsKey(Rule.Hu_shisanyao))//缺门
+				score+=10;
+			if(huResult.containsKey(Rule.Hu_shisanyao))//十三幺
 				score+=13;
 			
 			
@@ -968,7 +968,7 @@ public class PlayCardsLogic {
 			int multiscore = 1;
 		if(huResult.containsKey(Rule.Hu_menqing))//门清加倍
 			multiscore*=2;
-		if(huResult.containsKey(Rule.CaiShen))//财神
+		if(roomVO.isAddFlowerCard()&&huResult.containsKey(Rule.CaiShen))//财神
 			score+=huResult.get(Rule.CaiShen);
 		//特色选项
 		if(huResult.containsKey(Rule.Hu_quemen)&&roomVO.isQgbkd())//缺门
@@ -2014,9 +2014,10 @@ public class PlayCardsLogic {
     				break;
     			}
     		}else{
-    			if(paiList[0][i]>= 1)
+    			if(paiList[0][i]>= 1){
     			result = 0;
     			break;
+    			}
     		}
     	}
     	return result;
