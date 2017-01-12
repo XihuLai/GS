@@ -886,18 +886,18 @@ public class PlayCardsLogic {
 			int roomScore = 5;
 				if(roomType==7)	
 					roomScore = 9;
-			if(huResult.containsKey(Rule.Hu_menqing))//门清
+			if(!huResult.containsKey(Rule.Hu_qxd)&&huResult.containsKey(Rule.Hu_menqing))//门清
 				score+=1;
-			if(huResult.containsKey(Rule.CaiShen))//财神
+			if(roomVO.isAddFlowerCard()&&huResult.containsKey(Rule.CaiShen))//财神
 				score+=huResult.get(Rule.CaiShen);
 			//特色选项
-			if(huResult.containsKey(Rule.Hu_quemen))//缺门
+			if(roomVO.isQgbkd()&&huResult.containsKey(Rule.Hu_quemen))//缺门
 				score+=1;
-			if(huResult.containsKey(Rule.Hu_gouzhang))//够张
+			if(roomVO.isQgbkd()&&huResult.containsKey(Rule.Hu_qingyise)&&!huResult.containsKey(Rule.Hu_yitiaolong)&&huResult.containsKey(Rule.Hu_gouzhang))//够张
 				score+=1;
 			if(huResult.containsKey(Rule.Hu_kanwuwan)&&roomVO.isKan5())//坎五万
 				score+=roomScore;
-			if(huResult.containsKey(Rule.Hu_biankandiao)&&!huResult.containsKey(Rule.Hu_kanwuwan))//边砍钓
+			if(roomVO.isQgbkd()&&!huResult.containsKey(Rule.Hu_qxd)&&huResult.containsKey(Rule.Hu_biankandiao)&&!huResult.containsKey(Rule.Hu_kanwuwan))//边砍钓
 				score+=1;
 			//处理胡牌方法
 			if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==1)//清一色
@@ -911,8 +911,8 @@ public class PlayCardsLogic {
 			if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==2&&roomVO.isHunyise())//混一色
 				score+=roomScore;
 			if(huResult.containsKey(Rule.Hu_haohuaqxd))//豪华七对
-				score+=(roomScore*2);
-			if(huResult.containsKey(Rule.Hu_shisanyao))//缺门
+				score+=10;
+			if(huResult.containsKey(Rule.Hu_shisanyao))//十三幺
 				score+=13;
 			
 			
@@ -975,7 +975,7 @@ public class PlayCardsLogic {
 			int multiscore = 1;
 		if(huResult.containsKey(Rule.Hu_menqing))//门清加倍
 			multiscore*=2;
-		if(huResult.containsKey(Rule.CaiShen))//财神
+		if(roomVO.isAddFlowerCard()&&huResult.containsKey(Rule.CaiShen))//财神
 			score+=huResult.get(Rule.CaiShen);
 		//特色选项
 		if(huResult.containsKey(Rule.Hu_quemen)&&roomVO.isQgbkd())//缺门
@@ -1633,36 +1633,27 @@ public class PlayCardsLogic {
             playerList.get(i).cleanPaiData();
         }
     }
-    private boolean checkHu(Avatar avatar,Integer cardIndex){
-        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - begin" + cardIndex);
 
-        //根据不同的游戏类型进行不用的判断
-       boolean flag = false;
-     //处理胡牌的逻辑
-       if(cardIndex!=-1&&cardIndex!=100)
-       avatar.putCardInList(cardIndex);
-       int [][] paiList =  avatar.getPaiArray();
-   			//可七小队
-   			int isSeven = checkSevenDouble(paiList.clone());
-               if(isSeven == 0){
-                   //System.out.println("没有七小对");
-            	   if(checkThirteen(paiList.clone())==1){
-            		   flag = true;
-            	   }else{//常规胡法
-            		   if(normalHuPai.checkHu(paiList.clone())){
-            			   flag = true;
-            		   }
-            		   
-            	   }
-               }else{
-            	   return true;
-               }
-               if(cardIndex!=-1&&cardIndex!=100)
-               avatar.pullCardFormList(cardIndex);
-        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - end -" + flag);
+	private boolean checkHu(Avatar avatar,Integer cardIndex){
+		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - begin" + cardIndex);
 
-        return flag;
-       }
+		//根据不同的游戏类型进行不用的判断
+		boolean flag = false;
+		//处理胡牌的逻辑
+		if(cardIndex!=-1&&cardIndex!=100)
+			avatar.putCardInList(cardIndex);
+		int [][] paiList =  avatar.getPaiArray();
+		//可七小队
+		flag = flag || checkSevenDouble(paiList.clone()) > 0;
+		flag = flag || checkThirteen(paiList.clone());
+		flag = flag || normalHuPai.checkHu(paiList.clone());
+
+		if(cardIndex!=-1&&cardIndex!=100)
+			avatar.pullCardFormList(cardIndex);
+		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - end -" + flag);
+
+		return flag;
+	}
     
     private Map<String,Integer> checkHu2(Avatar avatar,Integer cardIndex){
         //根据不同的游戏类型进行不用的判断
@@ -1673,7 +1664,7 @@ public class PlayCardsLogic {
    			int isSeven = checkSevenDouble(paiList.clone());
                if(isSeven == 0){
                    //System.out.println("没有七小对");
-            	   if(checkThirteen(paiList.clone())==1){
+            	   if(checkThirteen(paiList.clone())){
             		   result.put("Hu", 1);//
             		   result.put(Rule.Hu_shisanyao, 1);
             	   }else{//常规胡法
@@ -2014,24 +2005,16 @@ public class PlayCardsLogic {
      * @param paiList
      * @return
      */
-    public int checkThirteen(int[][] paiList){
-    	int result = 1;
-    	for(int i=0;i<paiList[0].length&&i<34;i++){
-    		if(((i>26&&i<34)||(i%9==0||i%9==8))){
-    			if(paiList[0][i]>= 1)
-    			continue;
-    			else{
-    				result = 0;
-    				break;
-    			}
-    		}else{
-    			if(paiList[0][i]>= 1)
-    			result = 0;
-    			break;
-    		}
-    	}
-    	return result;
-    }
+    private final static int[] idxs = {0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33};
+	public boolean checkThirteen(int[][] paiList){
+		boolean rv = true;
+        int i = 0;
+
+        while (rv && i < idxs.length) {
+            rv = paiList[0][idxs[i++]] >= 1;
+        }
+		return rv;
+	}
 
     /**
      * 检查是否七小对胡牌
@@ -2290,7 +2273,7 @@ public class PlayCardsLogic {
 			}
 			pt[0][i]++;
 			rv = rv || checkSevenDouble(pt.clone()) > 0;
-			rv = rv || checkThirteen(pt.clone()) == 1;
+			rv = rv || checkThirteen(pt.clone());
 			rv = rv || normalHuPai.checkHu(pt);
 
 			if (rv) {
