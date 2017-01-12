@@ -71,8 +71,8 @@ public class Zj {
                 //游戏开始测试
                 ClientSendRequest gameStartSend = new ClientSendRequest(ConnectAPI.PrepareGame_MSG_REQUEST);
                 JSONObject pldInfo = new JSONObject();
-                pldInfo.put("run", false);
-                pldInfo.put("dunla", false);
+                pldInfo.put("run", true);
+                pldInfo.put("dunla", true);
                 gameStartSend.output.writeUTF(pldInfo.toString());
                 out.write(gameStartSend.entireMsg().array());//
                 serverCallBack(input);//返回317824

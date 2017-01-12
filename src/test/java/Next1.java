@@ -72,7 +72,7 @@ public class Next1 {
                 //游戏开始测试
                 ClientSendRequest gameStartSend = new ClientSendRequest(ConnectAPI.PrepareGame_MSG_REQUEST);
                 JSONObject pldInfo = new JSONObject();
-                pldInfo.put("run", false);
+                pldInfo.put("run", true);
                 pldInfo.put("dunla", false);
                 gameStartSend.output.writeUTF(pldInfo.toString());
                 out.write(gameStartSend.entireMsg().array());//
