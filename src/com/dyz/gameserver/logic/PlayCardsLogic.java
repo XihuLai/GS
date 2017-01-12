@@ -1628,8 +1628,6 @@ public class PlayCardsLogic {
     }
     
     private boolean checkHu(Avatar avatar,Integer cardIndex){
-		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - begin" + cardIndex);
-
 		//根据不同的游戏类型进行不用的判断
 		boolean flag = false;
 		//处理胡牌的逻辑
@@ -1643,8 +1641,6 @@ public class PlayCardsLogic {
 
 		if(cardIndex!=-1&&cardIndex!=100)
 			avatar.pullCardFormList(cardIndex);
-		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - end -" + flag);
-
 		return flag;
 	}
     
