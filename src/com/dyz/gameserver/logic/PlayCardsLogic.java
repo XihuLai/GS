@@ -538,7 +538,7 @@ public class PlayCardsLogic {
                // //system.out.println("发送打牌消息----"+playerList.get(i).avatarVO.getAccount().getNickname());
             } else {
 				System.out.println("检查能否听 - " + curAvatarIndex);
-				if (checkSelfTing(avatar.getPaiArray(), true)) {
+				if (checkSelfTing(avatar)) {
 					avatar.getSession().sendMsg(new ReturnInfoResponse(1, "canting"));
 					System.out.println("检查能否听 - " + curAvatarIndex + "能");
 				} else {
@@ -580,7 +580,7 @@ public class PlayCardsLogic {
 				}
 				if(sb.length()>1 &&
 						(!roomVO.isYikouxiangCard() ||
-								checkOtherTing(ava.getPaiArray(), putOffCardPoint))){
+								checkOtherTing(ava, putOffCardPoint))){
 					//system.out.println(sb);
 					try {
 						Thread.sleep(200);
@@ -2267,24 +2267,24 @@ public class PlayCardsLogic {
     	zhuangAvatar.getSession().sendMsg(new RoomCardChangerResponse(1,roomCard));
     }
 
-	private boolean checkSelfTing(int[][] paiList, boolean bclone) {
+	private boolean checkSelfTing(Avatar av) {
 		boolean rv = false;
-		int[][] pt;
+		int[][] paiList = av.getPaiArray();
 		for(int i = 0; i < 34; ++i) {
-			if (bclone) {
-				pt = paiList.clone();
-			} else {
-				pt = paiList;
-			}
-			if (pt[0][i] > 3) {
+			if (paiList[0][i] > 3) {
 				continue;
 			}
-			pt[0][i]++;
-			System.out.println("checkSelfTing - " + Pai.getCard(i) + " - begin");
-			rv = rv || checkSevenDouble(pt.clone()) > 0;
-			rv = rv || checkThirteen(pt.clone());
-			rv = rv || normalHuPai.checkHu(pt);
-			System.out.println("checkSelfTing - " + Pai.getCard(i) + " - end" + rv);
+			paiList[0][i]++;
+			    System.out.println("checkSelfTing - " + Pai.getCard(i) + " - begin");
+			    Pai.printCards(paiList, getDistToMain(av) + 1);
+			rv = rv || checkSevenDouble(paiList) > 0;
+			    System.out.println("checkSelfTing - " + "七对 " +rv);
+			rv = rv || checkThirteen(paiList);
+			    System.out.println("checkSelfTing - " + "十三幺 " +rv);
+			rv = rv || normalHuPai.checkHu(paiList);
+			    System.out.println("checkSelfTing - " + Pai.getCard(i) + " - end" + rv);
+
+			paiList[0][i]--;
 
 			if (rv) {
 				break;
@@ -2293,22 +2293,26 @@ public class PlayCardsLogic {
 		return rv;
 	}
 
-	private boolean checkOtherTing(int[][] paiList,Integer cardIndex) {
+	private boolean checkOtherTing(Avatar av, Integer cardIndex) {
 		boolean rv = false;
+		int[][] paiList = av.getPaiArray();
+		paiList[0][cardIndex]++;
+
 		for(int i = 0; i < 34; ++i) {
 			if (paiList[0][i] == 0 || i == cardIndex) {
 				continue;
 			}
 
-			int[][] pt = paiList.clone();
-			pt[0][i]--;
-			pt[0][cardIndex]++;
+			paiList[0][i]--;
+			rv = rv || checkSelfTing(av);
+			paiList[0][i]++;
 
-			rv = rv || checkSelfTing(pt, false);
 			if (rv) {
 				break;
 			}
 		}
+
+		paiList[0][cardIndex]--;
 		return rv;
 	}
 	
