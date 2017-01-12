@@ -35,6 +35,8 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.Map.Entry;
 
+import test.java.Pai;
+
 
 /**
  * Created by kevin on 2016/6/18.
@@ -274,7 +276,7 @@ public class PlayCardsLogic {
         //pickAvatarIndex = nextIndex;
         //本次摸得牌点数，下一张牌的点数，及本次摸的牌点数
         int tempPoint = getNextCardPoint();
-    	//System.out.println("摸牌："+tempPoint+"----上一家出牌"+putOffCardPoint+"--摸牌人索引:"+pickAvatarIndex);
+    	System.out.println("摸牌："+tempPoint+"----上一家出牌"+putOffCardPoint+"--摸牌人索引:"+pickAvatarIndex);
         if(tempPoint != -1&&tempPoint<34) {//所摸的不是财神牌
         	//回放记录
         	PlayRecordOperation(pickAvatarIndex,tempPoint,2,-1,null,null);
@@ -531,11 +533,16 @@ public class PlayCardsLogic {
             //不能返回给自己
         	playerList.get(i).gangIndex.clear();//每次出牌就先清除缓存里面的可以杠的牌下标
             if(i != curAvatarIndex) {
+				System.out.println("通知第"+ i + "个玩家");
                 playerList.get(i).getSession().sendMsg(new ChuPaiResponse(1, putOffCardPoint, curAvatarIndex));
                // //system.out.println("发送打牌消息----"+playerList.get(i).avatarVO.getAccount().getNickname());
             } else {
+				System.out.println("检查能否听 - " + curAvatarIndex);
 				if (checkSelfTing(avatar.getPaiArray(), true)) {
 					avatar.getSession().sendMsg(new ReturnInfoResponse(1, "canting"));
+					System.out.println("检查能否听 - " + curAvatarIndex + "能");
+				} else {
+					System.out.println("检查能否听 - " + curAvatarIndex + "不能");
 				}
 			}
     	}
@@ -1352,6 +1359,7 @@ public class PlayCardsLogic {
     	//把出牌点数和下面该谁出牌发送会前端  下一家都还没有摸牌就要出牌了??
         if(!hasHu && checkMsgAndSend()){
         	//如果没有吃，碰，杠，胡的情况，则下家自动摸牌
+			System.out.println("没有吃，碰，杠，胡，下家自动摸牌");
             pickCard();
         }
     }
@@ -2272,9 +2280,11 @@ public class PlayCardsLogic {
 				continue;
 			}
 			pt[0][i]++;
+			System.out.println("checkSelfTing - " + Pai.getCard(i) + " - begin");
 			rv = rv || checkSevenDouble(pt.clone()) > 0;
 			rv = rv || checkThirteen(pt.clone());
 			rv = rv || normalHuPai.checkHu(pt);
+			System.out.println("checkSelfTing - " + Pai.getCard(i) + " - end" + rv);
 
 			if (rv) {
 				break;
