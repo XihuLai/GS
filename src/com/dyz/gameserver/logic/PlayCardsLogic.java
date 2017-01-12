@@ -532,7 +532,7 @@ public class PlayCardsLogic {
                 playerList.get(i).getSession().sendMsg(new ChuPaiResponse(1, putOffCardPoint, curAvatarIndex));
                // //system.out.println("发送打牌消息----"+playerList.get(i).avatarVO.getAccount().getNickname());
             } else {
-				if (checkSelfTing(avatar.getPaiArray(), true)) {
+				if (checkSelfTing(avatar)) {
 					avatar.getSession().sendMsg(new ReturnInfoResponse(1, "canting"));
 				}
 			}
@@ -571,7 +571,7 @@ public class PlayCardsLogic {
 				}
 				if(sb.length()>1 &&
 						(!roomVO.isYikouxiangCard() ||
-								checkOtherTing(ava.getPaiArray(), putOffCardPoint))){
+								checkOtherTing(ava, putOffCardPoint))){
 					//system.out.println(sb);
 					try {
 						Thread.sleep(200);
@@ -1626,32 +1626,27 @@ public class PlayCardsLogic {
             playerList.get(i).cleanPaiData();
         }
     }
+    
     private boolean checkHu(Avatar avatar,Integer cardIndex){
-        //根据不同的游戏类型进行不用的判断
-       boolean flag = false;
-     //处理胡牌的逻辑
-       if(cardIndex!=-1&&cardIndex!=100)
-       avatar.putCardInList(cardIndex);
-       int [][] paiList =  avatar.getPaiArray();
-   			//可七小队
-   			int isSeven = checkSevenDouble(paiList.clone());
-               if(isSeven == 0){
-                   //System.out.println("没有七小对");
-            	   if(checkThirteen(paiList.clone())==1){
-            		   flag = true;
-            	   }else{//常规胡法
-            		   if(normalHuPai.checkHu(paiList.clone())){
-            			   flag = true;
-            		   }
-            		   
-            	   }
-               }else{
-            	   return true;
-               }
-               if(cardIndex!=-1&&cardIndex!=100)
-               avatar.pullCardFormList(cardIndex);
-               return flag;
-       }
+		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - begin" + cardIndex);
+
+		//根据不同的游戏类型进行不用的判断
+		boolean flag = false;
+		//处理胡牌的逻辑
+		if(cardIndex!=-1&&cardIndex!=100)
+			avatar.putCardInList(cardIndex);
+		int [][] paiList =  avatar.getPaiArray();
+		//可七小队
+		flag = flag || checkSevenDouble(paiList.clone()) > 0;
+		flag = flag || checkThirteen(paiList.clone());
+		flag = flag || normalHuPai.checkHu(paiList.clone());
+
+		if(cardIndex!=-1&&cardIndex!=100)
+			avatar.pullCardFormList(cardIndex);
+		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - end -" + flag);
+
+		return flag;
+	}
     
     private Map<String,Integer> checkHu2(Avatar avatar,Integer cardIndex){
         //根据不同的游戏类型进行不用的判断
@@ -1662,7 +1657,7 @@ public class PlayCardsLogic {
    			int isSeven = checkSevenDouble(paiList.clone());
                if(isSeven == 0){
                    //System.out.println("没有七小对");
-            	   if(checkThirteen(paiList.clone())==1){
+            	   if(checkThirteen(paiList.clone())){
             		   result.put("Hu", 1);//
             		   result.put(Rule.Hu_shisanyao, 1);
             	   }else{//常规胡法
@@ -2003,25 +1998,16 @@ public class PlayCardsLogic {
      * @param paiList
      * @return
      */
-    public int checkThirteen(int[][] paiList){
-    	int result = 1;
-    	for(int i=0;i<paiList[0].length&&i<34;i++){
-    		if(((i>26&&i<34)||(i%9==0||i%9==8))){
-    			if(paiList[0][i]>= 1)
-    			continue;
-    			else{
-    				result = 0;
-    				break;
-    			}
-    		}else{
-    			if(paiList[0][i]>= 1){
-    			result = 0;
-    			break;
-    			}
-    		}
-    	}
-    	return result;
-    }
+    private final static int[] idxs = {0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33};
+	public boolean checkThirteen(int[][] paiList){
+		boolean rv = true;
+        int i = 0;
+
+        while (rv && i < idxs.length) {
+            rv = paiList[0][idxs[i++]] >= 1;
+        }
+		return rv;
+	}
 
     /**
      * 检查是否七小对胡牌
@@ -2266,22 +2252,19 @@ public class PlayCardsLogic {
     	zhuangAvatar.getSession().sendMsg(new RoomCardChangerResponse(1,roomCard));
     }
 
-	private boolean checkSelfTing(int[][] paiList, boolean bclone) {
+    private boolean checkSelfTing(Avatar av) {
 		boolean rv = false;
-		int[][] pt;
+		int[][] paiList = av.getPaiArray();
 		for(int i = 0; i < 34; ++i) {
-			if (bclone) {
-				pt = paiList.clone();
-			} else {
-				pt = paiList;
-			}
-			if (pt[0][i] > 3) {
+			if (paiList[0][i] > 3) {
 				continue;
 			}
-			pt[0][i]++;
-			rv = rv || checkSevenDouble(pt.clone()) > 0;
-			rv = rv || checkThirteen(pt.clone()) == 1;
-			rv = rv || normalHuPai.checkHu(pt);
+			paiList[0][i]++;
+			rv = rv || checkSevenDouble(paiList) > 0;
+			rv = rv || checkThirteen(paiList);
+			rv = rv || normalHuPai.checkHu(paiList);
+
+			paiList[0][i]--;
 
 			if (rv) {
 				break;
@@ -2290,22 +2273,26 @@ public class PlayCardsLogic {
 		return rv;
 	}
 
-	private boolean checkOtherTing(int[][] paiList,Integer cardIndex) {
+	private boolean checkOtherTing(Avatar av, Integer cardIndex) {
 		boolean rv = false;
+		int[][] paiList = av.getPaiArray();
+		paiList[0][cardIndex]++;
+
 		for(int i = 0; i < 34; ++i) {
 			if (paiList[0][i] == 0 || i == cardIndex) {
 				continue;
 			}
 
-			int[][] pt = paiList.clone();
-			pt[0][i]--;
-			pt[0][cardIndex]++;
+			paiList[0][i]--;
+			rv = rv || checkSelfTing(av);
+			paiList[0][i]++;
 
-			rv = rv || checkSelfTing(pt, false);
 			if (rv) {
 				break;
 			}
 		}
+
+		paiList[0][cardIndex]--;
 		return rv;
 	}
 	
