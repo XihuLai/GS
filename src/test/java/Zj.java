@@ -106,6 +106,16 @@ public class Zj {
                 //t 表示 听牌
                 //r 表示 读取服务器返回信息
 
+                /*
+                当前人摸牌是会发PickCardResponse，摸牌点数传到前端，code是0x100004，
+                同时会发OtherPickCardResponse给另三家，传摸牌人idx，code是0x100014。接着会判断当前
+                能否自杠或胡牌，如果能杠或胡，发ReturnInfoResponse 给自己，code是0x100000
+
+                当前人出牌会发ChuPaiResponse给另三家，带出牌点数和出牌人idx，同时会检查出牌后能否听牌，
+                能听则发ReturnInfoResponse canting。判断另外三家能否吃碰杠这张牌，能的话发ReturnInfoResponse。
+                如果没有吃，碰，杠，胡的情况，则下家自动摸牌
+                 */
+
                 while(!bQuit) {
                     System.out.print("请输入指令:\t");
                     String s = in.nextLine();
