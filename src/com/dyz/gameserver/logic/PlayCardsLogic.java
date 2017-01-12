@@ -36,6 +36,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import test.java.Pai;
+import test.java.PaiList;
 
 
 /**
@@ -216,21 +217,26 @@ public class PlayCardsLogic {
 	    if(roomVO.isAddFlowerCard()){
 			paiCount += 8;
 		}
-		listCard = new ArrayList<Integer>();
-		for (int i = 0; i < paiCount; i++) {
-			for (int k = 0; k < 4; k++) {
-				if(i < 27) {
-					listCard.add(i);
-				}else if(i > 26 && i< 34){
-					if(roomVO.isAddWordCard())
+
+		listCard = new ArrayList<Integer>(PaiList.getListCard());
+
+		final boolean isTest = true; //XHTEST
+		if (!isTest) {
+			for (int i = 0; i < paiCount; i++) {
+				for (int k = 0; k < 4; k++) {
+					if(i < 27) {
 						listCard.add(i);
-					else{
+					}else if(i > 26 && i< 34){
+						if(roomVO.isAddWordCard())
+							listCard.add(i);
+						else{
+							break;
+						}
+					}
+					else {
+						listCard.add(i);
 						break;
 					}
-				}
-				else {
-					listCard.add(i);
-					break;
 				}
 			}
 		}
@@ -239,7 +245,9 @@ public class PlayCardsLogic {
 			playerList.get(i).avatarVO.setPaiArray(new int[2][paiCount]);
 		}
 		//洗牌
-		shuffleTheCards();
+		if (!isTest) {
+			shuffleTheCards(); //XHTEST
+		}
 		//发牌
 		dealingTheCards();
 	}
@@ -361,7 +369,7 @@ public class PlayCardsLogic {
         //本次摸得牌点数，下一张牌的点数，及本次摸的牌点数
         int tempPoint = getNextCardPoint();
         currentCardPoint = tempPoint;
-    	//System.out.println("摸牌!--"+tempPoint);
+    	System.out.println("摸牌!--"+tempPoint);
         if(tempPoint != -1) {
         	//int avatarIndex = playerList.indexOf(avatar); // 2016-8-2注释
         	pickAvatarIndex = playerList.indexOf(avatar);
@@ -369,10 +377,12 @@ public class PlayCardsLogic {
             //记录摸牌信息
             for(int i=0;i<playerList.size();i++){
                 if(i != pickAvatarIndex){
-                    playerList.get(i).getSession().sendMsg(new OtherPickCardResponse(1,pickAvatarIndex));
+					System.out.println(pickAvatarIndex + "杠后摸牌通知别人" + i);
+					playerList.get(i).getSession().sendMsg(new OtherPickCardResponse(1,pickAvatarIndex));
                 }else {
                 	playerList.get(i).gangIndex.clear();//每次出牌就先清除缓存里面的可以杠的牌下标
 					playerList.get(i).getSession().sendMsg(new PickCardResponse(1, tempPoint));
+					System.out.println(pickAvatarIndex + "杠后摸牌通知自己");
 					//摸牌之后就重置可否胡别人牌的标签
 					playerList.get(i).canHu = true;
 					//System.out.println("摸牌玩家------index"+pickAvatarIndex+"名字"+playerList.get(i).avatarVO.getAccount().getNickname());
@@ -2275,14 +2285,14 @@ public class PlayCardsLogic {
 				continue;
 			}
 			paiList[0][i]++;
-			    System.out.println("checkSelfTing - " + Pai.getCard(i) + " - begin");
-			    Pai.printCards(paiList, getDistToMain(av) + 1);
+			    //System.out.println("checkSelfTing - " + Pai.getCard(i) + " - begin");
+			    //Pai.printCards(paiList, getDistToMain(av) + 1);
 			rv = rv || checkSevenDouble(paiList) > 0;
-			    System.out.println("checkSelfTing - " + "七对 " +rv);
+			    //System.out.println("checkSelfTing - " + "七对 " +rv);
 			rv = rv || checkThirteen(paiList);
-			    System.out.println("checkSelfTing - " + "十三幺 " +rv);
+			    //System.out.println("checkSelfTing - " + "十三幺 " +rv);
 			rv = rv || normalHuPai.checkHu(paiList);
-			    System.out.println("checkSelfTing - " + Pai.getCard(i) + " - end" + rv);
+			    //System.out.println("checkSelfTing - " + Pai.getCard(i) + " - end" + rv);
 
 			paiList[0][i]--;
 
@@ -2290,6 +2300,7 @@ public class PlayCardsLogic {
 				break;
 			}
 		}
+
 		return rv;
 	}
 
