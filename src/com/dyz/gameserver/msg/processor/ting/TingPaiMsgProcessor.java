@@ -24,8 +24,13 @@ public class TingPaiMsgProcessor extends MsgProcessor implements
         RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
         Avatar p = gameSession.getRole(Avatar.class);
         if(p != null && roomLogic != null){
-            JSONObject json = JSONObject.fromObject(request.getString());
-            boolean bt = (boolean)json.get("ting");
+            String s = request.getString();
+            JSONObject json = JSONObject.fromObject(s);
+            boolean bt = false;
+            if (s.indexOf("ting") != -1) {
+                bt = (boolean)json.get("ting");
+            }
+
             roomLogic.ting(p, bt);
         }else{
             gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000023));
