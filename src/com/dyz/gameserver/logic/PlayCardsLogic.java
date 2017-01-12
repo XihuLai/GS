@@ -533,7 +533,9 @@ public class PlayCardsLogic {
                // //system.out.println("发送打牌消息----"+playerList.get(i).avatarVO.getAccount().getNickname());
             } else {
 				System.out.println("检查能否听 - " + curAvatarIndex);
-				if (checkSelfTing(avatar)) {
+				if (!roomVO.isYikouxiangCard()
+						&& !avatar.getbTing()
+						&& checkSelfTing(avatar)) {
 					avatar.getSession().sendMsg(new ReturnInfoResponse(1, "canting"));
 				}
 			}
