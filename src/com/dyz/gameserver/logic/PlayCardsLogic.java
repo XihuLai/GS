@@ -932,7 +932,7 @@ public class PlayCardsLogic {
 					calscore+=1;
 					
 				}else{//为拉庄
-					if(player.avatarVO.isMain())//如果是被拉庄了，那么多出一分
+					if(player.overOff)//如果是被拉庄了，那么多出一分
 						calscore+=1;
 					
 				}
@@ -952,16 +952,16 @@ public class PlayCardsLogic {
 					
 				}
 				
-				totalScore+=score;
+				calscore+=score;
 				totalScore+=calscore;
 				
-				player.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*(score+calscore));
+				player.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*(calscore));
 					}else{//如果是当前用户
 						//增加胡家的分数
-						 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, totalScore);
+						 
 					}
 				}
-			
+				avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, totalScore);
 			
 		}else if(roomType == 8){//包头
 			int roomScore = 5;
@@ -1001,6 +1001,7 @@ public class PlayCardsLogic {
 			boolean pao = avatar.avatarVO.isRun();
 			for(Avatar player:playerList){//分别处理四个用户的赢输牌的分数
 				int calscore = 0;
+				int calmulti = 1;
 				if(player.getUuId()!=avatar.getUuId()){//如果不是当前用户
 			//处理跑拉蹲分数		
 			if(dunorla)
@@ -1027,7 +1028,7 @@ public class PlayCardsLogic {
 			if(dian == -1){//为自摸
 				recordType = "1";
 				//加分项逻辑
-				multiscore*=2;//自摸加倍
+				calmulti*=2;//自摸加倍
 			}else{//为点炮
 				if(playerList.indexOf(player)!=dian){
 					continue;
@@ -1039,7 +1040,8 @@ public class PlayCardsLogic {
 				
 			}
 			calscore+=score;
-			calscore*=multiscore;
+			calmulti*=multiscore;
+			calscore*=calmulti;
 			totalScore+=calscore;
 			player.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*calscore);
 				}else{//如果是当前用户
@@ -1047,6 +1049,7 @@ public class PlayCardsLogic {
 					 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, totalScore);
 				}
 			}
+			avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, totalScore);
 		}
 			 
     	return 0;
@@ -1883,21 +1886,25 @@ public class PlayCardsLogic {
     			break;
     		}
     	}
-    	if(!result)
+    	if(!result){
+    	result = true;
     	for(int i=9;i<18;i++){
     		if(paiList[0][i]==0){
     			result = false;
     			break;
     		}
+    	}
     	}else{
     		return true;
     	}
-    	if(!result)
+    	if(!result){
+    	result = true;
     	for(int i=18;i<27;i++){
     		if(paiList[0][i]==0){
     			result = false;
     			break;
     		}
+    	}
     	}else{
     		return true;
     	}
