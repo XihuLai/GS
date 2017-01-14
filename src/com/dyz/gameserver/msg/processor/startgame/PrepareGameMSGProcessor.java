@@ -33,9 +33,17 @@ public class PrepareGameMSGProcessor extends MsgProcessor implements
 			if(roomLogic != null){
 				Avatar avatar = gameSession.getRole(Avatar.class);
 				if(avatar != null){
-					JSONObject json = JSONObject.fromObject(request.getString());
-					boolean brun = (boolean)json.get("run");
-					boolean bdunla = (boolean)json.get("dunla");
+					String s = request.getString();
+					JSONObject json = JSONObject.fromObject(s);
+					boolean brun = false;
+					boolean bdunla = false;
+					if (s.indexOf("run") != -1) {
+						brun = (boolean) json.get("run");
+					}
+
+					if (s.indexOf("dunla") != -1) {
+						bdunla = (boolean)json.get("dunla");
+					}
 
 					avatar.avatarVO.setRun(brun);
 					avatar.avatarVO.setDunorla(bdunla);
