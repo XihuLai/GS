@@ -532,7 +532,10 @@ public class PlayCardsLogic {
                 playerList.get(i).getSession().sendMsg(new ChuPaiResponse(1, putOffCardPoint, curAvatarIndex));
                // //system.out.println("发送打牌消息----"+playerList.get(i).avatarVO.getAccount().getNickname());
             } else {
-				if (checkSelfTing(avatar)) {
+				System.out.println("检查能否听 - " + curAvatarIndex);
+				if (!roomVO.isYikouxiangCard()
+						&& !avatar.getbTing()
+						&& checkSelfTing(avatar)) {
 					avatar.getSession().sendMsg(new ReturnInfoResponse(1, "canting"));
 				}
 			}
@@ -574,7 +577,9 @@ public class PlayCardsLogic {
 								checkOtherTing(ava, putOffCardPoint))){
 					//system.out.println(sb);
 					try {
+						System.out.println("开始中断执行别的线程"+System.currentTimeMillis());
 						Thread.sleep(200);
+						System.out.println("结束中断回到当前线程"+System.currentTimeMillis());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -932,7 +937,7 @@ public class PlayCardsLogic {
 					calscore+=1;
 					
 				}else{//为拉庄
-					if(player.overOff)//如果是被拉庄了，那么多出一分
+					if(player.avatarVO.isMain())//如果是被拉庄了，那么多出一分
 						calscore+=1;
 					
 				}
@@ -1631,6 +1636,8 @@ public class PlayCardsLogic {
     }
     
     private boolean checkHu(Avatar avatar,Integer cardIndex){
+		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - begin" + cardIndex);
+
 		//根据不同的游戏类型进行不用的判断
 		boolean flag = false;
 		//处理胡牌的逻辑
@@ -1644,6 +1651,8 @@ public class PlayCardsLogic {
 
 		if(cardIndex!=-1&&cardIndex!=100)
 			avatar.pullCardFormList(cardIndex);
+		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - end -" + flag);
+
 		return flag;
 	}
     
@@ -2255,28 +2264,23 @@ public class PlayCardsLogic {
     	zhuangAvatar.getSession().sendMsg(new RoomCardChangerResponse(1,roomCard));
     }
 
-    private boolean checkSelfTing(Avatar av) {
-		boolean rv = false;
-		int[][] paiList = av.getPaiArray();
-		for(int i = 0; i < 34; ++i) {
-			if (paiList[0][i] > 3) {
-				continue;
-			}
-			paiList[0][i]++;
-			rv = rv || checkSevenDouble(paiList) > 0;
-			rv = rv || checkThirteen(paiList);
-			rv = rv || normalHuPai.checkHu(paiList);
-
-			paiList[0][i]--;
-
-			if (rv) {
-				break;
-			}
-		}
-		return rv;
-	}
+    private boolean checkSelfTing(Avatar avator) {
+    	System.out.println("开始检查是否自听"+System.currentTimeMillis());
+    	boolean rv = false;
+    	for(int i = 0; i < 34; ++i) {
+	    	if(checkHu(avator,i)){
+	    	return true;
+	    	}
+    	else{
+    	continue;
+    	}
+    	}
+    	System.out.println("结束检查是否自听"+System.currentTimeMillis());
+    	return rv;
+    	}
 
 	private boolean checkOtherTing(Avatar av, Integer cardIndex) {
+		System.out.println("开始检查他人是否听"+System.currentTimeMillis());
 		boolean rv = false;
 		int[][] paiList = av.getPaiArray();
 		paiList[0][cardIndex]++;
@@ -2296,6 +2300,7 @@ public class PlayCardsLogic {
 		}
 
 		paiList[0][cardIndex]--;
+		System.out.println("结束检查他人是否听"+System.currentTimeMillis());
 		return rv;
 	}
 	
