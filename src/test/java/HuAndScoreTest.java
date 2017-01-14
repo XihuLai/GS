@@ -27,11 +27,13 @@ public class HuAndScoreTest {
 		int[][] paiList = new int[2][42];
 //		paiList[0]  = new int[]{0,0,0,3,0,0,1,1,1,    0,1,1,1,0,0,0,0,0,    0,0,2,0,0,0,1,1,1,   0,0,0,0,0,0,0,};
 //		paiList[0]  = new int[]{0,0,2,2,2,2,2,2,2,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
-		paiList[0]  = new int[]{1,0,0,0,0,0,0,0,1,    1,0,0,0,0,0,0,0,1,    1,0,0,0,0,0,0,0,1,   1,1,1,1,1,1,1,  1,2,3,4,1,2,3,4};
+		paiList[0]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    4,0,4,1,1,1,1,1,4,   0,0,0,0,0,0,0,  0,2,3,1,0,1,3,4};
 //		paiList[0]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    3,1,1,1,1,2,1,1,3,   0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
 		paiList[1]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0};
 //		paiList[1]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,};
-    	Map<String,Integer> result = test.checkHu(paiList,player1,4);
+    	Map<String,Integer> result = test.checkHu(paiList,player1,26);
+//    	boolean resultting = test.checkSelfTing(paiList,true);
+//    	System.out.println(resultting);
 	}
 
 	private Map<String,Integer> checkHu(int[][] paiList,Avatar avatar,Integer cardIndex){
@@ -151,6 +153,32 @@ public class HuAndScoreTest {
             	   return null;//没有胡牌直接返回空
        
        }
+	private boolean checkHu(int[][] paiList,Integer cardIndex){
+        //根据不同的游戏类型进行不用的判断
+       boolean flag = false;
+     //处理胡牌的逻辑
+       if(cardIndex!=-1&&cardIndex!=100)
+    	   paiList[0][cardIndex] +=1;
+   			//可七小队
+   			int isSeven = checkSevenDouble(paiList.clone());
+               if(isSeven == 0){
+                   //System.out.println("没有七小对");
+            	   if(checkThirteen(paiList.clone())==1){
+            		   flag = true;
+            	   }else{//常规胡法
+            		   if(normalHuPai.checkHu(paiList.clone())){
+            			   flag = true;
+            		   }
+            		   
+            	   }
+               }else{
+            	   return true;
+               }
+               if(cardIndex!=-1&&cardIndex!=100)
+            	   paiList[0][cardIndex] -=1;
+               return flag;
+       }
+	
     private int checkFlower(int[][] paiList,Avatar avatar){//检查花牌张数
     	int[] pai =GlobalUtil.CloneIntList(paiList[0]);
     	int indexMain = 0;
@@ -455,9 +483,10 @@ public class HuAndScoreTest {
     				break;
     			}
     		}else{
-    			if(paiList[0][i]>= 1)
+    			if(paiList[0][i]>= 1){
     			result = 0;
     			break;
+    			}
     		}
     	}
     	if(result==1)
@@ -492,5 +521,19 @@ public class HuAndScoreTest {
         		System.out.println("能胡七对"+result);
         return result;
     }
+    
+    private boolean checkSelfTing(int[][] paiList, boolean bclone) {
+		boolean rv = false;
+		for(int i = 0; i < 34; ++i) {
+			
+			if(checkHu(paiList,i)){
+				return true;
+			}
+			else{
+				continue;
+			}
+		}
+		return rv;
+	}
 
 }

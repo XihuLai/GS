@@ -577,7 +577,9 @@ public class PlayCardsLogic {
 								checkOtherTing(ava, putOffCardPoint))){
 					//system.out.println(sb);
 					try {
+						System.out.println("开始中断执行别的线程"+System.currentTimeMillis());
 						Thread.sleep(200);
+						System.out.println("结束中断回到当前线程"+System.currentTimeMillis());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -955,16 +957,16 @@ public class PlayCardsLogic {
 					
 				}
 				
-				totalScore+=score;
+				calscore+=score;
 				totalScore+=calscore;
 				
-				player.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*(score+calscore));
+				player.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*(calscore));
 					}else{//如果是当前用户
 						//增加胡家的分数
-						 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, totalScore);
+						 
 					}
 				}
-			
+				avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, totalScore);
 			
 		}else if(roomType == 8){//包头
 			int roomScore = 5;
@@ -1004,6 +1006,7 @@ public class PlayCardsLogic {
 			boolean pao = avatar.avatarVO.isRun();
 			for(Avatar player:playerList){//分别处理四个用户的赢输牌的分数
 				int calscore = 0;
+				int calmulti = 1;
 				if(player.getUuId()!=avatar.getUuId()){//如果不是当前用户
 			//处理跑拉蹲分数		
 			if(dunorla)
@@ -1030,7 +1033,7 @@ public class PlayCardsLogic {
 			if(dian == -1){//为自摸
 				recordType = "1";
 				//加分项逻辑
-				multiscore*=2;//自摸加倍
+				calmulti*=2;//自摸加倍
 			}else{//为点炮
 				if(playerList.indexOf(player)!=dian){
 					continue;
@@ -1042,7 +1045,8 @@ public class PlayCardsLogic {
 				
 			}
 			calscore+=score;
-			calscore*=multiscore;
+			calmulti*=multiscore;
+			calscore*=calmulti;
 			totalScore+=calscore;
 			player.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*calscore);
 				}else{//如果是当前用户
@@ -1050,6 +1054,7 @@ public class PlayCardsLogic {
 					 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, totalScore);
 				}
 			}
+			avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, totalScore);
 		}
 			 
     	return 0;
@@ -1629,8 +1634,8 @@ public class PlayCardsLogic {
             playerList.get(i).cleanPaiData();
         }
     }
-
-	private boolean checkHu(Avatar avatar,Integer cardIndex){
+    
+    private boolean checkHu(Avatar avatar,Integer cardIndex){
 		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - begin" + cardIndex);
 
 		//根据不同的游戏类型进行不用的判断
@@ -1890,21 +1895,25 @@ public class PlayCardsLogic {
     			break;
     		}
     	}
-    	if(!result)
+    	if(!result){
+    	result = true;
     	for(int i=9;i<18;i++){
     		if(paiList[0][i]==0){
     			result = false;
     			break;
     		}
+    	}
     	}else{
     		return true;
     	}
-    	if(!result)
+    	if(!result){
+    	result = true;
     	for(int i=18;i<27;i++){
     		if(paiList[0][i]==0){
     			result = false;
     			break;
     		}
+    	}
     	}else{
     		return true;
     	}
@@ -2255,33 +2264,23 @@ public class PlayCardsLogic {
     	zhuangAvatar.getSession().sendMsg(new RoomCardChangerResponse(1,roomCard));
     }
 
-	private boolean checkSelfTing(Avatar av) {
-		boolean rv = false;
-		int[][] paiList = av.getPaiArray();
-		for(int i = 0; i < 34; ++i) {
-			if (paiList[0][i] > 3) {
-				continue;
-			}
-			paiList[0][i]++;
-			    System.out.println("checkSelfTing - " + Pai.getCard(i) + " - begin");
-			    Pai.printCards(paiList, getDistToMain(av) + 1);
-			rv = rv || checkSevenDouble(paiList) > 0;
-			    System.out.println("checkSelfTing - " + "七对 " +rv);
-			rv = rv || checkThirteen(paiList);
-			    System.out.println("checkSelfTing - " + "十三幺 " +rv);
-			rv = rv || normalHuPai.checkHu(paiList);
-			    System.out.println("checkSelfTing - " + Pai.getCard(i) + " - end" + rv);
-
-			paiList[0][i]--;
-
-			if (rv) {
-				break;
-			}
-		}
-		return rv;
-	}
+    private boolean checkSelfTing(Avatar avator) {
+    	System.out.println("开始检查是否自听"+System.currentTimeMillis());
+    	boolean rv = false;
+    	for(int i = 0; i < 34; ++i) {
+	    	if(checkHu(avator,i)){
+	    	return true;
+	    	}
+    	else{
+    	continue;
+    	}
+    	}
+    	System.out.println("结束检查是否自听"+System.currentTimeMillis());
+    	return rv;
+    	}
 
 	private boolean checkOtherTing(Avatar av, Integer cardIndex) {
+		System.out.println("开始检查他人是否听"+System.currentTimeMillis());
 		boolean rv = false;
 		int[][] paiList = av.getPaiArray();
 		paiList[0][cardIndex]++;
@@ -2301,6 +2300,7 @@ public class PlayCardsLogic {
 		}
 
 		paiList[0][cardIndex]--;
+		System.out.println("结束检查他人是否听"+System.currentTimeMillis());
 		return rv;
 	}
 	
