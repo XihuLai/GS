@@ -25,6 +25,7 @@ public class CreateRoomMsgProcssor extends MsgProcessor implements
     @Override
     public void process(GameSession gameSession, ClientRequest request) throws Exception {
         String message = request.getString();
+        System.out.println("create room info :" + message);
         RoomVO roomVO = (RoomVO) JsonUtilTool.fromJson(message, RoomVO.class);
         if(gameSession.isLogin()) {
             Avatar avatar = gameSession.getRole(Avatar.class);

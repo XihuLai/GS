@@ -1,6 +1,7 @@
 package com.dyz.gameserver;
 
 import com.dyz.gameserver.commons.session.GameSession;
+import com.dyz.gameserver.msg.processor.common.INotAuthProcessor;
 import com.dyz.gameserver.pojo.AvatarVO;
 import com.dyz.gameserver.pojo.CardVO;
 import com.dyz.gameserver.pojo.RoomVO;
@@ -9,6 +10,8 @@ import com.dyz.gameserver.sprite.base.GameObj;
 import com.dyz.gameserver.sprite.tool.AsyncTaskQueue;
 import com.dyz.myBatis.services.AccountService;
 import com.dyz.persist.util.GlobalUtil;
+import com.dyz.persist.util.JsonUtilTool;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -377,7 +380,79 @@ public class Avatar implements GameObj {
      * @param cardIndex
      * @return
      */
-    public boolean checkChi(int cardIndex){
+	public boolean checkChi(int cardIndex) {
+        System.out.println("开始检查是否能吃"+System.currentTimeMillis());
+        boolean flag = false;
+        //只有长沙麻将有吃的打法
+        //system.out.println("判断吃否可以吃牌-----cardIndex:"+cardIndex);
+        /**
+         * 这里检测吃的时候需要踢出掉碰 杠了的牌****
+         * 1:碰    2:杠    3:胡   4:吃
+         */
+
+        int[] cardList = GlobalUtil.CloneIntList(avatarVO.getPaiArray()[0]);
+
+        if (cardIndex > 34) {
+            return flag;
+        }
+
+        //剔除吃，碰，杠了的牌
+        String s = resultRelation.get(1);
+        int num = 3;
+        int id;
+
+        if (s != null) {
+            String[] ss = s.split(",");
+            for (String idx : ss) {
+                if (!idx.isEmpty()) {
+                    id = Integer.parseInt(idx);
+                    cardList[id] -= num;
+                }
+            }
+        }
+
+        s = resultRelation.get(2);
+        num = 4;
+        if (s != null) {
+            String[] ss = s.split(",");
+            for (String idx : ss) {
+                if (!idx.isEmpty()) {
+                    id = Integer.parseInt(idx);
+                    cardList[id] -= num;
+                }
+            }
+        }
+
+        s = resultRelation.get(4);
+        num = 1;
+        if (s != null) {
+            String[] ss = s.split(",");
+            for (String idx : ss) {
+                if (!idx.isEmpty()) {
+                    id = Integer.parseInt(idx);
+                    cardList[id] -= num;
+                }
+            }
+        }
+
+        if((cardIndex%9!=7||cardIndex%9!=8)){//作为左边被吃
+            if(cardList[cardIndex+1]>0&&cardList[cardIndex+2]>0)
+                flag =  true;
+        }
+        else if(!flag && (cardIndex%9!=0||cardIndex%9!=8)){//作为中间被吃
+            if(cardList[cardIndex+1]>0&&cardList[cardIndex-1]>0)
+                return true;
+        }
+        else if(!flag && (cardIndex%9!=0||cardIndex%9!=1)){//作为右边被吃
+            if(cardList[cardIndex-1]>0&&cardList[cardIndex-2]>0)
+                return true;
+        }
+
+        System.out.println("结束检查是否能吃"+System.currentTimeMillis() + " " + flag);
+        return flag;
+	}
+
+    public boolean checkChi2(int cardIndex){
     	boolean flag = false;
     	//只有长沙麻将有吃的打法
     	//system.out.println("判断吃否可以吃牌-----cardIndex:"+cardIndex);
