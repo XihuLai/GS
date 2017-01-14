@@ -393,7 +393,7 @@ public class Avatar implements GameObj {
 
         int[] cardList = GlobalUtil.CloneIntList(avatarVO.getPaiArray()[0]);
 
-        if (cardIndex > 34) {
+        if (cardIndex > 27) {
             return flag;
         }
 

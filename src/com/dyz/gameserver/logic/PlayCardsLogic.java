@@ -515,6 +515,7 @@ public class PlayCardsLogic {
 		//System.err.println("出牌："+cardPoint);
 //    	avatar.avatarVO.setHuType(0);//重置划水麻将胡牌格式
     	//出牌信息放入到缓存中，掉线重连的时候，返回房间信息需要
+    	System.out.println("开始处理出牌逻辑===="+System.currentTimeMillis());
         avatar.avatarVO.updateChupais(cardPoint);
         avatar.avatarVO.setHasMopaiChupai(true);//修改出牌 摸牌状态
     	//已经出牌就清除所有的吃，碰，杠，胡的数组
@@ -590,6 +591,7 @@ public class PlayCardsLogic {
 			}
 		}
         //如果没有吃，碰，杠，胡的情况，则下家自动摸牌
+		System.out.println("结束处理出牌逻辑===="+System.currentTimeMillis());
         chuPaiCallBack();
     }
     
@@ -646,11 +648,11 @@ public class PlayCardsLogic {
     				 clearArrayAndSetQuest();
     				 for (int i=0;i<playerList.size();i++){
     					 if(playerList.get(i).getUuId() == avatar.getUuId()){
-    						 //碰了的牌放入到avatar的resultRelation  Map中
+    						 //吃了的牌放入到avatar的resultRelation  Map中
     						 playerList.get(i).putResultRelation(4,cardIndex+","+onePoint+","+twoPoint);
-    						 playerList.get(i).avatarVO.getPaiArray()[1][cardIndex]=4;//要留有一个地方放吃牌的其他牌
-    						 playerList.get(i).avatarVO.getPaiArray()[1][onePoint]=4;//如果一个字为4，两个字为8依次累加
-    						 playerList.get(i).avatarVO.getPaiArray()[1][twoPoint]=4;//
+    						 playerList.get(i).avatarVO.getPaiArray()[1][cardIndex]+=4;//要留有一个地方放吃牌的其他牌
+    						 playerList.get(i).avatarVO.getPaiArray()[1][onePoint]+=4;//如果一个字为4，两个字为8依次累加
+    						 playerList.get(i).avatarVO.getPaiArray()[1][twoPoint]+=4;//
     					 }
     					 playerList.get(i).getSession().sendMsg(new ChiResponse(1,cardIndex+","+onePoint+","+twoPoint));
     				 }
@@ -718,7 +720,7 @@ public class PlayCardsLogic {
     					 if(playerList.get(i).getUuId() == avatar.getUuId()){
     						 //碰了的牌放入到avatar的resultRelation  Map中
     						 playerList.get(i).putResultRelation(1,cardIndex+"");
-    						 playerList.get(i).avatarVO.getPaiArray()[1][cardIndex]=1;
+    						 playerList.get(i).avatarVO.getPaiArray()[1][cardIndex]+=1;
     					 }
     					 playerList.get(i).getSession().sendMsg(new PengResponse(1,cardIndex,playerList.indexOf(avatar)));
     				 }
@@ -879,6 +881,7 @@ public class PlayCardsLogic {
 		
     	int pldscore = roomVO.getPldscore();
 		Map<String,Integer> huResult = checkHu2(avatar , cardIndex);//算好所有的名堂
+		avatar.avatarVO.getHuReturnObjectVO().setHuInfo(huResult);
 		int roomType = roomVO.getRoomType();
 		if(roomType==4||roomType==5||roomType==6||roomType==7){//鄂尔多斯，呼和浩特和集宁玩法
 			int roomScore = 5;
@@ -1204,14 +1207,7 @@ public class PlayCardsLogic {
     		}
 		}
     	json.put("avatarList", array);
-//    	json.put("allMas", allMas);
     	json.put("type", type);
-//    	if(!type.equals("0")){
-//    		json.put("validMas", new ArrayList<>());
-//    	}
-//    	else{
-//    		json.put("validMas", validMa);
-//    	}
     	json.put("currentScore", score.toString());
     	//生成战绩content
     	standingsDetail.setContent(content.toString());
@@ -1351,10 +1347,12 @@ public class PlayCardsLogic {
      */
     private void chuPaiCallBack(){
     	//把出牌点数和下面该谁出牌发送会前端  下一家都还没有摸牌就要出牌了??
+    	System.out.println("结束处理出牌逻辑====下家开始摸牌"+System.currentTimeMillis());
         if(!hasHu && checkMsgAndSend()){
         	//如果没有吃，碰，杠，胡的情况，则下家自动摸牌
             pickCard();
         }
+        System.out.println("结束处理出牌逻辑====下家结束摸牌"+System.currentTimeMillis());
     }
     /**
      * 發送吃，碰，杠，胡牌信息
@@ -1636,7 +1634,7 @@ public class PlayCardsLogic {
     }
     
     private boolean checkHu(Avatar avatar,Integer cardIndex){
-		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - begin" + cardIndex);
+//		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - begin" + cardIndex);
 
 		//根据不同的游戏类型进行不用的判断
 		boolean flag = false;
@@ -1651,7 +1649,7 @@ public class PlayCardsLogic {
 
 		if(cardIndex!=-1&&cardIndex!=100)
 			avatar.pullCardFormList(cardIndex);
-		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - end -" + flag);
+//		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - end -" + flag);
 
 		return flag;
 	}
@@ -1764,7 +1762,7 @@ public class PlayCardsLogic {
     	boolean result = true;
     	int[] pai2 = GlobalUtil.CloneIntList(paiList[1]);
     	for(int i=0;i<pai2.length;i++){
-    		if((pai2[i]==1||pai2[i]==4)&&i<34){//有吃牌或者碰牌
+    		if((pai2[i]==1||pai2[i]==4||pai2[i]==5||(pai2[i]%4==0&&pai2[i]/4>0))&&i<34){//有吃牌或者碰牌
     			result = false;
     			return result;
     		}
