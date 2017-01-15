@@ -218,7 +218,7 @@ public class PlayCardsLogic {
 			paiCount += 8;
 		}
 
-		final boolean isTest = false; //XHTEST
+		final boolean isTest = true; //XHTEST
 		if (!isTest) {
             listCard = new ArrayList<Integer>();
 
@@ -562,10 +562,12 @@ public class PlayCardsLogic {
 
 		Avatar ava;
 		StringBuffer sb;
+        boolean bf;
 		for(int i=0;i<playerList.size();i++){
 			ava = playerList.get(i);
 			if(ava.getUuId() != avatar.getUuId()) {
-				sb = new StringBuffer();
+                bf = false;
+                sb = new StringBuffer();
 				//判断吃，碰， 胡 杠的时候需要把以前吃，碰，杠胡的牌踢出再计算
 				if(avatar.getRoomVO().getZiMo() != 3
 						&& ava.canHu
@@ -593,21 +595,29 @@ public class PlayCardsLogic {
 				}
 
 				System.out.println(sb + " " + ava.avatarVO.getAccount().getOpenid());
-				if(sb.indexOf("gang") != -1 || (sb.length()>1 &&
-						(!roomVO.isYikouxiangCard() ||
-								checkOtherTing(ava, putOffCardPoint)))){
-					System.out.println(sb);
-					try {
-						System.out.println("开始中断执行别的线程"+System.currentTimeMillis());
-						Thread.sleep(200);
-						System.out.println("结束中断回到当前线程"+System.currentTimeMillis());
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
-//						responseMsg = new ReturnInfoResponse(1, sb.toString());
-//						lastAvtar = ava;
-				}
+
+                if (sb.length()>1) {
+                    if (sb.indexOf("gang") != -1 || sb.indexOf("hu") != -1) {
+                        bf = true;
+                    } else if (!roomVO.isYikouxiangCard() || checkOtherTing(ava, putOffCardPoint)) {
+                        bf = true;
+                    }
+
+                    if (bf) {
+                        System.out.println(sb);
+                        try {
+                            System.out.println("开始中断执行别的线程"+System.currentTimeMillis());
+                            Thread.sleep(200);
+                            System.out.println("结束中断回到当前线程"+System.currentTimeMillis());
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
+                    } else {
+                        penAvatar.remove(ava);
+                        chiAvatar.remove(ava);
+                    }
+                }
 			}
 		}
         //如果没有吃，碰，杠，胡的情况，则下家自动摸牌
@@ -749,7 +759,8 @@ public class PlayCardsLogic {
     				 pickAvatarIndex = playerList.indexOf(avatar);
     				 curAvatarIndex = playerList.indexOf(avatar);
     				 currentCardPoint  = -2;
-    			// }
+                     System.out.println("碰牌:" + putOffCardPoint + " " + avatar.avatarVO.getAccount().getOpenid());
+                     // }
     		 }
     		}else{
              if(penAvatar.size() > 0) {
