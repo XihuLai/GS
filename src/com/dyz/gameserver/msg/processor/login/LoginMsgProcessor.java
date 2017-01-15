@@ -177,6 +177,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 					Thread.sleep(1000);
 					if(avatar.overOff){
 						//在某一句结算时断线，重连时返回结算信息
+						System.out.println("returnBackAction HuPaiResponse " + avatar.avatarVO.getAccount().getOpenid());
 						avatar.getSession().sendMsg(new HuPaiResponse(1,avatar.oneSettlementInfo));
 					}
 				} catch (InterruptedException e) {

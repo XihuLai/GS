@@ -354,6 +354,7 @@ public class PlayCardsLogic {
         	//System.out.println("流局");
             PlayRecordOperation(pickAvatarIndex,-1,9,-1,null,null);
         	//流局处理，直接算分
+            System.out.println("SettlementData 1 - pickcard");
         	settlementData("1");
         }
     }
@@ -421,7 +422,9 @@ public class PlayCardsLogic {
         	//system.out.println("流局");
         	  //记录摸牌信息
             PlayRecordOperation(pickAvatarIndex,-1,9,-1,null,null);
-        	settlementData("1");
+            System.out.println("SettlementData 1 - pickCardAfterGang");
+
+            settlementData("1");
         }
     }
     /**
@@ -577,21 +580,23 @@ public class PlayCardsLogic {
 					sb.append("hu,");
 				}
 
-				if (ava.checkGang(putOffCardPoint)) {
-					gangAvatar.add(ava);
-					//同时传会杠的牌的点数
-					sb.append("gang:"+putOffCardPoint+",");
-				}
+				if (!ava.getbTing()) {
+					if (ava.checkGang(putOffCardPoint)) {
+						gangAvatar.add(ava);
+						//同时传会杠的牌的点数
+						sb.append("gang:" + putOffCardPoint + ",");
+					}
 
-				if (ava.checkPeng(putOffCardPoint)) {
-					penAvatar.add(ava);
-					sb.append("peng,");
-				}
+					if (ava.checkPeng(putOffCardPoint)) {
+						penAvatar.add(ava);
+						sb.append("peng,");
+					}
 
-				if ( roomVO.isCanchi()  && getNextAvatarIndex() == i && ava.checkChi(putOffCardPoint) ){
-					//只有下一家才能吃
-					chiAvatar.add(ava);
-					sb.append("chi");
+					if (roomVO.isCanchi() && getNextAvatarIndex() == i && ava.checkChi(putOffCardPoint)) {
+						//只有下一家才能吃
+						chiAvatar.add(ava);
+						sb.append("chi");
+					}
 				}
 
 				System.out.println(sb + " " + ava.avatarVO.getAccount().getOpenid());
@@ -1252,7 +1257,9 @@ public class PlayCardsLogic {
      		
     		RoomManager.getInstance().getRoom(playerList.get(0).getRoomVO().getRoomId()).setPlayerList(playerList);
     		//一局牌胡了，返回这一局的所有数据吃，碰， 杠，胡等信息
-    		settlementData("0");
+        System.out.println("SettlementData 0 - huPai");
+
+        settlementData("0");
 //    	}
     	return flag;
     }
@@ -1327,7 +1334,8 @@ public class PlayCardsLogic {
     	int count = 10;
     	for (Avatar avatar : playerList) {
     		//发送消息
-    		avatar.getSession().sendMsg(new HuPaiResponse(1,json.toString()));
+            System.out.println("settlementData : HuPaiResponse  fired - " + bankerAvatar.avatarVO.getAccount().getOpenid());
+            avatar.getSession().sendMsg(new HuPaiResponse(1,json.toString()));
     		
     		
     		avatar.overOff = true;
@@ -1516,6 +1524,7 @@ public class PlayCardsLogic {
     	   huAvatar.add(bankerAvatar);
     	   pickAvatarIndex = 0;//第一个摸牌人就是庄家
     	   //发送消息
+           System.out.println("dealingTheCards: HuPaiResponse  fired - " + bankerAvatar.avatarVO.getAccount().getOpenid());
     	   bankerAvatar.getSession().sendMsg(new HuPaiResponse(1,"hu,"));
     	   bankerAvatar.huAvatarDetailInfo.add(listCard.get(nextCardindex-1)+":"+0);
        }
