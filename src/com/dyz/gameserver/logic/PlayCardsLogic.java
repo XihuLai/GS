@@ -544,11 +544,11 @@ public class PlayCardsLogic {
 
 		Avatar ava;
 		StringBuffer sb;
-        boolean bf;
+		boolean bf;
 		for(int i=0;i<playerList.size();i++){
 			ava = playerList.get(i);
 			if(ava.getUuId() != avatar.getUuId()) {
-                bf = false;
+				bf = false;
 				sb = new StringBuffer();
 				//判断吃，碰， 胡 杠的时候需要把以前吃，碰，杠胡的牌踢出再计算
 				if(avatar.getRoomVO().getZiMo() != 3
@@ -575,6 +575,7 @@ public class PlayCardsLogic {
 					chiAvatar.add(ava);
 					sb.append("chi");
 				}
+
                 if (sb.length()>1) {
                     if (sb.indexOf("gang") != -1 || sb.indexOf("hu") != -1) {
                         bf = true;
@@ -1271,7 +1272,7 @@ public class PlayCardsLogic {
     		
     		//统计本局分数
     		huReturnObjectVO.setNickname(avatar.avatarVO.getAccount().getNickname());
-    		huReturnObjectVO.setPaiArray(avatar.avatarVO.getPaiArray());
+    		huReturnObjectVO.setPaiArray(avatar.avatarVO.getPaiArray()[0]);
     		huReturnObjectVO.setUuid(avatar.getUuId());
     		array.add(huReturnObjectVO);
     		//在整个房间信息中修改总分数(房间次数用完之后的总分数)
