@@ -9,7 +9,7 @@ import java.io.*;
 import java.net.Socket;
 
 public class Client2 {
-	public static final String IP_ADDR = "localhost";//服务器地址 
+	public static final String IP_ADDR = "123.207.150.84";//服务器地址 
 	public static final int PORT = 10122;//服务器端口号  
 	
     public static void main(String[] args) {  
