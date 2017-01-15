@@ -218,11 +218,11 @@ public class PlayCardsLogic {
 			paiCount += 8;
 		}
 
-		listCard = new ArrayList<Integer>(PaiList.getListCard());
-
-		final boolean isTest = true; //XHTEST
+		final boolean isTest = false; //XHTEST
 		if (!isTest) {
-			for (int i = 0; i < paiCount; i++) {
+            listCard = new ArrayList<Integer>();
+
+            for (int i = 0; i < paiCount; i++) {
 				for (int k = 0; k < 4; k++) {
 					if(i < 27) {
 						listCard.add(i);
@@ -239,7 +239,9 @@ public class PlayCardsLogic {
 					}
 				}
 			}
-		}
+		} else {
+            listCard = new ArrayList<Integer>(PaiList.getListCard());
+        }
 
 		for(int i=0;i<playerList.size();i++){
 			playerList.get(i).avatarVO.setPaiArray(new int[2][paiCount]);
