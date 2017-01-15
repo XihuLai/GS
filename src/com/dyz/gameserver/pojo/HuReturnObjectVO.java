@@ -22,7 +22,10 @@ public class HuReturnObjectVO {
      * value:list里面，第一个为点炮/杠/胡次数，第二个元素为点炮/杠/胡分数总和
      */
     private Map<String , ArrayList<Integer>> gangAndHuInfos =  new HashMap<String, ArrayList<Integer>>(); 
-    /**
+    
+    private Map<String,Integer> huInfo = new HashMap<String,Integer>();//返回胡牌的各种名堂比如清一色，碰碰胡等等
+    
+	/**
      * 昵称
      */
     private String nickname;
@@ -128,6 +131,11 @@ public class HuReturnObjectVO {
 	private void updateTotalScore(int score) {
 		totalScore = totalScore +score;
 	}
-	
+	public Map<String, Integer> getHuInfo() {
+		return huInfo;
+	}
+	public void setHuInfo(Map<String, Integer> huInfo) {
+		this.huInfo = huInfo;
+	}
 	
 }

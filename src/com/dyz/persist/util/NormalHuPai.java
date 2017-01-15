@@ -41,9 +41,11 @@ public class NormalHuPai {
                 pai[i] -= 3;
             }else if(paiList[1][i] == 2 && pai[i] == 4){
                 pai[i]  -= 4;
-            }else if(paiList[1][i]/4>0&&paiList[1][i]%4==0 && pai[i] > 0){//吃牌的标识是4
+            }else if(paiList[1][i]/4>0&&paiList[1][i]%4==0 && pai[i] > 0){//吃牌的标识是4，吃几次扣几次
             	int times = paiList[1][i]/4;
             	pai[i] = pai[i]-times;
+            }else if(paiList[1][i] == 5 && pai[i] == 4){//碰一次并且吃一次
+                pai[i]  -= 4;
             }
         }
         return isHuPai(pai);

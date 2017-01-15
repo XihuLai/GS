@@ -363,7 +363,6 @@ public class PlayCardsLogic {
      * @param avatar
      */
     public void pickCardAfterGang(Avatar avatar){
-
         System.out.println(avatar.avatarVO.getAccount().getOpenid() + "杠后摸牌");
     	
         //本次摸得牌点数，下一张牌的点数，及本次摸的牌点数
@@ -666,11 +665,11 @@ public class PlayCardsLogic {
     				 clearArrayAndSetQuest();
     				 for (int i=0;i<playerList.size();i++){
     					 if(playerList.get(i).getUuId() == avatar.getUuId()){
-    						 //碰了的牌放入到avatar的resultRelation  Map中
+    						 //吃了的牌放入到avatar的resultRelation  Map中
     						 playerList.get(i).putResultRelation(4,cardIndex+","+onePoint+","+twoPoint);
-    						 playerList.get(i).avatarVO.getPaiArray()[1][cardIndex]=4;//要留有一个地方放吃牌的其他牌
-    						 playerList.get(i).avatarVO.getPaiArray()[1][onePoint]=4;//如果一个字为4，两个字为8依次累加
-    						 playerList.get(i).avatarVO.getPaiArray()[1][twoPoint]=4;//
+    						 playerList.get(i).avatarVO.getPaiArray()[1][cardIndex]+=4;//要留有一个地方放吃牌的其他牌
+    						 playerList.get(i).avatarVO.getPaiArray()[1][onePoint]+=4;//如果一个字为4，两个字为8依次累加
+    						 playerList.get(i).avatarVO.getPaiArray()[1][twoPoint]+=4;//
     					 }
     					 playerList.get(i).getSession().sendMsg(new ChiResponse(1,cardIndex+","+onePoint+","+twoPoint));
     				 }
@@ -738,7 +737,7 @@ public class PlayCardsLogic {
     					 if(playerList.get(i).getUuId() == avatar.getUuId()){
     						 //碰了的牌放入到avatar的resultRelation  Map中
     						 playerList.get(i).putResultRelation(1,cardIndex+"");
-    						 playerList.get(i).avatarVO.getPaiArray()[1][cardIndex]=1;
+    						 playerList.get(i).avatarVO.getPaiArray()[1][cardIndex]+=1;
     					 }
     					 playerList.get(i).getSession().sendMsg(new PengResponse(1,cardIndex,playerList.indexOf(avatar)));
     				 }
@@ -904,6 +903,7 @@ public class PlayCardsLogic {
 		
     	int pldscore = roomVO.getPldscore();
 		Map<String,Integer> huResult = checkHu2(avatar , cardIndex);//算好所有的名堂
+		avatar.avatarVO.getHuReturnObjectVO().setHuInfo(huResult);
 		int roomType = roomVO.getRoomType();
 		if(roomType==4||roomType==5||roomType==6||roomType==7){//鄂尔多斯，呼和浩特和集宁玩法
 			int roomScore = 5;
@@ -1229,14 +1229,7 @@ public class PlayCardsLogic {
     		}
 		}
     	json.put("avatarList", array);
-//    	json.put("allMas", allMas);
     	json.put("type", type);
-//    	if(!type.equals("0")){
-//    		json.put("validMas", new ArrayList<>());
-//    	}
-//    	else{
-//    		json.put("validMas", validMa);
-//    	}
     	json.put("currentScore", score.toString());
     	//生成战绩content
     	standingsDetail.setContent(content.toString());
@@ -1790,7 +1783,7 @@ public class PlayCardsLogic {
     	boolean result = true;
     	int[] pai2 = GlobalUtil.CloneIntList(paiList[1]);
     	for(int i=0;i<pai2.length;i++){
-    		if((pai2[i]==1||pai2[i]==4)&&i<34){//有吃牌或者碰牌
+    		if((pai2[i]==1||pai2[i]==4||pai2[i]==5||(pai2[i]%4==0&&pai2[i]/4>0))&&i<34){//有吃牌或者碰牌
     			result = false;
     			return result;
     		}

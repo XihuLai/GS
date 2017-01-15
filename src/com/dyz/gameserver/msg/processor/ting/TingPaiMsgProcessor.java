@@ -25,6 +25,7 @@ public class TingPaiMsgProcessor extends MsgProcessor implements
         Avatar p = gameSession.getRole(Avatar.class);
         if(p != null && roomLogic != null){
             String s = request.getString();
+            System.out.println("ting pai msg : " + s + " avatarid = " + p.avatarVO.getAccount().getOpenid());
             JSONObject json = JSONObject.fromObject(s);
             boolean bt = false;
             if (s.indexOf("ting") != -1) {
