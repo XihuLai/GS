@@ -218,7 +218,7 @@ public class PlayCardsLogic {
 			paiCount += 8;
 		}
 
-		final boolean isTest = true; //XHTEST
+		final boolean isTest = false; //XHTEST
 		if (!isTest) {
             listCard = new ArrayList<Integer>();
 
@@ -826,7 +826,7 @@ public class PlayCardsLogic {
                             avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo(Rule.Gang_an, cardPoint+"");//记录杠的消息
                         }
 
-                        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "自杠" + endStatisticstype + cardPoint);
+                        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "自杠" + cardPoint);
 
                         flag = true;
                     }
