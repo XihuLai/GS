@@ -567,7 +567,7 @@ public class PlayCardsLogic {
 			ava = playerList.get(i);
 			if(ava.getUuId() != avatar.getUuId()) {
                 bf = false;
-                sb = new StringBuffer();
+				sb = new StringBuffer();
 				//判断吃，碰， 胡 杠的时候需要把以前吃，碰，杠胡的牌踢出再计算
 				if(avatar.getRoomVO().getZiMo() != 3
 						&& ava.canHu
