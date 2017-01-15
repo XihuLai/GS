@@ -257,43 +257,43 @@ public class RoomVO {
     public void setRoomType(int roomType) {
         this.roomType = roomType;
         //设置房间类型的时候联动设置相关参数的默认值
-        if(roomType==4||roomType==5||roomType==6){
-        	ziMo = 1;
-        	addWordCard=true;
-        	addFlowerCard=true;
-        	qgbkd = true;
-        	yikouxiangCard = true;
-        	kan5 = false;
-            pengpeng = false;
-            hunyise = false;
-            canchi = false;
-            huangzhuang = 0;
-            mustting=true;
-        }else if(roomType==7){
-        	ziMo = 1;
-        	addWordCard=true;
-        	addFlowerCard=true;
-        	qgbkd = true;
-        	yikouxiangCard = false;
-        	kan5 = false;
-            pengpeng = false;
-            hunyise = false;
-            canchi = false;
-            huangzhuang = 0;
-            mustting=false;
-        }else if(roomType==8){
-        	ziMo = 1;
-        	addWordCard=true;
-        	addFlowerCard=true;
-        	qgbkd = true;
-        	yikouxiangCard = true;
-        	kan5 = true;
-            pengpeng = true;
-            hunyise = true;
-            canchi = true;
-            huangzhuang = 0;
-            mustting=true;
-        }
+//        if(roomType==4||roomType==5||roomType==6){
+//        	ziMo = 1;
+//        	addWordCard=true;
+//        	addFlowerCard=true;
+//        	qgbkd = true;
+//        	yikouxiangCard = true;
+//        	kan5 = false;
+//            pengpeng = false;
+//            hunyise = false;
+//            canchi = false;
+//            huangzhuang = 0;
+//            mustting=true;
+//        }else if(roomType==7){
+//        	ziMo = 1;
+//        	addWordCard=true;
+//        	addFlowerCard=true;
+//        	qgbkd = true;
+//        	yikouxiangCard = false;
+//        	kan5 = false;
+//            pengpeng = false;
+//            hunyise = false;
+//            canchi = false;
+//            huangzhuang = 0;
+//            mustting=false;
+//        }else if(roomType==8){
+//        	ziMo = 1;
+//        	addWordCard=true;
+//        	addFlowerCard=true;
+//        	qgbkd = true;
+//        	yikouxiangCard = true;
+//        	kan5 = true;
+//            pengpeng = true;
+//            hunyise = true;
+//            canchi = true;
+//            huangzhuang = 0;
+//            mustting=true;
+//        }
     }
 
     public int getMa() {
@@ -378,6 +378,14 @@ public class RoomVO {
         result.id = id;
         result.addFlowerCard = addFlowerCard;
         result.yikouxiangCard = yikouxiangCard;
+        result.qgbkd = qgbkd;
+        result.setPldscore(this.getPldscore());
+        result.kan5 = kan5;
+        result.pengpeng = pengpeng;
+        result.hunyise = hunyise;
+        result.canchi = canchi;
+        result.huangzhuang = huangzhuang;
+        result.mustting = mustting;
         return result;
     }
     

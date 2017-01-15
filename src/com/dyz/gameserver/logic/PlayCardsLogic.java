@@ -562,11 +562,11 @@ public class PlayCardsLogic {
 
 		Avatar ava;
 		StringBuffer sb;
-        boolean bf;
+		boolean bf;
 		for(int i=0;i<playerList.size();i++){
 			ava = playerList.get(i);
 			if(ava.getUuId() != avatar.getUuId()) {
-                bf = false;
+				bf = false;
 				sb = new StringBuffer();
 				//判断吃，碰， 胡 杠的时候需要把以前吃，碰，杠胡的牌踢出再计算
 				if(avatar.getRoomVO().getZiMo() != 3
@@ -595,7 +595,6 @@ public class PlayCardsLogic {
 				}
 
 				System.out.println(sb + " " + ava.avatarVO.getAccount().getOpenid());
-
                 if (sb.length()>1) {
                     if (sb.indexOf("gang") != -1 || sb.indexOf("hu") != -1) {
                         bf = true;
@@ -811,30 +810,20 @@ public class PlayCardsLogic {
                             type = 0;
                             score = Rule.scoreMap.get(Rule.Gang_ming);
                             recordType ="5";
-                            endStatisticstype = "minggang";
+//                            endStatisticstype = "minggang";
+                            avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo(Rule.Gang_ming, cardPoint+"");//记录杠的消息
                         }
                         else{//自杠暗杠
                             playRecordType = 2;
                             //存储杠牌的信息，
                             avatar.putResultRelation(2,cardPoint+"");
                             avatar.avatarVO.getPaiArray()[1][cardPoint] = 2;
-                            str = "0:"+cardPoint+":"+Rule.Gang_an;
+//                            str = "0:"+cardPoint+":"+Rule.Gang_an;
                             type = 1;
-                            score = Rule.scoreMap.get(Rule.Gang_an);
-                            recordType ="4";
-                            endStatisticstype = "angang";
-                        }
-                        for (Avatar ava : playerList) {
-                            if(ava.getUuId() == avatar.getUuId()){
-                                //修改玩家整个游戏总分和杠的总分
-                                avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType,score*3);
-                                //整个房间统计每一局游戏 杠，胡的总次数
-                                roomVO.updateEndStatistics(ava.getUuId()+"", endStatisticstype, 1);
-                            }
-                            else{
-                                //修改其他三家的分数
-                                ava.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType,-1*score);
-                            }
+//                            score = Rule.scoreMap.get(Rule.Gang_an);
+//                            recordType ="4";
+//                            endStatisticstype = "angang";
+                            avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo(Rule.Gang_an, cardPoint+"");//记录杠的消息
                         }
 
                         System.out.println(avatar.avatarVO.getAccount().getOpenid() + "自杠" + endStatisticstype + cardPoint);
@@ -854,22 +843,23 @@ public class PlayCardsLogic {
                         //更新牌组(点杠时才需要更新)   自摸时不需要更新
                         flag = avatar.putCardInList(cardPoint);
 
-                        score = Rule.scoreMap.get(Rule.Gang_dian);;
-                        recordType = "4";
-                        str = playerList.get(curAvatarIndex).getUuId()+":"+cardPoint+":"+Rule.Gang_dian;
+//                        score = Rule.scoreMap.get(Rule.Gang_dian);;
+//                        recordType = "4";
+//                        str = playerList.get(curAvatarIndex).getUuId()+":"+cardPoint+":"+Rule.Gang_dian;
                         type = 0;
-                        endStatisticstype = "minggang";
-                        //减点杠玩家的分数
-                        playerList.get(curAvatarIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*score);
-                        //增加杠家的分数
-                        avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, score);
-                        //整个房间统计每一局游戏 杠，胡的总次数
-                        roomVO.updateEndStatistics(avatar.getUuId()+"", endStatisticstype, 1);
 
-                        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "被点杠" + endStatisticstype + cardPoint);
+                        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "被点杠" + cardPoint);
+//                        endStatisticstype = "minggang";
+                        avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo(Rule.Gang_ming, cardPoint+"");//记录杠的消息
+//                        //减点杠玩家的分数
+//                        playerList.get(curAvatarIndex).avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*score);
+//                        //增加杠家的分数
+//                        avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, score);
+//                        //整个房间统计每一局游戏 杠，胡的总次数
+//                        roomVO.updateEndStatistics(avatar.getUuId()+"", endStatisticstype, 1);
                     }
 
-                    avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("gang", str);
+//                    avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("gang", str);
                     //回放记录
                     PlayRecordOperation(avatarIndex,cardPoint,5,playRecordType,null,null);
 
@@ -916,41 +906,75 @@ public class PlayCardsLogic {
 		
     	int pldscore = roomVO.getPldscore();
 		Map<String,Integer> huResult = checkHu2(avatar , cardIndex);//算好所有的名堂
-		avatar.avatarVO.getHuReturnObjectVO().setHuInfo(huResult);
+		Map<String,String> huResult2 = new HashMap<String,String>();
+		//同时也要算分数------------------------------------
 		int roomType = roomVO.getRoomType();
 		if(roomType==4||roomType==5||roomType==6||roomType==7){//鄂尔多斯，呼和浩特和集宁玩法
 			int roomScore = 5;
 				if(roomType==7)	
 					roomScore = 9;
-			if(!huResult.containsKey(Rule.Hu_qxd)&&huResult.containsKey(Rule.Hu_menqing))//门清
+			if(!huResult.containsKey(Rule.Hu_qxd)&&huResult.containsKey(Rule.Hu_menqing)){//门清
 				score+=1;
-			if(roomVO.isAddFlowerCard()&&huResult.containsKey(Rule.CaiShen))//财神
+			huResult2.put(Rule.Hu_menqing, "1*1");
+			}
+			if(roomVO.isAddFlowerCard()&&huResult.containsKey(Rule.CaiShen)){//财神
 				score+=huResult.get(Rule.CaiShen);
+				huResult2.put(Rule.CaiShen, ""+huResult.get(Rule.CaiShen)+"*1");
+			}
 			//特色选项
-			if(roomVO.isQgbkd()&&huResult.containsKey(Rule.Hu_quemen))//缺门
+			if(roomVO.isQgbkd()&&huResult.containsKey(Rule.Hu_quemen)){//缺门
 				score+=1;
-			if(roomVO.isQgbkd()&&huResult.containsKey(Rule.Hu_qingyise)&&!huResult.containsKey(Rule.Hu_yitiaolong)&&huResult.containsKey(Rule.Hu_gouzhang))//够张
+				huResult2.put(Rule.Hu_quemen, "1*1");
+			}
+			if(roomVO.isQgbkd()&&!huResult.containsKey(Rule.Hu_qingyise)&&!huResult.containsKey(Rule.Hu_yitiaolong)&&huResult.containsKey(Rule.Hu_gouzhang)){//够张
 				score+=1;
-			if(huResult.containsKey(Rule.Hu_kanwuwan)&&roomVO.isKan5())//坎五万
-				score+=roomScore;
-			if(roomVO.isQgbkd()&&!huResult.containsKey(Rule.Hu_qxd)&&huResult.containsKey(Rule.Hu_biankandiao)&&!huResult.containsKey(Rule.Hu_kanwuwan))//边砍钓
+				huResult2.put(Rule.Hu_gouzhang, "1*1");
+			}
+			if(huResult.containsKey(Rule.Hu_kanwuwan)&&roomVO.isKan5()){//坎五万
+				score+=5;
+				huResult2.put(Rule.Hu_kanwuwan, "1*5");
+			}
+			if(roomVO.isQgbkd()&&!huResult.containsKey(Rule.Hu_qxd)&&huResult.containsKey(Rule.Hu_biankandiao)&&!huResult.containsKey(Rule.Hu_kanwuwan)){//边砍钓
 				score+=1;
+				huResult2.put(Rule.Hu_biankandiao, "1*1");
+			}
+			if(huResult.containsKey(Rule.Gang_ming)){
+				score+=huResult.get(Rule.Gang_ming);
+				huResult2.put(Rule.Gang_ming, ""+huResult.get(Rule.Gang_ming)+"*1");
+			}
+			if(huResult.containsKey(Rule.Gang_an)){
+				score+=2*huResult.get(Rule.Gang_an);
+				huResult2.put(Rule.Gang_an, ""+huResult.get(Rule.Gang_an)+"*2");
+			}
 			//处理胡牌方法
-			if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==1)//清一色
+			if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==1){//清一色
 				score+=roomScore;
-			if(huResult.containsKey(Rule.Hu_qxd))//七小对
+				huResult2.put(Rule.Hu_qingyise, "1*"+roomScore);
+			}
+			if(huResult.containsKey(Rule.Hu_qxd)){//七小对
 				score+=roomScore;
-			if(huResult.containsKey(Rule.Hu_yitiaolong))//一条龙
+				huResult2.put(Rule.Hu_qxd, "1*"+roomScore);
+			}
+			if(huResult.containsKey(Rule.Hu_yitiaolong)){//一条龙
 				score+=roomScore;
-			if(huResult.containsKey(Rule.Hu_pengpeng)&&roomVO.isPengpeng())//碰碰胡
+				huResult2.put(Rule.Hu_yitiaolong, "1*"+roomScore);
+			}
+			if(huResult.containsKey(Rule.Hu_pengpeng)&&roomVO.isPengpeng()){//碰碰胡
 				score+=roomScore;
-			if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==2&&roomVO.isHunyise())//混一色
+				huResult2.put(Rule.Hu_pengpeng, "1*"+roomScore);
+			}
+			if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==2&&roomVO.isHunyise()){//混一色
 				score+=roomScore;
-			if(huResult.containsKey(Rule.Hu_haohuaqxd))//豪华七对
+				huResult2.put(Rule.Hu_hunyise, "1*"+roomScore);
+			}
+			if(huResult.containsKey(Rule.Hu_haohuaqxd)){//豪华七对
 				score+=10;
-			if(huResult.containsKey(Rule.Hu_shisanyao))//十三幺
+				huResult2.put(Rule.Hu_haohuaqxd, "1*10");
+			}
+			if(huResult.containsKey(Rule.Hu_shisanyao)){//十三幺
 				score+=13;
-			
+				huResult2.put(Rule.Hu_shisanyao, "1*13");
+			}
 			
 				
 				boolean dunorla = avatar.avatarVO.isDunorla();
@@ -998,45 +1022,79 @@ public class PlayCardsLogic {
 				calscore+=score;
 				totalScore+=calscore;
 				
-				player.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*(calscore));
+				player.avatarVO.getHuReturnObjectVO().updateTotalScore(-1*(calscore));
 					}else{//如果是当前用户
 						//增加胡家的分数
 						 
 					}
 				}
-				avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, totalScore);
+				avatar.avatarVO.getHuReturnObjectVO().updateTotalScore(totalScore);
 			
 		}else if(roomType == 8){//包头
 			int roomScore = 5;
 			int multiscore = 1;
-		if(huResult.containsKey(Rule.Hu_menqing))//门清加倍
+		if(huResult.containsKey(Rule.Hu_menqing)){//门清加倍
 			multiscore*=2;
-		if(roomVO.isAddFlowerCard()&&huResult.containsKey(Rule.CaiShen))//财神
+			huResult2.put(Rule.Hu_menqing, "*2");
+		}
+		if(roomVO.isAddFlowerCard()&&huResult.containsKey(Rule.CaiShen)){//财神
 			score+=huResult.get(Rule.CaiShen);
+			huResult2.put(Rule.CaiShen, ""+huResult.get(Rule.CaiShen)+"*1");
+		}
 		//特色选项
-		if(huResult.containsKey(Rule.Hu_quemen)&&roomVO.isQgbkd())//缺门
+		if(huResult.containsKey(Rule.Hu_quemen)&&roomVO.isQgbkd()){//缺门
 			score+=huResult.get(Rule.Hu_quemen);
-		if(huResult.containsKey(Rule.Hu_gouzhang)&&roomVO.isQgbkd())//够张
+			huResult2.put(Rule.Hu_quemen, ""+huResult.get(Rule.Hu_quemen)+"*1");
+		}
+		if(huResult.containsKey(Rule.Hu_gouzhang)&&roomVO.isQgbkd()){//够张
 			score+=1;
-		if(huResult.containsKey(Rule.Hu_biankandiao)&&!huResult.containsKey(Rule.Hu_kanwuwan)&&roomVO.isQgbkd())//边砍钓
+			huResult2.put(Rule.Hu_gouzhang, "1*1");
+		}
+		if(huResult.containsKey(Rule.Hu_biankandiao)&&!huResult.containsKey(Rule.Hu_kanwuwan)&&roomVO.isQgbkd()){//边砍钓
 			score+=1;
-		if(huResult.containsKey(Rule.Hu_kanwuwan)&&roomVO.isKan5())//坎五万
+			huResult2.put(Rule.Hu_biankandiao, "1*1");
+		}
+		if(huResult.containsKey(Rule.Hu_kanwuwan)&&roomVO.isKan5()){//坎五万
 			score+=roomScore;
+			huResult2.put(Rule.Hu_kanwuwan, "1*5");
+		}
+		if(huResult.containsKey(Rule.Gang_ming)){
+			score+=huResult.get(Rule.Gang_ming);
+			huResult2.put(Rule.Gang_ming, ""+huResult.get(Rule.Gang_ming)+"*1");
+		}
+		if(huResult.containsKey(Rule.Gang_an)){
+			score+=2*huResult.get(Rule.Gang_an);
+			huResult2.put(Rule.Gang_an, ""+huResult.get(Rule.Gang_an)+"*2");
+		}
 		//处理胡牌方法
-		if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==1)//清一色
+		if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==1){//清一色
 			score+=roomScore*2;
-		if(huResult.containsKey(Rule.Hu_qxd))//七小对
+			huResult2.put(Rule.Hu_qingyise, "1*10");
+		}
+		if(huResult.containsKey(Rule.Hu_qxd)){//七小对
 			score+=roomScore*2;
-		if(huResult.containsKey(Rule.Hu_yitiaolong))//一条龙
+			huResult2.put(Rule.Hu_qxd, "1*10");
+		}
+		if(huResult.containsKey(Rule.Hu_yitiaolong)){//一条龙
 			score+=roomScore*2;
-		if(huResult.containsKey(Rule.Hu_pengpeng)&&roomVO.isPengpeng())//碰碰胡
+			huResult2.put(Rule.Hu_yitiaolong, "1*10");
+		}
+		if(huResult.containsKey(Rule.Hu_pengpeng)&&roomVO.isPengpeng()){//碰碰胡
 			score+=roomScore;
-		if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==2&&roomVO.isHunyise())//混一色
+			huResult2.put(Rule.Hu_pengpeng, "1*5");
+		}
+		if(huResult.containsKey(Rule.Hu_qingyise)&&huResult.get(Rule.Hu_qingyise)==2&&roomVO.isHunyise()){//混一色
 			score+=roomScore;
-		if(huResult.containsKey(Rule.Hu_haohuaqxd))//豪华七对
+			huResult2.put(Rule.Hu_hunyise, "1*5");
+		}
+		if(huResult.containsKey(Rule.Hu_haohuaqxd)){//豪华七对
 			score+=(roomScore*4);
-		if(huResult.containsKey(Rule.Hu_shisanyao))//缺门
+			huResult2.put(Rule.Hu_haohuaqxd, "1*20");
+		}
+		if(huResult.containsKey(Rule.Hu_shisanyao)){//十三幺
 			score+=13;
+			huResult2.put(Rule.Hu_shisanyao, "1*13");
+		}
 		
 		
 			
@@ -1086,15 +1144,14 @@ public class PlayCardsLogic {
 			calmulti*=multiscore;
 			calscore*=calmulti;
 			totalScore+=calscore;
-			player.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, -1*calscore);
+			player.avatarVO.getHuReturnObjectVO().updateTotalScore(-1*calscore);
 				}else{//如果是当前用户
 					//增加胡家的分数
-					 avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, totalScore);
 				}
 			}
-			avatar.avatarVO.getHuReturnObjectVO().updateGangAndHuInfos(recordType, totalScore);
+			avatar.avatarVO.getHuReturnObjectVO().updateTotalScore(totalScore);
 		}
-			 
+		avatar.avatarVO.getHuReturnObjectVO().setHuInfo(huResult2); 
     	return 0;
     }
     /**
@@ -1145,6 +1202,7 @@ public class PlayCardsLogic {
     					//整个房间统计每一局游戏 杠，胡的总次数
     					roomVO.updateEndStatistics(avatar.getUuId()+"", "jiepao", 1);
     					roomVO.updateEndStatistics(playerList.get(curAvatarIndex).getUuId()+"", "dianpao", 1);
+    					
     					flag = true;
     				}
     				else{
@@ -1153,6 +1211,8 @@ public class PlayCardsLogic {
     					return false;
 //    					huAvatar.remove(avatar);
     				}
+    				avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("jiepao", cardIndex+"");
+    				playerList.get(curAvatarIndex).avatarVO.getHuReturnObjectVO().updateTotalInfo("dianpao", cardIndex+"");
     				calculateScore(avatar , cardIndex,curAvatarIndex);
     			}
     			else{
@@ -1165,6 +1225,7 @@ public class PlayCardsLogic {
         			chiAvatar.clear();;
     				//两个人之间建立关联，游戏结束算账用   自摸不会出现抢胡的情况
     				roomVO.updateEndStatistics(avatar.getUuId()+"", "zimo", 1);
+    				avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("zimo", "");
     				flag = true;
     				calculateScore(avatar , cardIndex,-1);
     			}
@@ -1232,14 +1293,14 @@ public class PlayCardsLogic {
     		//修改存储的分数(断线重连需要)
     		avatar.avatarVO.supdateScores(huReturnObjectVO.getTotalScore());
     		//游戏回放 中码消息
-    		if(avatar.avatarVO.isMain()){
-    			if(!type.equals("0")){
-    				PlayRecordOperation(playerList.indexOf(avatar),-1,8,-1,null,null);
-    			}
-    			else{
-    				PlayRecordOperation(playerList.indexOf(avatar),-1,8,-1,null,HuPaiType.getInstance().getValidMa());
-    			}
-    		}
+//    		if(avatar.avatarVO.isMain()){
+//    			if(!type.equals("0")){
+//    				PlayRecordOperation(playerList.indexOf(avatar),-1,8,-1,null,null);
+//    			}
+//    			else{
+//    				PlayRecordOperation(playerList.indexOf(avatar),-1,8,-1,null,HuPaiType.getInstance().getValidMa());
+//    			}
+//    		}
 		}
     	json.put("avatarList", array);
     	json.put("type", type);
@@ -1737,6 +1798,10 @@ public class PlayCardsLogic {
             		   result.put(Rule.Hu_menqing, 1);
             	   if(checkPengPeng(paiList.clone(),avatar))
             		   result.put(Rule.Hu_pengpeng, 1);
+            	   if(checkMingGang(avatar)>0)//加入算明暗杠的逻辑
+            		   result.put(Rule.Gang_ming, checkMingGang(avatar));
+            	   if(checkAnGang(avatar)>0)
+            		   result.put(Rule.Gang_an, checkAnGang(avatar));
             	   int flowers = checkFlower(paiList.clone(),avatar);
             	   if(flowers>0)
             		   result.put(Rule.CaiShen, flowers);//查看里面花牌的张数
@@ -1746,6 +1811,26 @@ public class PlayCardsLogic {
             	   return null;//没有胡牌直接返回空
        
        }
+    
+    private int checkMingGang(Avatar avatar){
+    	String ming = avatar.avatarVO.getHuReturnObjectVO().getTotalInfo().get(Rule.Gang_ming);
+    	if(ming!=null&&!"".equals(ming)){
+    	String[] mings = ming.split(",");
+    	return mings.length;
+    	}
+    	return 0;
+    }
+    
+    private int checkAnGang(Avatar avatar){
+    	String ming = avatar.avatarVO.getHuReturnObjectVO().getTotalInfo().get(Rule.Gang_an);
+    	if(ming!=null&&!"".equals(ming)){
+    	String[] mings = ming.split(",");
+    	return mings.length;
+    	}
+    	return 0;
+    }
+    
+    
     private int checkFlower(int[][] paiList,Avatar avatar){//检查花牌张数
     	int[] pai =GlobalUtil.CloneIntList(paiList[0]);
     	int indexMain = 0;
@@ -1801,8 +1886,8 @@ public class PlayCardsLogic {
     			return result;
     		}
     	}
-    		List mingang =avatar.avatarVO.getHuReturnObjectVO().getGangAndHuInfos().get("5");
-    		if(mingang!=null&&mingang.size()>0){//有明杠
+    		String mingang =avatar.avatarVO.getHuReturnObjectVO().getTotalInfo().get("gang");
+    		if(mingang!=null&&!"".equals(mingang)){//有明杠
     			result = false;
     			return result;
     		}
