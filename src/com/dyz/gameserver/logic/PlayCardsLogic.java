@@ -1262,7 +1262,7 @@ public class PlayCardsLogic {
     		
     		//统计本局分数
     		huReturnObjectVO.setNickname(avatar.avatarVO.getAccount().getNickname());
-    		huReturnObjectVO.setPaiArray(avatar.avatarVO.getPaiArray());
+    		huReturnObjectVO.setPaiArray(avatar.avatarVO.getPaiArray()[0]);
     		huReturnObjectVO.setUuid(avatar.getUuId());
     		array.add(huReturnObjectVO);
     		//在整个房间信息中修改总分数(房间次数用完之后的总分数)

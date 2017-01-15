@@ -16,7 +16,7 @@ public class HuReturnObjectVO {
 	/**
      * 牌数组
      */
-    private int[][] paiArray;
+    private int[] paiArray;
     /**
      * key:type:游戏自摸1，接炮2，点炮3，暗杠4，明杠5 ，胡6记录(key),
      * value:list里面，第一个为点炮/杠/胡次数，第二个元素为点炮/杠/胡分数总和
@@ -96,10 +96,10 @@ public class HuReturnObjectVO {
 //		updateTotalScore(score);
 //		gangAndHuInfos.put(type, listNew);
 //	}
-	public int[][] getPaiArray() {
+	public int[] getPaiArray() {
 		return paiArray;
 	}
-	public void setPaiArray(int[][] paiArray) {
+	public void setPaiArray(int[] paiArray) {
 		this.paiArray = paiArray;
 	}
 //    public Map<String, ArrayList<Integer>> getGangAndHuInfos() {
