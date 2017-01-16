@@ -919,7 +919,10 @@ public class PlayCardsLogic {
 		score+=1;
 		huResult2.put(Rule.Hu_zhuang, "1");
 		}
-		
+		if(followBanke&&!avatar.avatarVO.isMain()){//拉了别人的庄
+			score+=1;
+			huResult2.put(Rule.Hu_lazhuang, "1");
+		}
 		boolean dunorla = avatar.avatarVO.isDunorla();
 		boolean pao = avatar.avatarVO.isRun();
 		//处理跑拉蹲分数		
@@ -1023,13 +1026,6 @@ public class PlayCardsLogic {
 				if(curpao)
 					calscore+=pldscore;
 
-				
-				
-				if(followBanke&&player.avatarVO.isMain()){//被别人拉了庄
-					calscore+=1;
-					huResult2.put(Rule.Hu_lazhuang, "1");
-				}
-				
 				calscore+=score;
 				totalScore+=calscore;
 				
@@ -1140,13 +1136,7 @@ public class PlayCardsLogic {
 				calscore+=pldscore;
 			if(curpao)
 				calscore+=pldscore;
-			
-			if(followBanke&&player.avatarVO.isMain()){//被别人拉了庄
-				calscore+=1;
-				huResult2.put(Rule.Hu_lazhuang, "1");
-			}
-			
-			
+	
 			calscore+=score;
 			calmulti*=multiscore;
 			calscore*=calmulti;
