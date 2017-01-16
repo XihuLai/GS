@@ -2428,7 +2428,7 @@ public class PlayCardsLogic {
 		int[][] paiList = av.getPaiArray();
 		paiList[0][cardIndex]++;
 		if (bp) {
-			paiList[1][cardIndex] -= 3;
+			paiList[1][cardIndex] += 1;
 		}
 
 		for(int i = 0; i < 34; ++i) {
@@ -2445,12 +2445,12 @@ public class PlayCardsLogic {
 			}
 		}
 
-		paiList[0][cardIndex]--;
 		if (bp) {
-			paiList[1][cardIndex] +=3;
+			paiList[1][cardIndex] -= 1;
 		}
+		paiList[0][cardIndex]--;
 
-        System.out.println("结束检查他人是否听"+System.currentTimeMillis() + rv);
+		System.out.println("结束检查他人是否听"+System.currentTimeMillis() + rv);
 		return rv;
 	}
 	
