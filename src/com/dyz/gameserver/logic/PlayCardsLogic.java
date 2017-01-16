@@ -465,10 +465,20 @@ public class PlayCardsLogic {
     			avatar.canHu = true;
     			clearAvatar();
     		}else{
-    			//如果别人打的牌过，
-    			//放弃胡，则检测有没人杠
-    			clearAvatar();
-    			avatar.canHu = false;
+    			if(huAvatar.contains(avatar)){
+    				huAvatar.remove(avatar);
+    				avatar.canHu = false;
+    			}
+    			if(gangAvatar.contains(avatar)){
+    				gangAvatar.remove(avatar);
+    				avatar.gangIndex.clear();
+    			}
+    			if(penAvatar.contains(avatar)){
+    				penAvatar.remove(avatar);
+    			}
+    			if(chiAvatar.contains(avatar)){
+    				chiAvatar.remove(avatar);
+    			}
 
     			if(huAvatar.size() == 0){
     				for(Avatar item : gangAvatar){
