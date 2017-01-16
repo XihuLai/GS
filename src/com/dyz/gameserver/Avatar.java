@@ -256,23 +256,12 @@ public class Avatar implements GameObj {
 //    	System.out.println("杠了的牌="+cardIndex+"====="+resultRelation.get(2));
 //    	System.out.println("碰了的牌="+cardIndex+"====="+resultRelation.get(1));
     	boolean flag = false;
-        if(avatarVO.getPaiArray()[0][cardIndex] >= 2 ){
-        	if(resultRelation.get(1) == null ){
-        		flag = true;
-        	}
-        	else{
-        		String strs [] = resultRelation.get(1).split(",");
-        		for (int i = 0; i < strs.length; i++) {
-        			if(strs[i].equals(cardIndex+"")){
-						flag  =  false;
-						 i = strs.length;
-					}
-					else{
-						flag  =  true;
-					}
-				}
-        	}
+        int[] cardList = clearSettledCard(avatarVO.getPaiArray()[0]);
+
+        if(cardList[cardIndex] >= 2 ){
+            flag = true;
         }
+
         System.out.println(avatarVO.getAccount().getOpenid() + "碰" + flag); //XHTEST
         return flag;
     }
@@ -285,23 +274,11 @@ public class Avatar implements GameObj {
     public boolean checkGang(int cardIndex){
     	boolean flag = false;
     	gangIndex.clear();//每次出牌就先清除缓存里面的可以杠的牌下标
-        if(avatarVO.getPaiArray()[0][cardIndex] == 3){
-        	if(resultRelation.get(1) ==null){
-        		gangIndex.add(cardIndex);
-        		flag = true;
-        	}else{
-        		String strs [] = resultRelation.get(1).split(",");
-        		for (int i = 0; i < strs.length; i++) {
-        			if(strs[i].equals(cardIndex+"")){
-						flag  =  false;
-						i = strs.length;
-					}
-					else{
-						gangIndex.add(cardIndex);
-						flag  =  true;
-					}
-				}
-        	}
+
+        int[] cardList = clearSettledCard(avatarVO.getPaiArray()[0]);
+        if(cardList[cardIndex] >= 3 ){
+            gangIndex.add(cardIndex);
+            flag = true;
         }
 
 		System.out.println(avatarVO.getAccount().getOpenid() + "杠" + flag);
@@ -316,66 +293,22 @@ public class Avatar implements GameObj {
      	//system.out.println("杠了的牌==杠家id"+avatarVO.getAccount().getUuid()+"===="+resultRelation.get(2));
      	//system.out.println("碰了的牌==杠家id"+avatarVO.getAccount().getUuid()+"===="+resultRelation.get(1));
     	gangIndex.clear();//先清除缓存里面的可以杠的牌下标
-    	//剔除掉当前以前吃，碰，杠的牌组 再进行比较
     	boolean flag = false;
-    	if(!roomVO.isAddWordCard()){
-    		//划水麻将没有风牌  就27
-    		for (int i= 0 ; i < 27 ; i++) {
-    			if (avatarVO.getPaiArray()[0][i] == 4 && i< 100 
-    					&& avatarVO.getPaiArray()[1][i] != 2) {
-    				//先判断所有4个的牌组中是否有未杠过的
-    				if(resultRelation.get(2) == null ){
-    					gangIndex.add(i);
-    					flag =  true;
-    					i = 100;
-    				}
-    				else if(resultRelation.get(2) != null ){
-    					String strs [] = resultRelation.get(2).split(",");
-    					for (int j = 0; j < strs.length; j++) {
-    						if(strs[j].equals(i+"")){
-    							flag =  false;
-    							gangIndex.clear();
-    							j = 100;
-    							i = 100;
-    						}
-    						else{
-    							gangIndex.add(i);
-    							flag =  true;
-    						}
-    					}
-    				}
-    			}
-    		}
-    	}
-    	else{
-    		//划水麻将有风牌  就 34
-    		for (int i= 0 ; i < 34 ; i++) {
-    			if (avatarVO.getPaiArray()[0][i] == 4 && i< 100
-    					&& avatarVO.getPaiArray()[1][i] != 2) {
-    				//先判断所有4个的牌组中是否有未杠过的
-    				if(resultRelation.get(2) == null ){
-    					gangIndex.add(i);
-    					flag =  true;
-    					i = 100;
-    				}
-    				else if(resultRelation.get(2) != null ){
-    					String strs [] = resultRelation.get(2).split(",");
-    					for (int j = 0; j < strs.length; j++) {
-    						if(strs[j].equals(i+"")){
-    							flag =  false;
-    							gangIndex.clear();
-    							j = 100;
-    							i = 100;
-    						}
-    						else{
-    							gangIndex.add(i);
-    							flag =  true;
-    						}
-    					}
-    				}
-    			}
-    		}
-    	}
+
+
+        int paiCount = 27;
+        if (roomVO.isAddWordCard()) {
+            paiCount = 34;
+        }
+
+        int[] cardList = clearSettledCard(avatarVO.getPaiArray()[0]);
+
+        for (int i = 0; i < paiCount; i++) {
+            if (cardList[i] == 4) {
+                gangIndex.add(i);
+                flag = true;
+            }
+        }
 
         System.out.println(avatarVO.getAccount().getOpenid() + "自杠" + flag); //XHTEST
 
@@ -396,11 +329,33 @@ public class Avatar implements GameObj {
          * 1:碰    2:杠    3:胡   4:吃
          */
 
-        int[] cardList = GlobalUtil.CloneIntList(avatarVO.getPaiArray()[0]);
 
         if (cardIndex > 27) {
             return flag;
         }
+
+        int[] cardList = clearSettledCard(avatarVO.getPaiArray()[0]);
+
+        if((cardIndex%9!=7||cardIndex%9!=8)){//作为左边被吃
+            if(cardList[cardIndex+1]>0&&cardList[cardIndex+2]>0)
+                flag =  true;
+        }
+        else if(!flag && (cardIndex%9!=0||cardIndex%9!=8)){//作为中间被吃
+            if(cardList[cardIndex+1]>0&&cardList[cardIndex-1]>0)
+                flag = true;
+        }
+        else if(!flag && (cardIndex%9!=0||cardIndex%9!=1)){//作为右边被吃
+            if(cardList[cardIndex-1]>0&&cardList[cardIndex-2]>0)
+                flag = true;
+        }
+
+        System.out.println("结束检查是否能吃"+System.currentTimeMillis() + " " + flag);
+        return flag;
+	}
+
+    private int[] clearSettledCard(int[] paiArray) {
+
+        int[] cardList = GlobalUtil.CloneIntList(paiArray);
 
         //剔除吃，碰，杠了的牌
         String s = resultRelation.get(1);
@@ -441,22 +396,8 @@ public class Avatar implements GameObj {
             }
         }
 
-        if((cardIndex%9!=7||cardIndex%9!=8)){//作为左边被吃
-            if(cardList[cardIndex+1]>0&&cardList[cardIndex+2]>0)
-                flag =  true;
-        }
-        else if(!flag && (cardIndex%9!=0||cardIndex%9!=8)){//作为中间被吃
-            if(cardList[cardIndex+1]>0&&cardList[cardIndex-1]>0)
-                return true;
-        }
-        else if(!flag && (cardIndex%9!=0||cardIndex%9!=1)){//作为右边被吃
-            if(cardList[cardIndex-1]>0&&cardList[cardIndex-2]>0)
-                return true;
-        }
-
-        System.out.println("结束检查是否能吃"+System.currentTimeMillis() + " " + flag);
-        return flag;
-	}
+        return cardList;
+    }
 
     /**
      * 为自己的牌组里加入新牌

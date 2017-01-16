@@ -566,6 +566,7 @@ public class PlayCardsLogic {
 		Avatar ava;
 		StringBuffer sb;
 		boolean bf;
+        boolean bp = false;
 		for(int i=0;i<playerList.size();i++){
 			ava = playerList.get(i);
 			if(ava.getUuId() != avatar.getUuId()) {
@@ -590,12 +591,14 @@ public class PlayCardsLogic {
 					if (ava.checkPeng(putOffCardPoint)) {
 						penAvatar.add(ava);
 						sb.append("peng,");
+                        bp = true;
 					}
 
 					if (roomVO.isCanchi() && getNextAvatarIndex() == i && ava.checkChi(putOffCardPoint)) {
 						//只有下一家才能吃
 						chiAvatar.add(ava);
 						sb.append("chi");
+						bp = false;
 					}
 				}
 
@@ -603,7 +606,7 @@ public class PlayCardsLogic {
                 if (sb.length()>1) {
                     if (sb.indexOf("gang") != -1 || sb.indexOf("hu") != -1) {
                         bf = true;
-                    } else if (!roomVO.isYikouxiangCard() || checkOtherTing(ava, putOffCardPoint)) {
+                    } else if (!roomVO.isYikouxiangCard() || checkOtherTing(ava, putOffCardPoint, bp)) {
                         bf = true;
                     }
 
@@ -2419,11 +2422,14 @@ public class PlayCardsLogic {
 		return rv;
 	}
 
-	private boolean checkOtherTing(Avatar av, Integer cardIndex) {
+	private boolean checkOtherTing(Avatar av, Integer cardIndex, boolean bp) {
 		System.out.println("开始检查他人是否听"+System.currentTimeMillis());
 		boolean rv = false;
 		int[][] paiList = av.getPaiArray();
 		paiList[0][cardIndex]++;
+		if (bp) {
+			paiList[1][cardIndex] -= 3;
+		}
 
 		for(int i = 0; i < 34; ++i) {
 			if (paiList[0][i] == 0 || i == cardIndex) {
@@ -2440,7 +2446,11 @@ public class PlayCardsLogic {
 		}
 
 		paiList[0][cardIndex]--;
-		System.out.println("结束检查他人是否听"+System.currentTimeMillis() + rv);
+		if (bp) {
+			paiList[1][cardIndex] +=3;
+		}
+
+        System.out.println("结束检查他人是否听"+System.currentTimeMillis() + rv);
 		return rv;
 	}
 	
