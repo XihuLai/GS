@@ -29,6 +29,20 @@ public class Rule {
     public static String Hu_kanwuwan = "kanwuwan";//坎五万
     public static String Hu_caishen = "caishen";//带财神
     
+    public static String Hu_dun = "dun";
+    public static String Hu_la = "la";
+    public static String Hu_pao = "pao";
+    
+    public static String Hu_zhuang = "zhuang";
+    public static String Hu_lazhuang = "lazhuang";
+    public static String Hu_base = "base";
+    
+    public static String Hu_zimo = "zimo";
+    public static String Hu_bierenzimo = "bierenzimo";
+    
+    public static String Hu_dianpao = "dianpao";
+    public static String Hu_jiepao = "jiepao";
+    
     public static String Hu_qianggang = "qianggang";//抢杠胡
     public static String Hu_quanqiuren = "quanqiuren";//全求人
     

@@ -907,14 +907,28 @@ public class PlayCardsLogic {
     	int totalScore = 0;
     	String recordType = "";//胡牌的分类
     	
-//    	score+=1;//基本胡牌分数
-//		if(avatar.getUuId()==bankerAvatar.getUuId())//庄家胡
-//			score+=1;
-
+    	
 		
     	int pldscore = roomVO.getPldscore();
 		Map<String,Integer> huResult = checkHu2(avatar , cardIndex);//算好所有的名堂
 		Map<String,String> huResult2 = new HashMap<String,String>();
+		
+		score+=1;//基本胡牌分数
+		huResult2.put(Rule.Hu_base, "1");
+		if(avatar.getUuId()==bankerAvatar.getUuId()){//庄家胡
+		score+=1;
+		huResult2.put(Rule.Hu_zhuang, "1");
+		}
+		
+		boolean dunorla = avatar.avatarVO.isDunorla();
+		boolean pao = avatar.avatarVO.isRun();
+		//处理跑拉蹲分数		
+		if(dunorla){
+			score+=pldscore;
+		}
+		if(pao){
+			score+=pldscore;
+		}
 		//同时也要算分数------------------------------------
 		int roomType = roomVO.getRoomType();
 		if(roomType==4||roomType==5||roomType==6||roomType==7){//鄂尔多斯，呼和浩特和集宁玩法
@@ -983,48 +997,37 @@ public class PlayCardsLogic {
 				score+=13;
 				huResult2.put(Rule.Hu_shisanyao, "1*13");
 			}
-			
-				
-				boolean dunorla = avatar.avatarVO.isDunorla();
-				boolean pao = avatar.avatarVO.isRun();
 				for(Avatar player:playerList){//分别处理四个用户的赢输牌的分数
 					int calscore = 0;
 					if(player.getUuId()!=avatar.getUuId()){//如果不是当前用户
-				//处理跑拉蹲分数		
-				if(dunorla)
-					calscore+=pldscore;
-				if(pao)
-					calscore+=pldscore;
+						
+					if(dian == -1){//为自摸
+						recordType = "1";
+						//加分项逻辑
+						calscore+=1;//自摸加两分
+						player.avatarVO.getHuReturnObjectVO().updateTotalInfo("bierenzimo", cardIndex+"");
+					}else{//为点炮
+						if(playerList.indexOf(player)!=dian){
+							continue;
+						}
+						if(roomType==7)
+							calscore +=2;
+						
+					}		
+						
+				
 				boolean curdunorla = avatar.avatarVO.isDunorla();
 				boolean curpao = avatar.avatarVO.isRun();
 				if(curdunorla)
 					calscore+=pldscore;
 				if(curpao)
 					calscore+=pldscore;
+
 				
 				
-				if(followBanke){//为连庄
+				if(followBanke&&player.avatarVO.isMain()){//被别人拉了庄
 					calscore+=1;
-					
-				}else{//为拉庄
-					if(player.avatarVO.isMain())//如果是被拉庄了，那么多出一分
-						calscore+=1;
-					
-				}
-				
-				if(dian == -1){//为自摸
-					recordType = "1";
-					//加分项逻辑
-					calscore+=2;//自摸加两分
-				}else{//为点炮
-					if(playerList.indexOf(player)!=dian){
-						continue;
-					}
-					if(roomType==7)
-						calscore = 3;
-					else
-						calscore+=1;//点炮加一分
-					
+					huResult2.put(Rule.Hu_lazhuang, "1");
 				}
 				
 				calscore+=score;
@@ -1032,8 +1035,18 @@ public class PlayCardsLogic {
 				
 				player.avatarVO.getHuReturnObjectVO().updateTotalScore(-1*(calscore));
 					}else{//如果是当前用户
-						//增加胡家的分数
-						 
+						if(dunorla){
+							if(player.avatarVO.isMain())
+							huResult2.put(Rule.Hu_dun, "1*"+pldscore);
+							else
+								huResult2.put(Rule.Hu_la, "1*"+pldscore);
+						}
+						if(pao)
+							huResult2.put(Rule.Hu_pao, "1*"+pldscore);
+						if(dian!=-1)
+							huResult2.put(Rule.Hu_jiepao, "1");
+						else
+							huResult2.put(Rule.Hu_zimo, "1");
 					}
 				}
 				avatar.avatarVO.getHuReturnObjectVO().updateTotalScore(totalScore);
@@ -1103,20 +1116,24 @@ public class PlayCardsLogic {
 			score+=13;
 			huResult2.put(Rule.Hu_shisanyao, "1*13");
 		}
-		
-		
-			
-			boolean dunorla = avatar.avatarVO.isDunorla();
-			boolean pao = avatar.avatarVO.isRun();
 			for(Avatar player:playerList){//分别处理四个用户的赢输牌的分数
 				int calscore = 0;
 				int calmulti = 1;
 				if(player.getUuId()!=avatar.getUuId()){//如果不是当前用户
-			//处理跑拉蹲分数		
-			if(dunorla)
-				calscore+=pldscore;
-			if(pao)
-				calscore+=pldscore;
+					
+				if(dian == -1){//为自摸
+					recordType = "1";
+					//加分项逻辑
+					calmulti*=2;//自摸加倍
+					player.avatarVO.getHuReturnObjectVO().updateTotalInfo("bierenzimo", cardIndex+"");
+				}else{//为点炮
+					if(playerList.indexOf(player)!=dian){
+						continue;
+					}
+					huResult2.put(Rule.Hu_dianpao, "1");
+				
+				}
+			
 			boolean curdunorla = avatar.avatarVO.isDunorla();
 			boolean curpao = avatar.avatarVO.isRun();
 			if(curdunorla)
@@ -1124,37 +1141,30 @@ public class PlayCardsLogic {
 			if(curpao)
 				calscore+=pldscore;
 			
-			
-			if(followBanke){//为连庄
+			if(followBanke&&player.avatarVO.isMain()){//被别人拉了庄
 				calscore+=1;
-				
-			}else{//为拉庄
-				if(player.avatarVO.isMain())//如果是被拉庄了，那么多出一分
-					calscore+=1;
-				
+				huResult2.put(Rule.Hu_lazhuang, "1");
 			}
 			
-			if(dian == -1){//为自摸
-				recordType = "1";
-				//加分项逻辑
-				calmulti*=2;//自摸加倍
-			}else{//为点炮
-				if(playerList.indexOf(player)!=dian){
-					continue;
-				}
-				if(roomType==7)
-					calscore = 3;
-				else
-					calscore+=1;//点炮加一分
-				
-			}
+			
 			calscore+=score;
 			calmulti*=multiscore;
 			calscore*=calmulti;
 			totalScore+=calscore;
 			player.avatarVO.getHuReturnObjectVO().updateTotalScore(-1*calscore);
 				}else{//如果是当前用户
-					//增加胡家的分数
+					if(dunorla){
+						if(player.avatarVO.isMain())
+						huResult2.put(Rule.Hu_dun, "1*"+pldscore);
+						else
+							huResult2.put(Rule.Hu_la, "1*"+pldscore);
+					}
+					if(pao)
+						huResult2.put(Rule.Hu_pao, "1*"+pldscore);
+					if(dian!=-1)
+						huResult2.put(Rule.Hu_jiepao, "1");
+					else
+						huResult2.put(Rule.Hu_zimo, "1");
 				}
 			}
 			avatar.avatarVO.getHuReturnObjectVO().updateTotalScore(totalScore);
