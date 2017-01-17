@@ -918,7 +918,7 @@ public class PlayCardsLogic {
     	int score = 0;
     	int totalScore = 0;
     	String recordType = "";//胡牌的分类
-    	
+    	String huType = "";
     	
 		
     	int pldscore = roomVO.getPldscore();
@@ -1018,6 +1018,7 @@ public class PlayCardsLogic {
 						
 					if(dian == -1){//为自摸
 						recordType = "1";
+						huType = "zimo";
 						//加分项逻辑
 						calscore+=1;//自摸加两分
 						player.avatarVO.getHuReturnObjectVO().updateTotalInfo("bierenzimo", cardIndex+"");
@@ -1025,6 +1026,7 @@ public class PlayCardsLogic {
 						if(playerList.indexOf(player)!=dian){
 							continue;
 						}
+						huType = "dianpao";
 						if(roomType==7)
 							calscore +=2;
 						
@@ -1043,7 +1045,9 @@ public class PlayCardsLogic {
 				
 				player.avatarVO.getHuReturnObjectVO().updateTotalScore(-1*(calscore));
 				player.avatarVO.getHuReturnObjectVO().updateTotalInfo("score", "-"+calscore);
-					}else{//如果是当前用户
+				if(huType.equals("dianpao"))
+				roomVO.updateEndStatistics(avatar.getUuId()+"", huType, calscore);
+				}else{//如果是当前用户
 						if(dunorla){
 							if(player.avatarVO.isMain())
 							huResult2.put(Rule.Hu_dun, "1*"+pldscore);
@@ -1056,8 +1060,11 @@ public class PlayCardsLogic {
 							huResult2.put(Rule.Hu_zimo, "1");
 					}
 				}
+				if(huType.equals("dianpao"))
+					huType = "jiepao";
 				avatar.avatarVO.getHuReturnObjectVO().updateTotalScore(totalScore);
 				avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("score", ""+totalScore);
+				roomVO.updateEndStatistics(avatar.getUuId()+"", huType, totalScore);
 			
 		}else if(roomType == 8){//包头
 			int roomScore = 5;
@@ -1132,13 +1139,14 @@ public class PlayCardsLogic {
 				if(dian == -1){//为自摸
 					recordType = "1";
 					//加分项逻辑
+					huType = "zimo";
 					calmulti*=2;//自摸加倍
 					player.avatarVO.getHuReturnObjectVO().updateTotalInfo("bierenzimo", cardIndex+"");
 				}else{//为点炮
 					if(playerList.indexOf(player)!=dian){
 						continue;
 					}
-				
+					huType = "dianpao";
 				}
 			
 			boolean curdunorla = avatar.avatarVO.isDunorla();
@@ -1154,6 +1162,8 @@ public class PlayCardsLogic {
 			totalScore+=calscore;
 			player.avatarVO.getHuReturnObjectVO().updateTotalScore(-1*calscore);
 			avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("score", "-"+calscore);
+			if(huType.equals("dianpao"))
+			roomVO.updateEndStatistics(avatar.getUuId()+"", huType, calscore);
 				}else{//如果是当前用户
 					if(dunorla){
 						if(player.avatarVO.isMain())
@@ -1167,8 +1177,11 @@ public class PlayCardsLogic {
 						huResult2.put(Rule.Hu_zimo, "1");
 				}
 			}
+			if(huType.equals("dianpao"))
+				huType = "jiepao";
 			avatar.avatarVO.getHuReturnObjectVO().updateTotalScore(totalScore);
 			avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("score", ""+totalScore);
+			roomVO.updateEndStatistics(avatar.getUuId()+"", huType, totalScore);
 		}
 		avatar.avatarVO.getHuReturnObjectVO().setHuInfo(huResult2); 
     	return 0;
@@ -1217,11 +1230,7 @@ public class PlayCardsLogic {
     	    			penAvatar.clear();
     	    			chiAvatar.clear();;
     					//两个人之间建立关联，游戏结束算账用 
- 			
-    					//整个房间统计每一局游戏 杠，胡的总次数
-    					roomVO.updateEndStatistics(avatar.getUuId()+"", "jiepao", 1);
-    					roomVO.updateEndStatistics(playerList.get(curAvatarIndex).getUuId()+"", "dianpao", 1);
-    					
+
     					flag = true;
     				}
     				else{
@@ -1243,7 +1252,7 @@ public class PlayCardsLogic {
         			penAvatar.clear();
         			chiAvatar.clear();;
     				//两个人之间建立关联，游戏结束算账用   自摸不会出现抢胡的情况
-    				roomVO.updateEndStatistics(avatar.getUuId()+"", "zimo", 1);
+    				
     				avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("zimo", "");
     				flag = true;
     				calculateScore(avatar , cardIndex,-1);
