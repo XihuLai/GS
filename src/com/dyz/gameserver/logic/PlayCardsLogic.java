@@ -341,7 +341,9 @@ public class PlayCardsLogic {
         	avatar.putCardInList(tempPoint);//放入牌组
         	for(int i=0;i<playerList.size();i++){//通知所有玩家摸到一张花牌
                 if(i != pickAvatarIndex){
+                	System.out.println("发送花牌通知"+tempPoint);
                     playerList.get(i).getSession().sendMsg(new PickFlowerCardResponse(1,pickAvatarIndex,tempPoint));//提醒其他玩家抓到花牌
+                    System.out.println("结束发送花牌通知"+tempPoint);
                 }else {
                 	avatar.getSession().sendMsg(new PickCardResponse(1, tempPoint));//返回摸到的牌，客户端对花牌做额外的处理
 				}
@@ -1040,6 +1042,7 @@ public class PlayCardsLogic {
 				totalScore+=calscore;
 				
 				player.avatarVO.getHuReturnObjectVO().updateTotalScore(-1*(calscore));
+				player.avatarVO.getHuReturnObjectVO().updateTotalInfo("score", "-"+calscore);
 					}else{//如果是当前用户
 						if(dunorla){
 							if(player.avatarVO.isMain())
@@ -1049,13 +1052,12 @@ public class PlayCardsLogic {
 						}
 						if(pao)
 							huResult2.put(Rule.Hu_pao, "1*"+pldscore);
-						if(dian!=-1)
-							huResult2.put(Rule.Hu_jiepao, "1");
-						else
+						if(dian==-1)
 							huResult2.put(Rule.Hu_zimo, "1");
 					}
 				}
 				avatar.avatarVO.getHuReturnObjectVO().updateTotalScore(totalScore);
+				avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("score", ""+totalScore);
 			
 		}else if(roomType == 8){//包头
 			int roomScore = 5;
@@ -1136,7 +1138,6 @@ public class PlayCardsLogic {
 					if(playerList.indexOf(player)!=dian){
 						continue;
 					}
-					huResult2.put(Rule.Hu_dianpao, "1");
 				
 				}
 			
@@ -1152,6 +1153,7 @@ public class PlayCardsLogic {
 			calscore*=calmulti;
 			totalScore+=calscore;
 			player.avatarVO.getHuReturnObjectVO().updateTotalScore(-1*calscore);
+			avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("score", "-"+calscore);
 				}else{//如果是当前用户
 					if(dunorla){
 						if(player.avatarVO.isMain())
@@ -1161,13 +1163,12 @@ public class PlayCardsLogic {
 					}
 					if(pao)
 						huResult2.put(Rule.Hu_pao, "1*"+pldscore);
-					if(dian!=-1)
-						huResult2.put(Rule.Hu_jiepao, "1");
-					else
+					if(dian==-1)
 						huResult2.put(Rule.Hu_zimo, "1");
 				}
 			}
 			avatar.avatarVO.getHuReturnObjectVO().updateTotalScore(totalScore);
+			avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("score", ""+totalScore);
 		}
 		avatar.avatarVO.getHuReturnObjectVO().setHuInfo(huResult2); 
     	return 0;
@@ -1287,7 +1288,7 @@ public class PlayCardsLogic {
     	int useCount = RoomManager.getInstance().getRoom(roomVO.getRoomId()).getCount();
     	if(totalCount == (useCount +1) && !type.equals("2")){
     		//第一局结束扣房卡
-//    		deductRoomCard();//因为测试所以注释这行
+    		deductRoomCard();//因为测试所以注释这行
     	}
     	JSONArray array = new JSONArray();
     	JSONObject json = new JSONObject();
@@ -1908,7 +1909,7 @@ public class PlayCardsLogic {
     			return result;
     		}
     	}
-    		String mingang =avatar.avatarVO.getHuReturnObjectVO().getTotalInfo().get("gang");
+    		String mingang =avatar.avatarVO.getHuReturnObjectVO().getTotalInfo().get(Rule.Gang_ming);
     		if(mingang!=null&&!"".equals(mingang)){//有明杠
     			result = false;
     			return result;
@@ -1921,13 +1922,13 @@ public class PlayCardsLogic {
     	int[] pai =GlobalUtil.CloneIntList(paiList[0]);
     	int flag = cardIndex/9;
     	//先判断边,分为左边和右边
-    	if(cardIndex-2>=flag*9&&pai[cardIndex-1]>0&&pai[cardIndex-2]>0){//右边
+    	if(cardIndex-2>=flag*9&&pai[cardIndex-1]>0&&pai[cardIndex-2]>0&&cardIndex%9==2){//右边,只有为3的时候
     		pai[cardIndex]--;
     		pai[cardIndex-1]--;
     		pai[cardIndex-2]--;
     		if(normalHuPai.isHuPai(pai))
     			return true;
-    	}else if(cardIndex+2<(flag+1)*9&&pai[cardIndex+1]>0&&pai[cardIndex+2]>0){//左边
+    	}else if(cardIndex+2<(flag+1)*9&&pai[cardIndex+1]>0&&pai[cardIndex+2]>0&&cardIndex%9==6){//左边，只有为7的时候
     		pai[cardIndex]--;
     		pai[cardIndex+1]--;
     		pai[cardIndex+2]--;
