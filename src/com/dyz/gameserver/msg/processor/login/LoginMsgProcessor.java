@@ -98,7 +98,6 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 					avatar = new Avatar();
 					AvatarVO avatarVO = new AvatarVO();
 					avatarVO.setAccount(account);
-                    account.setRoomcard(8*1024); //XHTEST - remove it later
 					avatarVO.setIP(loginVO.getIP());
 					avatar.avatarVO = avatarVO;
 					//把session放入到GameSessionManager
