@@ -65,8 +65,8 @@ public class Rule {
     public static String Hu_di = "di";//地胡
     
     //杠牌
-    public static String Gang_ming = "ming";
-    public static String Gang_an = "an";
+    public static String Gang_ming = "minggang";
+    public static String Gang_an = "angang";
     public static String Gang_dian = "diangang";
     //划水麻将
     public static String Gang_ming_guolu = "gang_guolu";//过路杠
