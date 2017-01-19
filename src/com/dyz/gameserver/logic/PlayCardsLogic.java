@@ -565,7 +565,7 @@ public class PlayCardsLogic {
             } else {
 				System.out.println("检查能否听 - " + curAvatarIndex);
 				if (!roomVO.isYikouxiangCard()
-						&& !avatar.getbTing()
+						&& !avatar.avatarVO.isTing()
 						&& checkSelfTing(avatar)) {
 					avatar.getSession().sendMsg(new ReturnInfoResponse(1, "canting"));
 					System.out.println("检查能否听 - " + curAvatarIndex + "能");
@@ -593,7 +593,7 @@ public class PlayCardsLogic {
 					sb.append("hu,");
 				}
 
-				if (!ava.getbTing()) {
+				if (!ava.avatarVO.isTing()) {
 					if (ava.checkGang(putOffCardPoint)) {
 						gangAvatar.add(ava);
 						//同时传会杠的牌的点数
