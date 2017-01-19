@@ -1053,13 +1053,13 @@ public class PlayCardsLogic {
 				boolean curpao = avatar.avatarVO.isRun();
 				if(curdunorla){
 					if(player.avatarVO.isMain())
-						curMap.put(Rule.Hu_dun, ""+pldscore);
+						curMap.put(Rule.Hu_dun, ""+(pldscore+(dunorla?pldscore:0)));
 						else
-							curMap.put(Rule.Hu_la, ""+pldscore);
+							curMap.put(Rule.Hu_la, ""+(pldscore+(dunorla?pldscore:0)));
 					calscore+=pldscore;
 				}
 				if(curpao){
-					curMap.put(Rule.Hu_pao, ""+pldscore);
+					curMap.put(Rule.Hu_pao, ""+(pldscore+(pao?pldscore:0)));
 					calscore+=pldscore;
 				}
 
