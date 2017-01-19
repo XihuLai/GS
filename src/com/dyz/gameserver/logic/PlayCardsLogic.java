@@ -926,11 +926,13 @@ public class PlayCardsLogic {
 		}
 		boolean dunorla = avatar.avatarVO.isDunorla();
 		boolean pao = avatar.avatarVO.isRun();
-		//处理跑拉蹲分数		
-		if(dunorla){
+		//处理跑拉蹲分数,蹲或拉不是赢全部		
+		if(avatar.avatarVO.isMain()&&dunorla){//如果庄蹲了赢全部
+//			huResult2.put(Rule.Hu_dun, ""+pldscore);
 			score+=pldscore;
 		}
 		if(pao){
+//			huResult2.put(Rule.Hu_pao, ""+pldscore);
 			score+=pldscore;
 		}
 		//同时也要算分数------------------------------------
@@ -1037,15 +1039,23 @@ public class PlayCardsLogic {
 				
 				boolean curdunorla = avatar.avatarVO.isDunorla();
 				boolean curpao = avatar.avatarVO.isRun();
-				if(curdunorla){
-					if(player.avatarVO.isMain())
-						curMap.put(Rule.Hu_dun, ""+(pldscore+(dunorla?pldscore:0)));
-						else
-							curMap.put(Rule.Hu_la, ""+(pldscore+(dunorla?pldscore:0)));
-					calscore+=pldscore;
+				if(curdunorla){//输家蹲或者拉了
+					if(player.avatarVO.isMain()){//如果输家蹲了，输蹲
+						curMap.put(Rule.Hu_dun, ""+pldscore);
+						calscore+=pldscore;
+						if(dunorla){//如果赢家拉了，还要加上赢家拉的分
+							calscore+=pldscore;
+						}
+					}else{//如果输家拉了
+						if(avatar.avatarVO.isMain()){//并且赢家是庄家
+							calscore+=pldscore;
+							curMap.put(Rule.Hu_la, ""+pldscore);//输家的拉没有意义
+						}
+					}
+					
 				}
 				if(curpao){
-					curMap.put(Rule.Hu_pao, ""+(pldscore+(pao?pldscore:0)));
+					curMap.put(Rule.Hu_pao, ""+pldscore);
 					calscore+=pldscore;
 				}
 
@@ -1172,12 +1182,20 @@ public class PlayCardsLogic {
 			
 			boolean curdunorla = avatar.avatarVO.isDunorla();
 			boolean curpao = avatar.avatarVO.isRun();
-			if(curdunorla){
-				if(player.avatarVO.isMain())
+			if(curdunorla){//输家蹲或者拉了
+				if(player.avatarVO.isMain()){//如果输家蹲了，输蹲
 					curMap.put(Rule.Hu_dun, ""+pldscore);
-					else
-						curMap.put(Rule.Hu_la, ""+pldscore);
-				calscore+=pldscore;
+					calscore+=pldscore;
+					if(dunorla){//如果赢家拉了，还要加上赢家拉的分
+						calscore+=pldscore;
+					}
+				}else{//如果输家拉了
+					if(avatar.avatarVO.isMain()){//并且赢家是庄家
+						calscore+=pldscore;
+						curMap.put(Rule.Hu_la, ""+pldscore);//输家的拉没有意义
+					}
+				}
+				
 			}
 			if(curpao){
 				curMap.put(Rule.Hu_pao, ""+pldscore);
