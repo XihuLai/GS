@@ -75,13 +75,13 @@ public class RoomLogic {
     }
 
     /**
-     * 创建房间,默认不进入准备状态
+     * 创建房间,默认进入准备状态
      * @param avatar
      */
     public void CreateRoom(Avatar avatar){
         createAvator = avatar;
         roomVO.setPlayerList(new ArrayList<AvatarVO>());
-        avatar.avatarVO.setIsReady(false);
+        avatar.avatarVO.setIsReady(true);
         playerList = new ArrayList<Avatar>();
         avatar.avatarVO.setMain(true);
         avatar.setRoomVO(roomVO);
@@ -113,6 +113,7 @@ public class RoomLogic {
     				}
 				}
     			avatar.avatarVO.setMain(false);
+    			//avatar.avatarVO.setIsReady(true);
     			avatar.avatarVO.setIsReady(false);
     			avatar.avatarVO.setRoomId(roomVO.getRoomId());//房间号也放入avatarvo中
     			avatar.setRoomVO(roomVO);

@@ -40,7 +40,6 @@ public class AvatarVO {
 	//听牌标志
 	private boolean isTing = false;
 
-
 	/**
      * 是否在线
      */

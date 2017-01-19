@@ -1038,12 +1038,12 @@ public class PlayCardsLogic {
 						huType = "dianpao";
 						if(roomType==7){
 							huResult2.put(Rule.Hu_jiepao, "2");
-							curMap.put(Rule.Hu_dianpao, "");
+							curMap.put(Rule.Hu_dianpao, "2");
 							calscore +=2;
 						}
 						else{
-							curMap.put(Rule.Hu_dianpao, "底分");
-							huResult2.put(Rule.Hu_jiepao, "底分");
+//							curMap.put(Rule.Hu_dianpao, "底分");
+//							huResult2.put(Rule.Hu_jiepao, "底分");
 						}
 						
 					}		
@@ -1053,13 +1053,13 @@ public class PlayCardsLogic {
 				boolean curpao = avatar.avatarVO.isRun();
 				if(curdunorla){
 					if(player.avatarVO.isMain())
-						curMap.put(Rule.Hu_dun, ""+pldscore);
+						curMap.put(Rule.Hu_dun, ""+(pldscore+(dunorla?pldscore:0)));
 						else
-							curMap.put(Rule.Hu_la, ""+pldscore);
+							curMap.put(Rule.Hu_la, ""+(pldscore+(dunorla?pldscore:0)));
 					calscore+=pldscore;
 				}
 				if(curpao){
-					curMap.put(Rule.Hu_pao, ""+pldscore);
+					curMap.put(Rule.Hu_pao, ""+(pldscore+(pao?pldscore:0)));
 					calscore+=pldscore;
 				}
 
@@ -1084,8 +1084,8 @@ public class PlayCardsLogic {
 					huResult2.put(Rule.Hu_pao, ""+pldscore);
 				if(dian==-1)
 					huResult2.put(Rule.Hu_zimo, "1");
-				else
-					huResult2.put(Rule.Hu_jiepao, "1");
+//				else
+//					huResult2.put(Rule.Hu_jiepao, "1");
 				if(huType.equals("dianpao"))
 					huType = "jiepao";
 				avatar.avatarVO.getHuReturnObjectVO().updateTotalScore(totalScore);
@@ -1180,8 +1180,8 @@ public class PlayCardsLogic {
 					player.avatarVO.getHuReturnObjectVO().updateTotalInfo("dianpao", cardIndex+"");
 					curMap.putAll(huResult2);
 					huType = "dianpao";
-					curMap.put(Rule.Hu_dianpao, "底分");
-					huResult2.put(Rule.Hu_jiepao, "底分");
+//					curMap.put(Rule.Hu_dianpao, "底分");
+//					huResult2.put(Rule.Hu_jiepao, "底分");
 				}
 			
 			boolean curdunorla = avatar.avatarVO.isDunorla();
