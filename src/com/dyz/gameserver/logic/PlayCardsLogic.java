@@ -565,7 +565,7 @@ public class PlayCardsLogic {
             } else {
 				System.out.println("检查能否听 - " + curAvatarIndex);
 				if (!roomVO.isYikouxiangCard()
-						&& !avatar.getbTing()
+						&& !avatar.avatarVO.isTing()
 						&& checkSelfTing(avatar)) {
 					avatar.getSession().sendMsg(new ReturnInfoResponse(1, "canting"));
 					System.out.println("检查能否听 - " + curAvatarIndex + "能");
@@ -593,7 +593,7 @@ public class PlayCardsLogic {
 					sb.append("hu,");
 				}
 
-				if (!ava.getbTing()) {
+				if (!ava.avatarVO.isTing()) {
 					if (ava.checkGang(putOffCardPoint)) {
 						gangAvatar.add(ava);
 						//同时传会杠的牌的点数
@@ -1038,12 +1038,12 @@ public class PlayCardsLogic {
 						huType = "dianpao";
 						if(roomType==7){
 							huResult2.put(Rule.Hu_jiepao, "2");
-							curMap.put(Rule.Hu_dianpao, "");
+							curMap.put(Rule.Hu_dianpao, "2");
 							calscore +=2;
 						}
 						else{
-							curMap.put(Rule.Hu_dianpao, "底分");
-							huResult2.put(Rule.Hu_jiepao, "底分");
+//							curMap.put(Rule.Hu_dianpao, "底分");
+//							huResult2.put(Rule.Hu_jiepao, "底分");
 						}
 						
 					}		
@@ -1084,8 +1084,8 @@ public class PlayCardsLogic {
 					huResult2.put(Rule.Hu_pao, ""+pldscore);
 				if(dian==-1)
 					huResult2.put(Rule.Hu_zimo, "1");
-				else
-					huResult2.put(Rule.Hu_jiepao, "1");
+//				else
+//					huResult2.put(Rule.Hu_jiepao, "1");
 				if(huType.equals("dianpao"))
 					huType = "jiepao";
 				avatar.avatarVO.getHuReturnObjectVO().updateTotalScore(totalScore);
@@ -1180,8 +1180,8 @@ public class PlayCardsLogic {
 					player.avatarVO.getHuReturnObjectVO().updateTotalInfo("dianpao", cardIndex+"");
 					curMap.putAll(huResult2);
 					huType = "dianpao";
-					curMap.put(Rule.Hu_dianpao, "底分");
-					huResult2.put(Rule.Hu_jiepao, "底分");
+//					curMap.put(Rule.Hu_dianpao, "底分");
+//					huResult2.put(Rule.Hu_jiepao, "底分");
 				}
 			
 			boolean curdunorla = avatar.avatarVO.isDunorla();

@@ -37,6 +37,8 @@ public class AvatarVO {
      */
     private boolean isDunorla;
 
+	//听牌标志
+	private boolean isTing = false;
 
 	/**
      * 是否在线
@@ -210,7 +212,8 @@ public class AvatarVO {
 	public void setDunorla(boolean isDunorla) {
 		this.isDunorla = isDunorla;
 	}
-	
-	
-	
+
+	public void setTing(boolean bt) { isTing = bt; }
+
+	public boolean isTing() { return isTing; }
 }
