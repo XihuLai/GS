@@ -685,7 +685,7 @@ public class RoomLogic {
 	}
 
 	public void ting(Avatar av, boolean bt) {
-		av.setbTing(bt);
+		av.avatarVO.setTing(bt);
 		if (bt) {
 			int idx = playerList.indexOf(av);
 			for (int i = 0; i < playerList.size(); i++) {
