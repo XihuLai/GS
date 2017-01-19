@@ -577,12 +577,9 @@ public class PlayCardsLogic {
 
 		Avatar ava;
 		StringBuffer sb;
-		boolean bf;
-        boolean bp = false;
 		for(int i=0;i<playerList.size();i++){
 			ava = playerList.get(i);
 			if(ava.getUuId() != avatar.getUuId()) {
-				bf = false;
 				sb = new StringBuffer();
 				//判断吃，碰， 胡 杠的时候需要把以前吃，碰，杠胡的牌踢出再计算
 				if(avatar.getRoomVO().getZiMo()!= 2
@@ -600,43 +597,32 @@ public class PlayCardsLogic {
 						sb.append("gang:" + putOffCardPoint + ",");
 					}
 
-					if (ava.checkPeng(putOffCardPoint)) {
-						penAvatar.add(ava);
-						sb.append("peng,");
-                        bp = true;
+					if (ava.checkPeng(putOffCardPoint) &&
+							(!roomVO.isYikouxiangCard() || checkOtherTing(ava, putOffCardPoint, true))) {
+							penAvatar.add(ava);
+							sb.append("peng,");
 					}
 
-					if (roomVO.isCanchi() && getNextAvatarIndex() == i && ava.checkChi(putOffCardPoint)) {
+					if (roomVO.isCanchi() && getNextAvatarIndex() == i && ava.checkChi(putOffCardPoint) &&
+							(!roomVO.isYikouxiangCard() || checkOtherTing(ava, putOffCardPoint, false))) {
 						//只有下一家才能吃
 						chiAvatar.add(ava);
 						sb.append("chi");
-						bp = false;
 					}
 				}
 
 				System.out.println(sb + " " + ava.avatarVO.getAccount().getOpenid());
-                if (sb.length()>1) {
-                    if (sb.indexOf("gang") != -1 || sb.indexOf("hu") != -1) {
-                        bf = true;
-                    } else if (!roomVO.isYikouxiangCard() || checkOtherTing(ava, putOffCardPoint, bp)) {
-                        bf = true;
-                    }
-
-                    if (bf) {
-                        System.out.println(sb);
-                        try {
-                            System.out.println("开始中断执行别的线程"+System.currentTimeMillis());
-                            Thread.sleep(200);
-                            System.out.println("结束中断回到当前线程"+System.currentTimeMillis());
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
-                    } else {
-                        penAvatar.remove(ava);
-                        chiAvatar.remove(ava);
-                    }
-                }
+				if (sb.length()>1) {
+					System.out.println(sb);
+					try {
+						System.out.println("开始中断执行别的线程"+System.currentTimeMillis());
+						Thread.sleep(200);
+						System.out.println("结束中断回到当前线程"+System.currentTimeMillis());
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
+				}
 			}
 		}
         //如果没有吃，碰，杠，胡的情况，则下家自动摸牌
