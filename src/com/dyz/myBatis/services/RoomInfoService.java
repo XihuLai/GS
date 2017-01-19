@@ -41,7 +41,7 @@ public class RoomInfoService {
 	        room.setName(roomVO.getName());
 	        room.setAddwordcard(roomVO.isAddWordCard()?"1":"0");
 	        room.setCreateTime(new Date());
-	        room.setCardNumb(roomVO.getRoundNumber()/4);
+	        room.setCardNumb(roomVO.getRoundNumber()/8);
 	    	//创建RoomInfo表
 	        int index = roomInfoMap.insertSelective(room);
 	        roomVO.setId(room.getId());
