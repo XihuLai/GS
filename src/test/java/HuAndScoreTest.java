@@ -50,14 +50,14 @@ public class HuAndScoreTest {
 //		paiList[0]  = new int[]{0,0,0,3,0,0,1,1,1,    0,1,1,1,0,0,0,0,0,    0,0,2,0,0,0,1,1,1,   0,0,0,0,0,0,0,};
 //		paiList[0]  = new int[]{0,0,2,2,2,2,2,2,2,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
 //		paiList[0]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    4,0,4,1,1,1,1,1,4,   0,0,0,0,0,0,0,  0,2,3,1,0,1,3,4};
-		paiList[0]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    3,1,1,1,1,1,1,1,3,   0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
+		paiList[0]  = new int[]{0,0,2,0,0,2,0,0,0,    0,0,0,0,0,0,0,0,0,    2,2,0,2,2,0,0,2,0,   0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
 		paiList[1]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0};
 //		paiList[1]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,};
 //    	Map<String,Integer> result = test.checkHu(paiList,player1,26);
 //		int result = test.calculateScore(paiList,player1,roomVO,23,1);
-		boolean result = test.checkSelfTing(paiList);
+//		boolean result = test.checkSelfTing(paiList);
+		int result = test.checkSevenDouble(paiList);
 		System.out.println(result);
-
 
 //    	boolean resultting = test.checkSelfTing(paiList,true);
 //    	System.out.println(resultting);
@@ -591,11 +591,13 @@ public class HuAndScoreTest {
     		if(paiList[0][i]>0){
     			flag+=paiList[0][i];
     		}
-    		if(i%9==8&&flag>=8){
+    		if(i%9==8){
+    			if(flag>=8)
     			return true;
-    		}else{
-    			flag = 0;
-    			continue;
+    			else{
+    				flag = 0;
+    				continue;
+    			}
     		}
     	}
     	if(result)
@@ -741,6 +743,7 @@ public class HuAndScoreTest {
         		System.out.println("能胡七对"+result);
         return result;
     }
+    
     
 //    private boolean checkSelfTing(int[][] paiList, boolean bclone) {
 //		boolean rv = false;
