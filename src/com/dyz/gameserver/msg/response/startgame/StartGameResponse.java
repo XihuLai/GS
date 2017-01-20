@@ -13,12 +13,14 @@ public class StartGameResponse extends ServerResponse {
     * @param paiArray 自己的牌数组
     * @param bankerId 庄家ID
     */
-   public StartGameResponse(int status, int[][] paiArray,int bankerId) {
+   public StartGameResponse(int status, int[][] paiArray,int bankerId,int dice1,int dice2) {
        super(status, ConnectAPI.STARTGAME_RESPONSE);
        try {
            JSONObject json = new JSONObject();
            json.put("paiArray",paiArray);
            json.put("bankerId",bankerId);
+           json.put("dice1",dice1);
+           json.put("dice2",dice2);
            output.writeUTF(json.toString());
        } catch (IOException e) {
            e.printStackTrace();

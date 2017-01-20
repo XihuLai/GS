@@ -612,7 +612,6 @@ public class PlayCardsLogic {
 				}
 
 				System.out.println(sb + " " + ava.avatarVO.getAccount().getOpenid());
-				if (sb.length()>1) {
 					System.out.println(sb);
 					try {
 						System.out.println("开始中断执行别的线程"+System.currentTimeMillis());
@@ -621,8 +620,9 @@ public class PlayCardsLogic {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					if(!(sb.length()>1))
+						sb.append("chu:"+putOffCardPoint);
 					ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
-				}
 			}
 		}
         //如果没有吃，碰，杠，胡的情况，则下家自动摸牌
@@ -908,7 +908,7 @@ public class PlayCardsLogic {
     	int totalScore = 0;
     	String recordType = "";//胡牌的分类
     	String huType = "";
-    	
+    	int paoladun = 0;//专门用来计算跑啦蹲的分数，因为包头的跑啦蹲分数要翻番后另算
 		
     	int pldscore = roomVO.getPldscore();
 		Map<String,Integer> huResult = checkHu2(avatar , cardIndex);//算好所有的名堂
@@ -929,11 +929,11 @@ public class PlayCardsLogic {
 		//处理跑拉蹲分数,蹲或拉不是赢全部		
 		if(avatar.avatarVO.isMain()&&dunorla){//如果庄蹲了赢全部
 //			huResult2.put(Rule.Hu_dun, ""+pldscore);
-			score+=pldscore;
+			paoladun+=pldscore;
 		}
 		if(pao){
 //			huResult2.put(Rule.Hu_pao, ""+pldscore);
-			score+=pldscore;
+			paoladun+=pldscore;
 		}
 		//同时也要算分数------------------------------------
 		int roomType = roomVO.getRoomType();
@@ -1059,6 +1059,7 @@ public class PlayCardsLogic {
 					calscore+=pldscore;
 				}
 
+				calscore+=paoladun;
 				calscore+=score;
 				totalScore+=calscore;
 				curMap.put("score", ""+calscore);
@@ -1185,13 +1186,13 @@ public class PlayCardsLogic {
 			if(curdunorla){//输家蹲或者拉了
 				if(player.avatarVO.isMain()){//如果输家蹲了，输蹲
 					curMap.put(Rule.Hu_dun, ""+pldscore);
-					calscore+=pldscore;
+					paoladun+=pldscore;
 					if(dunorla){//如果赢家拉了，还要加上赢家拉的分
-						calscore+=pldscore;
+						paoladun+=pldscore;
 					}
 				}else{//如果输家拉了
 					if(avatar.avatarVO.isMain()){//并且赢家是庄家
-						calscore+=pldscore;
+						paoladun+=pldscore;
 						curMap.put(Rule.Hu_la, ""+pldscore);//输家的拉没有意义
 					}
 				}
@@ -1205,6 +1206,7 @@ public class PlayCardsLogic {
 			calscore+=score;
 			calmulti*=multiscore;
 			calscore*=calmulti;
+			calscore+=paoladun;
 			totalScore+=calscore;
 			player.avatarVO.getHuReturnObjectVO().updateTotalScore(-1*calscore);
 //			avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("score", "-"+calscore);

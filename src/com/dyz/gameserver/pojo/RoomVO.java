@@ -39,8 +39,13 @@ public class RoomVO {
     /**
      *抓码的个数
      */
-    private int ma;
-    /**
+//    private int ma;
+    
+    private int dice1 = 0,dice2=0;
+    
+
+
+	/**
      *是否自摸胡，还是可以抢杠胡
      *0 可抢杠胡(默认)   1自摸胡     2只能自摸糊
      */
@@ -296,13 +301,13 @@ public class RoomVO {
 //        }
     }
 
-    public int getMa() {
-        return ma;
-    }
-
-    public void setMa(int ma) {
-        this.ma = ma;
-    }
+//    public int getMa() {
+//        return ma;
+//    }
+//
+//    public void setMa(int ma) {
+//        this.ma = ma;
+//    }
 
     public int getZiMo() {
         return ziMo;
@@ -368,7 +373,8 @@ public class RoomVO {
         result.hong = hong;
         result.roomType = roomType;
         result.sevenDouble = sevenDouble;
-        result.ma = ma;
+        result.dice1 = dice1;
+        result.dice2 = dice2;
         result.ziMo = ziMo;
         result.xiaYu = xiaYu;
         result.addWordCard = addWordCard;
@@ -423,6 +429,25 @@ public class RoomVO {
 
 	public void setQgbkd(boolean qgbkd) {
 		this.qgbkd = qgbkd;
+	}
+	
+	public int getDice1() {
+		return dice1;
+	}
+
+
+	public void setDice1(int dice1) {
+		this.dice1 = dice1;
+	}
+
+
+	public int getDice2() {
+		return dice2;
+	}
+
+
+	public void setDice2(int dice2) {
+		this.dice2 = dice2;
 	}
     
 }
