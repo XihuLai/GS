@@ -609,9 +609,13 @@ public class PlayCardsLogic {
 						chiAvatar.add(ava);
 						sb.append("chi");
 					}
+				}else{
+					sb.append("chu:"+cardPoint);
+					ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
 				}
 
 				System.out.println(sb + " " + ava.avatarVO.getAccount().getOpenid());
+				if (sb.length()>1) {
 					System.out.println(sb);
 					try {
 						System.out.println("开始中断执行别的线程"+System.currentTimeMillis());
@@ -620,9 +624,9 @@ public class PlayCardsLogic {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					if(!(sb.length()>1))
-						sb.append("chu:"+putOffCardPoint);
+					
 					ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
+				}
 			}
 		}
         //如果没有吃，碰，杠，胡的情况，则下家自动摸牌
@@ -813,7 +817,7 @@ public class PlayCardsLogic {
 
                             //存储杠牌的信息，
                             avatar.putResultRelation(2,cardPoint+"");
-                            avatar.avatarVO.getPaiArray()[1][cardPoint] = 2;//疑有重复
+                            avatar.avatarVO.getPaiArray()[1][cardPoint] = 2;
                             //长沙麻将
                             str = "0:"+cardPoint+":"+Rule.Gang_ming;
                             type = 0;
@@ -826,7 +830,7 @@ public class PlayCardsLogic {
                             playRecordType = 2;
                             //存储杠牌的信息，
                             avatar.putResultRelation(2,cardPoint+"");
-                            avatar.avatarVO.getPaiArray()[1][cardPoint] = 2;
+                            avatar.avatarVO.getPaiArray()[1][cardPoint] = 6;
 //                            str = "0:"+cardPoint+":"+Rule.Gang_an;
                             type = 1;
 //                            score = Rule.scoreMap.get(Rule.Gang_an);

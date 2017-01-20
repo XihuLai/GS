@@ -39,7 +39,7 @@ public class NormalHuPai {
         for(int i=0;i<paiList[0].length&&i<34;i++){
             if(paiList[1][i] == 1 && pai[i] >= 3) {
                 pai[i] -= 3;
-            }else if(paiList[1][i] == 2 && pai[i] == 4){
+            }else if((paiList[1][i] == 2||paiList[1][i] == 6) && pai[i] == 4){
                 pai[i]  -= 4;
             }else if(paiList[1][i]/4>0&&paiList[1][i]%4==0 && pai[i] > 0){//吃牌的标识是4，吃几次扣几次
             	int times = paiList[1][i]/4;

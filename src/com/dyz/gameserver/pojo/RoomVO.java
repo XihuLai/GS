@@ -39,7 +39,7 @@ public class RoomVO {
     /**
      *抓码的个数
      */
-//    private int ma;
+    private int ma;
     
     private int dice1 = 0,dice2=0;
     
@@ -301,13 +301,13 @@ public class RoomVO {
 //        }
     }
 
-//    public int getMa() {
-//        return ma;
-//    }
-//
-//    public void setMa(int ma) {
-//        this.ma = ma;
-//    }
+    public int getMa() {
+        return ma;
+    }
+
+    public void setMa(int ma) {
+        this.ma = ma;
+    }
 
     public int getZiMo() {
         return ziMo;
@@ -376,6 +376,7 @@ public class RoomVO {
         result.dice1 = dice1;
         result.dice2 = dice2;
         result.ziMo = ziMo;
+        result.ma = ma;
         result.xiaYu = xiaYu;
         result.addWordCard = addWordCard;
         result.name = name;
