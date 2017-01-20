@@ -4,8 +4,8 @@
     <property name="classpath_lib" value="WEB-INF/lib"/>
     <property environment="sys_var"/>
     <property name= "tomcat_lib" value="/Applications/tomcat/lib"/>
-    <property name="build" value="/Users/funplus/project/GameServer"/> 
-    <property name="war_dir" value="/Users/funplus/project/GameServer.war"/>
+    <property name="build" value="/Users/westlake/project/GameServer"/> 
+    <property name="war_dir" value="/Users/westlake/project/GameServer.war"/>
     <property name="sources" value="${basedir}/src"/>
      
     <path id="classpath">
