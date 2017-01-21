@@ -329,6 +329,8 @@ public class PlayCardsLogic {
             if(checkAvatarIsHuPai(avatar,100,"mo")){
             	huAvatar.add(avatar);
             	sb.append("hu,");
+            }else if(avatar.avatarVO.isTing()){
+            	sb.append("chu:"+tempPoint);
             }
             if(sb.length()>2){
             	//System.out.println(sb);
@@ -609,10 +611,13 @@ public class PlayCardsLogic {
 						chiAvatar.add(ava);
 						sb.append("chi");
 					}
-				}else{
-					sb.append("chu:"+cardPoint);
-					ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
 				}
+//				else{
+//					System.out.println("该用户听牌了那么发送chu的请求");
+//					sb.append("chu:"+cardPoint);
+//					ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
+//					sb = new StringBuffer();
+//				}
 
 				System.out.println(sb + " " + ava.avatarVO.getAccount().getOpenid());
 				if (sb.length()>1) {
@@ -1334,6 +1339,9 @@ public class PlayCardsLogic {
      				curbank = 0;
      			bankerAvatar = playerList.get(curbank);
      			bankerAvatar.avatarVO.setMain(true);
+     			for(Avatar avator:playerList){
+     				avator.avatarVO.setTing(false);
+     			}
      		}
      		
     		RoomManager.getInstance().getRoom(playerList.get(0).getRoomVO().getRoomId()).setPlayerList(playerList);
