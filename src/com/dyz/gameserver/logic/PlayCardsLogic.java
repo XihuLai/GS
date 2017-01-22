@@ -1076,7 +1076,7 @@ public class PlayCardsLogic {
 				player.avatarVO.getHuReturnObjectVO().setHuInfo(curMap);
 //				player.avatarVO.getHuReturnObjectVO().updateTotalInfo("score", "-"+calscore);
 				if(huType.equals("dianpao"))
-				roomVO.updateEndStatistics(player.getUuId()+"", huType, calscore);
+				roomVO.updateEndStatistics(player.getUuId()+"", huType, -1*calscore);
 				}
 				}
 				//循环结束后才处理胡牌人的逻辑
@@ -1222,7 +1222,7 @@ public class PlayCardsLogic {
 			curMap.put("score", ""+calscore);
 			player.avatarVO.getHuReturnObjectVO().setHuInfo(curMap);
 			if(huType.equals("dianpao"))
-			roomVO.updateEndStatistics(avatar.getUuId()+"", huType, calscore);
+			roomVO.updateEndStatistics(avatar.getUuId()+"", huType, -1*calscore);
 				}else{//如果是当前用户
 					if(dunorla){
 						if(player.avatarVO.isMain())
