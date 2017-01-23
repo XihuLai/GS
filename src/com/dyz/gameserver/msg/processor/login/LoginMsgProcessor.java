@@ -36,7 +36,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			//创建新用户并登录
 			account = new Account();
 			account.setOpenid(loginVO.getOpenId());
-			account.setUuid(AccountService.getInstance().selectMaxId()+100000);
+			account.setUuid(AccountService.getInstance().selectMaxId()+13579);
 			account.setRoomcard(Params.initialRoomCard);
 			account.setHeadicon(loginVO.getHeadIcon());
 			account.setNickname(loginVO.getNickName());
@@ -176,7 +176,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 					Thread.sleep(1000);
 					if(avatar.overOff){
 						//在某一句结算时断线，重连时返回结算信息
-						System.out.println("returnBackAction HuPaiResponse " + avatar.avatarVO.getAccount().getOpenid());
+//						System.out.println("returnBackAction HuPaiResponse " + avatar.avatarVO.getAccount().getOpenid());
 						avatar.getSession().sendMsg(new HuPaiResponse(1,avatar.oneSettlementInfo));
 					}
 				} catch (InterruptedException e) {

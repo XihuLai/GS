@@ -28,6 +28,6 @@ public class UserService {
 
     public void insertUser(User user) throws SQLException {
         int index = um.insert(user);
-        System.out.println("-add index->>"+index);
+//        System.out.println("-add index->>"+index);
     }
 }

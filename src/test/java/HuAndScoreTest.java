@@ -50,13 +50,13 @@ public class HuAndScoreTest {
 //		paiList[0]  = new int[]{0,0,0,3,0,0,1,1,1,    0,1,1,1,0,0,0,0,0,    0,0,2,0,0,0,1,1,1,   0,0,0,0,0,0,0,};
 //		paiList[0]  = new int[]{0,0,2,2,2,2,2,2,2,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
 //		paiList[0]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    4,0,4,1,1,1,1,1,4,   0,0,0,0,0,0,0,  0,2,3,1,0,1,3,4};
-		paiList[0]  = new int[]{0,0,2,0,0,2,0,0,0,    0,0,0,0,0,0,0,0,0,    2,2,0,2,2,0,0,2,0,   0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
+		paiList[0]  = new int[]{1,1,1,0,1,1,1,1,2,    0,0,0,2,2,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
 		paiList[1]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0};
 //		paiList[1]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,};
 //    	Map<String,Integer> result = test.checkHu(paiList,player1,26);
 //		int result = test.calculateScore(paiList,player1,roomVO,23,1);
-//		boolean result = test.checkSelfTing(paiList);
-		int result = test.checkSevenDouble(paiList);
+		boolean result = test.checkOtherTing(paiList,13);
+//		int result = test.checkSevenDouble(paiList);
 		System.out.println(result);
 
 //    	boolean resultting = test.checkSelfTing(paiList,true);
@@ -779,9 +779,8 @@ public class HuAndScoreTest {
 		return rv;
 	}
 
-	private boolean checkOtherTing(Avatar av, Integer cardIndex) {
+	private boolean checkOtherTing(int[][] paiList, Integer cardIndex) {
 		boolean rv = false;
-		int[][] paiList = av.getPaiArray();
 		paiList[0][cardIndex]++;
 
 		for(int i = 0; i < 34; ++i) {

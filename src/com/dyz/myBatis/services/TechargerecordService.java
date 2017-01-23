@@ -29,7 +29,7 @@ public class TechargerecordService {
     public void saveSelective(Techargerecord techargerecord) {
         try {
             int index = techargerecordMapper.saveSelective(techargerecord);
-            System.out.println("===index====> "+index);
+//            System.out.println("===index====> "+index);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -42,7 +42,7 @@ public class TechargerecordService {
    public void updateWinnersInfoSelective(Techargerecord techargerecord) {
        try {
            int index = techargerecordMapper.updateByPrimaryKeySelective(techargerecord);
-           System.out.println("===index====> "+index);
+//           System.out.println("===index====> "+index);
        }catch (Exception e){
            System.out.println(e.getMessage());
        }
@@ -55,7 +55,7 @@ public class TechargerecordService {
   public void save(Techargerecord techargerecord) {
       try {
           int index = techargerecordMapper.save(techargerecord);
-          System.out.println("===index====> "+index);
+//          System.out.println("===index====> "+index);
       }catch (Exception e){
           System.out.println(e.getMessage());
       }

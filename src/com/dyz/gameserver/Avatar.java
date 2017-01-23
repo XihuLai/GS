@@ -259,7 +259,7 @@ public class Avatar implements GameObj {
             flag = true;
         }
 
-        System.out.println(avatarVO.getAccount().getOpenid() + "碰" + flag); //XHTEST
+//        System.out.println(avatarVO.getAccount().getOpenid() + "碰" + flag); //XHTEST
         return flag;
     }
 
@@ -278,7 +278,7 @@ public class Avatar implements GameObj {
             flag = true;
         }
 
-		System.out.println(avatarVO.getAccount().getOpenid() + "杠" + flag);
+//		System.out.println(avatarVO.getAccount().getOpenid() + "杠" + flag);
         return flag;
     }
     /**
@@ -307,7 +307,7 @@ public class Avatar implements GameObj {
             }
         }
 
-        System.out.println(avatarVO.getAccount().getOpenid() + "自杠" + flag); //XHTEST
+//        System.out.println(avatarVO.getAccount().getOpenid() + "自杠" + flag); //XHTEST
 
         return flag;
     }
@@ -317,7 +317,7 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkChi(int cardIndex) {
-        System.out.println("开始检查是否能吃"+System.currentTimeMillis());
+//        System.out.println("开始检查是否能吃"+System.currentTimeMillis());
         boolean flag = false;
         //只有长沙麻将有吃的打法
         //system.out.println("判断吃否可以吃牌-----cardIndex:"+cardIndex);
@@ -346,7 +346,7 @@ public class Avatar implements GameObj {
                 flag = true;
         }
 
-        System.out.println("结束检查是否能吃"+System.currentTimeMillis() + " " + flag);
+//        System.out.println("结束检查是否能吃"+System.currentTimeMillis() + " " + flag);
         return flag;
 	}
 

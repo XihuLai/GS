@@ -95,7 +95,7 @@ public class RoomLogic {
      */
     public  boolean intoRoom(Avatar avatar){
     	synchronized(roomVO){
-            System.out.println("玩家人数 ：" + playerList.size());
+//            System.out.println("玩家人数 ：" + playerList.size());
 
     		if(playerList.size() == ConnectAPI.PLAYERS_NUMBER){
     			try {
@@ -496,11 +496,16 @@ public class RoomLogic {
 	        //playCardsLogic.updateSurplusCardCount(count);
 	        Avatar avatar;
 	        Account account ;
+	        java.util.Random random=new java.util.Random();// 定义随机类
+	        int dice1 =random.nextInt(6)+1;// 返回[0,6)集合中的整数，注意不包括6
+	        int dice2 =random.nextInt(6)+1;// 返回[0,6)集合中的整数，注意不包括6
+	        roomVO.setDice1(dice1);
+	        roomVO.setDice2(dice2);
 	        for(int i=0;i<playerList.size();i++){
 	        	//清除各种数据  1：本局胡牌时返回信息组成对象 ，
 	        	avatar = playerList.get(i);
 	        	avatar.avatarVO.setHuReturnObjectVO(new HuReturnObjectVO());
-	            avatar.getSession().sendMsg(new StartGameResponse(1,avatar.avatarVO.getPaiArray(),playerList.indexOf(playCardsLogic.bankerAvatar)));
+	            avatar.getSession().sendMsg(new StartGameResponse(1,avatar.avatarVO.getPaiArray(),playerList.indexOf(playCardsLogic.bankerAvatar),dice1,dice2));
 	            //修改玩家是否玩一局游戏的状态
 	            account = AccountService.getInstance().selectByPrimaryKey(avatar.avatarVO.getAccount().getId());
 	            if(account.getIsGame().equals("0")){
@@ -689,8 +694,8 @@ public class RoomLogic {
 		if (bt) {
 			int idx = playerList.indexOf(av);
 			for (int i = 0; i < playerList.size(); i++) {
-				System.out.println("--Deliver ting msg of " + av.avatarVO.getAccount().getOpenid() +
-						" to " + playerList.get(i).avatarVO.getAccount().getOpenid());
+//				System.out.println("--Deliver ting msg of " + av.avatarVO.getAccount().getOpenid() +
+//						" to " + playerList.get(i).avatarVO.getAccount().getOpenid());
 				playerList.get(i).getSession().sendMsg(new TingResponse(1, bt, idx));
 			}
 		}

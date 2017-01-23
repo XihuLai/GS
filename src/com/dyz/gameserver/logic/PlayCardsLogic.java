@@ -7,6 +7,7 @@ import com.context.ErrorCode;
 import com.context.Rule;
 import com.dyz.gameserver.Avatar;
 import com.dyz.gameserver.commons.message.ResponseMsg;
+import com.dyz.gameserver.context.GameServerContext;
 import com.dyz.gameserver.manager.RoomManager;
 import com.dyz.gameserver.msg.response.ErrorResponse;
 import com.dyz.gameserver.msg.response.chi.ChiResponse;
@@ -218,6 +219,10 @@ public class PlayCardsLogic {
 			paiCount += 8;
 		}
 
+	    for(Avatar curplayer:playerList){
+	    	if(!roomVO.getResultScore().containsKey(""+curplayer.getUuId()))
+	    	roomVO.getResultScore().put(""+curplayer.getUuId(), 0);
+	    }
 		final boolean isTest = false; //XHTEST
 		if (!isTest) {
             listCard = new ArrayList<Integer>();
@@ -260,6 +265,7 @@ public class PlayCardsLogic {
 	public void shuffleTheCards() {
 		Collections.shuffle(listCard);
 		Collections.shuffle(listCard);
+//		listCard = PaiList.getListCard2(listCard);//为了方便测试
 	}
 	/**
 	 * 检测玩家是否胡牌了
@@ -286,7 +292,7 @@ public class PlayCardsLogic {
         //pickAvatarIndex = nextIndex;
         //本次摸得牌点数，下一张牌的点数，及本次摸的牌点数
         int tempPoint = getNextCardPoint();
-    	System.out.println("摸牌："+tempPoint+"----上一家出牌"+putOffCardPoint+"--摸牌人索引:"+pickAvatarIndex);
+//    	System.out.println("摸牌："+tempPoint+"----上一家出牌"+putOffCardPoint+"--摸牌人索引:"+pickAvatarIndex);
         if(tempPoint != -1&&tempPoint<34) {//所摸的不是财神牌
         	//回放记录
         	PlayRecordOperation(pickAvatarIndex,tempPoint,2,-1,null,null);
@@ -329,6 +335,8 @@ public class PlayCardsLogic {
             if(checkAvatarIsHuPai(avatar,100,"mo")){
             	huAvatar.add(avatar);
             	sb.append("hu,");
+            }else if(avatar.avatarVO.isTing()){
+            	sb.append("chu:"+tempPoint);
             }
             if(sb.length()>2){
             	//System.out.println(sb);
@@ -341,9 +349,9 @@ public class PlayCardsLogic {
         	avatar.putCardInList(tempPoint);//放入牌组
         	for(int i=0;i<playerList.size();i++){//通知所有玩家摸到一张花牌
                 if(i != pickAvatarIndex){
-                	System.out.println("发送花牌通知"+tempPoint);
+//                	System.out.println("发送花牌通知"+tempPoint);
                     playerList.get(i).getSession().sendMsg(new PickFlowerCardResponse(1,pickAvatarIndex,tempPoint));//提醒其他玩家抓到花牌
-                    System.out.println("结束发送花牌通知"+tempPoint);
+//                    System.out.println("结束发送花牌通知"+tempPoint);
                 }else {
                 	avatar.getSession().sendMsg(new PickCardResponse(1, tempPoint));//返回摸到的牌，客户端对花牌做额外的处理
 				}
@@ -356,7 +364,7 @@ public class PlayCardsLogic {
         	//System.out.println("流局");
             PlayRecordOperation(pickAvatarIndex,-1,9,-1,null,null);
         	//流局处理，直接算分
-            System.out.println("SettlementData 1 - pickcard");
+//            System.out.println("SettlementData 1 - pickcard");
         	settlementData("1");
         }
     }
@@ -368,12 +376,12 @@ public class PlayCardsLogic {
      * @param avatar
      */
     public void pickCardAfterGang(Avatar avatar){
-        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "杠后摸牌");
+//        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "杠后摸牌");
     	
         //本次摸得牌点数，下一张牌的点数，及本次摸的牌点数
         int tempPoint = getNextCardPoint();
         currentCardPoint = tempPoint;
-    	System.out.println("摸牌!--"+tempPoint);
+//    	System.out.println("摸牌!--"+tempPoint);
         if(tempPoint != -1) {
         	//int avatarIndex = playerList.indexOf(avatar); // 2016-8-2注释
         	pickAvatarIndex = playerList.indexOf(avatar);
@@ -381,12 +389,12 @@ public class PlayCardsLogic {
             //记录摸牌信息
             for(int i=0;i<playerList.size();i++){
                 if(i != pickAvatarIndex){
-					System.out.println(pickAvatarIndex + "杠后摸牌通知别人" + i);
+//					System.out.println(pickAvatarIndex + "杠后摸牌通知别人" + i);
 					playerList.get(i).getSession().sendMsg(new OtherPickCardResponse(1,pickAvatarIndex));
                 }else {
                 	playerList.get(i).gangIndex.clear();//每次出牌就先清除缓存里面的可以杠的牌下标
 					playerList.get(i).getSession().sendMsg(new PickCardResponse(1, tempPoint));
-					System.out.println(pickAvatarIndex + "杠后摸牌通知自己");
+//					System.out.println(pickAvatarIndex + "杠后摸牌通知自己");
 					//摸牌之后就重置可否胡别人牌的标签
 					playerList.get(i).canHu = true;
 					//System.out.println("摸牌玩家------index"+pickAvatarIndex+"名字"+playerList.get(i).avatarVO.getAccount().getNickname());
@@ -424,7 +432,7 @@ public class PlayCardsLogic {
         	//system.out.println("流局");
         	  //记录摸牌信息
             PlayRecordOperation(pickAvatarIndex,-1,9,-1,null,null);
-            System.out.println("SettlementData 1 - pickCardAfterGang");
+//            System.out.println("SettlementData 1 - pickCardAfterGang");
 
             settlementData("1");
         }
@@ -551,7 +559,7 @@ public class PlayCardsLogic {
     	clearAvatar();
     	
         putOffCardPoint = cardPoint;
-        System.out.println("出牌点数"+putOffCardPoint+"---出牌人索引:"+playerList.indexOf(avatar)); //XHTEST
+//        System.out.println("出牌点数"+putOffCardPoint+"---出牌人索引:"+playerList.indexOf(avatar)); //XHTEST
         curAvatarIndex = playerList.indexOf(avatar);
     	PlayRecordOperation(curAvatarIndex,cardPoint,1,-1,null,null);
         avatar.pullCardFormList(putOffCardPoint);
@@ -559,18 +567,18 @@ public class PlayCardsLogic {
             //不能返回给自己
         	playerList.get(i).gangIndex.clear();//每次出牌就先清除缓存里面的可以杠的牌下标
             if(i != curAvatarIndex) {
-				System.out.println("通知第"+ i + "个玩家");
+//				System.out.println("通知第"+ i + "个玩家");
                 playerList.get(i).getSession().sendMsg(new ChuPaiResponse(1, putOffCardPoint, curAvatarIndex));
                // //system.out.println("发送打牌消息----"+playerList.get(i).avatarVO.getAccount().getNickname());
             } else {
-				System.out.println("检查能否听 - " + curAvatarIndex);
+//				System.out.println("检查能否听 - " + curAvatarIndex);
 				if (!roomVO.isYikouxiangCard()
 						&& !avatar.avatarVO.isTing()
 						&& checkSelfTing(avatar)) {
 					avatar.getSession().sendMsg(new ReturnInfoResponse(1, "canting"));
-					System.out.println("检查能否听 - " + curAvatarIndex + "能");
+//					System.out.println("检查能否听 - " + curAvatarIndex + "能");
 				} else {
-					System.out.println("检查能否听 - " + curAvatarIndex + "不能");
+//					System.out.println("检查能否听 - " + curAvatarIndex + "不能");
 				}
 			}
     	}
@@ -610,17 +618,24 @@ public class PlayCardsLogic {
 						sb.append("chi");
 					}
 				}
+//				else{
+//					System.out.println("该用户听牌了那么发送chu的请求");
+//					sb.append("chu:"+cardPoint);
+//					ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
+//					sb = new StringBuffer();
+//				}
 
-				System.out.println(sb + " " + ava.avatarVO.getAccount().getOpenid());
+//				System.out.println(sb + " " + ava.avatarVO.getAccount().getOpenid());
 				if (sb.length()>1) {
 					System.out.println(sb);
 					try {
-						System.out.println("开始中断执行别的线程"+System.currentTimeMillis());
+//						System.out.println("开始中断执行别的线程"+System.currentTimeMillis());
 						Thread.sleep(200);
-						System.out.println("结束中断回到当前线程"+System.currentTimeMillis());
+//						System.out.println("结束中断回到当前线程"+System.currentTimeMillis());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					
 					ava.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
 				}
 			}
@@ -642,7 +657,7 @@ public class PlayCardsLogic {
     	int twoPoint = cardVo.getTwoPoint();
     	//这里可能是自己能胡能碰能杠 但是选择碰
     	if(cardIndex != putOffCardPoint ){
-    		System.out.println("传入错误的牌:传入的牌"+cardIndex+"---上一把出牌："+putOffCardPoint);
+//    		System.out.println("传入错误的牌:传入的牌"+cardIndex+"---上一把出牌："+putOffCardPoint);
     	}
 		if(cardIndex < 0){
 			try {
@@ -716,7 +731,7 @@ public class PlayCardsLogic {
     	boolean flag = false;
     	//这里可能是自己能胡能碰能杠 但是选择碰
     	if(cardIndex != putOffCardPoint ){
-    		System.out.println("传入错误的牌:传入的牌"+cardIndex+"---上一把出牌："+putOffCardPoint);
+//    		System.out.println("传入错误的牌:传入的牌"+cardIndex+"---上一把出牌："+putOffCardPoint);
     	}
 		if(cardIndex < 0){
 			try {
@@ -767,7 +782,7 @@ public class PlayCardsLogic {
     				 pickAvatarIndex = playerList.indexOf(avatar);
     				 curAvatarIndex = playerList.indexOf(avatar);
     				 currentCardPoint  = -2;
-                     System.out.println("碰牌:" + putOffCardPoint + " " + avatar.avatarVO.getAccount().getOpenid());
+//                     System.out.println("碰牌:" + putOffCardPoint + " " + avatar.avatarVO.getAccount().getOpenid());
                      // }
     		 }
     		}else{
@@ -813,7 +828,7 @@ public class PlayCardsLogic {
 
                             //存储杠牌的信息，
                             avatar.putResultRelation(2,cardPoint+"");
-                            avatar.avatarVO.getPaiArray()[1][cardPoint] = 2;//疑有重复
+                            avatar.avatarVO.getPaiArray()[1][cardPoint] = 2;
                             //长沙麻将
                             str = "0:"+cardPoint+":"+Rule.Gang_ming;
                             type = 0;
@@ -826,7 +841,7 @@ public class PlayCardsLogic {
                             playRecordType = 2;
                             //存储杠牌的信息，
                             avatar.putResultRelation(2,cardPoint+"");
-                            avatar.avatarVO.getPaiArray()[1][cardPoint] = 2;
+                            avatar.avatarVO.getPaiArray()[1][cardPoint] = 6;
 //                            str = "0:"+cardPoint+":"+Rule.Gang_an;
                             type = 1;
 //                            score = Rule.scoreMap.get(Rule.Gang_an);
@@ -835,7 +850,7 @@ public class PlayCardsLogic {
                             avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo(Rule.Gang_an, cardPoint+"");//记录杠的消息
                         }
 
-                        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "自杠" + cardPoint);
+//                        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "自杠" + cardPoint);
 
                         flag = true;
                     }
@@ -908,7 +923,7 @@ public class PlayCardsLogic {
     	int totalScore = 0;
     	String recordType = "";//胡牌的分类
     	String huType = "";
-    	
+    	int paoladun = 0;//专门用来计算跑啦蹲的分数，因为包头的跑啦蹲分数要翻番后另算
 		
     	int pldscore = roomVO.getPldscore();
 		Map<String,Integer> huResult = checkHu2(avatar , cardIndex);//算好所有的名堂
@@ -926,12 +941,14 @@ public class PlayCardsLogic {
 		}
 		boolean dunorla = avatar.avatarVO.isDunorla();
 		boolean pao = avatar.avatarVO.isRun();
-		//处理跑拉蹲分数		
-		if(dunorla){
-			score+=pldscore;
+		//处理跑拉蹲分数,蹲或拉不是赢全部		
+		if(avatar.avatarVO.isMain()&&dunorla){//如果庄蹲了赢全部
+//			huResult2.put(Rule.Hu_dun, ""+pldscore);
+			paoladun+=pldscore;
 		}
 		if(pao){
-			score+=pldscore;
+//			huResult2.put(Rule.Hu_pao, ""+pldscore);
+			paoladun+=pldscore;
 		}
 		//同时也要算分数------------------------------------
 		int roomType = roomVO.getRoomType();
@@ -1037,26 +1054,35 @@ public class PlayCardsLogic {
 				
 				boolean curdunorla = avatar.avatarVO.isDunorla();
 				boolean curpao = avatar.avatarVO.isRun();
-				if(curdunorla){
-					if(player.avatarVO.isMain())
-						curMap.put(Rule.Hu_dun, ""+(pldscore+(dunorla?pldscore:0)));
-						else
-							curMap.put(Rule.Hu_la, ""+(pldscore+(dunorla?pldscore:0)));
-					calscore+=pldscore;
+				if(curdunorla){//输家蹲或者拉了
+					if(player.avatarVO.isMain()){//如果输家蹲了，输蹲
+						curMap.put(Rule.Hu_dun, ""+pldscore);
+						calscore+=pldscore;
+						if(dunorla){//如果赢家拉了，还要加上赢家拉的分
+							calscore+=pldscore;
+						}
+					}else{//如果输家拉了
+						if(avatar.avatarVO.isMain()){//并且赢家是庄家
+							calscore+=pldscore;
+							curMap.put(Rule.Hu_la, ""+pldscore);//输家的拉没有意义
+						}
+					}
+					
 				}
 				if(curpao){
-					curMap.put(Rule.Hu_pao, ""+(pldscore+(pao?pldscore:0)));
+					curMap.put(Rule.Hu_pao, ""+pldscore);
 					calscore+=pldscore;
 				}
 
+				calscore+=paoladun;
 				calscore+=score;
 				totalScore+=calscore;
 				curMap.put("score", ""+calscore);
 				player.avatarVO.getHuReturnObjectVO().updateTotalScore(-1*(calscore));
 				player.avatarVO.getHuReturnObjectVO().setHuInfo(curMap);
 //				player.avatarVO.getHuReturnObjectVO().updateTotalInfo("score", "-"+calscore);
-				if(huType.equals("dianpao"))
-				roomVO.updateEndStatistics(player.getUuId()+"", huType, calscore);
+//				if(huType.equals("dianpao"))
+				roomVO.updateEndStatistics(player.getUuId()+"", huType, -1*calscore);
 				}
 				}
 				//循环结束后才处理胡牌人的逻辑
@@ -1172,12 +1198,20 @@ public class PlayCardsLogic {
 			
 			boolean curdunorla = avatar.avatarVO.isDunorla();
 			boolean curpao = avatar.avatarVO.isRun();
-			if(curdunorla){
-				if(player.avatarVO.isMain())
+			if(curdunorla){//输家蹲或者拉了
+				if(player.avatarVO.isMain()){//如果输家蹲了，输蹲
 					curMap.put(Rule.Hu_dun, ""+pldscore);
-					else
-						curMap.put(Rule.Hu_la, ""+pldscore);
-				calscore+=pldscore;
+					paoladun+=pldscore;
+					if(dunorla){//如果赢家拉了，还要加上赢家拉的分
+						paoladun+=pldscore;
+					}
+				}else{//如果输家拉了
+					if(avatar.avatarVO.isMain()){//并且赢家是庄家
+						paoladun+=pldscore;
+						curMap.put(Rule.Hu_la, ""+pldscore);//输家的拉没有意义
+					}
+				}
+				
 			}
 			if(curpao){
 				curMap.put(Rule.Hu_pao, ""+pldscore);
@@ -1187,26 +1221,26 @@ public class PlayCardsLogic {
 			calscore+=score;
 			calmulti*=multiscore;
 			calscore*=calmulti;
+			calscore+=paoladun;
 			totalScore+=calscore;
 			player.avatarVO.getHuReturnObjectVO().updateTotalScore(-1*calscore);
 //			avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("score", "-"+calscore);
 			curMap.put("score", ""+calscore);
 			player.avatarVO.getHuReturnObjectVO().setHuInfo(curMap);
-			if(huType.equals("dianpao"))
-			roomVO.updateEndStatistics(avatar.getUuId()+"", huType, calscore);
-				}else{//如果是当前用户
-					if(dunorla){
-						if(player.avatarVO.isMain())
-						huResult2.put(Rule.Hu_dun, ""+pldscore);
-						else
-							huResult2.put(Rule.Hu_la, ""+pldscore);
-					}
-					if(pao)
-						huResult2.put(Rule.Hu_pao, ""+pldscore);
-					if(dian==-1)
-						huResult2.put(Rule.Hu_zimo, "1");
+//			if(huType.equals("dianpao"))
+			roomVO.updateEndStatistics(avatar.getUuId()+"", huType, -1*calscore);
 				}
 			}
+			if(dunorla){
+				if(avatar.avatarVO.isMain())
+				huResult2.put(Rule.Hu_dun, ""+pldscore);
+				else
+					huResult2.put(Rule.Hu_la, ""+pldscore);
+			}
+			if(pao)
+				huResult2.put(Rule.Hu_pao, ""+pldscore);
+			if(dian==-1)
+				huResult2.put(Rule.Hu_zimo, "1");
 			if(huType.equals("dianpao"))
 				huType = "jiepao";
 			avatar.avatarVO.getHuReturnObjectVO().updateTotalScore(totalScore);
@@ -1286,7 +1320,7 @@ public class PlayCardsLogic {
         			chiAvatar.clear();;
     				//两个人之间建立关联，游戏结束算账用   自摸不会出现抢胡的情况
     				
-    				avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("zimo", "");
+    				avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("zimo", ""+cardIndex);
     				flag = true;
     				calculateScore(avatar , cardIndex,-1);
     			}
@@ -1310,11 +1344,14 @@ public class PlayCardsLogic {
      				curbank = 0;
      			bankerAvatar = playerList.get(curbank);
      			bankerAvatar.avatarVO.setMain(true);
+     			
      		}
-     		
+     		for(Avatar avator:playerList){
+ 				avator.avatarVO.setTing(false);
+ 			}
     		RoomManager.getInstance().getRoom(playerList.get(0).getRoomVO().getRoomId()).setPlayerList(playerList);
     		//一局牌胡了，返回这一局的所有数据吃，碰， 杠，胡等信息
-        System.out.println("SettlementData 0 - huPai");
+//        System.out.println("SettlementData 0 - huPai");
 
         settlementData("0");
 //    	}
@@ -1333,6 +1370,10 @@ public class PlayCardsLogic {
     		//第一局结束扣房卡
     		deductRoomCard();//因为测试所以注释这行
     	}
+    	if("1".equals(type))
+    	for(Avatar avator:playerList){
+				avator.avatarVO.setTing(false);
+			}
     	JSONArray array = new JSONArray();
     	JSONObject json = new JSONObject();
 //    	if(!type.equals("0")){
@@ -1391,7 +1432,7 @@ public class PlayCardsLogic {
     	int count = 10;
     	for (Avatar avatar : playerList) {
     		//发送消息
-            System.out.println("settlementData : HuPaiResponse  fired - " + bankerAvatar.avatarVO.getAccount().getOpenid());
+//            System.out.println("settlementData : HuPaiResponse  fired - " + bankerAvatar.avatarVO.getAccount().getOpenid());
             avatar.getSession().sendMsg(new HuPaiResponse(1,json.toString()));
     		
     		
@@ -1418,15 +1459,21 @@ public class PlayCardsLogic {
 			Map<String, Map<String, Integer>> endStatistics = roomVO.getEndStatistics();
 			Map<String,Integer> map = new HashMap<String, Integer>();
 			Set<Entry<String, Map<String, Integer>>> set= endStatistics.entrySet();
+//			JSONObject js2 = new JSONObject();
+//			js2.putAll(endStatistics);
+//			System.out.println("-endStatistics----------------------"+js2);
 			JSONObject js = new JSONObject();
 			List<FinalGameEndItemVo> list = new ArrayList<FinalGameEndItemVo>();
 			FinalGameEndItemVo obj;
 			for (Entry<String, Map<String, Integer>>  param : set) {
 				obj = new FinalGameEndItemVo();
 				obj.setUuid(Integer.parseInt(param.getKey()));
+				int roomscore = roomVO.getResultScore().get(param.getKey());
+//				System.out.println(param.getKey()+"-----------------------"+roomscore);
 				sb.append(AccountService.getInstance().selectByUUid(Integer.parseInt(param.getKey())).getNickname());
 				map = param.getValue();
 				for (Entry<String, Integer> entry : map.entrySet()) {
+//					System.out.println(entry.getKey()+"============================"+entry.getValue());
 					switch (entry.getKey()) {
 					case "zimo":
 						obj.setZimo(entry.getValue());
@@ -1444,8 +1491,8 @@ public class PlayCardsLogic {
 						obj.setAngang(entry.getValue());
 						break;
 					case "scores":
-						obj.setScores(entry.getValue());
-						sb.append(":"+entry.getValue()+",");
+						obj.setScores(roomscore);
+						sb.append(":"+roomscore+",");
 						break;
 					default:
 						break;
@@ -1510,7 +1557,7 @@ public class PlayCardsLogic {
     	//把出牌点数和下面该谁出牌发送会前端  下一家都还没有摸牌就要出牌了??
         if(!hasHu && checkMsgAndSend()){
         	//如果没有吃，碰，杠，胡的情况，则下家自动摸牌
-			System.out.println("没有吃，碰，杠，胡，下家自动摸牌");
+//			System.out.println("没有吃，碰，杠，胡，下家自动摸牌");
             pickCard();
         }
     }
@@ -1576,30 +1623,35 @@ public class PlayCardsLogic {
         nextCardindex++;
         
         //检测一下庄家有没有天胡
+        StringBuffer sb = new StringBuffer();
        if(checkHu(bankerAvatar,-1)){
     	   //检查有没有天胡/有则把相关联的信息放入缓存中
+//    	   System.out.println("==================庄家天胡了===================");
     	   huAvatar.add(bankerAvatar);
     	   pickAvatarIndex = 0;//第一个摸牌人就是庄家
     	   //发送消息
-           System.out.println("dealingTheCards: HuPaiResponse  fired - " + bankerAvatar.avatarVO.getAccount().getOpenid());
+//           System.out.println("dealingTheCards: HuPaiResponse  fired - " + bankerAvatar.avatarVO.getAccount().getOpenid());
     	   bankerAvatar.getSession().sendMsg(new HuPaiResponse(1,"hu,"));
+    	   sb.append("hu,");
     	   bankerAvatar.huAvatarDetailInfo.add(listCard.get(nextCardindex-1)+":"+0);
        }
        //检测庄家起手有没的杠  长沙麻将叫做大四喜
        if(bankerAvatar.checkSelfGang()){
     	   gangAvatar.add(bankerAvatar);
     	   //发送消息
-		   StringBuffer sb = new StringBuffer();
+		   
 		   sb.append("gang");
 		   for (int i : bankerAvatar.gangIndex) {
 			   sb.append(":"+i);
 		   }
 		   sb.append(",");
 
-    	   bankerAvatar.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
+    	   
     	  // bankerAvatar.huAvatarDetailInfo.add(bankerAvatar.gangIndex.get(0)+":"+2);
 		   //bankerAvatar.gangIndex.clear();
        }
+       if(sb.length()>1)
+       bankerAvatar.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
        //游戏回放
        PlayRecordInit();
     }
@@ -1610,7 +1662,7 @@ public class PlayCardsLogic {
     public void PlayRecordInit(){
     	 playRecordGame = new PlayRecordGameVO();
     	 RoomVO roomVo = roomVO;
-    	 roomVo.setEndStatistics(new HashMap<String, Map<String,Integer>>());
+//    	 roomVo.setEndStatistics(new HashMap<String, Map<String,Integer>>());
     	 roomVo.setPlayerList(new ArrayList<AvatarVO>());
          playRecordGame.roomvo = roomVo;
          PlayRecordItemVO playRecordItemVO;
@@ -1626,7 +1678,7 @@ public class PlayCardsLogic {
   		   for (int j = 0; j < str.length; j++) {
   			   sb.append(str[j]+",");
   		   }
-  		   System.out.println(account.getUuid()+"的牌为:"+sb.substring(0,sb.length()-1));
+//  		   System.out.println(account.getUuid()+"的牌为:"+sb.substring(0,sb.length()-1));
   		   playRecordItemVO.setCardList(sb.substring(0,sb.length()-1));
   		   playRecordItemVO.setHeadIcon(account.getHeadicon());
   		   playRecordItemVO.setSex(account.getSex());
@@ -1795,7 +1847,7 @@ public class PlayCardsLogic {
     }
     
     private boolean checkHu(Avatar avatar,Integer cardIndex){
-		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - begin" + cardIndex);
+//		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - begin" + cardIndex);
 
 		//根据不同的游戏类型进行不用的判断
 		boolean flag = false;
@@ -1810,7 +1862,7 @@ public class PlayCardsLogic {
 
 		if(cardIndex!=-1&&cardIndex!=100)
 			avatar.pullCardFormList(cardIndex);
-		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - end -" + flag);
+//		System.out.println(avatar.avatarVO.getAccount().getOpenid() + "checkhu - end -" + flag);
 
 		return flag;
 	}
@@ -2199,11 +2251,17 @@ public class PlayCardsLogic {
 	public boolean checkThirteen(int[][] paiList){
 		boolean rv = true;
         int i = 0;
-
+        int flag = 0;
         while (rv && i < idxs.length) {
             rv = paiList[0][idxs[i++]] >= 1;
+            if(paiList[0][idxs[i-1]]>1)
+            	flag++;
         }
+        if(rv&&flag>0)
 		return rv;
+        else{
+        	return false;
+        }
 	}
 
     /**
@@ -2450,7 +2508,7 @@ public class PlayCardsLogic {
     }
 
 	private boolean checkSelfTing(Avatar av) {
-    	System.out.println("开始检查是否自听"+System.currentTimeMillis());
+//    	System.out.println("开始检查是否自听"+System.currentTimeMillis());
 		boolean rv = false;
 		int[][] paiList = av.getPaiArray();
 		for(int i = 0; i < 34; ++i) {
@@ -2473,13 +2531,13 @@ public class PlayCardsLogic {
 				break;
 			}
 		}
-    	System.out.println("结束检查是否自听"+System.currentTimeMillis() + " " + rv);
+//    	System.out.println("结束检查是否自听"+System.currentTimeMillis() + " " + rv);
 
 		return rv;
 	}
 
 	private boolean checkOtherTing(Avatar av, Integer cardIndex, boolean bp) {
-		System.out.println("开始检查他人是否听"+System.currentTimeMillis());
+//		System.out.println("开始检查他人是否听"+System.currentTimeMillis());
 		boolean rv = false;
 		int[][] paiList = av.getPaiArray();
 		paiList[0][cardIndex]++;
@@ -2506,7 +2564,7 @@ public class PlayCardsLogic {
 		}
 		paiList[0][cardIndex]--;
 
-		System.out.println("结束检查他人是否听"+System.currentTimeMillis() + rv);
+//		System.out.println("结束检查他人是否听"+System.currentTimeMillis() + rv);
 		return rv;
 	}
 	

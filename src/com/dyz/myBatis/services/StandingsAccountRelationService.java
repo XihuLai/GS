@@ -29,13 +29,13 @@ public class StandingsAccountRelationService {
 	    
 	    public int saveSelective(StandingsAccountRelation standingsAccountRelation){
 	    	 int index = standingsAccountRelationMapper.saveSelective(standingsAccountRelation);
-	         System.out.println("-account insert index->>" + index);
+//	         System.out.println("-account insert index->>" + index);
 	         return index;
 	    }
 	    
 	    public int save(StandingsAccountRelation standingsAccountRelation){
 	    	 int index = standingsAccountRelationMapper.save(standingsAccountRelation);
-	         System.out.println("-account insert index->>" + index);
+//	         System.out.println("-account insert index->>" + index);
 	         return index;
 	    }
 	    

@@ -32,7 +32,7 @@ public class NoticeTableService {
     public void updateAccount(NoticeTable noticeTable) {
         try {
             int index = noticeTableMapper.updateByPrimaryKey(noticeTable);
-            System.out.println("===index====> "+index);
+//            System.out.println("===index====> "+index);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

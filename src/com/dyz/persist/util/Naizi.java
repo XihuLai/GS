@@ -14,7 +14,7 @@ public class Naizi {
         for(int i=0;i<paiList[0].length;i++){
             if(paiList[1][i] == 1 && pai[i] >= 3) {
                 pai[i] -= 3;
-            }else if(paiList[1][i] == 2 && pai[i] == 4){
+            }else if((paiList[1][i] == 2||paiList[1][i] == 6) && pai[i] == 4){
                 pai[i]  -= 4;
             }
         }
