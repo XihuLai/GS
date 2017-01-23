@@ -1370,6 +1370,10 @@ public class PlayCardsLogic {
     		//第一局结束扣房卡
     		deductRoomCard();//因为测试所以注释这行
     	}
+    	if("1".equals(type))
+    	for(Avatar avator:playerList){
+				avator.avatarVO.setTing(false);
+			}
     	JSONArray array = new JSONArray();
     	JSONObject json = new JSONObject();
 //    	if(!type.equals("0")){
