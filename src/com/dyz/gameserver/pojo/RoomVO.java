@@ -213,7 +213,7 @@ public class RoomVO {
     private Map<String , Map<String,Integer>> endStatistics = new HashMap<String, Map<String,Integer>>();
     
 	public Map<String, Map<String, Integer>> updateEndStatistics(String uuid , String type ,int roundScore) {
-		System.out.println(uuid+"-----------------------"+type+"============"+roundScore);
+//		System.out.println(uuid+"-----------------------"+type+"============"+roundScore);
 		
 		Avatar avator = GameServerContext.getAvatarFromOn(Integer.parseInt(uuid));
 		if(avator==null)

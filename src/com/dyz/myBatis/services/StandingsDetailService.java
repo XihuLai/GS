@@ -26,7 +26,7 @@ public class StandingsDetailService {
 	    
 	    public int saveSelective(StandingsDetail standingsDetail){
 	    	 int index = standingsDetailMapper.saveSelective(standingsDetail);
-	         System.out.println("-account insert index->>" + index);
+//	         System.out.println("-account insert index->>" + index);
 	         return index;
 	    }
 	    

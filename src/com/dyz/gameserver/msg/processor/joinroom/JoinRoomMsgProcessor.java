@@ -39,9 +39,9 @@ public class JoinRoomMsgProcessor extends MsgProcessor implements
 					}
 					boolean joinResult = roomLogic.intoRoom(avatar);
 					if(joinResult) {
-						System.out.println("加入房间成功");
+//						System.out.println("加入房间成功");
 					}else{
-						System.out.println("加入房间失败");
+//						System.out.println("加入房间失败");
 					}
 				} else {
 					avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000018));

@@ -29,7 +29,7 @@ public class WinnersInfoService {
     public void saveSelective(WinnersInfo winnersInfo) {
         try {
             int index = winnersInfoMapper.saveSelective(winnersInfo);
-            System.out.println("===index====> "+index);
+//            System.out.println("===index====> "+index);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -55,7 +55,7 @@ public class WinnersInfoService {
   public void save(WinnersInfo winnersInfo) {
       try {
           int index = winnersInfoMapper.save(winnersInfo);
-          System.out.println("===index====> "+index);
+//          System.out.println("===index====> "+index);
       }catch (Exception e){
           System.out.println(e.getMessage());
       }

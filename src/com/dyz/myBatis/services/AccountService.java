@@ -62,7 +62,7 @@ public class AccountService {
      */
     public int createAccount(Account account) throws SQLException{
         int index = accMap.insertSelective(account);
-        System.out.println("-account insert index->>" + index);
+//        System.out.println("-account insert index->>" + index);
         return index;
     }
 
@@ -100,7 +100,7 @@ public class AccountService {
      */
     public int selectMaxId() throws SQLException{
         int index = accMap.selectMaxId();
-        System.out.println("-account selectMaxId index->>" + index);
+//        System.out.println("-account selectMaxId index->>" + index);
         return index;
     }
      

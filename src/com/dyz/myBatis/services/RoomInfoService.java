@@ -59,7 +59,7 @@ public class RoomInfoService {
 	        
 	        //gameaccountindex记录某个游戏记录中4个玩家对应的索引
 	        
-	        System.out.println("-RoomInfo insert index->>" + index);
+//	        System.out.println("-RoomInfo insert index->>" + index);
 	        return index;
 	    }
 	    

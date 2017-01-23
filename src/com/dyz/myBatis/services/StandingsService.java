@@ -28,7 +28,7 @@ public class StandingsService {
 	    
 	    public int saveSelective(Standings standings){
 	    	 int index = standingsMapper.saveSelective(standings);
-	         System.out.println("-account insert index->>" + index);
+//	         System.out.println("-account insert index->>" + index);
 	         return index;
 	    }
 	    

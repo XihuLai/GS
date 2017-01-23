@@ -694,8 +694,8 @@ public class RoomLogic {
 		if (bt) {
 			int idx = playerList.indexOf(av);
 			for (int i = 0; i < playerList.size(); i++) {
-				System.out.println("--Deliver ting msg of " + av.avatarVO.getAccount().getOpenid() +
-						" to " + playerList.get(i).avatarVO.getAccount().getOpenid());
+//				System.out.println("--Deliver ting msg of " + av.avatarVO.getAccount().getOpenid() +
+//						" to " + playerList.get(i).avatarVO.getAccount().getOpenid());
 				playerList.get(i).getSession().sendMsg(new TingResponse(1, bt, idx));
 			}
 		}

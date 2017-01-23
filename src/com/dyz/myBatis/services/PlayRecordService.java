@@ -30,7 +30,7 @@ public class PlayRecordService {
 	    
 	    public int saveSelective(PlayRecord playRecord){
 	    	 int index = playRecordMapper.saveSelective(playRecord);
-	         System.out.println("-account insert index->>" + index);
+//	         System.out.println("-account insert index->>" + index);
 	         return index;
 	    }
 	    
