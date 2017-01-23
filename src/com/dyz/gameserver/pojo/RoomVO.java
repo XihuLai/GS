@@ -3,6 +3,9 @@ package com.dyz.gameserver.pojo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.dyz.gameserver.context.GameServerContext;
+import com.alibaba.fastjson.JSONObject;
+import com.dyz.gameserver.Avatar;
 
 /**
  * Created by kevin on 2016/6/22.
@@ -91,7 +94,16 @@ public class RoomVO {
 
     private boolean mustting;//是否带听
     
+    private Map<String,Integer> resultScore = new HashMap<String,Integer>();
     
+    
+    public Map<String, Integer> getResultScore() {
+		return resultScore;
+	}
+	public void setResultScore(Map<String, Integer> resultScore) {
+		this.resultScore = resultScore;
+	}
+
     public boolean isPengpeng() {
 		return pengpeng;
 	}
@@ -201,6 +213,32 @@ public class RoomVO {
     private Map<String , Map<String,Integer>> endStatistics = new HashMap<String, Map<String,Integer>>();
     
 	public Map<String, Map<String, Integer>> updateEndStatistics(String uuid , String type ,int roundScore) {
+		System.out.println(uuid+"-----------------------"+type+"============"+roundScore);
+		
+		Avatar avator = GameServerContext.getAvatarFromOn(Integer.parseInt(uuid));
+		if(avator==null)
+			avator = GameServerContext.getAvatarFromOff(Integer.parseInt(uuid));
+		
+		if(!"scores".equals(type)){
+			
+			if(resultScore.containsKey(uuid))
+				resultScore.put(uuid, roundScore+resultScore.get(uuid));
+			else
+				resultScore.put(uuid, roundScore);
+			if("zimo".equals(type)&&roundScore<0){
+				roundScore = 0;
+				return endStatistics;
+			}
+			roundScore = 1;
+			
+		}
+		else{
+//			Map<String,Integer > map = new HashMap<String , Integer>();
+//    		map.put(type,roundScore);
+//    		endStatistics.put(uuid, map);
+//			return endStatistics;
+			
+		}
     		if(endStatistics.get(uuid) == null){
     			Map<String,Integer > map = new HashMap<String , Integer>();
         		map.put(type,roundScore);
@@ -214,7 +252,6 @@ public class RoomVO {
     				endStatistics.get(uuid).put(type, roundScore);
     			}
     		}
-    	
 		return endStatistics;
 	}
 

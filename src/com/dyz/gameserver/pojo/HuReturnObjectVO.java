@@ -57,7 +57,7 @@ public class HuReturnObjectVO {
 	 */
 	public synchronized void updateTotalInfo(String type ,String str) {
 		if(type.equals("chi")){
-			System.out.println("chi");
+//			System.out.println("chi");
 		}
 		if(StringUtil.isNotEmpty(str)){
 			if(totalInfo.get(type) == null){
@@ -68,7 +68,7 @@ public class HuReturnObjectVO {
 			}
 		}
 		else{
-			System.out.println("HuReturnObjectVO里面的updateTotalInfo--传入的str不呢为空");
+//			System.out.println("HuReturnObjectVO里面的updateTotalInfo--传入的str不呢为空");
 		}
 	}
 	
