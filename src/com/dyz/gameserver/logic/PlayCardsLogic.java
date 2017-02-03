@@ -346,7 +346,8 @@ public class PlayCardsLogic {
         }else if(tempPoint != -1&&tempPoint>=34) {//所摸的是花牌的处理
         	PlayRecordOperation(pickAvatarIndex,tempPoint,2,-1,null,null);//回放记录
         	Avatar avatar = playerList.get(pickAvatarIndex);
-        	avatar.putCardInList(tempPoint);//放入牌组
+        	setFlowerCardOwnerInfo(avatar, tempPoint);
+//        	avatar.putCardInList(tempPoint);//放入牌组
         	for(int i=0;i<playerList.size();i++){//通知所有玩家摸到一张花牌
                 if(i != pickAvatarIndex){
 //                	System.out.println("发送花牌通知"+tempPoint);
@@ -382,7 +383,7 @@ public class PlayCardsLogic {
         int tempPoint = getNextCardPoint();
         currentCardPoint = tempPoint;
 //    	System.out.println("摸牌!--"+tempPoint);
-        if(tempPoint != -1) {
+        if(tempPoint != -1&&tempPoint<34) {
         	//int avatarIndex = playerList.indexOf(avatar); // 2016-8-2注释
         	pickAvatarIndex = playerList.indexOf(avatar);
         	// Avatar avatar = playerList.get(pickAvatarIndex);
@@ -426,6 +427,22 @@ public class PlayCardsLogic {
 				avatar.getSession().sendMsg(new ReturnInfoResponse(1, sb.toString()));
             }
             
+        }else if(tempPoint != -1&&tempPoint>=34){
+        	PlayRecordOperation(pickAvatarIndex,currentCardPoint,2,-1,null,null);//回放记录
+        	setFlowerCardOwnerInfo(avatar, currentCardPoint);
+//        	avatar.putCardInList(tempPoint);//放入牌组
+        	for(int i=0;i<playerList.size();i++){//通知所有玩家摸到一张花牌
+                if(i != pickAvatarIndex){
+//                	System.out.println("发送花牌通知"+tempPoint);
+                    playerList.get(i).getSession().sendMsg(new PickFlowerCardResponse(1,pickAvatarIndex,tempPoint));//提醒其他玩家抓到花牌
+//                    System.out.println("结束发送花牌通知"+tempPoint);
+                }else {
+                	avatar.getSession().sendMsg(new PickCardResponse(1, tempPoint));//返回摸到的牌，客户端对花牌做额外的处理
+				}
+            }
+//        	pickAvatarIndex = getPreAvatarIndex();//当前摸牌人归位
+        	pickCardAfterGang(avatar);//继续摸牌处理
+        	return;
         }
         else{
         	//流局
@@ -2585,8 +2602,9 @@ public class PlayCardsLogic {
 	}
 
 	private void setFlowerCardOwnerInfo(Avatar av, int curCard) {
+		int dis = getDistToMain(av);
 		for (int j = 0; j < playerList.size(); ++j) {
-			playerList.get(j).getPaiArray()[0][curCard] = getDistToMain(av) + 1; //设置花牌是哪家获得
+			playerList.get(j).getPaiArray()[0][curCard] = dis + 1; //设置花牌是哪家获得
 		}
 	}
 

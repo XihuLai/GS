@@ -10,10 +10,10 @@ public class PaiList {
     public static int paiCount = 42;
 
 
-    public static int[] p1 = {0,8,9,17,18,26,27,28,29,30,31,32,33,0};
-    public static int[] p2 = {1,1,1,1,2,2,3,3,4,4,5,5,6,6};
-    public static int[] p3 = {9,9,9,10,11,12,13,14,15,16,17,17,17,17};
-    public static int[] p4 = {19,19,19,20,20,20,21,21,21,22,22,22,23,23};
+    public static int[] p1 = {34,0,8,9,17,18,26,27,28,29,30,31,32,33};
+    public static int[] p2 = {35,1,1,1,1,2,2,3,3,4,4,5,5,6};
+    public static int[] p3 = {36,9,9,9,10,11,12,13,14,15,16,17,17,17};
+    public static int[] p4 = {37,19,19,19,20,20,20,21,21,21,22,22,22,23};
     
     
 //    public static int[] p1 = {0,1,2,3,3,4,5,6,7,7,10,11,12};

@@ -36,7 +36,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			//创建新用户并登录
 			account = new Account();
 			account.setOpenid(loginVO.getOpenId());
-			account.setUuid(AccountService.getInstance().selectMaxId()+13579);
+			account.setUuid(AccountService.getInstance().selectMaxId()+135797);
 			account.setRoomcard(Params.initialRoomCard);
 			account.setHeadicon(loginVO.getHeadIcon());
 			account.setNickname(loginVO.getNickName());
