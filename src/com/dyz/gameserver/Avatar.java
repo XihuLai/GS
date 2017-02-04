@@ -402,19 +402,16 @@ public class Avatar implements GameObj {
      * @param cardIndex
      */
     public boolean putCardInList(int cardIndex){
+    	if(cardIndex<34){
         if(avatarVO.getPaiArray()[0][cardIndex]<4) {
             avatarVO.getPaiArray()[0][cardIndex]++;
            return true;
         }else{
-        	//再没检测出为什么牌组里面已经有4张牌的错误消息前暂且注释掉
-            //System.out.println("Error : putCardInList --> 牌数组里已经有4张牌");
-            //try {  
-                //session.sendMsg(new ErrorResponse(ErrorCode.Error_000008));
-           // } catch (IOException e) {
-            //    e.printStackTrace();
-           // }
             return true;
         }
+    	}else{
+    		return false;
+    	}
     }
 
     /**

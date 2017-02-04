@@ -428,6 +428,7 @@ public class PlayCardsLogic {
             }
             
         }else if(tempPoint != -1&&tempPoint>=34){
+        	pickAvatarIndex = playerList.indexOf(avatar);
         	PlayRecordOperation(pickAvatarIndex,currentCardPoint,2,-1,null,null);//回放记录
         	setFlowerCardOwnerInfo(avatar, currentCardPoint);
 //        	avatar.putCardInList(tempPoint);//放入牌组
@@ -1618,6 +1619,7 @@ public class PlayCardsLogic {
                 av.putCardInList(curCard);//放到牌组里面
 				while(curCard>33){//是花牌则重新发张
 					setFlowerCardOwnerInfo(av, curCard);
+					System.out.println(av.avatarVO.getAccount().getNickname()+"玩家发到花牌=================="+curCard);
 					nextCardindex++;
 					curCard = listCard.get(nextCardindex);
 					av.putCardInList(curCard);//放到牌组里面
