@@ -539,7 +539,9 @@ public class PlayCardsLogic {
     						return;
     					}
     				}
-    			}
+    			}else if(huAvatar.size() == 1&&huAvatar.get(0).huQuest){
+					huPai(huAvatar.get(0),putOffCardPoint,"0");
+				}
     			//如果都没有人胡，没有人杠，没有人碰，没有人吃的情况下。则下一玩家摸牌
     			chuPaiCallBack();
     		}
@@ -583,6 +585,7 @@ public class PlayCardsLogic {
         avatar.pullCardFormList(putOffCardPoint);
         for(int i=0;i<playerList.size();i++){
             //不能返回给自己
+        	playerList.get(i).canHu = true;
         	playerList.get(i).gangIndex.clear();//每次出牌就先清除缓存里面的可以杠的牌下标
             if(i != curAvatarIndex) {
 //				System.out.println("通知第"+ i + "个玩家");
@@ -609,7 +612,7 @@ public class PlayCardsLogic {
 				sb = new StringBuffer();
 				//判断吃，碰， 胡 杠的时候需要把以前吃，碰，杠胡的牌踢出再计算
 				if(avatar.getRoomVO().getZiMo()!= 2
-						&& ava.canHu
+//						&& ava.canHu
 						&& checkAvatarIsHuPai(ava,putOffCardPoint,"chu")){
 					//胡牌状态为可胡的状态时才行
 					huAvatar.add(ava);
@@ -645,7 +648,7 @@ public class PlayCardsLogic {
 
 //				System.out.println(sb + " " + ava.avatarVO.getAccount().getOpenid());
 				if (sb.length()>1) {
-					System.out.println(sb);
+//					System.out.println(sb);
 					try {
 //						System.out.println("开始中断执行别的线程"+System.currentTimeMillis());
 						Thread.sleep(200);
@@ -890,7 +893,7 @@ public class PlayCardsLogic {
 //                        str = playerList.get(curAvatarIndex).getUuId()+":"+cardPoint+":"+Rule.Gang_dian;
                         type = 0;
 
-                        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "被点杠" + cardPoint);
+//                        System.out.println(avatar.avatarVO.getAccount().getOpenid() + "被点杠" + cardPoint);
 //                        endStatisticstype = "minggang";
                         avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo(Rule.Gang_ming, cardPoint+"");//记录杠的消息
 //                        //减点杠玩家的分数
@@ -1280,12 +1283,16 @@ public class PlayCardsLogic {
 //    	avatar.getPaiArray()[1][cardIndex] = 3;
     	//当胡家手上没有红中，则多抓一个码
     	int playRecordType = 6;
+    	if(hasHu)
+    		return false;
     	if(huAvatar.size() > 0) {	
-    		
+//    		System.out.println("请求胡牌的人的的昵称---"+avatar.avatarVO.getAccount().getNickname());
     		
    		 if(huAvatar.contains(avatar)){
     			//if(playerList.get(pickAvatarIndex).getUuId() != avatar.getUuId()){
     			if(pickAvatarIndex == curAvatarIndex){//点炮，那么点炮人的下家优先胡,摸牌的人刚刚出牌
+//    				System.out.println("当前出牌人的昵称---"+playerList.get(curAvatarIndex).avatarVO.getAccount().getNickname());
+//    				System.out.println("当前摸牌人的昵称---"+playerList.get(pickAvatarIndex).avatarVO.getAccount().getNickname());
     				//下面代码判断是否有人胡牌优先级更高
     				int ami = playerList.indexOf(avatar);
     	   			 int distance = ami - curAvatarIndex;
@@ -1299,6 +1306,7 @@ public class PlayCardsLogic {
     	   					dis = dis+4;
     	   				if(dis<distance)
     	   					needWait = true;
+//    	   				System.out.println("昵称---"+canhuAvator.avatarVO.getAccount().getNickname()+"距离为==="+dis+"请求胡牌人距离为===="+distance);
     	   			 }
     	   			 
     				//把胡了的牌索引放入到对应赢家的牌组中
@@ -1306,9 +1314,10 @@ public class PlayCardsLogic {
     				//system.out.println("点炮");
     				//当摸牌人的索引等于出牌人的索引时，表示点炮了
     				//点炮    别人点炮的时候查看是否可以胡
+//    	   			System.out.println("胡牌是否需要等待==="+needWait+"是否可以胡===="+avatar.canHu);
     				if(avatar.canHu&&!needWait){
     					//胡牌数组中移除掉胡了的人
-    					huAvatar.remove(avatar);
+    					huAvatar.clear();
     					gangAvatar.clear();
     	    			penAvatar.clear();
     	    			chiAvatar.clear();;
@@ -1332,7 +1341,7 @@ public class PlayCardsLogic {
     				//自摸,一定能胡    				
     				//system.out.println("自摸");
     				//胡牌数组中移除掉胡了的人
-    				huAvatar.remove(avatar);
+    				huAvatar.clear();
     				gangAvatar.clear();
         			penAvatar.clear();
         			chiAvatar.clear();;
@@ -1347,6 +1356,9 @@ public class PlayCardsLogic {
     			//游戏回放
     			PlayRecordOperation(playerList.indexOf(avatar),cardIndex,playRecordType,-1,null,null);
    		 	}
+   	 	}else{
+//   	 		System.out.println("别人已经胡牌！！！！！！！！！！！！！！！！！！");
+   	 		return false;
    	 	}
     		//更新roomlogic的PlayerList信息
      		if(avatar.getUuId()==bankerAvatar.getUuId()){//当前庄家胡了牌，那么算跟庄,不重新分配庄家
@@ -1619,7 +1631,7 @@ public class PlayCardsLogic {
                 av.putCardInList(curCard);//放到牌组里面
 				while(curCard>33){//是花牌则重新发张
 					setFlowerCardOwnerInfo(av, curCard);
-					System.out.println(av.avatarVO.getAccount().getNickname()+"玩家发到花牌=================="+curCard);
+//					System.out.println(av.avatarVO.getAccount().getNickname()+"玩家发到花牌=================="+curCard);
 					nextCardindex++;
 					curCard = listCard.get(nextCardindex);
 					av.putCardInList(curCard);//放到牌组里面
