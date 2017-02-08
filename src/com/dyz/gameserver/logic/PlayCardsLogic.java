@@ -115,6 +115,8 @@ public class PlayCardsLogic {
      * 庄家
      */
     public Avatar bankerAvatar = null;
+    
+    public  int preBankerAvatar = -1;
     /**
      * 房间信息
      */
@@ -323,7 +325,7 @@ public class PlayCardsLogic {
             StringBuffer sb = new StringBuffer();
             //摸起来也要判断是否可以杠，胡
             avatar.putCardInList(tempPoint);
-            if (avatar.checkSelfGang()) {
+            if (avatar.checkSelfGang()&&!avatar.avatarVO.isTing()) {
             	gangAvatar.add(avatar);
             	sb.append("gang");
             	for (int i : avatar.gangIndex) {
@@ -1363,10 +1365,12 @@ public class PlayCardsLogic {
     		//更新roomlogic的PlayerList信息
      		if(avatar.getUuId()==bankerAvatar.getUuId()){//当前庄家胡了牌，那么算跟庄,不重新分配庄家
      			followBanke = true;
+     			preBankerAvatar = playerList.indexOf(bankerAvatar);
      			followNumber++;
      		}else{//重新分配庄家为庄家的下家
      			followBanke = false;
      			followNumber = 0;
+     			preBankerAvatar = playerList.indexOf(bankerAvatar);
      			bankerAvatar.avatarVO.setMain(false);
      			int curbank = playerList.indexOf(bankerAvatar);
      			curbank++;
@@ -1421,6 +1425,7 @@ public class PlayCardsLogic {
     		huReturnObjectVO.setNickname(avatar.avatarVO.getAccount().getNickname());
     		huReturnObjectVO.setPaiArray(avatar.avatarVO.getPaiArray()[0]);
     		huReturnObjectVO.setUuid(avatar.getUuId());
+    		huReturnObjectVO.setPositionIndex(playerList.indexOf(avatar));
     		array.add(huReturnObjectVO);
     		//在整个房间信息中修改总分数(房间次数用完之后的总分数)
     		roomVO.updateEndStatistics(avatar.getUuId()+"", "scores", huReturnObjectVO.getTotalScore());
@@ -1438,6 +1443,9 @@ public class PlayCardsLogic {
 //    		}
 		}
     	json.put("avatarList", array);
+    	json.put("bankerAvatar", playerList.indexOf(bankerAvatar));//新增庄家位置索引
+    	json.put("preBankerAvatar", preBankerAvatar);//新增庄家位置索引
+    	json.put("count", roomVO.getCurrentRound());//已经进行的局数
     	json.put("type", type);
     	json.put("currentScore", score.toString());
     	//生成战绩content
@@ -2052,29 +2060,62 @@ public class PlayCardsLogic {
     		pai[cardIndex]--;
     		pai[cardIndex-1]--;
     		pai[cardIndex-2]--;
-    		if(normalHuPai.isHuPai(pai))
+    		if(normalHuPai.isHuPai(pai)){
     			return true;
+    		}
+    		else{
+    			pai[cardIndex]++;
+        		pai[cardIndex-1]++;
+        		pai[cardIndex-2]++;
+    		}
+    			
     	}else if(cardIndex+2<(flag+1)*9&&pai[cardIndex+1]>0&&pai[cardIndex+2]>0&&cardIndex%9==6){//左边，只有为7的时候
     		pai[cardIndex]--;
     		pai[cardIndex+1]--;
     		pai[cardIndex+2]--;
-    		if(normalHuPai.isHuPai(pai))
+    		if(normalHuPai.isHuPai(pai)){
     			return true;
+    		}
+    		else{
+    			pai[cardIndex]++;
+        		pai[cardIndex+1]++;
+        		pai[cardIndex+2]++;
+    		}
     	}
     	//然后判断坎
     	if(cardIndex-1>=flag*9&&cardIndex+1<(flag+1)*9&&pai[cardIndex+1]>0&&pai[cardIndex-1]>0){
     		pai[cardIndex]--;
     		pai[cardIndex+1]--;
     		pai[cardIndex-1]--;
-    		if(normalHuPai.isHuPai(pai))
+    		if(normalHuPai.isHuPai(pai)){
     			return true;
+    		}
+    		else{
+    			pai[cardIndex]++;
+        		pai[cardIndex+1]++;
+        		pai[cardIndex-1]++;
+    		}
     	}
     	//最后判断钓
     	if(pai[cardIndex]>=2){
     		pai[cardIndex]-=2;
     		normalHuPai.setJIANG(1);
-    		if(normalHuPai.isHuPai(pai))
-    			return true;
+    		if(normalHuPai.isHuPai(pai)){
+    			result = true;
+    		}
+    		//追加判断是否只有单听口
+    		normalHuPai.setJIANG(0);
+    		for(int i=0;i<34;i++){
+    			pai =GlobalUtil.CloneIntList(paiList[0]);
+        		pai[cardIndex]--;
+    			pai[i]++;
+        		if(normalHuPai.isHuPai(pai)&&i!=cardIndex){//有多个听口不算单吊
+        			return false;
+        		}else{
+        			pai[i]--;
+        		}
+    		}
+    		return result;
     	}
     	
     	return result;
@@ -2096,9 +2137,20 @@ public class PlayCardsLogic {
     		normalHuPai.setJIANG(1);
     		if(normalHuPai.isHuPai(pai)){
     			normalHuPai.setJIANG(0);
-    			return true;
+    			result = true;
     		}
+    		//追加判断是否只有单听口
     		normalHuPai.setJIANG(0);
+    		for(int i=0;i<34;i++){
+    			pai =GlobalUtil.CloneIntList(paiList[0]);
+        		pai[4]--;
+    			pai[i]++;
+        		if(normalHuPai.isHuPai(pai)&&i!=4){//有多个听口不算单吊
+        			return false;
+        		}else{
+        			pai[i]--;
+        		}
+    		}
     	}
         return result;
     	
@@ -2163,6 +2215,12 @@ public class PlayCardsLogic {
     			break;
     		}
     	}
+    	if(result){//如果是在万里面有一条龙
+    		for(int i=0;i<9;i++){
+    			paiList[0][i]--;
+        	}
+    		return normalHuPai.checkHu(paiList);
+    	}
     	if(!result){
     	result = true;
     	for(int i=9;i<18;i++){
@@ -2171,8 +2229,12 @@ public class PlayCardsLogic {
     			break;
     		}
     	}
-    	}else{
-    		return true;
+    	if(result){//如果是在条里面有一条龙
+    		for(int i=9;i<18;i++){
+    			paiList[0][i]--;
+        	}
+    		return normalHuPai.checkHu(paiList);
+    	}
     	}
     	if(!result){
     	result = true;
@@ -2182,8 +2244,12 @@ public class PlayCardsLogic {
     			break;
     		}
     	}
-    	}else{
-    		return true;
+    	if(result){//如果是在筒里面有一条龙
+    		for(int i=18;i<27;i++){
+    			paiList[0][i]--;
+        	}
+    		return normalHuPai.checkHu(paiList);
+    	}
     	}
     	return result;
     }
@@ -2339,6 +2405,8 @@ public class PlayCardsLogic {
      * @param avatar
      */
     public void returnBackAction(Avatar avatar){
+    	System.out.println("进入断线重连returnBackAction操作");
+    	//断线重连之后，该进行的下一步操作，json存储下一步操作指引
     		RoomVO room = roomVO;
     		List<AvatarVO> lists = new ArrayList<AvatarVO>();
     		for (int i = 0; i < playerList.size(); i++) {
@@ -2396,6 +2464,7 @@ public class PlayCardsLogic {
      * @param avatar
      */
     public void LoginReturnInfo(Avatar avatar){
+    	System.out.println("进入断线重连LoginReturnInfo操作");
     	//断线重连之后，该进行的下一步操作，json存储下一步操作指引
     	JSONObject json = new JSONObject();//
     	StringBuffer sb = new StringBuffer();

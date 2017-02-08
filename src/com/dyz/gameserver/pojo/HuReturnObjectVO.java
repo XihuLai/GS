@@ -33,7 +33,15 @@ public class HuReturnObjectVO {
      * 玩家uuid
      */
     private Integer uuid;
-    /**
+    
+    private int positionIndex;
+    public int getPositionIndex() {
+		return positionIndex;
+	}
+	public void setPositionIndex(int positionIndex) {
+		this.positionIndex = positionIndex;
+	}
+	/**
      * 杠的总分
      */
 //    private int gangScore = 0;
