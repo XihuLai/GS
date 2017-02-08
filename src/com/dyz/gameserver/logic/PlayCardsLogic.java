@@ -117,7 +117,13 @@ public class PlayCardsLogic {
     public Avatar bankerAvatar = null;
     
     public  int preBankerAvatar = -1;
-    /**
+    public int getPreBankerAvatar() {
+		return preBankerAvatar;
+	}
+	public void setPreBankerAvatar(int preBankerAvatar) {
+		this.preBankerAvatar = preBankerAvatar;
+	}
+	/**
      * 房间信息
      */
     private RoomVO roomVO;
@@ -1416,6 +1422,7 @@ public class PlayCardsLogic {
     	StandingsDetail standingsDetail = new StandingsDetail();
     	StringBuffer content = new StringBuffer();
     	StringBuffer score = new StringBuffer();
+    	Map<String,Integer> avatarPosition = new HashMap<String,Integer>();
     	for (Avatar avatar : playerList) {
     		HuReturnObjectVO   huReturnObjectVO = avatar.avatarVO.getHuReturnObjectVO();
     		//生成战绩内容
@@ -1425,7 +1432,7 @@ public class PlayCardsLogic {
     		huReturnObjectVO.setNickname(avatar.avatarVO.getAccount().getNickname());
     		huReturnObjectVO.setPaiArray(avatar.avatarVO.getPaiArray()[0]);
     		huReturnObjectVO.setUuid(avatar.getUuId());
-    		huReturnObjectVO.setPositionIndex(playerList.indexOf(avatar));
+    		avatarPosition.put(""+avatar.getUuId(),(playerList.indexOf(avatar)));
     		array.add(huReturnObjectVO);
     		//在整个房间信息中修改总分数(房间次数用完之后的总分数)
     		roomVO.updateEndStatistics(avatar.getUuId()+"", "scores", huReturnObjectVO.getTotalScore());
@@ -1445,6 +1452,7 @@ public class PlayCardsLogic {
     	json.put("avatarList", array);
     	json.put("bankerAvatar", playerList.indexOf(bankerAvatar));//新增庄家位置索引
     	json.put("preBankerAvatar", preBankerAvatar);//新增庄家位置索引
+    	json.put("avatarPosition", avatarPosition);
     	json.put("count", roomVO.getCurrentRound());//已经进行的局数
     	json.put("type", type);
     	json.put("currentScore", score.toString());
