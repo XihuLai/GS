@@ -50,12 +50,12 @@ public class HuAndScoreTest {
 //		paiList[0]  = new int[]{0,0,0,3,0,0,1,1,1,    0,1,1,1,0,0,0,0,0,    0,0,2,0,0,0,1,1,1,   0,0,0,0,0,0,0,};
 //		paiList[0]  = new int[]{0,0,2,2,2,2,2,2,2,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
 //		paiList[0]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    4,0,4,1,1,1,1,1,4,   0,0,0,0,0,0,0,  0,2,3,1,0,1,3,4};
-		paiList[0]  = new int[]{0,0,0,0,0,0,0,0,0,    0,2,0,0,2,0,0,0,0,    2,2,0,0,0,2,1,0,2,   0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
+		paiList[0]  = new int[]{1,1,1,0,2,0,0,0,0,    1,1,1,1,1,1,1,1,1,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
 		paiList[1]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0};
 //		paiList[1]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,};
 //    	Map<String,Integer> result = test.checkHu(paiList,player1,26);
 //		int result = test.calculateScore(paiList,player1,roomVO,23,1);
-		boolean result = test.checkOtherTing(paiList,24);
+		boolean result = test.checkKan5(paiList);
 //		int result = test.checkSevenDouble(paiList);
 		System.out.println(result);
 
@@ -517,31 +517,47 @@ public class HuAndScoreTest {
     	int[] pai =GlobalUtil.CloneIntList(paiList[0]);
     	int flag = cardIndex/9;
     	//先判断边,分为左边和右边
-    	if(cardIndex-2>=flag*9&&pai[cardIndex-1]>0&&pai[cardIndex-2]>0){//右边
-    		pai[cardIndex]-=1;
-    		pai[cardIndex-1]-=1;
-    		pai[cardIndex-2]-=1;
+    	if(cardIndex-2>=flag*9&&pai[cardIndex-1]>0&&pai[cardIndex-2]>0&&cardIndex%9==2){//右边,只有为3的时候
+    		pai[cardIndex]--;
+    		pai[cardIndex-1]--;
+    		pai[cardIndex-2]--;
     		if(normalHuPai.isHuPai(pai)){
-    			System.out.println("能胡右边");
+    			System.out.println("右边");
     			return true;
     		}
-    	}else if(cardIndex+2<(flag+1)*9&&pai[cardIndex+1]>0&&pai[cardIndex+2]>0){//左边
+    		else{
+    			pai[cardIndex]++;
+        		pai[cardIndex-1]++;
+        		pai[cardIndex-2]++;
+    		}
+    			
+    	}else if(cardIndex+2<(flag+1)*9&&pai[cardIndex+1]>0&&pai[cardIndex+2]>0&&cardIndex%9==6){//左边，只有为7的时候
     		pai[cardIndex]--;
     		pai[cardIndex+1]--;
     		pai[cardIndex+2]--;
     		if(normalHuPai.isHuPai(pai)){
-    			System.out.println("能胡左边");
+    			System.out.println("左边");
     			return true;
+    		}
+    		else{
+    			pai[cardIndex]++;
+        		pai[cardIndex+1]++;
+        		pai[cardIndex+2]++;
     		}
     	}
     	//然后判断坎
     	if(cardIndex-1>=flag*9&&cardIndex+1<(flag+1)*9&&pai[cardIndex+1]>0&&pai[cardIndex-1]>0){
-    		pai[cardIndex]-=1;
-    		pai[cardIndex+1]-=1;
-    		pai[cardIndex-1]-=1;
+    		pai[cardIndex]--;
+    		pai[cardIndex+1]--;
+    		pai[cardIndex-1]--;
     		if(normalHuPai.isHuPai(pai)){
-    			System.out.println("能胡坎");
+    			System.out.println("坎");
     			return true;
+    		}
+    		else{
+    			pai[cardIndex]++;
+        		pai[cardIndex+1]++;
+        		pai[cardIndex-1]++;
     		}
     	}
     	//最后判断钓
@@ -549,9 +565,21 @@ public class HuAndScoreTest {
     		pai[cardIndex]-=2;
     		normalHuPai.setJIANG(1);
     		if(normalHuPai.isHuPai(pai)){
-    			System.out.println("能胡钓");
-    			return true;
+    			result = true;
     		}
+    		//追加判断是否只有单听口
+    		for(int i=0;i<34;i++){
+    			pai =GlobalUtil.CloneIntList(paiList[0]);
+        		pai[cardIndex]--;
+    			pai[i]++;
+    			normalHuPai.setJIANG(0);
+        		if(normalHuPai.isHuPai(pai)&&i!=cardIndex){//有多个听口不算单吊
+        			return false;
+        		}else{
+        			pai[i]--;
+        		}
+    		}
+    		return result;
     	}
     	
     	return result;
@@ -562,23 +590,31 @@ public class HuAndScoreTest {
     	boolean result = false;
     	int[] pai =GlobalUtil.CloneIntList(paiList[0]);
     	if(pai[3] >= 1 && pai[5] >= 1){
-    		pai[3]-=1;
-    		pai[4]-=1;
-    		pai[5]-=1;
-    		if(normalHuPai.isHuPai(pai)){
-    			System.out.println("能胡坎五万");
+    		pai[3]--;
+    		pai[4]--;
+    		pai[5]--;
+    		if(normalHuPai.isHuPai(pai))
     			return true;
-    		}
     	}
     	if(pai[4] >= 2){
     		pai[4] -=2 ;
     		normalHuPai.setJIANG(1);
     		if(normalHuPai.isHuPai(pai)){
     			normalHuPai.setJIANG(0);
-    			System.out.println("单吊坎五万");
-    			return true;
+    			result = true;
     		}
+    		//追加判断是否只有单听口
     		normalHuPai.setJIANG(0);
+    		for(int i=0;i<34;i++){
+    			pai =GlobalUtil.CloneIntList(paiList[0]);
+        		pai[4]--;
+    			pai[i]++;
+        		if(normalHuPai.isHuPai(pai)&&i!=4){//有多个听口不算单吊
+        			return false;
+        		}else{
+        			pai[i]--;
+        		}
+    		}
     	}
         return result;
     	
@@ -647,6 +683,12 @@ public class HuAndScoreTest {
     			break;
     		}
     	}
+    	if(result){//如果是在万里面有一条龙
+    		for(int i=0;i<9;i++){
+    			paiList[0][i]--;
+        	}
+    		return normalHuPai.checkHu(paiList);
+    	}
     	if(!result){
     	result = true;
     	for(int i=9;i<18;i++){
@@ -655,8 +697,12 @@ public class HuAndScoreTest {
     			break;
     		}
     	}
-    	}else{
-    		return true;
+    	if(result){//如果是在条里面有一条龙
+    		for(int i=9;i<18;i++){
+    			paiList[0][i]--;
+        	}
+    		return normalHuPai.checkHu(paiList);
+    	}
     	}
     	if(!result){
     	result = true;
@@ -666,11 +712,13 @@ public class HuAndScoreTest {
     			break;
     		}
     	}
-    	}else{
-    		return true;
+    	if(result){//如果是在筒里面有一条龙
+    		for(int i=18;i<27;i++){
+    			paiList[0][i]--;
+        	}
+    		return normalHuPai.checkHu(paiList);
     	}
-    	if(result)
-    		System.out.println("能胡一条龙");
+    	}
     	return result;
     }
     
