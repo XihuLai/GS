@@ -19,6 +19,9 @@ public class RoomVO {
      * 数据库表ID
      */
     private int id;
+    
+    
+    private boolean hasHu;
     /**
      * 房间的使用总次数
      */
@@ -413,6 +416,7 @@ public class RoomVO {
         result.dice1 = dice1;
         result.dice2 = dice2;
         result.ziMo = ziMo;
+        result.hasHu = hasHu;
         result.ma = ma;
         result.xiaYu = xiaYu;
         result.addWordCard = addWordCard;
@@ -487,5 +491,13 @@ public class RoomVO {
 	public void setDice2(int dice2) {
 		this.dice2 = dice2;
 	}
+	public boolean isHasHu() {
+		return hasHu;
+	}
+	public void setHasHu(boolean hasHu) {
+		this.hasHu = hasHu;
+	}
+	
+	
     
 }

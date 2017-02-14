@@ -174,6 +174,10 @@ public class RoomLogic {
     				avatarVos.add(playerList.get(i).avatarVO);
     			}
     		}
+    		System.out.println("还有人没有准备好");
+    		for(AvatarVO tt:avatarVos){
+    			System.out.println(tt.getAccount().getNickname()+"没有准备好");
+    		}
     		if(avatarVos.size() == 0){
     			if(count <= 0){
     				//房间次数已经为0
@@ -183,7 +187,7 @@ public class RoomLogic {
     			}else{
     				isBegin = true;
     				//所有人都准备好了
-    				//system.out.println("所有人都准备好了");
+    				System.out.println("所有人都准备好了，开始 游戏！");
     				startGameRound();
     			}
     		}
@@ -253,6 +257,7 @@ public class RoomLogic {
     	if(type.equals("0")){
     		dissolve = false;
     		dissolveCount = 1;
+    		refuse = 0;
     		json = new JSONObject();
     		json.put("type", "0");
     		json.put("uuid", avatar.getUuId());
@@ -403,6 +408,7 @@ public class RoomLogic {
      * @throws IOException 
      */
     public void readyGame(Avatar avatar) throws IOException{
+    	System.out.println(avatar.avatarVO.getAccount().getNickname()+"请求准备游戏！---------------");
     		  //返回房间
     		if(avatar.avatarVO.getRoomId() != roomVO.getRoomId()){
     			////system.out.println("你不是这个房间的");
@@ -514,7 +520,9 @@ public class RoomLogic {
 	            	avatar.avatarVO.getAccount().setIsGame("1");
 	            }
 	        }
+	        playCardsLogic.afterInitCard();
         }
+         System.out.println("游戏开始===============================================================");
     }
     
     /**
@@ -528,19 +536,19 @@ public class RoomLogic {
      * 开始下一局前，玩家准备
      * @param avatar
      */
-    public void readyNext(Avatar avatar){
-    	playerList.get(playerList.indexOf(avatar)).avatarVO.setIsReady(true);
-    	int hasReady = 0;
-    	for (Avatar ava : playerList) {
-			if(ava.avatarVO.getIsReady()){
-				hasReady++;
-			}
-		}
-    	if(hasReady == ConnectAPI.PLAYERS_NUMBER){
-    		//如果四家人都准备好了
-    		startGameRound();
-    	}
-    }
+//    public void readyNext(Avatar avatar){
+//    	playerList.get(playerList.indexOf(avatar)).avatarVO.setIsReady(true);
+//    	int hasReady = 0;
+//    	for (Avatar ava : playerList) {
+//			if(ava.avatarVO.getIsReady()){
+//				hasReady++;
+//			}
+//		}
+//    	if(hasReady == ConnectAPI.PLAYERS_NUMBER){
+//    		//如果四家人都准备好了
+//    		startGameRound();
+//    	}
+//    }
     /**
      * 断线重连，如果房间还未被解散的时候，则返回整个房间信息
      * @param avatar
