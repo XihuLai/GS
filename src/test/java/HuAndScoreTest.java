@@ -50,12 +50,12 @@ public class HuAndScoreTest {
 //		paiList[0]  = new int[]{0,0,0,3,0,0,1,1,1,    0,1,1,1,0,0,0,0,0,    0,0,2,0,0,0,1,1,1,   0,0,0,0,0,0,0,};
 //		paiList[0]  = new int[]{0,0,2,2,2,2,2,2,2,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
 //		paiList[0]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    4,0,4,1,1,1,1,1,4,   0,0,0,0,0,0,0,  0,2,3,1,0,1,3,4};
-		paiList[0]  = new int[]{1,1,1,0,2,0,0,0,0,    1,1,1,1,1,1,1,1,1,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
+		paiList[0]  = new int[]{1,1,1,1,1,1,1,1,1,    2,1,1,1,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
 		paiList[1]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0};
 //		paiList[1]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,};
 //    	Map<String,Integer> result = test.checkHu(paiList,player1,26);
 //		int result = test.calculateScore(paiList,player1,roomVO,23,1);
-		boolean result = test.checkKan5(paiList);
+		boolean result = test.checkHu(paiList,100);
 //		int result = test.checkSevenDouble(paiList);
 		System.out.println(result);
 
@@ -514,7 +514,20 @@ public class HuAndScoreTest {
     
     private boolean checkBkd(int[][] paiList,Integer cardIndex){
     	boolean result = false;
-    	int[] pai =GlobalUtil.CloneIntList(paiList[0]);
+    	int[] pai2 =GlobalUtil.CloneIntList(paiList[0]);
+    	for(int i=0;i<paiList[0].length&&i<34;i++){
+            if(paiList[1][i] == 1 && pai2[i] >= 3) {
+                pai2[i] -= 3;
+            }else if((paiList[1][i] == 2||paiList[1][i] == 6) && pai2[i] == 4){
+                pai2[i]  -= 4;
+            }else if(paiList[1][i]/4>0&&paiList[1][i]%4==0 && pai2[i] > 0){//吃牌的标识是4，吃几次扣几次
+            	int times = paiList[1][i]/4;
+            	pai2[i] = pai2[i]-times;
+            }else if(paiList[1][i] == 5 && pai2[i] == 4){//碰一次并且吃一次
+                pai2[i]  -= 4;
+            }
+        }
+    	int[] pai =GlobalUtil.CloneIntList(pai2);
     	int flag = cardIndex/9;
     	//先判断边,分为左边和右边
     	if(cardIndex-2>=flag*9&&pai[cardIndex-1]>0&&pai[cardIndex-2]>0&&cardIndex%9==2){//右边,只有为3的时候
@@ -522,7 +535,6 @@ public class HuAndScoreTest {
     		pai[cardIndex-1]--;
     		pai[cardIndex-2]--;
     		if(normalHuPai.isHuPai(pai)){
-    			System.out.println("右边");
     			return true;
     		}
     		else{
@@ -536,7 +548,6 @@ public class HuAndScoreTest {
     		pai[cardIndex+1]--;
     		pai[cardIndex+2]--;
     		if(normalHuPai.isHuPai(pai)){
-    			System.out.println("左边");
     			return true;
     		}
     		else{
@@ -551,7 +562,6 @@ public class HuAndScoreTest {
     		pai[cardIndex+1]--;
     		pai[cardIndex-1]--;
     		if(normalHuPai.isHuPai(pai)){
-    			System.out.println("坎");
     			return true;
     		}
     		else{
@@ -568,11 +578,11 @@ public class HuAndScoreTest {
     			result = true;
     		}
     		//追加判断是否只有单听口
+    		normalHuPai.setJIANG(0);
     		for(int i=0;i<34;i++){
-    			pai =GlobalUtil.CloneIntList(paiList[0]);
+    			pai =GlobalUtil.CloneIntList(pai2);
         		pai[cardIndex]--;
     			pai[i]++;
-    			normalHuPai.setJIANG(0);
         		if(normalHuPai.isHuPai(pai)&&i!=cardIndex){//有多个听口不算单吊
         			return false;
         		}else{
