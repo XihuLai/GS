@@ -287,8 +287,6 @@ public class Avatar implements GameObj {
      * @return
      */
     public boolean checkSelfGang(){
-     	//system.out.println("杠了的牌==杠家id"+avatarVO.getAccount().getUuid()+"===="+resultRelation.get(2));
-     	//system.out.println("碰了的牌==杠家id"+avatarVO.getAccount().getUuid()+"===="+resultRelation.get(1));
     	gangIndex.clear();//先清除缓存里面的可以杠的牌下标
     	boolean flag = false;
 
@@ -297,7 +295,7 @@ public class Avatar implements GameObj {
         if (roomVO.isAddWordCard()) {
             paiCount = 34;
         }
-
+        
         int[] cardList = clearSettledCard(avatarVO.getPaiArray()[0]);
 
         for (int i = 0; i < paiCount; i++) {
@@ -306,7 +304,16 @@ public class Avatar implements GameObj {
                 flag = true;
             }
         }
-
+        //可以是过路杠
+        int[] pai1  = avatarVO.getPaiArray()[1];
+        int[] pai0  = avatarVO.getPaiArray()[0];
+		for (int i = 0; i < pai1.length; i++) {
+            if (pai1[i] == 1&&pai0[i]==4) {
+                flag = true;
+            }
+        }
+        //新增过路杠的情形，碰过
+        
 //        System.out.println(avatarVO.getAccount().getOpenid() + "自杠" + flag); //XHTEST
 
         return flag;
@@ -383,6 +390,54 @@ public class Avatar implements GameObj {
 
         s = resultRelation.get(4);
         num = 1;
+        if (s != null) {
+            String[] ss = s.split(",");
+            for (String idx : ss) {
+                if (!idx.isEmpty()) {
+                    id = Integer.parseInt(idx);
+                    cardList[id] -= num;
+                }
+            }
+        }
+        
+        s = resultRelation.get(5);
+        num = 4;
+        if (s != null) {
+            String[] ss = s.split(",");
+            for (String idx : ss) {
+                if (!idx.isEmpty()) {
+                    id = Integer.parseInt(idx);
+                    cardList[id] -= num;
+                }
+            }
+        }
+        
+        s = resultRelation.get(8);
+        num = 2;
+        if (s != null) {
+            String[] ss = s.split(",");
+            for (String idx : ss) {
+                if (!idx.isEmpty()) {
+                    id = Integer.parseInt(idx);
+                    cardList[id] -= num;
+                }
+            }
+        }
+        
+        s = resultRelation.get(12);
+        num = 3;
+        if (s != null) {
+            String[] ss = s.split(",");
+            for (String idx : ss) {
+                if (!idx.isEmpty()) {
+                    id = Integer.parseInt(idx);
+                    cardList[id] -= num;
+                }
+            }
+        }
+        
+        s = resultRelation.get(16);
+        num = 4;
         if (s != null) {
             String[] ss = s.split(",");
             for (String idx : ss) {

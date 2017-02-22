@@ -26,8 +26,10 @@ import com.dyz.myBatis.services.AccountService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kevin on 2016/6/18.
@@ -174,10 +176,6 @@ public class RoomLogic {
     				avatarVos.add(playerList.get(i).avatarVO);
     			}
     		}
-    		System.out.println("还有人没有准备好");
-    		for(AvatarVO tt:avatarVos){
-    			System.out.println(tt.getAccount().getNickname()+"没有准备好");
-    		}
     		if(avatarVos.size() == 0){
     			if(count <= 0){
     				//房间次数已经为0
@@ -187,7 +185,6 @@ public class RoomLogic {
     			}else{
     				isBegin = true;
     				//所有人都准备好了
-    				System.out.println("所有人都准备好了，开始 游戏！");
     				startGameRound();
     			}
     		}
@@ -408,7 +405,6 @@ public class RoomLogic {
      * @throws IOException 
      */
     public void readyGame(Avatar avatar) throws IOException{
-    	System.out.println(avatar.avatarVO.getAccount().getNickname()+"请求准备游戏！---------------");
     		  //返回房间
     		if(avatar.avatarVO.getRoomId() != roomVO.getRoomId()){
     			////system.out.println("你不是这个房间的");
@@ -507,11 +503,16 @@ public class RoomLogic {
 	        int dice2 =random.nextInt(6)+1;// 返回[0,6)集合中的整数，注意不包括6
 	        roomVO.setDice1(dice1);
 	        roomVO.setDice2(dice2);
+	        Map<String,Integer> indexMap = new HashMap<String,Integer>();
+	        for(int i=0;i<playerList.size();i++){
+	        	avatar = playerList.get(i);
+	        	indexMap.put(""+avatar.avatarVO.getAccount().getUuid(), i);
+	        }
 	        for(int i=0;i<playerList.size();i++){
 	        	//清除各种数据  1：本局胡牌时返回信息组成对象 ，
 	        	avatar = playerList.get(i);
 	        	avatar.avatarVO.setHuReturnObjectVO(new HuReturnObjectVO());
-	            avatar.getSession().sendMsg(new StartGameResponse(1,avatar.avatarVO.getPaiArray(),playerList.indexOf(playCardsLogic.bankerAvatar),dice1,dice2));
+	            avatar.getSession().sendMsg(new StartGameResponse(1,avatar.avatarVO.getPaiArray(),playerList.indexOf(playCardsLogic.bankerAvatar),dice1,dice2,indexMap));
 	            //修改玩家是否玩一局游戏的状态
 	            account = AccountService.getInstance().selectByPrimaryKey(avatar.avatarVO.getAccount().getId());
 	            if(account.getIsGame().equals("0")){
@@ -522,7 +523,6 @@ public class RoomLogic {
 	        }
 	        playCardsLogic.afterInitCard();
         }
-         System.out.println("游戏开始===============================================================");
     }
     
     /**

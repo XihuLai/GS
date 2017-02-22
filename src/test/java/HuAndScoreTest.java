@@ -50,12 +50,12 @@ public class HuAndScoreTest {
 //		paiList[0]  = new int[]{0,0,0,3,0,0,1,1,1,    0,1,1,1,0,0,0,0,0,    0,0,2,0,0,0,1,1,1,   0,0,0,0,0,0,0,};
 //		paiList[0]  = new int[]{0,0,2,2,2,2,2,2,2,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
 //		paiList[0]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    4,0,4,1,1,1,1,1,4,   0,0,0,0,0,0,0,  0,2,3,1,0,1,3,4};
-		paiList[0]  = new int[]{1,1,1,1,1,1,1,1,1,    2,1,1,1,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
+		paiList[0]  = new int[]{1,1,1,0,1,1,1,0,0,    0,1,1,1,0,2,0,0,0,    0,0,0,0,0,0,0,0,3,    0,0,0,0,0,0,0,  1,2,3,4,1,2,3,4};
 		paiList[1]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0};
 //		paiList[1]  = new int[]{0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,};
 //    	Map<String,Integer> result = test.checkHu(paiList,player1,26);
 //		int result = test.calculateScore(paiList,player1,roomVO,23,1);
-		boolean result = test.checkHu(paiList,100);
+		boolean result = test.checkBkd(paiList,5);
 //		int result = test.checkSevenDouble(paiList);
 		System.out.println(result);
 
@@ -528,6 +528,17 @@ public class HuAndScoreTest {
             }
         }
     	int[] pai =GlobalUtil.CloneIntList(pai2);
+    	
+    	//判断视否唯一听口
+		for(int i=0;i<34;i++){
+			pai =GlobalUtil.CloneIntList(pai2);
+    		pai[cardIndex]--;
+			pai[i]++;
+    		if(normalHuPai.isHuPai(pai)&&i!=cardIndex){//有多个听口不算坎
+    			return false;
+    		}
+		}
+		
     	int flag = cardIndex/9;
     	//先判断边,分为左边和右边
     	if(cardIndex-2>=flag*9&&pai[cardIndex-1]>0&&pai[cardIndex-2]>0&&cardIndex%9==2){//右边,只有为3的时候
@@ -563,6 +574,7 @@ public class HuAndScoreTest {
     		pai[cardIndex-1]--;
     		if(normalHuPai.isHuPai(pai)){
     			return true;
+    			
     		}
     		else{
     			pai[cardIndex]++;
@@ -577,18 +589,7 @@ public class HuAndScoreTest {
     		if(normalHuPai.isHuPai(pai)){
     			result = true;
     		}
-    		//追加判断是否只有单听口
     		normalHuPai.setJIANG(0);
-    		for(int i=0;i<34;i++){
-    			pai =GlobalUtil.CloneIntList(pai2);
-        		pai[cardIndex]--;
-    			pai[i]++;
-        		if(normalHuPai.isHuPai(pai)&&i!=cardIndex){//有多个听口不算单吊
-        			return false;
-        		}else{
-        			pai[i]--;
-        		}
-    		}
     		return result;
     	}
     	
