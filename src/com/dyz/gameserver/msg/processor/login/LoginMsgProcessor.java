@@ -40,6 +40,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			account.setRoomcard(Params.initialRoomCard);
 			account.setHeadicon(loginVO.getHeadIcon());
 			account.setNickname(loginVO.getNickName());
+			System.out.println("新用户传来=========="+loginVO.getNickName()+"======");   
 			account.setCity(loginVO.getCity());
 			account.setProvince(loginVO.getProvince());
 			account.setSex(loginVO.getSex());
