@@ -40,6 +40,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			account.setRoomcard(Params.initialRoomCard);
 			account.setHeadicon(loginVO.getHeadIcon());
 			account.setNickname(loginVO.getNickName());
+			System.out.println("新用户传来=========="+loginVO.getNickName()+"======");   
 			account.setCity(loginVO.getCity());
 			account.setProvince(loginVO.getProvince());
 			account.setSex(loginVO.getSex());
@@ -91,6 +92,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 			if(avatar == null) {
 					//判断微信昵称是否修改过，若修改过昵称，则更新数据库信息
 					if(!loginVO.getNickName().equals(account.getNickname())){
+						System.out.println("玩家掉线后昵称修改的处理===============");
 						account.setNickname(loginVO.getNickName());
 						AccountService.getInstance().updateByPrimaryKeySelective(account);
 					}
@@ -115,6 +117,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 					gameSession.sendMsg(new HostNoitceResponse(1, content));
 			}else{
 				//断线重连
+				System.out.println("断线重连===============");
 				GameServerContext.add_onLine_Character(avatar);
 				GameServerContext.remove_offLine_Character(avatar);
 				avatar.avatarVO.setIsOnLine(true);
