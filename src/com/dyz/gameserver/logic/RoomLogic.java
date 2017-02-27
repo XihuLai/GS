@@ -249,6 +249,7 @@ public class RoomLogic {
     public void dissolveRoom(Avatar avatar , int roomId , String type){
     	//向其他几个玩家发送解散房间信息  
     	JSONObject json;
+    	avatar.setVoted(true);//表示已经投票
     	//为0时表示是申请解散房间，1表示同意解散房间  2表示不同意解散房间  3表示解散房间(大部分人同意解散房间)
     	//dissolveCount  = playerList.size();
     	if(type.equals("0")){
@@ -287,10 +288,22 @@ public class RoomLogic {
     		if(refuse == 2){
     			//system.out.println("拒绝解散房间");
     			//重置申请状态， 
+    			for (Avatar ava : playerList) {
+        			ava.setVoted(false);
+        		}
     			refuse = 0;
     			dissolve = true;
     			dissolveCount = 1;
     		}
+    	}else if(type.equals("9")){//强制解散房间
+    		RoomManager.getInstance().getRoom(avatar.getRoomVO().getRoomId()).count = 0;
+			hasDissolve = true;
+			for (Avatar ava : playerList) {
+    			ava.setVoted(false);
+    		}
+			//先结算信息，里面同时调用了解散房间的信息
+			playCardsLogic.settlementData("2");
+			
     	}
     	else if(type.equals("1")){
     		//同意解散房间
@@ -314,6 +327,9 @@ public class RoomLogic {
     		if(onlineCount <= dissolveCount+1 && !hasDissolve ){
     			RoomManager.getInstance().getRoom(avatar.getRoomVO().getRoomId()).count = 0;
     			hasDissolve = true;
+    			for (Avatar ava : playerList) {
+        			ava.setVoted(false);
+        		}
     			//先结算信息，里面同时调用了解散房间的信息
     			playCardsLogic.settlementData("2");
     			/*json = new JSONObject();

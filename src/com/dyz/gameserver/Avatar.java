@@ -39,6 +39,8 @@ public class Avatar implements GameObj {
     //当前玩家能否吃
     public boolean canHu = true;
     
+    public boolean voted = false;//解散房间后是否已经投票
+    
 //    public boolean qiangHu = true;
     /**
      * 是否是一局结算时掉线
@@ -91,6 +93,15 @@ public class Avatar implements GameObj {
 
 	public void setCardVO(CardVO cardVO) {
 		this.cardVO = cardVO;
+	}
+
+	
+	public boolean isVoted() {
+		return voted;
+	}
+
+	public void setVoted(boolean voted) {
+		this.voted = voted;
 	}
 
 	public RoomVO getRoomVO() {

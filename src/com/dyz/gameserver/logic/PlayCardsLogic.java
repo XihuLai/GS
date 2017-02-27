@@ -2088,7 +2088,7 @@ public class PlayCardsLogic {
     		for (int j = 0; j < lists.size(); j++) {
     			int paiCount = 0;//有多少张普通牌
     			avatarVo = lists.get(j);
-    			if(avatarVo.getAccount().getUuid() != avatar.getUuId()){
+    			if(avatarVo.getAccount().getUuid() != avatar.getUuId()&&avatarVo.getPaiArray()!=null){
     				//其他三家的牌组需要处理，不能让重连的玩家知道详细的牌组
     				for (int k = 0; k < avatarVo.getPaiArray()[0].length; k++) {
     					if(avatarVo.getPaiArray()[0][k] != 0 && avatarVo.getPaiArray()[1][k] == 0){
@@ -2292,8 +2292,8 @@ public class PlayCardsLogic {
 		}
 
 		for(int i = 0; i < 34; ++i) {
-//			if (paiList[0][i] == 0 || i == cardIndex) {
-			if (paiList[0][i] == 0 ) {//本来就听了,那当然更加是可以听的
+			if (paiList[0][i] == 0 || i == cardIndex) {
+//			if (paiList[0][i] == 0 ) {//本来就听了,那当然更加是可以听的
 				continue;
 			}
 

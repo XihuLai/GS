@@ -122,6 +122,7 @@ public class GameSession implements GameObj {
 	 * 关闭SESSION
 	 */
 	public void close(){
+//		System.out.println("检测到用户离线操作");
 		if(session != null ) {
 			session.close(false);// 2016-8-29短线时不关闭用户session，等
 			Avatar avatar = getRole(Avatar.class);
@@ -140,10 +141,13 @@ public class GameSession implements GameObj {
 									//发送离线通知
 									ava.getSession().sendMsg(new OffLineResponse(1,avatar.getUuId()+""));
 									//同意解散房间人数 设置为0,有人掉线就取消解散房间
-									roomLogic.setDissolveCount(1);
-									roomLogic.setDissolve(true);
+//									roomLogic.setDissolveCount(1);
+//									roomLogic.setDissolve(true);
+									
 								}
 							}
+							if(!roomLogic.isDissolve()&&!avatar.isVoted())//如果有人申请解散房间且该玩家还没有投过票
+							roomLogic.dissolveRoom(avatar,avatar.avatarVO.getRoomId(),"1");//离线默认同意解散房间
 						}
 					}
 				}
