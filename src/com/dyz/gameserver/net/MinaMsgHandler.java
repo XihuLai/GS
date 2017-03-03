@@ -45,8 +45,9 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 	public void exceptionCaught(IoSession session, Throwable cause)
 			throws Exception {
 		//强制退出
-		//logger.error("服务器出错 {}",cause.getMessage());
-		//cause.printStackTrace();
+//		logger.error("服务器出错 {}",cause.getMessage());
+//		cause.printStackTrace();
+//		session.close(true);  
 	}
 
 	/**
@@ -57,6 +58,7 @@ public class MinaMsgHandler extends IoHandlerAdapter{
 	@Override
 	public void sessionClosed(IoSession session) throws Exception {
 		//logger.info("a session closed ip:{}",session.getRemoteAddress());
+//		System.out.println("session关闭");
 		GameSession gameSession = GameSession.getInstance(session);
 		if(gameSession!=null){
 			gameSession.close();

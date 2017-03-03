@@ -1596,7 +1596,7 @@ public class PlayCardsLogic {
 			avatar.putCardInList(cardIndex);
 		int [][] paiList =  avatar.getPaiArray();
 		//可七小队
-		flag = flag || checkSevenDouble(paiList) > 0;
+		flag = flag || checkSevenDouble(paiList,cardIndex) > 0;
 		flag = flag || checkThirteen(paiList);
 		flag = flag || normalHuPai.checkHu(paiList);
 
@@ -1612,7 +1612,7 @@ public class PlayCardsLogic {
      //处理胡牌的逻辑
        int [][] paiList =  avatar.getPaiArray();
    			//可七小队
-   			int isSeven = checkSevenDouble(paiList);
+   			int isSeven = checkSevenDouble(paiList,cardIndex);
                if(isSeven == 0){
             	   if(checkThirteen(paiList)){
             		   result.put("Hu", 1);//
@@ -2034,7 +2034,7 @@ public class PlayCardsLogic {
      * @param paiList
      * @return 0-没有胡牌。1-普通七小对，2-龙七对
      */
-    public int checkSevenDouble(int[][] paiList){
+    public int checkSevenDouble(int[][] paiList,Integer cardIndex){
         int result = 1;
         
         	for(int i=0;i<paiList[0].length&&i<34;i++){
@@ -2045,7 +2045,28 @@ public class PlayCardsLogic {
         				if(paiList[1][i] != 0&&paiList[1][i] != 3){
         					return 0;
         				}else {
-        					if (paiList[0][i] == 4) {
+        					if (paiList[0][i] == 4&&i==cardIndex) {//胡牌时候要刚刚是那张牌才行
+        						result = 2;
+        					}
+        				}
+        			}
+        		}
+        	}
+        return result;
+    }
+    
+    public int checkSevenDouble2(int[][] paiList){
+        int result = 1;
+        
+        	for(int i=0;i<paiList[0].length&&i<34;i++){
+        		if(paiList[0][i] != 0){
+        			if(paiList[0][i] != 2 && paiList[0][i] != 4){
+        				return 0;
+        			}else{
+        				if(paiList[1][i] != 0&&paiList[1][i] != 3){
+        					return 0;
+        				}else {
+        					if (paiList[0][i] == 4) {//胡牌时候要刚刚是那张牌才行
         						result = 2;
         					}
         				}
@@ -2271,7 +2292,7 @@ public class PlayCardsLogic {
 				continue;
 			}
 			paiList[0][i]++;
-			rv = rv || checkSevenDouble(paiList) > 0;
+			rv = rv || checkSevenDouble2(paiList) > 0;
 			rv = rv || checkThirteen(paiList);
 			rv = rv || normalHuPai.checkHu(paiList);
 			paiList[0][i]--;
