@@ -18,7 +18,7 @@ public class CreateRoomResponse extends ServerResponse {
         super(status,ConnectAPI.CREATEROOM_RESPONSE);
         if(status > 0){
         	output.writeUTF(obj);
-        	System.out.println("roomId:"+obj);
+//        	System.out.println("roomId:"+obj);
         	output.close();
         	
         }

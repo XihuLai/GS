@@ -238,7 +238,7 @@ public class StringUtil {
 				}
 				//如果这时候还是不能转为标准json，这放弃这也评
 				str = sb.toString();			
-				System.out.println(str);
+//				System.out.println(str);
 			}
 		}
 		return str;

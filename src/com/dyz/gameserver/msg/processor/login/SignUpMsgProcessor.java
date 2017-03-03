@@ -14,7 +14,7 @@ public class SignUpMsgProcessor extends MsgProcessor implements INotAuthProcesso
 	@Override
 	public void process(GameSession gameSession, ClientRequest request)
 			throws Exception {
-		System.out.println("into SignUpMsgProcessor1005");
+//		System.out.println("into SignUpMsgProcessor1005");
 		//String name = request.getString();
 		//String phone = request.getString();
 		//String email = request.getString();
@@ -29,10 +29,10 @@ public class SignUpMsgProcessor extends MsgProcessor implements INotAuthProcesso
 
 		UserService.getInstance().insertUser(user);
 		if(user.getId()!=null){
-			System.out.println("success");
+//			System.out.println("success");
 			gameSession.sendMsg(new SignUpResponse(1,true));
 		}else{
-			System.out.println("failed");
+//			System.out.println("failed");
 			gameSession.sendMsg(new SignUpResponse(0,false));
 		}
 

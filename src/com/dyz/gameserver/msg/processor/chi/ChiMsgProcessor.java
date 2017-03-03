@@ -30,7 +30,7 @@ public class ChiMsgProcessor extends MsgProcessor implements
         	   gameSession.sendMsg(new ChiResponse(1, "1"));
            }
            else{
-        	   System.out.println("吃不起");
+//        	   System.out.println("吃不起");
            }
         }else{
             gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000005));

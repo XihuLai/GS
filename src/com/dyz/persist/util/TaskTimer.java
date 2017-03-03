@@ -29,11 +29,11 @@ public class TaskTimer {
             @Override
             public void run() {
                 ++count;
-                System.out.println("时间=" + new Date() + " 执行了" + count + "次"); // 1次
+//                System.out.println("时间=" + new Date() + " 执行了" + count + "次"); // 1次
                 //修改所有玩家的抽奖次数
                 int prizecount = PrizeRuleService.getInstance().selectByPrimaryKey(1).getPrecount();
                 int count =  AccountService.getInstance().updatePrizeCount(prizecount);
-                System.out.println("修改抽奖次数的人数："+count);
+//                System.out.println("修改抽奖次数的人数："+count);
                 //List<Account> accounts = AccountService.getInstance().selectAll();
                 Map<String, GameSession> gamessions = GameSessionManager.getInstance().sessionMap;
                 if(!gamessions.isEmpty()){
@@ -71,7 +71,7 @@ public class TaskTimer {
         calendar.set(year, month, day, 1, 0, 0);
         Date date = calendar.getTime();
         Timer timer = new Timer();
-        System.out.println(date);
+//        System.out.println(date);
         timer.schedule(task, date,24*60*60*1000);
     }
 

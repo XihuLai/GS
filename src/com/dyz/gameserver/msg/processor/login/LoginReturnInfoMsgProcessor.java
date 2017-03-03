@@ -21,7 +21,6 @@ INotAuthProcessor {
 
 	@Override
 	public void process(GameSession gameSession, ClientRequest request) throws Exception {
-		
 		RoomLogic roomLogic = RoomManager.getInstance().getRoom(gameSession.getRole(Avatar.class).getRoomVO().getRoomId());
     	if(roomLogic != null){
     		Avatar avatar = gameSession.getRole(Avatar.class);
@@ -29,7 +28,7 @@ INotAuthProcessor {
     				roomLogic.LoginReturnInfo(avatar);
     			}
     		else{
-    			System.out.println("账户未登录或已经掉线!");
+//    			System.out.println("账户未登录或已经掉线!");
     		}
         }else{
             gameSession.sendMsg(new ErrorResponse(ErrorCode.Error_000005));

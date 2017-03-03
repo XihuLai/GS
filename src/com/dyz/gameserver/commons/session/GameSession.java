@@ -130,7 +130,7 @@ public class GameSession implements GameObj {
 				GameSessionManager.getInstance().removeGameSession(avatar);
 				avatar.avatarVO.setIsOnLine(false);
 				//把用户数据保留半个小时
-				TimeUitl.delayDestroy(avatar,60*60*1000*10);
+				TimeUitl.delayDestroy(avatar,30*60*1000);
 				if(avatar.avatarVO.getRoomId() != 0){
 					RoomLogic roomLogic =RoomManager.getInstance().getRoom(avatar.avatarVO.getRoomId());
 					if(roomLogic != null ){
