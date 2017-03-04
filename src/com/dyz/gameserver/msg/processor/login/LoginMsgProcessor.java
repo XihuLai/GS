@@ -83,9 +83,9 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 				avatar =  GameServerContext.getAvatarFromOff(account.getUuid());
 			}
 			if(avatar == null){
-				GameSession gamesession = GameSessionManager.getInstance().getAvatarByUuid("uuid_"+account.getUuid());
-				if(gamesession != null){
-					avatar =  gamesession.getRole(Avatar.class);
+				GameSession gs = GameSessionManager.getInstance().getAvatarByUuid("uuid_"+account.getUuid());
+				if(gs != null){
+					avatar =  gs.getRole(Avatar.class);
 				}
 			}
 			if(avatar == null) {
@@ -126,9 +126,12 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 				//返回用户断线前的房间信息******
 				gameSession.setLogin(true);
 				gameSession.setRole(avatar);
-				returnBackAction(gameSession ,avatar);
+				avatar.setSession(gameSession);
+
 				//把session放入到GameSessionManager,并且移除以前的session
 				GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
+				returnBackAction(avatar);
+
 				//公告发送给玩家
 				Thread.sleep(3000);
 				NoticeTable notice = null;
@@ -164,7 +167,7 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 	 * @param
 	 * @param avatar
      */
-	public void returnBackAction(GameSession gameSession ,Avatar avatar){
+	public void returnBackAction(Avatar avatar){
 		
 		
 		if(avatar.avatarVO.getRoomId() != 0){
@@ -188,12 +191,16 @@ public class LoginMsgProcessor extends MsgProcessor implements INotAuthProcessor
 				AvatarVO avatarVO = new AvatarVO(); 
 				avatarVO.setAccount(avatar.avatarVO.getAccount());
 				GameSession gamesession = avatar.getSession();
+
+				GameServerContext.remove_onLine_Character(avatar);
+
 				avatar = new Avatar();
 				avatar.avatarVO = avatarVO;
 				avatar.setSession(gamesession);
 				avatar.avatarVO.setIsOnLine(true);
 				gamesession.setRole(avatar);
 				gamesession.setLogin(true);
+
 				GameServerContext.add_onLine_Character(avatar);
 				gamesession.sendMsg(new LoginResponse(1, avatar.avatarVO));
 			}
