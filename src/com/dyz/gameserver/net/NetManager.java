@@ -8,6 +8,7 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.executor.ExecutorFilter;
 import org.apache.mina.filter.executor.OrderedThreadPoolExecutor;
+import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
@@ -37,12 +38,14 @@ public class NetManager {
 		//threadpool = new OrderedThreadPoolExecutor(1000);
 		//threadpool.setThreadFactory(new ServerThreadFactory("OrderedThreadPool"));
 		//chain.addLast("threadPool", new ExecutorFilter(threadpool));
-
-		chain.addLast("ThreadPool",new ExecutorFilter(Executors.newCachedThreadPool()));
-		
+        LoggingFilter loggingFilter = new MessageLogFilter();  
+        chain.addLast("logging", loggingFilter);  
+		//chain.addLast("ThreadPool",new ExecutorFilter(Executors.newCachedThreadPool()));
+        chain.addLast("ThreadPool",new ExecutorFilter());//修改成默认的顺序处理
+        
 		int recsize = 1024*1024*2;
 		int sendsize = 1024*1024*2;
-		int timeout = 2;
+		int timeout = 5;
 		//
 		SocketSessionConfig sc = acceptor.getSessionConfig();
 		sc.setReuseAddress(true);// 设置每一个非主监听连接的端口可以重用

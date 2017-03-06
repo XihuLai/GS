@@ -33,7 +33,13 @@ public class JoinRoomMsgProcessor extends MsgProcessor implements
 						//avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000017));
 						// 在房间则 直接回到房间
 						//把session放入到GameSessionManager,并且移除以前的session
-						GameSessionManager.getInstance().putGameSessionInHashMap(gameSession,avatar.getUuId());
+						if (gameSession != avatar.getSession()) {
+							//应该不会调到这段代码 -- Xihu
+							gameSession.setLogin(true);
+							gameSession.setRole(avatar);
+							avatar.setSession(gameSession);
+							GameSessionManager.getInstance().putGameSessionInHashMap(gameSession, avatar.getUuId());
+						}
 						roomLogic.returnBackAction(avatar);
 						return;
 					}

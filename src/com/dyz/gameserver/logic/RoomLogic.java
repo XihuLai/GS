@@ -99,7 +99,15 @@ public class RoomLogic {
     	synchronized(roomVO){
 //            System.out.println("玩家人数 ：" + playerList.size());
 
-    		if(playerList.size() == ConnectAPI.PLAYERS_NUMBER){
+			for (int i = 0; i < playerList.size(); i++) {
+				if(avatar.getUuId() == playerList.get(i).getUuId() ){
+					//如果用户在本房间中，则直接返回房间信息
+					returnBackAction(avatar);
+					return true;
+				}
+			}
+
+			if(playerList.size() == ConnectAPI.PLAYERS_NUMBER){
     			try {
     				avatar.getSession().sendMsg(new ErrorResponse(ErrorCode.Error_000011));
     			} catch (IOException e) {
@@ -107,13 +115,6 @@ public class RoomLogic {
     			}
     			return false;
     		}else {
-    			for (int i = 0; i < playerList.size(); i++) {
-    				if(avatar.getUuId() == playerList.get(i).getUuId() ){
-    					//如果用户在本房间中，则直接返回房间信息
-    					returnBackAction(avatar);
-    					return true;
-    				}
-				}
     			avatar.avatarVO.setMain(false);
     			//avatar.avatarVO.setIsReady(true);
     			avatar.avatarVO.setIsReady(false);

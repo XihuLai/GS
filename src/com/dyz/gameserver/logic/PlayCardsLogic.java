@@ -412,7 +412,7 @@ public class PlayCardsLogic {
      */
     public void gaveUpAction(Avatar avatar){
     	//放弃的时候，至少一个数组不为空才行
-    	if(validateStatus()){
+    	if(validateStatus(avatar)){
     		avatar.huAvatarDetailInfo.clear();
     		if(pickAvatarIndex == playerList.indexOf(avatar)){
     			//如果是自己摸的过，则 canHu = true；
@@ -508,16 +508,12 @@ public class PlayCardsLogic {
             //不能返回给自己
 //        	playerList.get(i).canHu = true;
         	playerList.get(i).gangIndex.clear();//每次出牌就先清除缓存里面的可以杠的牌下标
-            if(i != curAvatarIndex) {
                 playerList.get(i).getSession().sendMsg(new ChuPaiResponse(1, putOffCardPoint, curAvatarIndex));
-            } else {
-				if (!roomVO.isYikouxiangCard()
+				if (i == curAvatarIndex&&roomVO.isYikouxiangCard()
 						&& !avatar.avatarVO.isTing()
 						&& checkSelfTing(avatar)) {
 					avatar.getSession().sendMsg(new ReturnInfoResponse(1, "canting"));
-				} else {
 				}
-			}
     	}
 
 		Avatar ava;
@@ -540,7 +536,7 @@ public class PlayCardsLogic {
 						//有听口，且杠后不影响听口
 						int[][] paiarray = ava.getPaiArray();
 						paiarray[0][putOffCardPoint] -= 3;
-						if(checkSelfTing(ava)){
+						if(!roomVO.isYikouxiangCard()||checkSelfTing(ava)){
 						gangAvatar.add(ava);
 						//同时传会杠的牌的点数
 						sb.append("gang:" + putOffCardPoint + ",");
@@ -726,6 +722,7 @@ public class PlayCardsLogic {
      */
     public boolean gangCard(Avatar avatar , int cardPoint,int gangType){
         boolean flag = false;
+        int gangtype = 0;//0是明杠，1是暗杠
         int avatarIndex = playerList.indexOf(avatar);
         if(huAvatar.contains(avatar)){
             huAvatar.remove(avatar);
@@ -1203,6 +1200,9 @@ public class PlayCardsLogic {
     					avatar.huQuest = true;
     					return false;
     				}
+    				if(cardIndex==-1){
+    					cardIndex = putOffCardPoint;
+    				}
     				avatar.putCardInList(cardIndex);
     				avatar.getPaiArray()[1][cardIndex] = 3;
     				avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("jiepao", cardIndex+"");
@@ -1210,6 +1210,9 @@ public class PlayCardsLogic {
     				calculateScore(avatar , cardIndex,curAvatarIndex);
     			}
     			else{
+    				if(cardIndex==-1){
+    						cardIndex = currentCardPoint;
+    				}
     				clearAvatar();
     				avatar.avatarVO.getHuReturnObjectVO().updateTotalInfo("zimo", ""+cardIndex);
     				flag = true;
@@ -1240,9 +1243,7 @@ public class PlayCardsLogic {
      			bankerAvatar.avatarVO.setMain(true);
      			
      		}
-     		for(Avatar avator:playerList){
- 				avator.avatarVO.setTing(false);
- 			}
+     		
     		RoomManager.getInstance().getRoom(playerList.get(0).getRoomVO().getRoomId()).setPlayerList(playerList);
     		//一局牌胡了，返回这一局的所有数据吃，碰， 杠，胡等信息
 
@@ -1263,7 +1264,7 @@ public class PlayCardsLogic {
     		//第一局结束扣房卡
     		deductRoomCard();//因为测试所以注释这行
     	}
-    	if("1".equals(type))
+    	//if("1".equals(type))//不管如何都是复位
     	for(Avatar avator:playerList){
 				avator.avatarVO.setTing(false);
 			}
@@ -1770,6 +1771,7 @@ public class PlayCardsLogic {
     	//判断视否唯一听口
 		for(int i=0;i<34;i++){
 			pai =GlobalUtil.CloneIntList(pai2);
+			System.out.println("cardIndex=================发生异常内存越界的为======================="+cardIndex);
     		pai[cardIndex]--;
 			pai[i]++;
     		if(normalHuPai.isHuPai(pai)&&i!=cardIndex){//有多个听口不算坎
@@ -2111,7 +2113,7 @@ public class PlayCardsLogic {
     			avatarVo = lists.get(j);
     			if(avatarVo.getAccount().getUuid() != avatar.getUuId()&&avatarVo.getPaiArray()!=null){
     				//其他三家的牌组需要处理，不能让重连的玩家知道详细的牌组
-    				for (int k = 0; k < avatarVo.getPaiArray()[0].length; k++) {
+    				for (int k = 0; k < avatarVo.getPaiArray()[0].length&&k<34; k++) {
     					if(avatarVo.getPaiArray()[0][k] != 0 && avatarVo.getPaiArray()[1][k] == 0){
     						paiCount= paiCount +avatarVo.getPaiArray()[0][k];
     						//avatarVo.getPaiArray()[0][k] = 0;
@@ -2259,8 +2261,8 @@ public class PlayCardsLogic {
     /**
      * 检测当，缓存数组里全部为空时，放弃操作，则不起作用
      */
-    public boolean validateStatus(){
-    	if(huAvatar.size() > 0 || penAvatar.size()>0 || gangAvatar.size()>0 || chiAvatar.size()>0 ){
+    public boolean validateStatus(Avatar avator){
+    	if((huAvatar.size() > 0 || penAvatar.size()>0 || gangAvatar.size()>0 || chiAvatar.size()>0 )&&(huAvatar.contains(avator)||penAvatar.contains(avator)||gangAvatar.contains(avator)||chiAvatar.contains(avator))){
     		return true;
     	}
     	else{

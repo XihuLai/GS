@@ -320,6 +320,7 @@ public class Avatar implements GameObj {
         int[] pai0  = avatarVO.getPaiArray()[0];
 		for (int i = 0; i < pai1.length; i++) {
             if (pai1[i] == 1&&pai0[i]==4) {
+            	gangIndex.add(i);
                 flag = true;
             }
         }
