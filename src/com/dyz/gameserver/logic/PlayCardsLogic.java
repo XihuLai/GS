@@ -511,7 +511,7 @@ public class PlayCardsLogic {
                 playerList.get(i).getSession().sendMsg(new ChuPaiResponse(1, putOffCardPoint, curAvatarIndex));
 				if (i == curAvatarIndex&&roomVO.isYikouxiangCard()
 						&& !avatar.avatarVO.isTing()
-						&& checkSelfTing(avatar)) {
+						&& checkSelfTing(avatar)&&!checkMenqing(avatar.getPaiArray(),avatar)) {//门清不提示听牌
 					avatar.getSession().sendMsg(new ReturnInfoResponse(1, "canting"));
 				}
     	}
@@ -722,7 +722,6 @@ public class PlayCardsLogic {
      */
     public boolean gangCard(Avatar avatar , int cardPoint,int gangType){
         boolean flag = false;
-        int gangtype = 0;//0是明杠，1是暗杠
         int avatarIndex = playerList.indexOf(avatar);
         if(huAvatar.contains(avatar)){
             huAvatar.remove(avatar);
