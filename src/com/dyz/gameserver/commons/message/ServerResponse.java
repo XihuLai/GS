@@ -15,6 +15,7 @@ public class ServerResponse implements ResponseMsg {
 	protected MsgBodyWrap output = MsgBodyWrap.newInstance4Out();
 	private int msgCode;
 	private int status;
+	private byte[] content;
 	/**必须调用此方法设置消息号*/
 	public ServerResponse(int status,int msgCode) {
 		setStatus(status);
@@ -32,6 +33,8 @@ public class ServerResponse implements ResponseMsg {
 	public  IoBuffer entireMsg() {
 		
 			byte[] body = output.toByteArray();
+			content = new byte[body.length];
+			System.arraycopy(body,0,content,0,body.length);
 			/* 标志 byte 长度short */
 			int length = MsgProtocol.flagSize+MsgProtocol.lengthSize+MsgProtocol.msgCodeSize+ body.length+4;
 			//System.out.println("计算长度"+length);
@@ -44,6 +47,10 @@ public class ServerResponse implements ResponseMsg {
 			buf.flip();
 			//System.out.println("buf实际长度---"+buf.capacity());
 			return buf;
+	}
+	
+	public String toString(){
+		return new String(content);
 	}
 
 	/**
