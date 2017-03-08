@@ -208,7 +208,7 @@ public class PlayCardsLogic {
 	public void shuffleTheCards() {
 		Collections.shuffle(listCard);
 		Collections.shuffle(listCard);
-		listCard = PaiList.getListCard2(listCard);//为了方便测试
+//		listCard = PaiList.getListCard2(listCard);//为了方便测试
 	}
 	/**
 	 * 检测玩家是否胡牌了
@@ -256,18 +256,22 @@ public class PlayCardsLogic {
 				}
             }
             StringBuffer sb = new StringBuffer();
-            if (avatar.checkSelfGang()&&!avatar.avatarVO.isTing()) {
-            	int[][] paiarray = avatar.getPaiArray();
-            	paiarray[0][tempPoint]-=4;
-            	if((paiarray[1][tempPoint]==1&&checkSelfTing(avatar))||paiarray[1][tempPoint]==0){//明杠或者暗杠
+            if (avatar.checkSelfGang()) {
+            	if(roomVO.isYikouxiangCard()&&!avatar.avatarVO.isTing()){//一口香情形，无法过路杠，只能暗杠，
             	gangAvatar.add(avatar);
             	sb.append("gang");
             	for (int i : avatar.gangIndex) {
             		sb.append(":"+i);
 				}
             	sb.append(",");
+            	}else{//不是一口香情形，随便杠
+                	gangAvatar.add(avatar);
+                	sb.append("gang");
+                	for (int i : avatar.gangIndex) {
+                		sb.append(":"+i);
+    				}
+                	sb.append(",");
             	}
-            	paiarray[0][tempPoint]+=4;
             	
             }
             //判断自己摸上来的牌自己是否可以胡
