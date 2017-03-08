@@ -165,6 +165,7 @@ public class PlayCardsLogic {
 		}
 
 	    for(Avatar curplayer:playerList){
+	    	curplayer.avatarVO.setTing(false);
 	    	curplayer.canHu = true;
 	    	if(!roomVO.getResultScore().containsKey(""+curplayer.getUuId()))
 	    	roomVO.getResultScore().put(""+curplayer.getUuId(), 0);
@@ -207,7 +208,7 @@ public class PlayCardsLogic {
 	public void shuffleTheCards() {
 		Collections.shuffle(listCard);
 		Collections.shuffle(listCard);
-//		listCard = PaiList.getListCard2(listCard);//为了方便测试
+		listCard = PaiList.getListCard2(listCard);//为了方便测试
 	}
 	/**
 	 * 检测玩家是否胡牌了
@@ -492,6 +493,8 @@ public class PlayCardsLogic {
      * @param cardPoint
      */
     public void putOffCard(Avatar avatar,int cardPoint){
+    	if(!checkMsgAndSend())//如果还有吃碰杠胡的消息没有处理，不能触发出牌动作
+    		return;
 		//avatar.gangIndex.clear();//每次出牌就清除 缓存里面的可以杠的牌下标
 //    	avatar.avatarVO.setHuType(0);//重置划水麻将胡牌格式
     	//出牌信息放入到缓存中，掉线重连的时候，返回房间信息需要
@@ -509,11 +512,11 @@ public class PlayCardsLogic {
 //        	playerList.get(i).canHu = true;
         	playerList.get(i).gangIndex.clear();//每次出牌就先清除缓存里面的可以杠的牌下标
                 playerList.get(i).getSession().sendMsg(new ChuPaiResponse(1, putOffCardPoint, curAvatarIndex));
-				if (i == curAvatarIndex&&roomVO.isYikouxiangCard()
-						&& !avatar.avatarVO.isTing()
-						&& checkSelfTing(avatar)&&!checkMenqing(avatar.getPaiArray(),avatar)) {//门清不提示听牌
-					avatar.getSession().sendMsg(new ReturnInfoResponse(1, "canting"));
-				}
+//				if (i == curAvatarIndex&&roomVO.isYikouxiangCard()
+//						&& !avatar.avatarVO.isTing()
+//						&& checkSelfTing(avatar)&&!checkMenqing(avatar.getPaiArray(),avatar)) {//门清不提示听牌
+//					avatar.getSession().sendMsg(new ReturnInfoResponse(1, "canting"));
+//				}
     	}
 
 		Avatar ava;
@@ -1646,10 +1649,14 @@ public class PlayCardsLogic {
             		   result.put(Rule.Hu_quemen, quemen);
             	   if(checkGouzhang(paiList))
             		   result.put(Rule.Hu_gouzhang, 1);
-            	   if(cardIndex==4&&checkKan5(paiList))
-            		   result.put(Rule.Hu_kanwuwan, 1);
-            	   if(checkBkd(paiList,cardIndex))
-            		   result.put(Rule.Hu_biankandiao, 1);
+//            	   if(cardIndex==4&&checkKan5(paiList))
+//            		   result.put(Rule.Hu_kanwuwan, 1);
+            	   if(checkBkd(paiList,cardIndex)){//坎五万的判断和边砍钓的判断是一起的
+            		   if(cardIndex==4)
+            			   result.put(Rule.Hu_kanwuwan, 1);
+            		   else
+            			   result.put(Rule.Hu_biankandiao, 1);
+            	   }
             	   if(checkMenqing(paiList,avatar))
             		   result.put(Rule.Hu_menqing, 1);
             	   if(checkPengPeng(paiList,avatar))
@@ -1751,7 +1758,7 @@ public class PlayCardsLogic {
     }
     
     private boolean checkBkd(int[][] paiList,Integer cardIndex){
-    	boolean result = false;
+    	boolean result = true;
     	int[] pai2 =GlobalUtil.CloneIntList(paiList[0]);
     	for(int i=0;i<paiList[0].length&&i<34;i++){
             if(paiList[1][i] == 1 && pai2[i] >= 3) {
@@ -1770,106 +1777,17 @@ public class PlayCardsLogic {
     	//判断视否唯一听口
 		for(int i=0;i<34;i++){
 			pai =GlobalUtil.CloneIntList(pai2);
-			System.out.println("cardIndex=================发生异常内存越界的为======================="+cardIndex);
+//			System.out.println("cardIndex=================发生异常内存越界的为======================="+cardIndex);
     		pai[cardIndex]--;
 			pai[i]++;
     		if(normalHuPai.isHuPai(pai)&&i!=cardIndex){//有多个听口不算坎
     			return false;
     		}
 		}
-		
-    	int flag = cardIndex/9;
-    	//先判断边,分为左边和右边
-    	if(cardIndex-2>=flag*9&&pai[cardIndex-1]>0&&pai[cardIndex-2]>0&&cardIndex%9==2){//右边,只有为3的时候
-    		pai[cardIndex]--;
-    		pai[cardIndex-1]--;
-    		pai[cardIndex-2]--;
-    		if(normalHuPai.isHuPai(pai)){
-    			return true;
-    		}
-    		else{
-    			pai[cardIndex]++;
-        		pai[cardIndex-1]++;
-        		pai[cardIndex-2]++;
-    		}
-    			
-    	}else if(cardIndex+2<(flag+1)*9&&pai[cardIndex+1]>0&&pai[cardIndex+2]>0&&cardIndex%9==6){//左边，只有为7的时候
-    		pai[cardIndex]--;
-    		pai[cardIndex+1]--;
-    		pai[cardIndex+2]--;
-    		if(normalHuPai.isHuPai(pai)){
-    			return true;
-    		}
-    		else{
-    			pai[cardIndex]++;
-        		pai[cardIndex+1]++;
-        		pai[cardIndex+2]++;
-    		}
-    	}
-    	//然后判断坎
-    	if(cardIndex-1>=flag*9&&cardIndex+1<(flag+1)*9&&pai[cardIndex+1]>0&&pai[cardIndex-1]>0){
-    		pai[cardIndex]--;
-    		pai[cardIndex+1]--;
-    		pai[cardIndex-1]--;
-    		if(normalHuPai.isHuPai(pai)){
-    			return true;
-    			
-    		}
-    		else{
-    			pai[cardIndex]++;
-        		pai[cardIndex+1]++;
-        		pai[cardIndex-1]++;
-    		}
-    	}
-    	//最后判断钓
-    	if(pai[cardIndex]>=2){
-    		pai[cardIndex]-=2;
-    		normalHuPai.setJIANG(1);
-    		if(normalHuPai.isHuPai(pai)){
-    			result = true;
-    		}
-    		normalHuPai.setJIANG(0);
-    		return result;
-    	}
-    	
-    	return result;
+		return result;
     }
     
-    
-    private boolean checkKan5(int[][] paiList){//判断视否坎五万
-    	boolean result = false;
-    	int[] pai =GlobalUtil.CloneIntList(paiList[0]);
-    	if(pai[3] >= 1 && pai[5] >= 1){
-    		pai[3]--;
-    		pai[4]--;
-    		pai[5]--;
-    		if(normalHuPai.isHuPai(pai))
-    			return true;
-    	}
-    	if(pai[4] >= 2){
-    		pai[4] -=2 ;
-    		normalHuPai.setJIANG(1);
-    		if(normalHuPai.isHuPai(pai)){
-    			normalHuPai.setJIANG(0);
-    			result = true;
-    		}
-    		//追加判断是否只有单听口
-    		normalHuPai.setJIANG(0);
-    		for(int i=0;i<34;i++){
-    			pai =GlobalUtil.CloneIntList(paiList[0]);
-        		pai[4]--;
-    			pai[i]++;
-        		if(normalHuPai.isHuPai(pai)&&i!=4){//有多个听口不算单吊
-        			return false;
-        		}else{
-        			pai[i]--;
-        		}
-    		}
-    	}
-        return result;
-    	
-    }
-    
+   
     private boolean checkGouzhang(int[][] paiList){
     	boolean result = false;
     	int flag=0;

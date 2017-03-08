@@ -39,7 +39,7 @@ public class NormalHuPai {
         for(int i=0;i<paiList[0].length&&i<34;i++){
             if(paiList[1][i] == 1 && pai[i] >= 3) {
                 pai[i] -= 3;
-            }else if((paiList[1][i] == 2||paiList[1][i] == 6) && pai[i] == 4){
+            }else if((paiList[1][i] == 2||paiList[1][i] == 6) && pai[i] == 4){//明杠是2，暗杠是6
                 pai[i]  -= 4;
             }else if(paiList[1][i]/4>0&&paiList[1][i]%4==0 && pai[i] > 0){//吃牌的标识是4，吃几次扣几次
             	int times = paiList[1][i]/4;
@@ -62,14 +62,14 @@ public class NormalHuPai {
             //   跟踪信息
             //   4张组合(杠子)
             if(paiList[i] != 0){
-                if (paiList[i] == 4)                               //   如果当前牌数等于4张
-                {
-                    paiList[i] = 0;                                     //   除开全部4张牌
-                    if (isHuPai(paiList)) {
-                        return true;             //   如果剩余的牌组合成功，和牌
-                    }
-                    paiList[i] = 4;                                     //   否则，取消4张组合
-                }
+//                if (paiList[i] == 4)                               //   如果当前牌数等于4张
+//                {
+//                    paiList[i] = 0;                                     //   除开全部4张牌
+//                    if (isHuPai(paiList)) {
+//                        return true;             //   如果剩余的牌组合成功，和牌
+//                    }
+//                    paiList[i] = 4;                                     //   否则，取消4张组合
+//                }
                 //   3张组合(大对)
                 if (paiList[i] >= 3)                               //   如果当前牌不少于3张
                 {

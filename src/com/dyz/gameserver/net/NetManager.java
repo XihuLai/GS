@@ -40,8 +40,8 @@ public class NetManager {
 		//chain.addLast("threadPool", new ExecutorFilter(threadpool));
         LoggingFilter loggingFilter = new MessageLogFilter();  
         chain.addLast("logging", loggingFilter);  
-		//chain.addLast("ThreadPool",new ExecutorFilter(Executors.newCachedThreadPool()));
-        chain.addLast("ThreadPool",new ExecutorFilter());//修改成默认的顺序处理
+		chain.addLast("ThreadPool",new ExecutorFilter(Executors.newCachedThreadPool()));
+//        chain.addLast("ThreadPool",new ExecutorFilter());//修改成默认的顺序处理
         
 		int recsize = 1024*1024*2;
 		int sendsize = 1024*1024*2;
