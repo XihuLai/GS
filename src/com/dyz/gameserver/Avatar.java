@@ -316,6 +316,7 @@ public class Avatar implements GameObj {
             }
         }
         //可以是过路杠
+        if(!roomVO.isYikouxiangCard()){//如果不是一口香，则允许过路杠
         int[] pai1  = avatarVO.getPaiArray()[1];
         int[] pai0  = avatarVO.getPaiArray()[0];
 		for (int i = 0; i < pai1.length; i++) {
@@ -323,6 +324,7 @@ public class Avatar implements GameObj {
             	gangIndex.add(i);
                 flag = true;
             }
+        }
         }
         //新增过路杠的情形，碰过
         
