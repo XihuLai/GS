@@ -469,6 +469,7 @@ public class PlayCardsLogic {
     				}
     			}else if(huAvatar.size() == 1&&huAvatar.get(0).huQuest){
 					huPai(huAvatar.get(0),putOffCardPoint,"0");
+					return;
 				}
     			//如果都没有人胡，没有人杠，没有人碰，没有人吃的情况下。则下一玩家摸牌
     			chuPaiCallBack();
