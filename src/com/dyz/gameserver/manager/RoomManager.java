@@ -136,7 +136,7 @@ public class RoomManager {
 	 */
 	public void removeUuidAndRoomId(Integer uuid, Integer roomid) {
 		if (uuidAndRoomId.get(uuid) != null) {
-			uuidAndRoomId.put(uuid, roomid);
+			uuidAndRoomId.remove(uuid);
 		}
 	}
 
