@@ -38,8 +38,8 @@ public class NetManager {
 		//threadpool = new OrderedThreadPoolExecutor(1000);
 		//threadpool.setThreadFactory(new ServerThreadFactory("OrderedThreadPool"));
 		//chain.addLast("threadPool", new ExecutorFilter(threadpool));
-        LoggingFilter loggingFilter = new MessageLogFilter();  
-        chain.addLast("logging", loggingFilter);  
+//        LoggingFilter loggingFilter = new MessageLogFilter();  
+//        chain.addLast("logging", loggingFilter);  
 		chain.addLast("ThreadPool",new ExecutorFilter(Executors.newCachedThreadPool()));
 //        chain.addLast("ThreadPool",new ExecutorFilter());//修改成默认的顺序处理
         

@@ -11,15 +11,15 @@ import java.io.IOException;
 public class ClientRequest{
 	MsgBodyWrap msgBody = null;
 	int msgcode;
-	byte[] content;
-
-	public byte[] getContent() {
-		return content;
-	}
-
-	public void setContent(byte[] content) {
-		this.content = content;
-	}
+//	byte[] content;
+//
+//	public byte[] getContent() {
+//		return content;
+//	}
+//
+//	public void setContent(byte[] content) {
+//		this.content = content;
+//	}
 
 	public ClientRequest(byte[] array) throws IllegalArgumentException {
 		if (array == null) {
@@ -28,8 +28,8 @@ public class ClientRequest{
 		if (array.length == 0) {
 			throw new IllegalArgumentException("消息缓冲区对象大小为0");
 		}
-		content = new byte[array.length];
-		System.arraycopy(array,0,content,0,array.length);
+//		content = new byte[array.length];
+//		System.arraycopy(array,0,content,0,array.length);
 		msgBody = MsgBodyWrap.newInstance4In(array);
 		try {
 			msgcode = msgBody.readInt();

@@ -15,8 +15,8 @@ public class MessageLogFilter extends LoggingFilter {
     public void messageReceived(NextFilter nextFilter, IoSession session, Object message) throws Exception {
 		nextFilter.messageReceived(session, message);
 		ClientRequest request = (ClientRequest)message;//
-		if(request.getMsgCode()!=48)
-		logger.info(request.getMsgCode()+"消息内容为====="+new String(request.getContent()));
+//		if(request.getMsgCode()!=48)
+//		logger.info(request.getMsgCode()+"消息内容为====="+new String(request.getContent()));
 
     }
 
