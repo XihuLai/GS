@@ -102,6 +102,8 @@ public class RoomLogic {
 			for (int i = 0; i < playerList.size(); i++) {
 				if(avatar.getUuId() == playerList.get(i).getUuId() ){
 					//如果用户在本房间中，则直接返回房间信息
+					avatar.setRoomVO(roomVO);
+					avatar.avatarVO.setRoomId(roomVO.getRoomId());
 					returnBackAction(avatar);
 					return true;
 				}
